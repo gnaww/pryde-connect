@@ -30,7 +30,6 @@
 
 #pryde {
     font-family: Work Sans;
-    font-style: normal;
     font-weight: bold;
     font-size: 30px;
     line-height: 35px;
@@ -40,8 +39,6 @@
 
 #name {
     font-family: Work Sans;
-    font-style: normal;
-    font-weight: normal;
     font-size: 30px;
     line-height: 35px;
     color: black;
@@ -54,8 +51,6 @@
 
 .link {
     font-family: Lato;
-    font-style: normal;
-    font-weight: normal;
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;

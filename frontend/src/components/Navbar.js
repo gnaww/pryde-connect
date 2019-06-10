@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
-import logo from '../images/pryde-logo.png';
+import logo from '../images/pryde-symbol.png';
 
-const Header = () => (
+const Navbar = () => (
     <nav className={styles.navbar}>
         <div className={styles.logo}>
             <Link to="/">
@@ -32,4 +32,4 @@ const Header = () => (
     </nav>
 );
 
-export default Header;
+export default Navbar;

@@ -8,9 +8,9 @@ import styles from './App.module.css';
 function App() {
     return (
         <Router>
-            <div className={styles.Wrapper}>
+            <div className={styles.wrapper}>
                 <Navbar />
-                <div className={styles.Container}>
+                <div className={styles.container}>
                     <Switch>
                         <Route path="/" exact component={Browse} />
                     </Switch>
