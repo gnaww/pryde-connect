@@ -10,11 +10,11 @@ function App() {
         <Router>
             <div className={styles.wrapper}>
                 <Navbar />
-                <div className={styles.container}>
+                <main className={styles.container}>
                     <Switch>
-                        <Route path="/" exact component={Browse} />
+                        <Route path="/browse" exact component={Browse} />
                     </Switch>
-                </div>
+                </main>
                 <Footer />
             </div>
         </Router>
