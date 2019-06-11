@@ -28,6 +28,6 @@ const Footer = () => (
             <p>607-254-5125 <a href="mailto:pryde@cornell.edu">pryde@cornell.edu</a></p>
         </div>
     </footer>
-)
+);
 
 export default Footer;
