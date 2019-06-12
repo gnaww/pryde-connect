@@ -1,0 +1,35 @@
+.filterCategory {
+    margin-bottom: 15px;
+}
+
+.filterCategory h4 {
+    margin: 0;
+    cursor: pointer;
+    font-family: Lato;
+    letter-spacing: 0.1em;
+}
+
+.filterCategory img {
+    margin-right: 10px;
+    transition: 0.1s all ease-in-out;
+}
+
+.filterCategory h4, .filterCategory img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.filterCategory ul {
+    margin-left: 5px;
+}
+
+.open {
+    transform: rotate(0deg);
+}
+
+.closed {
+    transform: rotate(-90deg);
+}
