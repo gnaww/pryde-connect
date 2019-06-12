@@ -7,6 +7,12 @@
     width: 100%;
     margin: 30px 0;
     padding: 20px 30px;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out
+}
+
+.searchResult:hover {
+    transform: translateY(-7px);
 }
 
 .projectResult {
