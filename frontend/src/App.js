@@ -13,7 +13,7 @@ function App() {
                 <Navbar />
                 <main className={styles.container}>
                     <Switch>
-                        <Route exact path="/browse" component={Browse} />
+                        <Route path="/browse" component={Browse} />
                         <Route component={PageNotFound} />
                     </Switch>
                 </main>

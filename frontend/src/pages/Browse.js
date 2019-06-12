@@ -17,7 +17,7 @@ class Browse extends Component {
             showTopic: true,
             showStatus: true,
             showLocation: true,
-            sortBy: "name",
+            sortBy: "name-asc",
             searchResults: [
                 {
                     type: "project",
@@ -63,6 +63,10 @@ class Browse extends Component {
     
     toggleFilterVisibility = filter => {
         this.setState(prevState => ({ [filter]: !prevState[filter] }));
+    }
+
+    setSort = event => {
+        this.setState({ sortBy: event.target.value });
     }
 
     componentDidMount() {
@@ -172,6 +176,7 @@ class Browse extends Component {
                                         <h4>{this.state.searchResults.length} results</h4>
                                     </div>
                                     <CustomDropdown
+                                        handleChange={this.setSort}
                                         name="sort"
                                         label="SORT BY"
                                         options={[
