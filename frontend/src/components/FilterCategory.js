@@ -1,6 +1,7 @@
 import React from 'react';
 import arrow from '../images/dropdown-arrow.svg';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import styles from '../styles/FilterCategory.module.css';
 
 const FilterCategory = ({ isVisible, toggleVisibility, categoryName, filterOptions }) => (
@@ -17,8 +18,10 @@ const FilterCategory = ({ isVisible, toggleVisibility, categoryName, filterOptio
             isVisible &&
             <ul>
                 {
-                    filterOptions.map(filter => 
-                        <li><input type="checkbox" />{filter}</li>
+                    filterOptions.map((filter, idx) =>
+                        <li>
+                            <FormControlLabel key={idx} control={<Checkbox color="default" className={styles.checkbox} value={filter} disableRipple />} label={filter} />
+                        </li>
                     )
                 }
             </ul>

@@ -6,7 +6,7 @@ const CustomDropdown = ({ handleChange, name, label, options }) => (
         <select name={name} defaultValue="" onChange={handleChange}>
             <option value="" disabled>{label}</option>
             {
-                options.map(option => <option value={option.value}>{option.text}</option>)
+                options.map((option, idx) => <option key={idx} value={option.value}>{option.text}</option>)
             }
         </select>
     </span>

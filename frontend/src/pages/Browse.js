@@ -72,6 +72,7 @@ class Browse extends Component {
     componentDidMount() {
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search);
+        console.log(parsedURL);
         this.setState({ query: parsedURL.q })
     }
 
@@ -147,7 +148,7 @@ class Browse extends Component {
                                 </li>
                             </ul>
                         </section>
-                        {filterCategories.map(filterCategory => <FilterCategory {...filterCategory} toggleVisibility={this.toggleFilterVisibility} />)}
+                        {filterCategories.map((filterCategory, idx) => <FilterCategory key={idx} {...filterCategory} toggleVisibility={this.toggleFilterVisibility} />)}
                     </aside>
                     <section className={styles.searchResultsContainer}>
                         <form className={styles.searchForm} onSubmit={this.handleSubmitQuery}>
@@ -160,6 +161,7 @@ class Browse extends Component {
                                     placeholder={this.state.searchOpportunities ?
                                         "Search for research opportunities" :
                                         "Search for research partners"}
+                                    autoFocus
                                 />
                                 <button type="submit" value="Submit">
                                     <img src={searchIcon} alt="Search icon" />

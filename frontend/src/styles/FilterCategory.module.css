@@ -22,8 +22,17 @@
     user-select: none;
 }
 
-.filterCategory ul {
-    margin-left: 5px;
+.filterCategory label {
+    margin-left: -4px;
+    margin-right: 0;
+}
+
+.filterCategory .checkbox:hover {
+    background-color: transparent;
+}
+
+.filterCategory .checkbox {
+    padding: 0 5px 0 0;
 }
 
 .open {
