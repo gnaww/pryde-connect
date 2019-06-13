@@ -1,0 +1,115 @@
+.searchResult {
+    display: flex;
+    border: 1px solid #f2f2f2;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    width: 100%;
+    margin: 30px 0;
+    padding: 20px 30px;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out
+}
+
+.searchResult:hover {
+    transform: translateY(-7px);
+}
+
+.projectResult {
+    height: 240px;
+}
+
+.partnerResult {
+    height: 160px;
+}
+
+.practitioner {
+    background-color: #49AEE9;
+}
+
+.researcher {
+    background-color: #99D85D;
+}
+
+.profilePicture {
+    width: 112px;
+    height: 112px;
+    align-self: center;
+    margin-right: 22px;
+}
+
+.projectDetails, .partnerDetails {
+    border-right: 2px solid black;
+    padding-right: 30px;
+    flex: 2;
+}
+
+.projectDetails h3 {
+    font-family: Work Sans;
+    font-size: 30px;
+    line-height: 35px;
+    margin: 0;
+    padding-bottom: 6px;
+}
+
+.projectDetails h4 {
+    padding-bottom: 22px;
+}
+
+.projectDetails h4, .searchResult p {
+    font-family: Lato;
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.partnerDetails {
+    display: flex;
+    border-right: 2px solid white;
+}
+
+.partnerDetails h3 {
+    font-family: Work Sans;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 35px;
+    letter-spacing: 0.1em;
+    color: white;
+    margin: 0;
+}
+
+.partnerDetails h4 {
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    color: white;
+    margin: 0;
+}
+
+.partnerDetails section header {
+    display: flex;
+}
+
+.partnerDetails section header img {
+    margin-left: 15px;
+}
+
+.partnerResult .stats {
+    color: white;
+}
+
+.stats {
+   padding-left: 30px;
+   flex: 1;
+}
+
+.stats h4 {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    color: #FF7F00;
+    margin: 0;
+}

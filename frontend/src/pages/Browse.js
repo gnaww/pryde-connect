@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import searchIcon from '../images/magnifying-glass.svg';
+import map from '../images/ny-map.svg';
+import SearchResult from '../components/SearchResult';
+import FilterCategory from '../components/FilterCategory';
+import CustomDropdown from '../components/CustomDropdown';
 import styles from '../styles/Browse.module.css';
 
 class Browse extends Component {
@@ -8,11 +14,39 @@ class Browse extends Component {
         this.state = {
             query: '',
             searchOpportunities: true,
+            showAffiliation: true,
             showTopic: true,
             showStatus: true,
             showLocation: true,
-            sortBy: 'name',
-            searchResults: []
+            sortBy: "name-asc",
+            searchResults: [
+                {
+                    type: "project",
+                    name: "Project Name",
+                    owner: "John Smith",
+                    status: 'complete',
+                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
+                },
+                {
+                    type: "project",
+                    name: "totally a real project",
+                    owner: "Foo Bar",
+                    status: 'in progress',
+                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
+                },
+                {
+                    type: "partner",
+                    name: "Mary Jane",
+                    role: "Practitioner",
+                    affiliation: "Cornell"
+                },
+                {
+                    type: "partner",
+                    name: "Mary Jane",
+                    role: "Researcher",
+                    affiliation: "Cornell"
+                }
+            ]
         };
     }
 
@@ -20,87 +54,199 @@ class Browse extends Component {
         this.setState({ query: event.target.value });
     }
 
-    handleSubmitQuery = event => {
-        console.log(this.state.query);
+    handleFilterSelect = event => {
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        let filter = parsedURL[event.target.name];
+
+        if (filter) {
+            if (Array.isArray(filter)) {
+                if (event.target.checked) {
+                    filter.push(event.target.value);
+                } else {
+                    const idx = filter.indexOf(event.target.value);
+                    filter.splice(idx, 1);
+                }
+            } else {
+                if (event.target.checked) {
+                    const temp = filter;
+                    filter = [temp];
+                    filter.push(event.target.value);
+                } else {
+                    filter = undefined;
+                }
+            }
+        } else {
+            filter = [event.target.value];
+        }
+
+        parsedURL[event.target.name] = filter;
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
+        window.location.reload();
+    }
+
+    setCategory = category => {
+        this.setState({ searchOpportunities: category === "opportunities" });
+    }
+    
+    toggleFilterVisibility = filter => {
+        this.setState(prevState => ({ [filter]: !prevState[filter] }));
+    }
+
+    setSort = event => {
+        this.setState({ sortBy: event.target.value });
     }
 
     componentDidMount() {
         const { location } = this.props;
-        console.log(location);
-        this.setState({ query: location.search.slice(3)})
+        const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        this.setState({ query: parsedURL.q });
     }
 
     render() {
+        const parsedURL = queryString.parse(this.props.location.search, { arrayFormat: "comma" });
+        const filterCategories = [
+            {
+                categoryName: "Affiliation",
+                filterOptions: [
+                    "PRYDE Researcher",
+                    "4-H Practitioner",
+                    "Student",
+                    "Cornell",
+                    "CCE"
+                ],
+                isVisible: this.state.showAffiliation,
+                defaultValues: parsedURL.affiliation
+            },
+            {
+                categoryName: "Topic",
+                filterOptions: [
+                    "Purpose in Life",
+                    "Health",
+                    "skf"
+                ],
+                isVisible: this.state.showTopic,
+                defaultValues: parsedURL.topic
+            },
+            {
+                categoryName: "Status",
+                filterOptions: [
+                    "Not Started",
+                    "In Progress",
+                    "Completed"
+                ],
+                isVisible: this.state.showStatus,
+                defaultValues: parsedURL.status
+            },
+            {
+                categoryName: "Location",
+                filterOptions: [
+                    "Ithaca",
+                    "Tompkins County",
+                    "Broome County",
+                    "Niagara County",
+                    "Cayuga County"
+                ],
+                isVisible: this.state.showLocation,
+                defaultValues: parsedURL.location
+            }
+        ]
+
         return (
-            <>
-                <form className={styles.searchForm} onSubmit={this.handleSubmitQuery}>
-                    <div>
-                        <input 
-                            type="text"
-                            name="q"
-                            value={this.state.query}
-                            onChange={this.handleQueryChange}
-                            placeholder={this.state.searchOpportunities ?
-                                "Search for research opportunities" :
-                                "Search for research partners"}
-                        />
-                        <button type="submit" value="Submit">
-                            <img src={searchIcon} alt="Magnifying glass" />
-                        </button>
-                    </div>
-                </form>
+            <div className={styles.browseWrapper}>
+                <h1 id={styles.pageHeader}>Browse opportunities and partners</h1>
                 <div className={styles.searchWrapper}>
                     <aside className={styles.filtersContainer}>
-                        <h1>FILTER</h1>
+                        <h2>FILTER</h2>
                         <section>
-                            <h2>Category</h2>
+                            <h3>CATEGORY</h3>
                             <ul>
-                                <li>Research Opportunities</li>
-                                <li>Research Partners</li>
+                                <li>
+                                    <button 
+                                        className={this.state.searchOpportunities ? styles.activeCategory : ''}
+                                        onClick={() => this.setCategory("opportunities")}
+                                    >
+                                        Research Opportunities
+                                    </button>
+                                </li>
+                                <li>
+                                    <button 
+                                        className={!this.state.searchOpportunities ? styles.activeCategory : ''}
+                                        onClick={() => this.setCategory("partners")}
+                                    >
+                                        Research Partners
+                                    </button>
+                                </li>
                             </ul>
                         </section>
-                        <details>
-                            <summary>TOPIC</summary>
-                            <ul>
-                                <li><input type="checkbox" />Purpose in Life</li>
-                                <li><input type="checkbox" />asj lkfa lsd</li>
-                                <li><input type="checkbox" />aflafjask sadf</li>
-                            </ul>
-                        </details>
-                        <details>
-                            <summary>STATUS</summary>
-                            <ul>
-                                <li><input type="checkbox" />Not Started</li>
-                                <li><input type="checkbox" />In Progress</li>
-                                <li><input type="checkbox" />Completed</li>
-                            </ul>
-                        </details>
-                        <details>
-                            <summary>LOCATION</summary>
-                            <ul>
-                                <li><input type="checkbox" />Ithaca</li>
-                                <li><input type="checkbox" />Tompkins County</li>
-                                <li><input type="checkbox" />Broome County</li>
-                                <li><input type="checkbox" />Niagara County</li>
-                                <li><input type="checkbox" />Cayuga County</li>
-                            </ul>
-                        </details>
+                        {
+                            filterCategories.map((filterCategory, idx) => 
+                                <FilterCategory 
+                                    key={idx}
+                                    {...filterCategory}
+                                    toggleVisibility={this.toggleFilterVisibility}
+                                    handleClick={this.handleFilterSelect} 
+                                />
+                            )
+                        }
                     </aside>
                     <section className={styles.searchResultsContainer}>
-                        <header>
-                            <h3>Results for "{this.props.location.search.slice(3)}"</h3>
-                            <h4>{this.state.searchResults.length} results</h4>
-                            <select name="sort">
-                                <option value="" selected disabled>SORT BY</option>
-                                <option value="name-asc">Name &uarr;</option>
-                                <option value="name-desc">Name &darr;</option>
-                            </select>
-                        </header>
+                        <form className={styles.searchForm}>
+                            <div>
+                                <input 
+                                    type="text"
+                                    name="q"
+                                    value={this.state.query}
+                                    onChange={this.handleQueryChange}
+                                    placeholder={this.state.searchOpportunities ?
+                                        "Search for research opportunities" :
+                                        "Search for research partners"}
+                                />
+                                <button type="submit" value="Submit">
+                                    <img src={searchIcon} alt="Search icon" />
+                                </button>
+                            </div>
+                        </form>
+                        {!this.state.searchOpportunities && <img className={styles.map} src={map} alt="New York map" />}
+                        {
+                            parsedURL.q ?
+                            <>
+                                <header>
+                                    <div>
+                                        <h3>Results for "{parsedURL.q}"</h3>
+                                        <h4>{this.state.searchResults.length} results</h4>
+                                    </div>
+                                    <CustomDropdown
+                                        handleChange={this.setSort}
+                                        name="sort"
+                                        label="SORT BY"
+                                        options={[
+                                            {
+                                                value: "name-asc",
+                                                text: "Name ↑"
+                                            },
+                                            {
+                                                value: "name-desc",
+                                                text: "Name ↓"
+                                            }
+                                        ]}
+                                    />
+                                </header>
+                                <section className={styles.searchResults}>
+                                    {
+                                        this.state.searchResults.map((searchResult, idx) => 
+                                            <SearchResult key={idx} {...searchResult} />
+                                        )
+                                    }
+                                </section>
+                            </> :
+                            <h2>Type something into the search bar above!</h2>
+                        }
                     </section>
                 </div>
-            </>
+            </div>
         );
     }
 }
 
-export default Browse;
+export default withRouter(Browse);
