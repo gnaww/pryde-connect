@@ -1,0 +1,6 @@
+.pageNotFound {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    padding: 50px;
+}
