@@ -100,7 +100,6 @@ class Browse extends Component {
     componentDidMount() {
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        console.log(parsedURL);
         this.setState({ query: parsedURL.q })
     }
 
