@@ -81,7 +81,7 @@ class Browse extends Component {
         }
 
         parsedURL[event.target.name] = filter;
-        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`)
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
         window.location.reload();
     }
 
@@ -100,7 +100,7 @@ class Browse extends Component {
     componentDidMount() {
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        this.setState({ query: parsedURL.q })
+        this.setState({ query: parsedURL.q });
     }
 
     render() {

@@ -22,7 +22,7 @@ const SearchResult = props => {
                     </p>
                 </section>
             </div>
-        )
+        );
     } else if (props.type === "partner") {
         return (
             <div className={`${styles.searchResult} ${styles.partnerResult} ${styles[props.role.toLowerCase()]}`}>
