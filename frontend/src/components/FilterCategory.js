@@ -50,6 +50,6 @@ const FilterCategory = ({ isVisible, toggleVisibility, handleClick, categoryName
             }
         </section>
     );
-}
+};
 
 export default FilterCategory;
