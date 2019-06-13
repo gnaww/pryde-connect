@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
+import { withRouter } from 'react-router-dom';
 import searchIcon from '../images/magnifying-glass.svg';
 import map from '../images/ny-map.svg';
 import SearchResult from '../components/SearchResult';
@@ -53,8 +54,35 @@ class Browse extends Component {
         this.setState({ query: event.target.value });
     }
 
-    handleSubmitQuery = event => {
-        console.log(this.state.query);
+    handleFilterSelect = event => {
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        let filter = parsedURL[event.target.name];
+
+        if (filter) {
+            if (Array.isArray(filter)) {
+                if (event.target.checked) {
+                    filter.push(event.target.value);
+                } else {
+                    const idx = filter.indexOf(event.target.value);
+                    filter.splice(idx, 1);
+                }
+            } else {
+                if (event.target.checked) {
+                    const temp = filter;
+                    filter = [temp];
+                    filter.push(event.target.value);
+                } else {
+                    filter = undefined;
+                }
+            }
+        } else {
+            filter = [event.target.value];
+        }
+
+        parsedURL[event.target.name] = filter;
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`)
+        window.location.reload();
     }
 
     setCategory = category => {
@@ -71,12 +99,13 @@ class Browse extends Component {
 
     componentDidMount() {
         const { location } = this.props;
-        const parsedURL = queryString.parse(location.search);
+        const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         console.log(parsedURL);
         this.setState({ query: parsedURL.q })
     }
 
     render() {
+        const parsedURL = queryString.parse(this.props.location.search, { arrayFormat: "comma" });
         const filterCategories = [
             {
                 categoryName: "Affiliation",
@@ -88,6 +117,7 @@ class Browse extends Component {
                     "CCE"
                 ],
                 isVisible: this.state.showAffiliation,
+                defaultValues: parsedURL.affiliation
             },
             {
                 categoryName: "Topic",
@@ -97,6 +127,7 @@ class Browse extends Component {
                     "skf"
                 ],
                 isVisible: this.state.showTopic,
+                defaultValues: parsedURL.topic
             },
             {
                 categoryName: "Status",
@@ -106,6 +137,7 @@ class Browse extends Component {
                     "Completed"
                 ],
                 isVisible: this.state.showStatus,
+                defaultValues: parsedURL.status
             },
             {
                 categoryName: "Location",
@@ -117,9 +149,9 @@ class Browse extends Component {
                     "Cayuga County"
                 ],
                 isVisible: this.state.showLocation,
+                defaultValues: parsedURL.location
             }
         ]
-        const parsedURL = queryString.parse(this.props.location.search);
 
         return (
             <div className={styles.browseWrapper}>
@@ -148,10 +180,19 @@ class Browse extends Component {
                                 </li>
                             </ul>
                         </section>
-                        {filterCategories.map((filterCategory, idx) => <FilterCategory key={idx} {...filterCategory} toggleVisibility={this.toggleFilterVisibility} />)}
+                        {
+                            filterCategories.map((filterCategory, idx) => 
+                                <FilterCategory 
+                                    key={idx}
+                                    {...filterCategory}
+                                    toggleVisibility={this.toggleFilterVisibility}
+                                    handleClick={this.handleFilterSelect} 
+                                />
+                            )
+                        }
                     </aside>
                     <section className={styles.searchResultsContainer}>
-                        <form className={styles.searchForm} onSubmit={this.handleSubmitQuery}>
+                        <form className={styles.searchForm}>
                             <div>
                                 <input 
                                     type="text"
@@ -161,7 +202,6 @@ class Browse extends Component {
                                     placeholder={this.state.searchOpportunities ?
                                         "Search for research opportunities" :
                                         "Search for research partners"}
-                                    autoFocus
                                 />
                                 <button type="submit" value="Submit">
                                     <img src={searchIcon} alt="Search icon" />
@@ -210,4 +250,4 @@ class Browse extends Component {
     }
 }
 
-export default Browse;
+export default withRouter(Browse);

@@ -45,6 +45,6 @@ const SearchResult = props => {
             </div>
         );
     }
-}
+};
 
 export default SearchResult;
