@@ -8,11 +8,7 @@ class Login extends Component {
         this.state = {
             email: '',
             password: ''
-        }
-
-        this.handleEmailChange = this.handleEmailChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        };
     }
 
     handleEmailChange = event => {
