@@ -11,7 +11,7 @@ const Navbar = () => (
                 <p>
                     <span id={styles.pryde}>PRYDE</span>
                     <br/>
-                    <span id={styles.name}>Website Name</span>
+                    <span id={styles.name}>Research Connect</span>
                 </p>
             </Link>
         </div>
