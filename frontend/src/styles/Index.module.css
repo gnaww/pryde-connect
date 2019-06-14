@@ -1,0 +1,137 @@
+/*background-color: #99D85D;*/
+/*background: #49AEE9;*/
+
+.aboutCaps{
+    color: white;
+    font-size: 3.5vw;
+    text-align: left;
+    margin-left: 10vw;
+}
+
+.aboutPic{
+    float: left;
+    height: 40vh;
+    width: 34%;
+    /*border-style: dashed;*/
+    /*border-color: purple;*/
+    text-align: center;
+    background-color: #49AEE9;
+}
+.aboutDiv{
+    float: left;
+    height: 40vh;
+    width: 65%;
+    /*border-style: dashed;*/
+    /*border-color: purple;*/
+    text-align: center;
+    background-color: #49AEE9;
+}
+.imagelogo{
+
+    width: 100%;
+    height: 100%;
+
+}
+.topText{
+    font-family: Work Sans;
+    font-weight: bold;
+    font-size: 2.4vw;
+
+    /*margin-top: 77px;*/
+    margin-block-end: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: white;
+}
+
+.welcomePic{
+    float: left;
+    height: 30vh;
+    width: 34%;
+    /*border-style: dashed;*/
+    /*border-color: gray;*/
+    background-color: lightgray;
+}
+
+.welcomeText{
+    float: left;
+    height: 30vh;
+    width: 65%;
+    /*border-style: dashed;*/
+    /*border-color: purple;*/
+    text-align: center;
+    background-color: lightgray;
+
+
+}
+.homeDiv1 {
+    /*border-style: dashed;*/
+    /*border-color: red;*/
+    /*align-items: center;*/
+    float: left;
+    width: 33%;
+    height: 40vh;
+    background-color: #99D85D;
+
+
+}
+.homeDiv2 {
+    /*border-style: dashed;*/
+    /*border-color: green;*/
+    /*align-items: center;*/
+    float: left;
+    width: 33%;
+    height: 40vh;
+    background-color: #49AEE9;
+
+}
+.homeDiv3 {
+    /*border-style: dashed;*/
+    /*border-color: blue;*/
+    /*align-items: center;*/
+    float: left;
+    width: 33%;
+    height: 40vh;
+    background-color: orange;
+
+
+
+}
+.joinOurCommunity {
+    font-family: Work Sans;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 47px;
+    margin-top: 77px;
+    margin-block-end: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.cardtext {
+    font-family: Work Sans;
+    font-weight: bold;
+    font-size: 1vw;
+    line-height: 47px;
+    margin-top: 77px;
+    margin-block-end: 5px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: white;
+}
+
+
+.loginButton {
+    width: 30%;
+    height: 56px;
+    background: #49AEE9;
+    border: none;
+
+    font-family: Lato;
+    /*font-size: 20px;*/
+
+
+    letter-spacing: 0.19em;
+    color: white;
+}
