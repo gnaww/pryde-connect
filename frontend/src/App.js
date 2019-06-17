@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
+import CreateProfile from './pages/CreateProfile/CreateProfile';
 import PageNotFound from './pages/PageNotFound';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -16,6 +17,7 @@ function App() {
                     <Switch>
                         <Route path="/login" exact component={Login} />
                         <Route path="/browse" component={Browse} />
+                        <Route path="/signup" component={CreateProfile} />
                         <Route component={PageNotFound} />
                     </Switch>
                 </main>

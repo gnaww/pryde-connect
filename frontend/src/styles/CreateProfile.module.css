@@ -1,0 +1,176 @@
+.root {
+    margin-left: 150px;
+    margin-top: 87px;
+}
+
+.createProfile {
+    width: 42%;
+    font-family: Work Sans;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 47px;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.subtitle {
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    margin-bottom: 39px;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.smallTextInput {
+    width: 19%;
+    margin-right: 28px;
+    height: 64px;
+    background: #E9E9E9;
+    border: none;
+    border-radius: 5px;
+    padding-left: 34px;
+    font-family: Lato;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    color: #808080;
+    margin-bottom: 17px;
+}
+
+.mediumTextInput {
+    composes: smallTextInput;
+    width: 26%;
+}
+
+.longTextInput {
+    composes: smallTextInput;
+    width: 41%;
+}
+
+.nextButton {
+    width: 11%;
+    height: 56px;
+    background: #49AEE9;
+    border: none;
+    border-radius: 5px;
+    margin-top: 18px;
+    margin-bottom: 87px;
+    font-family: Lato;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.19em;
+    color: white;
+}
+
+.backButton {
+    composes: nextButton;
+    margin-right: 32px;
+    background: #FF7F00;
+}
+
+.radio {
+    width: 20px;
+    height: 24px;
+    background-color: #E9E9E9;
+}
+
+.label {
+    margin-left: 16px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    margin-top: 71px;
+}
+
+.question {
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: 0.1em;
+    color: black;   
+}
+
+.answer {
+    height: 178px;
+    background: #E9E9E9;
+    border-radius: 5px;
+    border: none;
+    width: 62%;
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    color: #808080;
+    padding-top: 32px;
+    padding-left: 30px; 
+}
+
+.QAitem {
+    margin-bottom: 55px;
+}
+
+.uploadHere {
+    width: 72%;
+    height: 411px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed black;
+    box-sizing: border-box; 
+}
+
+.dragAndDrop {
+    margin-top: 121px;
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.or {
+    margin-top: 38px;
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    color: black;
+}
+
+.propic {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.imageUpload {
+    composes: nextButton; 
+    cursor: pointer;
+    width: 400px;
+    text-align: center;
+    padding-top: 16px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
