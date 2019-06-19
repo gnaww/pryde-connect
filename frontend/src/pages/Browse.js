@@ -153,96 +153,98 @@ class Browse extends Component {
         ]
 
         return (
-            <div className={styles.browseWrapper}>
-                <h1 id={styles.pageHeader}>Browse opportunities and partners</h1>
-                <div className={styles.searchWrapper}>
-                    <aside className={styles.filtersContainer}>
-                        <h2>FILTER</h2>
-                        <section>
-                            <h3>CATEGORY</h3>
-                            <ul>
-                                <li>
-                                    <button 
-                                        className={this.state.searchOpportunities ? styles.activeCategory : ''}
-                                        onClick={() => this.setCategory("opportunities")}
-                                    >
-                                        Research Opportunities
-                                    </button>
-                                </li>
-                                <li>
-                                    <button 
-                                        className={!this.state.searchOpportunities ? styles.activeCategory : ''}
-                                        onClick={() => this.setCategory("partners")}
-                                    >
-                                        Research Partners
-                                    </button>
-                                </li>
-                            </ul>
-                        </section>
-                        {
-                            filterCategories.map((filterCategory, idx) => 
-                                <FilterCategory 
-                                    key={idx}
-                                    {...filterCategory}
-                                    toggleVisibility={this.toggleFilterVisibility}
-                                    handleClick={this.handleFilterSelect} 
-                                />
-                            )
-                        }
-                    </aside>
-                    <section className={styles.searchResultsContainer}>
-                        <form className={styles.searchForm}>
-                            <div>
-                                <input 
-                                    type="text"
-                                    name="q"
-                                    value={this.state.query}
-                                    onChange={this.handleQueryChange}
-                                    placeholder={this.state.searchOpportunities ?
-                                        "Search for research opportunities" :
-                                        "Search for research partners"}
-                                />
-                                <button type="submit" value="Submit">
-                                    <img src={searchIcon} alt="Search icon" />
-                                </button>
-                            </div>
-                        </form>
-                        {!this.state.searchOpportunities && <img className={styles.map} src={map} alt="New York map" />}
-                        {
-                            parsedURL.q ?
-                            <>
-                                <header>
-                                    <div>
-                                        <h3>Results for "{parsedURL.q}"</h3>
-                                        <h4>{this.state.searchResults.length} results</h4>
-                                    </div>
-                                    <CustomDropdown
-                                        handleChange={this.setSort}
-                                        name="sort"
-                                        label="SORT BY"
-                                        options={[
-                                            {
-                                                value: "name-asc",
-                                                text: "Name ↑"
-                                            },
-                                            {
-                                                value: "name-desc",
-                                                text: "Name ↓"
-                                            }
-                                        ]}
+            <div className={styles.container}>
+                <div className={styles.browseWrapper}>
+                    <h1 id={styles.pageHeader}>Browse opportunities and partners</h1>
+                    <div className={styles.searchWrapper}>
+                        <aside className={styles.filtersContainer}>
+                            <h2>FILTER</h2>
+                            <section>
+                                <h3>CATEGORY</h3>
+                                <ul>
+                                    <li>
+                                        <button 
+                                            className={this.state.searchOpportunities ? styles.activeCategory : ''}
+                                            onClick={() => this.setCategory("opportunities")}
+                                        >
+                                            Research Opportunities
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button 
+                                            className={!this.state.searchOpportunities ? styles.activeCategory : ''}
+                                            onClick={() => this.setCategory("partners")}
+                                        >
+                                            Research Partners
+                                        </button>
+                                    </li>
+                                </ul>
+                            </section>
+                            {
+                                filterCategories.map((filterCategory, idx) => 
+                                    <FilterCategory 
+                                        key={idx}
+                                        {...filterCategory}
+                                        toggleVisibility={this.toggleFilterVisibility}
+                                        handleClick={this.handleFilterSelect} 
                                     />
-                                </header>
-                                <section className={styles.searchResults}>
-                                    {
-                                        this.state.searchResults.map((searchResult, idx) => 
-                                            <SearchResult key={idx} {...searchResult} />
-                                        )
-                                    }
-                                </section>
-                            </> :
-                            <h2>Type something into the search bar above!</h2>
-                        }
-                    </section>
+                                )
+                            }
+                        </aside>
+                        <section className={styles.searchResultsContainer}>
+                            <form className={styles.searchForm}>
+                                <div>
+                                    <input 
+                                        type="text"
+                                        name="q"
+                                        value={this.state.query}
+                                        onChange={this.handleQueryChange}
+                                        placeholder={this.state.searchOpportunities ?
+                                            "Search for research opportunities" :
+                                            "Search for research partners"}
+                                    />
+                                    <button type="submit" value="Submit">
+                                        <img src={searchIcon} alt="Search icon" />
+                                    </button>
+                                </div>
+                            </form>
+                            {!this.state.searchOpportunities && <img className={styles.map} src={map} alt="New York map" />}
+                            {
+                                parsedURL.q ?
+                                <>
+                                    <header>
+                                        <div>
+                                            <h3>Results for "{parsedURL.q}"</h3>
+                                            <h4>{this.state.searchResults.length} results</h4>
+                                        </div>
+                                        <CustomDropdown
+                                            handleChange={this.setSort}
+                                            name="sort"
+                                            label="SORT BY"
+                                            options={[
+                                                {
+                                                    value: "name-asc",
+                                                    text: "Name ↑"
+                                                },
+                                                {
+                                                    value: "name-desc",
+                                                    text: "Name ↓"
+                                                }
+                                            ]}
+                                        />
+                                    </header>
+                                    <section className={styles.searchResults}>
+                                        {
+                                            this.state.searchResults.map((searchResult, idx) => 
+                                                <SearchResult key={idx} {...searchResult} />
+                                            )
+                                        }
+                                    </section>
+                                </> :
+                                <h2>Type something into the search bar above!</h2>
+                            }
+                        </section>
+                    </div>
                 </div>
             </div>
         );
