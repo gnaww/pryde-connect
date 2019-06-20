@@ -32,7 +32,7 @@ class Profile extends Component {
                         name: "Project Name",
                         owner: "John Smith",
                         status: 'complete',
-                        summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
+                        summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     },
                     {
                         type: "project",
@@ -42,21 +42,77 @@ class Profile extends Component {
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     }
                 ]
-            }
+            },
+            statusFilter: "all",
+            sortBy: "name-asc"
         };
+        // this.profilePicInput = React.createRef();
     }
+
+    handleDropdownChange = dropdown => event => {
+        this.setState({ [dropdown]: event.target.value });
+    }
+
+    // handleProfilePicture = event => {
+    //     event.preventDefault();
+    //     // open a modal for updating picture
+    //     alert(
+    //         `Selected file - ${
+    //         this.profilePicInput.current.files[0]
+    //         }`
+    //     );
+    // }
 
     componentDidMount() {
     }
 
     render() {
         const { user } = this.state;
+        const statusDropdown = {
+            label: "STATUS",
+            name: "status",
+            options: [
+                {
+                    value: "all",
+                    text: "All"
+                },
+                {
+                    value: "not-started",
+                    text: "Not Started"
+                },
+                {
+                    value: "in-progress",
+                    text: "In Progress"
+                },
+                {
+                    value: "completed",
+                    text: "Completed"
+                }
+            ],
+            handleChange: this.handleDropdownChange("statusFilter")
+        };
+        const sortDropdown = {
+            label: "SORT BY",
+            name: "sort",
+            options: [
+                {
+                    value: "name-asc",
+                    text: "Name ↑"
+                },
+                {
+                    value: "name-desc",
+                    text: "Name ↓"
+                }
+            ],
+            handleChange: this.handleDropdownChange("sortBy")
+        };
 
         return (
             <div className={styles.container}>
                 <header className={styles.profileHeader}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
+                        {/* <input type="file" ref={this.profilePicInput} onChange={this.handleProfilePicture} hidden /> */}
                         <button>
                             <img src={editIcon} alt="Edit button" />
                         </button>
@@ -86,7 +142,7 @@ class Profile extends Component {
                 </header>
                 <main className={styles.profileContent}>
                     <section className={styles.profileSummary}>
-                        <h1>Profile</h1>
+                        <h1>PROFILE</h1>
                         <div>
                             <h2>Research Interests</h2>
                             <ul>
@@ -134,7 +190,13 @@ class Profile extends Component {
                         </div>
                     </section>
                     <section className={styles.projects}>
-                        <h1>View Projects</h1>
+                        <div className={styles.projectsHeader}>
+                            <h1>VIEW PROJECTS</h1>
+                            <div>
+                                <CustomDropdown {...statusDropdown} />
+                                <CustomDropdown {...sortDropdown} />
+                            </div>
+                        </div>
                         <div>
                             {
                                 user.projects.map(project => <SearchResult {...project} />)
