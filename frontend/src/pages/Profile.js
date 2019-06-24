@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import profilePicture from '../images/profile-picture.png';
 import badge from '../images/badge.svg';
+import badgeGreen from '../images/badge-green.svg';
 import editButton from '../images/edit-button.svg';
+import editButtonGreen from '../images/edit-button-green.svg';
 import editIcon from '../images/edit-icon.svg';
+import editIconGreen from '../images/edit-icon-green.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
 import styles from '../styles/Profile.module.css';
@@ -13,13 +16,15 @@ class Profile extends Component {
         this.state = {
             user: {
                 name: "John Smith",
-                role: "4-H Practitioner",
+                role: "Researcher",
+                displayRole: "4-H Practitioner",
                 affiliation: "Organization/Department",
                 location: "Ithaca, NY",
                 email: "something@something.edu",
                 phone: "1234567890",
                 website: "https://something.com",
                 researchInterests: ["Positive Youth Development", "Civic Engagement"],
+                researchDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
                 roles: ["Lead youth programs", "Train volunteers"],
                 ageRanges: ["Adolescents"],
                 youthProgramTypes: ["Civic Engagement", "STEM"],
@@ -31,14 +36,14 @@ class Profile extends Component {
                         type: "project",
                         name: "Project Name",
                         owner: "John Smith",
-                        status: 'complete',
+                        status: 'completed',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     },
                     {
                         type: "project",
                         name: "totally a real project",
                         owner: "Foo Bar",
-                        status: 'in progress',
+                        status: 'in-progress',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     }
                 ]
@@ -46,22 +51,22 @@ class Profile extends Component {
             statusFilter: "all",
             sortBy: "name-asc"
         };
-        // this.profilePicInput = React.createRef();
+        this.profilePicInput = React.createRef();
     }
 
     handleDropdownChange = dropdown => event => {
         this.setState({ [dropdown]: event.target.value });
     }
 
-    // handleProfilePicture = event => {
-    //     event.preventDefault();
-    //     // open a modal for updating picture
-    //     alert(
-    //         `Selected file - ${
-    //         this.profilePicInput.current.files[0]
-    //         }`
-    //     );
-    // }
+    handleProfilePicture = event => {
+        event.preventDefault();
+        // open a modal for updating picture
+        alert(
+            `Selected file - ${
+            this.profilePicInput.current.files[0]
+            }`
+        );
+    }
 
     componentDidMount() {
     }
@@ -109,17 +114,22 @@ class Profile extends Component {
 
         return (
             <div className={styles.container}>
-                <header className={styles.profileHeader}>
+                <header className={user.role === "Practitioner" ? `${styles.profileHeader} ${styles.practitioner}` : `${styles.profileHeader} ${styles.researcher}`}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
-                        {/* <input type="file" ref={this.profilePicInput} onChange={this.handleProfilePicture} hidden /> */}
-                        <button>
-                            <img src={editIcon} alt="Edit button" />
+                        <input type="file" ref={this.profilePicInput} onChange={this.handleProfilePicture} hidden />
+                        <button onClick={() => 1}>
+                            {
+                                user.role === "Practitioner" ?
+                                    <img src={editIcon} alt="Edit button" />
+                                :
+                                    <img src={editIconGreen} alt="Edit button" />
+                            }
                         </button>
                     </div>
                     <div className={styles.personalInformation}>
-                        <h1>{user.name} <img src={badge} alt="CCE badge" /></h1>
-                        <h2>{user.role}</h2>
+                        <h1>{user.name} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
+                        <h2>{user.displayRole}</h2>
                         <h2>{user.affiliation}</h2>
                         <h2>{user.location}</h2>
                     </div>
@@ -137,7 +147,12 @@ class Profile extends Component {
                         </ul>
                     </div>
                     <button id={styles.editProfile}>
-                        <img src={editButton} alt="Edit button" />
+                        {
+                            user.role === "Practitioner" ?
+                                <img src={editButton} alt="Edit button" />
+                            :
+                                <img src={editButtonGreen} alt="Edit button" />
+                        }
                     </button>
                 </header>
                 <main className={styles.profileContent}>
@@ -150,43 +165,55 @@ class Profile extends Component {
                                     user.researchInterests.map((interest, idx) => <li key={idx}>{interest}</li>)
                                 }
                             </ul>
-                            <h2>Roles</h2>
-                            <ul>
-                                {
-                                    user.roles.map((role, idx) => <li key={idx}>{role}</li>)
-                                }
-                            </ul>
-                            <h2>Age Range</h2>
-                            <ul>
-                                {
-                                    user.ageRanges.map((ageRange, idx) => <li key={idx}>{ageRange}</li>)
-                                }
-                            </ul>
-                            <h2>Types of Youth Programs</h2>
-                            <ul>
-                                {
-                                    user.youthProgramTypes.map((youthProgram, idx) => <li key={idx}>{youthProgram}</li>)
-                                }
-                            </ul>
-                            <h2>Delivery Modes</h2>
-                            <ul>
-                                {
-                                    user.deliveryModes.map((mode, idx) => <li key={idx}>{mode}</li>)
-                                }
-                            </ul>
-                            <hr />
-                            <h2>Research Needs</h2>
-                            <ul>
-                                {
-                                    user.researchNeeds.map((need, idx) => <li key={idx}>{need}</li>)
-                                }
-                            </ul>
-                            <h2>Evaluation Needs</h2>
-                            <ul>
-                                {
-                                    user.evaluationNeeds.map((need, idx) => <li key={idx}>{need}</li>)
-                                }
-                            </ul>
+                            {
+                                user.role === "Practitioner" ?
+                                    <>
+                                        <h2>Roles</h2>
+                                        <ul>
+                                            {
+                                                user.roles.map((role, idx) => <li key={idx}>{role}</li>)
+                                            }
+                                        </ul>
+                                        <h2>Age Range</h2>
+                                        <ul>
+                                            {
+                                                user.ageRanges.map((ageRange, idx) => <li key={idx}>{ageRange}</li>)
+                                            }
+                                        </ul>
+                                        <h2>Types of Youth Programs</h2>
+                                        <ul>
+                                            {
+                                                user.youthProgramTypes.map((youthProgram, idx) => <li key={idx}>{youthProgram}</li>)
+                                            }
+                                        </ul>
+                                        <h2>Delivery Modes</h2>
+                                        <ul>
+                                            {
+                                                user.deliveryModes.map((mode, idx) => <li key={idx}>{mode}</li>)
+                                            }
+                                        </ul>
+                                        <hr />
+                                        <h2>Research Needs</h2>
+                                        <ul>
+                                            {
+                                                user.researchNeeds.map((need, idx) => <li key={idx}>{need}</li>)
+                                            }
+                                        </ul>
+                                        <h2>Evaluation Needs</h2>
+                                        <ul>
+                                            {
+                                                user.evaluationNeeds.map((need, idx) => <li key={idx}>{need}</li>)
+                                            }
+                                        </ul>
+                                    </>
+                                :
+                                    <>
+                                        <hr />
+                                        <h2>Research Description</h2>
+                                        <p>{user.researchDescription}</p>
+                                    </>
+                            }
+                            
                         </div>
                     </section>
                     <section className={styles.projects}>
@@ -199,7 +226,10 @@ class Profile extends Component {
                         </div>
                         <div>
                             {
-                                user.projects.map(project => <SearchResult {...project} />)
+                                this.state.statusFilter === "all" ?
+                                    user.projects.map(project => <SearchResult {...project} />)
+                                :
+                                    user.projects.filter(project => project.status === this.state.statusFilter).map(project => <SearchResult {...project} />)
                             }
                         </div>
                     </section>

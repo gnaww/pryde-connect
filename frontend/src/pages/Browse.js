@@ -24,14 +24,14 @@ class Browse extends Component {
                     type: "project",
                     name: "Project Name",
                     owner: "John Smith",
-                    status: 'complete',
+                    status: 'completed',
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
                 },
                 {
                     type: "project",
                     name: "totally a real project",
                     owner: "Foo Bar",
-                    status: 'in progress',
+                    status: 'in-progress',
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                 },
                 {
