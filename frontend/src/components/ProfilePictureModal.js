@@ -40,10 +40,10 @@ class ProfilePictureModal extends Component {
     }
 
     render() {
-        const classes = this.props.visible ? `${styles.modal} ${styles.visible}` : `${styles.modal} ${styles.hidden}`;
+        const modalVisibilityClass = this.props.visible ? `${styles.modal} ${styles.visible}` : `${styles.modal} ${styles.hidden}`;
 
         return (
-            <div className={classes}>
+            <div className={modalVisibilityClass}>
                 <section className={styles.content} ref={node => this.node = node}>
                     <h1>Upload a new profile picture</h1>
                     <input type="file" ref={this.profilePicInput} accept="image/*" onChange={this.handleInputChange} />
