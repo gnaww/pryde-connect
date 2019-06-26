@@ -1,3 +1,8 @@
+.container {
+    flex: 1;
+    padding: 30px 15px;
+}
+
 .browseWrapper {
     padding: 30px 100px;
 }
