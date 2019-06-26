@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../styles/Modal.module.css';
+import styles from '../styles/ProfilePictureModal.module.css';
 
 class ProfilePictureModal extends Component {
     constructor(props) {
