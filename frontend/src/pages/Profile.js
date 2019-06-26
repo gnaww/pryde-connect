@@ -8,6 +8,7 @@ import editIcon from '../images/edit-icon.svg';
 import editIconGreen from '../images/edit-icon-green.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
+import ProfilePictureModal from '../components/ProfilePictureModal';
 import styles from '../styles/Profile.module.css';
 
 class Profile extends Component {
@@ -49,23 +50,21 @@ class Profile extends Component {
                 ]
             },
             statusFilter: "all",
-            sortBy: "name-asc"
+            sortBy: "name-asc",
+            showModal: false
         };
-        this.profilePicInput = React.createRef();
     }
 
     handleDropdownChange = dropdown => event => {
         this.setState({ [dropdown]: event.target.value });
     }
 
-    handleProfilePicture = event => {
-        event.preventDefault();
-        // open a modal for updating picture
-        alert(
-            `Selected file - ${
-            this.profilePicInput.current.files[0]
-            }`
-        );
+    showModal = () => {
+        this.setState({ showModal: true });
+    }
+
+    hideModal = () => {
+        this.setState({ showModal: false });
     }
 
     componentDidMount() {
@@ -117,8 +116,7 @@ class Profile extends Component {
                 <header className={user.role === "Practitioner" ? `${styles.profileHeader} ${styles.practitioner}` : `${styles.profileHeader} ${styles.researcher}`}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
-                        <input type="file" ref={this.profilePicInput} onChange={this.handleProfilePicture} hidden />
-                        <button onClick={() => 1}>
+                        <button className={styles.profilePictureEdit} onClick={this.showModal}>
                             {
                                 user.role === "Practitioner" ?
                                     <img src={editIcon} alt="Edit button" />
@@ -126,6 +124,7 @@ class Profile extends Component {
                                     <img src={editIconGreen} alt="Edit button" />
                             }
                         </button>
+                        <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
                     </div>
                     <div className={styles.personalInformation}>
                         <h1>{user.name} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
