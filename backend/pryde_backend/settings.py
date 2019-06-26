@@ -64,6 +64,11 @@ INSTALLED_APPS = [
     'allauth.account',
 
 
+    'phonenumber_field',
+
+
+
+
 
 ]
 
