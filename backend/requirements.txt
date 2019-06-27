@@ -2,3 +2,5 @@ django>=2.1.6
 djangorestframework>=3.9.1
 django-rest-auth==0.9.3
 django-allauth==0.37.1
+django-phonenumber-field
+phonenumbers
