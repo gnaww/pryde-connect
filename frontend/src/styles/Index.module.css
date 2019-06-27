@@ -228,7 +228,7 @@
      width: 490px;
      height: 66px;
      left: 50%;
-     top: 1916px;
+     top: 1816px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -249,7 +249,7 @@
      width: 220.42px;
      height: 121px;
      left: 419.29px;
-     top: 2016px;
+     top: 1916px;
 
      font-family: Lato;
      font-style: normal;
@@ -270,7 +270,7 @@
      width: 267.92px;
      height: 79px;
      left: 745.08px;
-     top: 2037px;
+     top: 1937px;
 
      font-family: Lato;
      font-style: normal;
@@ -283,6 +283,40 @@
      letter-spacing: 0.1em;
 
      color: #FFFFFF;
+ }
+ .clocktower{
+     position: absolute;
+     width: 773px;
+     height: 350px;
+     left: 769px;
+     top: 550px;
+ }
+ .screenshot1{
+     position: absolute;
+     width: 693px;
+     height: 477px;
+     left: 900px;
+     top: 926px;
+
+     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+ }
+ .screenshot2{
+     position: absolute;
+     width: 639.04px;
+     height: 432.74px;
+     left: 814.23px;
+     top: 1062.31px;
+
+     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+ }
+ .screenshot3{
+     position: absolute;
+     width: 639px;
+     height: 436px;
+     left: 930px;
+     top: 1244px;
+
+     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
  }
 /*.aboutCaps{*/
 /*    color: white;*/
