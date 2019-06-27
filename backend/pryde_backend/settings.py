@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
 
     'rest_auth',
     'rest_auth.registration',
@@ -117,7 +118,23 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# SWAGGER_SETTINGS = {
+#     'LOGIN_URL': 'rest_framework:login',
+#     'LOGOUT_URL': 'rest_framework:logout',
+#     'JSON_EDITOR': 'True',
+#     'SHOW_REQUEST_HEADERS': 'True',
+#     'SECURITY_DEFINITIONS': {
+#             'api_key': {
+#                 'type': 'apiKey',
+#                 'in': 'header',
+#                 'name': 'Authorization'
+#             }
+#         },
+#
+#
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -4,3 +4,4 @@ django-rest-auth==0.9.3
 django-allauth==0.37.1
 django-phonenumber-field
 phonenumbers
+django-rest-swagger

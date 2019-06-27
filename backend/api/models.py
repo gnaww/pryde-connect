@@ -42,7 +42,7 @@ class UserManager(BaseUserManager):
 class PUser(AbstractUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, primary_key=True)
     phone_number = PhoneNumberField(default=None, null=True, unique=False)
     website = models.URLField(default=None, null=True)
     ROLE = (
@@ -89,6 +89,19 @@ class PUser(AbstractUser):
 
 
 class Study(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    name_of_study = models.CharField(max_length=100)
+    collaborators = models.CharField(max_length=100)
+    status = models.BooleanField()
+    research_topics = models.CharField(max_length=100)
+    age_youth = models.CharField(max_length=100)
+    goal = models.CharField(max_length=100)
+    timeline = models.CharField(max_length=100)
+    participant_involvement = models.CharField(max_length=100)
+    incentives = models.CharField(max_length=100)
+    incentives_participants = models.CharField(max_length=100)
+    delivery_models = models.CharField(max_length=100)
+    additional_desc = models.CharField(max_length=100, default=None, null=True)
+    website = models.CharField(max_length=100, default=None, null=True)
+
+
