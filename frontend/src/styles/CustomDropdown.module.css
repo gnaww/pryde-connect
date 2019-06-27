@@ -12,7 +12,7 @@
 .dropdown select {
     color: black;
     background: none;
-    font-size: inherit;
+    font-size: 15px;
     padding: .5em;
     width: 100%;
     border: 0;

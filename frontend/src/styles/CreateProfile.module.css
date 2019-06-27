@@ -174,3 +174,40 @@
     display: flex;
     flex-direction: column;
 }
+
+.qaOptionText {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+}
+
+.qaOptionCheckbox {
+    width: 20px;
+    height: 18px;  
+    background: #E9E9E9;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+}
+
+.dropdownQuestion {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    margin-left: 20px;
+}
+
+.otherTextbox {
+    width: 137px;
+    height: 24px;
+    border-width: 0;
+    background: #E9E9E9;
+}
+
+.numberedList {
+    composes: question
+}
