@@ -1,0 +1,14 @@
+.container {
+    flex: 1;
+    padding: 70px 150px;
+}
+
+.editButton {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    float: right;
+}
+
+
