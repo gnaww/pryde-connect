@@ -21,6 +21,7 @@ class Browse extends Component {
             sortBy: "name-asc",
             searchResults: [
                 {
+                    id: 1,
                     type: "project",
                     name: "Project Name",
                     owner: "John Smith",
@@ -28,6 +29,7 @@ class Browse extends Component {
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
                 },
                 {
+                    id: 2,
                     type: "project",
                     name: "totally a real project",
                     owner: "Foo Bar",
@@ -35,14 +37,16 @@ class Browse extends Component {
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                 },
                 {
+                    id: 1,
                     type: "partner",
                     name: "Mary Jane",
                     role: "Practitioner",
                     affiliation: "Cornell"
                 },
                 {
+                    id: 2,
                     type: "partner",
-                    name: "Mary Jane",
+                    name: "Bill Nye",
                     role: "Researcher",
                     affiliation: "Cornell"
                 }
@@ -214,8 +218,8 @@ class Browse extends Component {
                                 <>
                                     <header>
                                         <div>
-                                            <h3>Results for "{parsedURL.q}"</h3>
-                                            <h4>{this.state.searchResults.length} results</h4>
+                                            <h3 className={styles.searchResultsHeader}>{this.state.searchResults.length} results</h3>
+                                            <h3 className={styles.searchResultsHeader}>Results for "{parsedURL.q}"</h3>
                                         </div>
                                         <CustomDropdown
                                             handleChange={this.setSort}

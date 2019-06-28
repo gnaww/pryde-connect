@@ -34,6 +34,7 @@ class Profile extends Component {
                 evaluationNeeds: ["bar"],
                 projects: [
                     {
+                        id: 1,
                         type: "project",
                         name: "Project Name",
                         owner: "John Smith",
@@ -41,6 +42,7 @@ class Profile extends Component {
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     },
                     {
+                        id: 2,
                         type: "project",
                         name: "totally a real project",
                         owner: "Foo Bar",

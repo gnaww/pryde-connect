@@ -92,7 +92,7 @@
     display: flex;
 }
 
-.searchResultsContainer header h3, .searchResultsContainer header h4 {
+.searchResultsHeader {
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;
