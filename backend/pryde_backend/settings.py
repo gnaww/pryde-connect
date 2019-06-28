@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from corsheaders.defaults import default_headers
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -68,13 +70,39 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
 
-
+    # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
+    'corsheaders',
 
 
 ]
 
 
+
+
 # Additional Settings
+
+
+# CORS Settings
+# this should be set to false in production... allows any server to hit our backend which is not okay... only our
+# frontend server should be allowed to send requests to our backend
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8080',
+    'http://10.145.14.218:8000',
+    'http://localhost:8081',
+    'http://localhost:3000',
+)
+# whenever we create additional headers for our requests
+# they need to go here!!!!
+CORS_ALLOW_HEADERS = default_headers + (
+    'Api-Token',
+    'Api-Secret-Key',
+    'xsrfheadername',
+    'xsrfcookiename',
+    'content-type',
+     'X-CSRFTOKEN'
+)
+CORS_ALLOW_CREDENTIALS = True
 
 # make all endpoints atomic
 ATOMIC_REQUESTS = True
@@ -137,6 +165,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # }
 
 MIDDLEWARE = [
+
+
+    'corsheaders.middleware.CorsMiddleware',
+
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -144,6 +177,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+
+    # middleware for django-cors-headers
 ]
 
 ROOT_URLCONF = 'pryde_backend.urls'

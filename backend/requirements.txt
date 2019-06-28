@@ -5,3 +5,4 @@ django-allauth==0.37.1
 django-phonenumber-field
 phonenumbers
 django-rest-swagger
+django-cors-headers
