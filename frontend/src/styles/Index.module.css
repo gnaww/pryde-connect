@@ -40,7 +40,7 @@
     width: 1116px;
     height: 44px;
     left: 129px;
-    top: 568px;
+    top: 500px;
     font-family: Work Sans;
     font-style: normal;
     font-weight: bold;
@@ -92,7 +92,7 @@
     width: 551px;
     height: 219px;
     left: 129px;
-    top: 638px;
+    top: 588px;
 
     font-family: Lato;
     font-style: normal;
@@ -111,7 +111,7 @@
     width: 597px;
     height: 66px;
     left: 111px;
-    top: 1014px;
+    top: 884px;
 
     font-family: Work Sans;
     font-style: normal;
@@ -129,7 +129,7 @@
      width: 533px;
      height: 66px;
      left: 111px;
-     top: 1264px;
+     top: 1114px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -149,7 +149,7 @@
      width: 490px;
      height: 66px;
      left: 111px;
-     top: 1505px;
+     top: 1315px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -171,7 +171,7 @@
      width: 476px;
      height: 175px;
      left: 111px;
-     top: 1067px;
+     top: 947px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -189,7 +189,7 @@
      width: 476px;
      height: 146px;
      left: 111px;
-     top: 1317px;
+     top: 1157px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -208,7 +208,7 @@
      width: 543px;
      height: 182px;
      left: 111px;
-     top: 1588px;
+     top: 1408px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -227,8 +227,8 @@
      position: absolute;
      width: 490px;
      height: 66px;
-     left: 50%;
-     top: 1816px;
+     left: 500px;
+     top: 1666px;
 
      font-family: Work Sans;
      font-style: normal;
@@ -249,7 +249,7 @@
      width: 220.42px;
      height: 121px;
      left: 419.29px;
-     top: 1916px;
+     top: 1766px;
 
      font-family: Lato;
      font-style: normal;
@@ -270,7 +270,7 @@
      width: 267.92px;
      height: 79px;
      left: 745.08px;
-     top: 1937px;
+     top: 1790px;
 
      font-family: Lato;
      font-style: normal;
@@ -288,15 +288,15 @@
      position: absolute;
      width: 773px;
      height: 350px;
-     left: 769px;
-     top: 550px;
+     left: 615px;
+     top: 500px;
  }
  .screenshot1{
      position: absolute;
-     width: 693px;
+     width: 593px;
      height: 477px;
-     left: 900px;
-     top: 926px;
+     left: 800px;
+     top: 876px;
 
      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
  }
@@ -304,8 +304,8 @@
      position: absolute;
      width: 639.04px;
      height: 432.74px;
-     left: 814.23px;
-     top: 1062.31px;
+     left: 714.23px;
+     top: 962.31px;
 
      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
  }
@@ -313,11 +313,25 @@
      position: absolute;
      width: 639px;
      height: 436px;
-     left: 930px;
-     top: 1244px;
+     left: 730px;
+     top: 1144px;
 
      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
  }
+ /*.clover{*/
+ /*    position: absolute;*/
+ /*    width: 242.67px;*/
+ /*    height: 250px;*/
+ /*    left: 75px;*/
+ /*    top: 2370px;*/
+ /*}*/
+ /*.prydewhite{*/
+ /*    position: absolute;*/
+ /*    width: 267.57px;*/
+ /*    height: 250px;*/
+ /*    left: 1113px;*/
+ /*    top: 2370px;*/
+ /*}*/
 /*.aboutCaps{*/
 /*    color: white;*/
 /*    font-size: 3.5vw;*/

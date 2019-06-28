@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../styles/Login.module.css';
 import { Link } from 'react-router-dom';
+import api from '../services/api/api'
 
 class Login extends Component {
     constructor(props) {
@@ -20,7 +21,21 @@ class Login extends Component {
     }
 
     handleSubmit = event => {
+
+        console.log("clicked button");
+        console.log(this.state);
         event.preventDefault();
+
+        api.login_user(this.state)
+            .then(response => {
+
+                console.log(response);
+                console.log("hello there");
+            })
+            .catch(error => {
+                console.log(error);
+                console.log("there was an error");
+            })
     }
 
     render() {

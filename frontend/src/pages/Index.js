@@ -7,6 +7,8 @@ import connect2 from '../images/connect2.png'
 import screenshot1 from '../images/screenshot1.png'
 import screenshot2 from '../images/screenshot2.png'
 import screenshot3 from '../images/screenshot3.png'
+import prydewhite from '../images/pryde white.png'
+import clover from '../images/clover.png'
 class Login extends Component {
 
     render() {
@@ -80,6 +82,8 @@ class Login extends Component {
                     <p id={styles.viewing}> Viewing studies and profiles does not require a sign up. </p>
 
                     <p id={styles.post}> To post about an initiative or create your own profile, sign up now. </p>
+                    {/*<img className={styles.prydewhite} src={prydewhite} alt="Screenshot 3" />*/}
+                    {/*<img className={styles.clover} src={clover} alt="Screenshot 3" />*/}
 
 
                 </div>
