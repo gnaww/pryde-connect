@@ -16,6 +16,11 @@ from rest_framework.response import Response
 # Create your views here.
 
 
+class StudyView(generics.RetrieveAPIView):
+    serializer_class = StudyListSerializer
+    queryset = Study.objects.all()
+
+
 class StudyList(generics.ListAPIView):
     serializer_class = StudyListSerializer
     queryset = Study.objects.all()
@@ -46,7 +51,7 @@ class StudyCreate(generics.CreateAPIView):
                                                  delivery_models=request.data['delivery_models'],
                                                  additional_desc=request.data['additional_desc'],
                                                  website=request.data['website'])
-            return Response({'status': 'Success, study created.'}, status=status.HTTP_201_CREATED)
+            return Response({'status': 'Success, study created.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(e)

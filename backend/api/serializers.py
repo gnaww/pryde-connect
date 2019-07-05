@@ -7,7 +7,7 @@ from .models import PUser, Study
 class StudyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Study
-        fields = ('user', 'name_of_study', 'collaborators', 'status', 'research_topics',
+        fields = ('pk', 'user', 'name_of_study', 'collaborators', 'status', 'research_topics',
                   'age_youth', 'goal', 'timeline', 'participant_involvement', 'incentives',
                   'incentives_participants', 'delivery_models', 'additional_desc', 'website')
 
