@@ -8,6 +8,12 @@ var key = localStorage.getItem['pryde_key'];
 export default {
 
 
+    async get_user_info() {
+
+        let response = await axiox.get(base_url + '/api/v1/user');
+        return response.data;
+    },
+
     async register_user(data) {
 
         let registration_response = await axios.post(base_url + '/api/v1/rest-auth/registration/', data);
@@ -16,12 +22,7 @@ export default {
     },
 
     async login_user(data) {
-        // axios.defaults.headers.get['Api-Token'] = '5ea7c60205245ff3f477e9962887d6c0'
-        // axios.defaults.headers.get['Api-Secret-Key'] = 'yhgU0DWecw4B'
 
-        // console.log(data);
-        //
-        // console.log("Sending request")
         let response = await axios.post(base_url + '/api/v1/rest-auth/login/', {
             'email': data['email'],
             'password': data['password']
@@ -29,12 +30,7 @@ export default {
         return response;
     },
 
-
-
     logout_user(data) {
-            // axios.defaults.headers.post['Api-Token'] = '5ea7c60205245ff3f477e9962887d6c0'
-            // axios.defaults.headers.post['Api-Secret-Key'] = 'yhgU0DWecw4B'
-
 
             let config = {
                 headers: {
@@ -58,10 +54,35 @@ export default {
                         return false;
                     }
                 })
+    },
 
+    async get_all_studies() {
+
+        let response = await axios.get(base_url + '/api/v1/study/');
+        return response.data
+
+    },
+
+    async get_study(pk) {
+
+        let response = await axios.get(base_url + '/api/v1/study/' + pk + '/');
+        return response.data
+    },
+
+    async post_study(data) {
+        let config = {
+            headers: {
+                'Authorization': 'Token ' + key
+            }
+        };
+        // axios.defaults.headers.post['authorization'] = 'token ' + key
+        axios.post(base_url + '/api/v1/study/create/', config)
+            .then(function (response) {
+                // console.log(response.status)
+                // console.log(response.data)
+                return response.status === 200;
+            })
 
     }
-
-
 
 }
