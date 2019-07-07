@@ -42,7 +42,7 @@ export default {
                 .then(function (response) {
                     // console.log(response.status)
                     // console.log(response.data)
-                    if (response.status == 200) {
+                    if (response.status === 200) {
                         localStorage.removeItem('pryde_key');
 
                         console.log("done!");
