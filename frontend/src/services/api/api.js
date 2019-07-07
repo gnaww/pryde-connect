@@ -10,7 +10,7 @@ export default {
 
     async get_user_info() {
 
-        let response = await axiox.get(base_url + '/api/v1/user');
+        let response = await axios.get(base_url + '/api/v1/user');
         return response.data;
     },
 
