@@ -26,7 +26,7 @@ class Login extends Component {
         console.log(this.state);
         event.preventDefault();
 
-        api.login_user(this.state)
+        api.login(this.state)
             .then(response => {
 
                 console.log(response);

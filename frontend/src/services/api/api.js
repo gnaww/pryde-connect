@@ -1,82 +1,62 @@
 import axios from 'axios'
-const base_url = 'http://localhost:8000';
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
-var key = localStorage.getItem['pryde_key'];
 
+const BASE_URL = "http://localhost:8000";
+const USER_KEY = localStorage.getItem("pryde_key");
 
 export default {
-
-
-    async get_user_info() {
-
-        let response = await axios.get(base_url + '/api/v1/user');
-        return response.data;
+    async getUser() {
+        let user = await axios.get(BASE_URL + '/api/v1/user');
+        return user.data;
     },
-
-    async register_user(data) {
-
-        let registration_response = await axios.post(base_url + '/api/v1/rest-auth/registration/', data);
-        return registration_response;
-
+    async register(data) {
+        let response = await axios.post(BASE_URL + '/api/v1/rest-auth/registration/', data);
+        return response;
     },
-
-    async login_user(data) {
-
-        let response = await axios.post(base_url + '/api/v1/rest-auth/login/', {
-            'email': data['email'],
-            'password': data['password']
+    async login(data) {
+        let response = await axios.post(BASE_URL + '/api/v1/rest-auth/login/', {
+            email: data.email,
+            password: data.password
         });
         return response;
     },
-
-    logout_user(data) {
-
-            let config = {
-                headers: {
-                    'Authorization': 'Token ' + key
-                }
-            };
-            // axios.defaults.headers.post['authorization'] = 'token ' + key
-            axios.post(base_url + '/api/v1/rest-auth/logout/', config)
-                .then(function (response) {
-                    // console.log(response.status)
-                    // console.log(response.data)
-                    if (response.status === 200) {
-                        localStorage.removeItem('pryde_key');
-
-                        console.log("done!");
-
-                        //NEED REACT VERSION OF THIS... PUSH THE PAGE TO EITHER HOME OR LOGIN
-                        // router.push( { path: `/login` });
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
-    },
-
-    async get_all_studies() {
-
-        let response = await axios.get(base_url + '/api/v1/study/');
-        return response.data
-
-    },
-
-    async get_study(pk) {
-
-        let response = await axios.get(base_url + '/api/v1/study/' + pk + '/');
-        return response.data
-    },
-
-    async post_study(data) {
+    logout() {
         let config = {
             headers: {
-                'Authorization': 'Token ' + key
+                Authorization: 'Token ' + USER_KEY
             }
         };
         // axios.defaults.headers.post['authorization'] = 'token ' + key
-        axios.post(base_url + '/api/v1/study/create/', config)
+        axios.post(BASE_URL + '/api/v1/rest-auth/logout/', config)
+            .then(function (response) {
+                // console.log(response.status)
+                // console.log(response.data)
+                if (response.status === 200) {
+                    localStorage.removeItem("pryde_key");
+                    console.log("done!");
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+    },
+    async getAllProjects() {
+        let projects = await axios.get(BASE_URL + '/api/v1/project/');
+        return projects.data
+    },
+    async getProject(pk) {
+        let project = await axios.get(BASE_URL + '/api/v1/project/' + pk + '/');
+        return project.data
+    },
+    async createProject(data) {
+        let config = {
+            headers: {
+                Authorization: 'Token ' + USER_KEY
+            }
+        };
+        // axios.defaults.headers.post['authorization'] = 'token ' + key
+        axios.post(BASE_URL + '/api/v1/project/create/', config)
             .then(function (response) {
                 // console.log(response.status)
                 // console.log(response.data)
