@@ -42,7 +42,8 @@ class UserManager(BaseUserManager):
 class PUser(AbstractUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True, primary_key=True)
+    # email = models.EmailField(unique=True, primary_key=False)
+    email = models.EmailField(unique=True)
     phone_number = PhoneNumberField(default=None, null=True, unique=False)
     website = models.URLField(default=None, null=True)
     ROLE = (
@@ -88,8 +89,8 @@ class PUser(AbstractUser):
     REQUIRED_FIELDS = []
 
 
-class Study(models.Model):
-    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+class Project(models.Model):
+    user = models.ForeignKey(PUser, related_name='studies', on_delete=models.CASCADE)
     name_of_study = models.CharField(max_length=100)
     collaborators = models.CharField(max_length=100)
     status = models.BooleanField()

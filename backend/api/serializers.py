@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 from django.contrib.auth import get_user_model
-from .models import PUser, Study
+from .models import PUser, Project
 
 
-class StudyListSerializer(serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Study
+        model = Project
         fields = ('pk', 'user', 'name_of_study', 'collaborators', 'status', 'research_topics',
                   'age_youth', 'goal', 'timeline', 'participant_involvement', 'incentives',
                   'incentives_participants', 'delivery_models', 'additional_desc', 'website')
@@ -15,4 +15,4 @@ class StudyListSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'email', 'type',)
+        fields = ('pk', 'first_name', 'last_name', 'email', )
