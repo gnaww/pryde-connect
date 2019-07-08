@@ -13,9 +13,10 @@ urlpatterns = [
 
     path('project/create/', ProjectCreate.as_view()),
     path('project/<int:pk>/', ProjectView.as_view()),
-    path('user/<int:pk>/', SingleUser.as_view()),
+    # path('user/<int:pk>/', SingleUser.as_view()),
 
     path('project/user/<int:pk>/', ProjectViewOne.as_view()),
+    path('user/<int:pk>/', UserView.as_view()),
 
 
 

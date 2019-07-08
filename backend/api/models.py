@@ -90,7 +90,7 @@ class PUser(AbstractUser):
 
 
 class Project(models.Model):
-    user = models.ForeignKey(PUser, related_name='studies', on_delete=models.CASCADE)
+    user = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
     name_of_study = models.CharField(max_length=100)
     collaborators = models.CharField(max_length=100)
     status = models.BooleanField()

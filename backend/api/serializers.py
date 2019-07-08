@@ -13,6 +13,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    projects = ProjectSerializer(many=True, read_only=True)
+
     class Meta:
         model = get_user_model()
-        fields = ('pk', 'first_name', 'last_name', 'email', )
+        fields = ('pk', 'first_name', 'last_name', 'email', 'projects', )
