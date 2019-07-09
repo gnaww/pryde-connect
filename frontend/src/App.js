@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Homepage from './pages/Homepage';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
@@ -15,6 +16,7 @@ function App() {
             <div className={styles.wrapper}>
                 <Navbar />
                 <Switch>
+                    <Route path="/" exact component={Homepage} />
                     <Route path="/browse" component={Browse} />
                     <Route path="/login" exact component={Login} />
                     <Route path="/user/:id" component={Profile} />

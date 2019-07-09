@@ -1,0 +1,8 @@
+.container {
+    flex: 1;
+}
+
+.welcomeBanner {
+    height: 800px;
+    width: 100%;
+}
