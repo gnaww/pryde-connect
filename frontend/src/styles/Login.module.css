@@ -1,5 +1,7 @@
 .loginWrapper {
     position: relative;
+    flex: 1;
+    padding: 30px 15px;
     height: 100%;
     width: 100%;
 }
@@ -8,7 +10,7 @@
     position: absolute;
     height: 500px;
     top: 50%;
-    margin-top: -300px;
+    margin-top: -250px;
 }
 
 #loginBlue {
