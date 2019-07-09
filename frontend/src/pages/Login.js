@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import loginGreen from '../images/login-green.png';
-import loginBlue from '../images/login-blue.png';
+import loginGreen from '../images/login-green-cropped.png';
+import loginBlue from '../images/login-blue-cropped.png';
 import styles from '../styles/Login.module.css';
 import { Link } from 'react-router-dom';
 import api from '../services/api/api';
