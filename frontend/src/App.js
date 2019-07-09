@@ -7,7 +7,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import styles from './App.module.css';
 
-import Index from './pages/Index'
 function App() {
     return (
         <Router>
@@ -15,7 +14,6 @@ function App() {
                 <Navbar />
                 <main className={styles.container}>
                     <Switch>
-                        <Route path="/" exact component={Index} />
                         <Route path="/login" exact component={Login} />
                         <Route path="/browse" component={Browse} />
                         <Route component={PageNotFound} />
