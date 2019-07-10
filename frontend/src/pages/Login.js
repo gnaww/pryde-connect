@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import loginGreen from '../images/login-green-cropped.png';
-import loginBlue from '../images/login-blue-cropped.png';
+import loginGreen from '../images/login-green.png';
+import loginBlue from '../images/login-blue.png';
 import styles from '../styles/Login.module.css';
 import { Link } from 'react-router-dom';
 import api from '../services/api/api';
@@ -43,7 +43,9 @@ class Login extends Component {
     render() {
         return (
             <div className={styles.loginWrapper}>
-                <img id={styles.loginBlue} className={styles.loginGraphic} src={loginBlue} alt="Login graphic" />
+                <div className={styles.loginGraphic} id={styles.loginBlue}>
+                    <img  src={loginBlue} alt="Login graphic" />
+                </div>
                 <h1 className={styles.joinOurCommunity}>
                     Join our community
                 </h1>
@@ -59,7 +61,9 @@ class Login extends Component {
                     <Link className={styles.link} to="/signup">Create an account</Link>
                     <Link className={styles.link} to="/forgotpassword">Forgot password?</Link>
                 </div>
-                <img id={styles.loginGreen} className={styles.loginGraphic} src={loginGreen} alt="Login graphic" />
+                <div className={styles.loginGraphic} id={styles.loginGreen}>
+                    <img src={loginGreen} alt="Login graphic" />
+                </div>
             </div>
         );
     }
