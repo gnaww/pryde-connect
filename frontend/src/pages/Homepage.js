@@ -23,30 +23,32 @@ class Homepage extends Component {
         const heroImages = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
         document.getElementById(styles.welcomeBanner).style.backgroundImage = 'url(' + heroImages[randomInt] + ')';
     }
-    
+
     render() {
         return (
             <div className={styles.container}>
                 <section id={styles.welcomeBanner}>
-                    <h1>Welcome to Research Connect</h1>
-                    <p>Where connections are built.</p>
-                    <Link to="/signup">CLICK TO SIGN UP</Link>
-                    <button 
+                    <div>
+                        <h1>Welcome to Research Connect!</h1>
+                        <p>Where connections are built.</p>
+                        <Link to="/signup">CLICK TO SIGN UP</Link>
+                    </div>
+                    <button
                         onClick={
                             () =>
                                 window.scroll({
-                                    top: 800,
+                                    top: 700 + 110, // section height + navbar height
                                     left: 0,
                                     behavior: 'smooth'
                                 })
                         }
                     >
-                        LEARN MORE
+                        <span>LEARN MORE</span>
                         <img src={scrollDown} alt="Scroll down arrow" />
                     </button>
                 </section>
                 <section className={styles.aboutUs}>
-                    <div>
+                    <div className={styles.aboutUsText}>
                         <h2>About Us</h2>
                         <p>
                             The Research Connector is the place for researchers and practitioners with a shared interest in youth development to connect to each other.
@@ -55,10 +57,12 @@ class Homepage extends Component {
                             Share your research interests and needs, identify potential research partners, and stay up to date on all of the PRYDE-affiliated research opportunities. Let’s build connections to support research and practice that helps youth thrive.
                         </p>
                     </div>
-                    <img src={connect} alt="Research connect" />
+                    <div className={styles.connect}>
+                        <img src={connect} alt="Research connect" />
+                    </div>
                 </section>
                 <section className={styles.features}>
-                    <div>
+                    <div className={styles.featuresText}>
                         <div>
                             <h2>Communicate across the state</h2>
                             <p>
@@ -78,37 +82,43 @@ class Homepage extends Component {
                             </p>
                         </div>
                     </div>
-                    <div>
-                        <img src={screenshot1} alt="Website screenshot" />
-                        <img src={screenshot2} alt="Website screenshot" />
-                        <img src={screenshot3} alt="Website screenshot" />
+                    <div className={styles.screenshots}>
+                        <img id={styles.screenshot1} src={screenshot1} alt="Website screenshot" />
+                        <img id={styles.screenshot2} src={screenshot2} alt="Website screenshot" />
+                        <img id={styles.screenshot3} src={screenshot3} alt="Website screenshot" />
                     </div>
                 </section>
                 <section className={styles.getStarted}>
-                    <div>
+                    <div className={styles.actionsWrapper}>
                         <h2>GET STARTED</h2>
-                        <div>
-                            <Link to="/browse">
-                                <img src={studies} alt="View studies" />
-                            </Link>
-                            <p>
-                                Viewing studies and profiles does not require signing up.
-                            </p>
-                        </div>
-                        <div>
-                            <Link to="/signup">
-                                <img src={addPerson} alt="Sign up" />
-                            </Link>
-                            <p>
-                                To post about an initiative or create your own profile, sign up now.
-                            </p>
+                        <div className={styles.actions}>
+                            <div className={styles.actionCard}>
+                                <Link className={styles.actionLink} to="/browse">
+                                    <img className={styles.viewStudies} src={studies} alt="View studies" />
+                                    <p>VIEW STUDIES</p>
+                                </Link>
+                                <p className={styles.actionDescription}>
+                                    View studies and profiles right now without an account.
+                                </p>
+                            </div>
+                            <div className={styles.actionCard}>
+                                <Link className={styles.actionLink} to="/signup">
+                                    <img className={styles.addPerson} src={addPerson} alt="Sign up" />
+                                    <p>SIGN UP</p>
+                                </Link>
+                                <p className={styles.actionDescription}>
+                                    Sign up now to post about an initiative or create your own profile.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <img src={combinedLogos} alt="PRYDE and 4-H logo" />
+                    <div className={styles.logoWrapper}>
+                        <img src={combinedLogos} alt="PRYDE and 4-H logo" />
+                    </div>
                 </section>
             </div>
         );
     }
 };
-    
+
 export default Homepage;
