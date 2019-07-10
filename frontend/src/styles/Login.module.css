@@ -3,7 +3,6 @@
     flex: 1;
     padding: 30px 15px;
     height: 100%;
-    width: 100%;
 }
 
 .loginGraphic {
@@ -11,14 +10,28 @@
     height: 500px;
     top: 50%;
     margin-top: -250px;
+    overflow: hidden;
+    z-index: -100;
 }
 
 #loginBlue {
-    left: -15px;
+    left: 0;
+}
+
+#loginBlue img {
+    height: 100%;
+    position: relative;
+    left: -250px;
 }
 
 #loginGreen {
-    right: -15px;
+    right: 0;
+}
+
+#loginGreen img {
+    height: 100%;
+    position: relative;
+    right: -250px;
 }
 
 .joinOurCommunity {
