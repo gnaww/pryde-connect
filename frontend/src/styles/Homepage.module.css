@@ -2,7 +2,7 @@
     flex: 1;
 }
 
-.container h1, h2 {
+.container h1, .container h2 {
     font-family: Work Sans;
 }
 
@@ -169,7 +169,7 @@
 }
 
 .getStarted {
-    background: #49AEE9;
+    background: #49aee9;
     display: flex;
     color: white;
 }
@@ -253,5 +253,4 @@
 
 .logoWrapper img {
     height: 80%;
-    /* height: 496px; */
 }
