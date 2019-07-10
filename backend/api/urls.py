@@ -4,7 +4,7 @@ from django.conf.urls import url
 
 from .views import hello_world, ProjectList, ProjectCreate, ProjectView, UserView, ProjectViewOne, SingleUser
 
-# all of these endpoints begin with 'api/v1/'
+# All of these endpoints begin with 'api/v1/'
 urlpatterns = [
 
     path('hello/', hello_world),
