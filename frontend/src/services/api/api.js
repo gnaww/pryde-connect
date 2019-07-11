@@ -7,8 +7,18 @@ const USER_KEY = localStorage.getItem("pryde_key");
 
 export default {
     async getUser() {
-        let user = await axios.get(BASE_URL + '/api/v1/user');
+        console.log(USER_KEY);
+        let config = {
+            headers: {
+                Authorization: 'Token ' + USER_KEY
+            }
+        };
+        let user = await axios.get(BASE_URL + '/api/v1/user/', config);
         return user.data;
+    },
+    async getUserByID(id) {
+        let user = await axios.get(BASE_URL + '/api/v1/user/' + String(id) + '/');
+        return user.data
     },
     async register(data) {
         let response = await axios.post(BASE_URL + '/api/v1/rest-auth/registration/', data);

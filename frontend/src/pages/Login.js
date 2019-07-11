@@ -32,11 +32,24 @@ class Login extends Component {
             .then(response => {
 
                 console.log(response);
-                console.log("hello there");
+                console.log("login successful");
+
+                localStorage.clear();
+                localStorage.setItem('pryde_key', response.data['key']);
+                //this needs to be fixed
+                this.props.history.push("/user/1");
+
+
+
+
             })
             .catch(error => {
                 console.log(error);
                 console.log("there was an error");
+
+                console.log(error.response.data);
+
+
             })
     }
 

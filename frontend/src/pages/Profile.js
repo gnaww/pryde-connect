@@ -10,6 +10,7 @@ import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import styles from '../styles/Profile.module.css';
+import api from '../services/api/api';
 
 class Profile extends Component {
     constructor(props) {
@@ -70,6 +71,55 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        console.log(localStorage);
+
+        api.getUser().then(response => {
+            console.log(response);
+
+            // this.setState({user: response});
+            // this.state.user.name = "barron";
+            // this.setState(user.name = response['first_name'] + ' ' + response['last_name'])
+            // this.setState({user: user.name = response['first_name'] + ' ' + response['last_name']})
+            // this.state.user.email = response['email'];
+            // this.state.user.location = response['location'];
+            // this.state.user.phone = response['phone_number'];
+            // this.state.user.website = response['website'];
+
+
+
+
+
+        }).catch(error => {
+            console.log(error);
+            // console.log(error.response.data);
+        })
+
+        // console.log("call api here");
+        // console.log(window.location.href);
+        // let url = window.location.href;
+        // console.log(url);
+        // let last_slash = url.lastIndexOf('/');
+        // let user_id = url.substr(last_slash +1);
+        // console.log(user_id);
+        //
+        //
+        // api.getUserByID(user_id).then(response => {
+        //
+        //     console.log("got a response");
+        //     console.log(response.data);
+        //     console.log(response);
+        // }).catch(error => {
+        //     console.log(error.response);
+        //     console.log(error.response.data);
+        //
+        // })
+
+
+
+
+
+
+
     }
 
     render() {
@@ -214,7 +264,7 @@ class Profile extends Component {
                                         <p>{user.researchDescription}</p>
                                     </>
                             }
-                            
+
                         </div>
                     </section>
                     <section className={styles.projects}>
