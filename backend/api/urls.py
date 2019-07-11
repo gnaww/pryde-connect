@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.conf.urls import url
 
 
-from .views import hello_world, ProjectList, ProjectCreate, ProjectView, UserView, ProjectViewOne, SingleUser
+from .views import hello_world, ProjectList, ProjectCreate, ProjectView, UserView, ProjectViewOne, SingleUser, MyInfo
 
 # all of these endpoints begin with 'api/v1/'
 urlpatterns = [
@@ -17,6 +17,7 @@ urlpatterns = [
 
     path('project/user/<int:pk>/', ProjectViewOne.as_view()),
     path('user/<int:pk>/', UserView.as_view()),
+    path('user/', MyInfo.as_view()),
 
 
 

@@ -44,7 +44,7 @@ class PUser(AbstractUser):
     last_name = models.CharField(max_length=100)
     # email = models.EmailField(unique=True, primary_key=False)
     email = models.EmailField(unique=True)
-    phone_number = PhoneNumberField(default=None, null=True, unique=False)
+    phone = PhoneNumberField(default=None, null=True, unique=False)
     website = models.URLField(default=None, null=True)
     ROLE = (
         (1, '4H Educator'),

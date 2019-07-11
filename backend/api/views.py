@@ -15,6 +15,7 @@ from rest_framework.response import Response
 
 
 class UserView(generics.RetrieveAPIView):
+    permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
     queryset = PUser.objects.all()
 
@@ -27,6 +28,19 @@ class ProjectView(generics.RetrieveAPIView):
 class ProjectList(generics.ListAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
+
+
+class MyInfo(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        # print(request.user)
+        # print(request.auth)
+        # print(request.user.pk)
+        user = PUser.objects.get(pk=request.user.pk)
+        serializer = UserSerializer(user)
+        return Response(data=serializer.data)
 
 
 class SingleUser(generics.RetrieveAPIView):
