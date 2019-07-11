@@ -7,27 +7,25 @@ from .models import PUser, Project
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('pk', 'user', 'name_of_study', 'collaborators', 'status', 'research_topics',
-                  'age_youth', 'goal', 'timeline', 'participant_involvement', 'incentives',
-                  'incentives_participants', 'delivery_models', 'additional_desc', 'website')
+        fields = '__all__'
 
-# Used for the project cards in browse page
+# Used for the project cards in the browse page
 class ProjectShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('pk', 'type', 'name', 'owner', 'status', 'summary')
+        fields = ('pk', 'name', 'owner', 'status', 'summary')
 
 class UserSerializer(serializers.ModelSerializer):
     projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ('pk', 'first_name', 'last_name', 'email', 'projects', )
+        fields = '__all__'
 
-# Used for the user cards in browse page
+# Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
     projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ('pk', 'type', 'first_name', 'last_name', 'role', 'affiliation')
+        fields = ('pk', 'firstName', 'lastName', 'role', 'affiliation')
