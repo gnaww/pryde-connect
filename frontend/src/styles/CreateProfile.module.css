@@ -209,5 +209,60 @@
 }
 
 .numberedList {
-    composes: question
+    composes: question;
+}
+
+.researcherImg {
+    width: 118px;
+    height: 179px;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    padding: 68px 87px 45px 87px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.researcherImgClicked {
+    composes: researcherImg;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+}
+
+.practionerImg {
+    composes: researcherImg;
+    width: 251px;
+    height: 150px;
+    padding: 97px 18px 45px 18px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.practionerImgClicked {
+    composes: practionerImg;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+}
+
+.roleText {
+    width: 338px;
+    height: 118px;
+
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+.roleCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 62px;
+}
+
+.rolePage {
+    display: flex;
 }

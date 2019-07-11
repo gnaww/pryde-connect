@@ -2,21 +2,46 @@ import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import CustomDropdown from '../../components/CustomDropdown';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 import checkboxStyles from '../../styles/FilterCategory.module.css';
 
 const AnswerTypes = {
     Dropdown: "dropdown",
     Checkbox: "checkbox",
-    Textbox: "textbox"
+    Textbox: "textbox",
+    Radiobutton: "radiobutton"
 }
 
-const ResearcherInformation = {
-    ResearcherType: [
-        "Faculty",
-        "Academic Staff",
-        "Postdoctoral Fellow",
-        "Graduate Student",
-        "Undergraduate Student",
+const PractionerInformation = {
+    RoleDescriptions: [
+        "Lead youth programs",
+        "Design youth programs",
+        "Evaluate youth programs",
+        "Write grants",
+        "Train volunteers",
+        "Other: "
+    ],
+    AgeGroups: [
+        "Infants (0-1 year)",
+        "Toddlers (1-2 years)",
+        "Toddlers (2-3 years)",
+        "Preschoolers (3-5 years)",
+        "Middle Childhood (6-8 years)",
+        "Middle Childhood (9-11 years)",
+        "Young Teens (12-14 years)",
+        "Teenagers (15-17 years)"
+    ],
+    YouthProgramTypes: [
+        "Animal Science",
+        "Civic Engagement",
+        "Cooking",
+        "STEM",
+        "Other: "
+    ],
+    ProgramDeliveryModels: [
+        "Afterschool programs",
+        "Camps",
+        "Clubs",
         "Other: "
     ],
     ResearchTopics: [
@@ -33,7 +58,7 @@ const ResearcherInformation = {
 
 const qaForm = [
     {
-        questionText: "Are you located at Cornell?",
+        questionText: "Are you located within the Cornell Cooperative Extension?",
         answer: {
             type: AnswerTypes.Dropdown,
             label: "SELECT",
@@ -51,23 +76,38 @@ const qaForm = [
         id: 0, //put an id here for questions that have special properties
     },
     {
-        questionText: "Which of the following best describes you?",
+        questionText: "Which (if any) of the following describe your roles? (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: ResearcherInformation.ResearcherType
+            options: PractionerInformation.RoleDescriptions
         }
     },
     {
-        questionText: "What research topics do you study?",
+        questionText: "What age youth do you work with?",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: ResearcherInformation.ResearchTopics
+            options: PractionerInformation.AgeGroups
         }
     },
     {
-        questionText: "In 1-2 sentences, please describe your research interests.",
+        questionText: "What types of youth programs do you work with? (check all that apply)",
         answer: {
-            type: AnswerTypes.Textbox,
+            type: AnswerTypes.Checkbox,
+            options: PractionerInformation.YouthProgramTypes
+        }
+    },
+    {
+        questionText: "What types of program delivery models do you use? (check all that apply)",
+        answer: {
+            type: AnswerTypes.Checkbox,
+            options: PractionerInformation.ProgramDeliveryModels
+        }
+    },
+    {
+        questionText: "What research topics are you interested in? (check all that apply)",
+        answer: {
+            type: AnswerTypes.Checkbox,
+            options: PractionerInformation.ResearchTopics
         }
     }
 ];
@@ -76,8 +116,12 @@ class PractionerQuestions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            var: 0
+            locatedAtCornell: null
         }
+    }
+
+    setLocatedAtCornell = value => {
+        this.setState({ locatedAtCornell: value })
     }
 
     getQAComponent = (qa, index) => {
@@ -90,6 +134,7 @@ class PractionerQuestions extends Component {
                         (
                             <div className={styles.dropdown}>
                                 <CustomDropdown
+                                    handleChange={this.setLocatedAtCornell}
                                     name={qa.questionText}
                                     label="SELECT"
                                     options={qa.answer.options}
@@ -103,12 +148,12 @@ class PractionerQuestions extends Component {
                     (
                         <div className={styles.form}>
                             <input
-                                className={styles.longTextInput}
+                                className={styles.mediumTextInput}
                                 placeholder="College"
                                 type="text"
                             />
                             <input
-                                className={styles.longTextInput}
+                                className={styles.mediumTextInput}
                                 placeholder="Department"
                                 type="text"
                             />

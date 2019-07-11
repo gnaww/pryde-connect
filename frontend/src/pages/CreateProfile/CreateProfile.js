@@ -3,11 +3,13 @@ import styles from '../../styles/CreateProfile.module.css'
 import BasicInfo from './BasicInfo';
 import RoleSelection from './RoleSelection';
 import PractionerQuestions from './PractionerQuestions';
+import ResearcherQuestions from './ResearcherQuestions';
 import OptionalQuestions from './OptionalQuestions';
 import UploadProPic from './UploadProPic';
 import ReviewFinish from './ReviewFinish';
+import { roleTypes } from './Options';
 
-const pages = [
+var pages = [
     {
         subtitle: "Welcome! Please complete the following fields.",
         content: BasicInfo
@@ -38,7 +40,7 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
+            page: 1,
             pageData: pages.map(() => { return null }),
             clickedNext: false,
             clickedBack: false
@@ -61,10 +63,14 @@ class CreateProfile extends Component {
 
     handleOnSubmitData = (data, errors) => {
         if (!errors) {
+            var nextPage = this.state.page + 1;
+            if(this.state.page === 1){
+                pages[nextPage].content = data.roleType === roleTypes.researcher ? ResearcherQuestions : PractionerQuestions;
+            }
             var pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;
             this.setState({ pageData: pageDataCopy });
-            this.setState({ page: this.state.page + 1 })
+            this.setState({ page: nextPage });
         }
         this.setState({ clickedNext: false });
     }

@@ -1,37 +1,25 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import Validator from 'react-forms-validator';
-
-const roleTypes = {
-    practioner: "practioners",
-    researcher: "researcher"
-}
+import researcher from '../../images/researcher.svg';
+import practioner from '../../images/practioner.svg';
+import { roleTypes } from './Options'
 
 const roleOptions = [
     {
-        text: "4-H Educator",
-        value: roleTypes.practioner
+        text:  "Cornell faculty, academic staff, graduate or undergraduate student, or other primarily research-focused role.",
+        value: roleTypes.researcher,
+        img: researcher,
+        unclicked: styles.researcherImg,
+        clicked: styles.researcherImgClicked
     },
     {
-        text: "Other CCE role",
-        value: roleTypes.practioner
-    },
-    {
-        text: "Other primarily practice-focused role",
-        value: roleTypes.practioner
-    },
-    {
-        text: "Cornell faculty or academic staff",
-        value: roleTypes.researcher
-    },
-    {
-        text: "Cornell graduate or undergraduate student",
-        value: roleTypes.researcher
-    },
-    {
-        text: "Other primarily research-focused role",
-        value: roleTypes.researcher
-    },
+        text: "4-H Educator, other Cornell Cooperative Extension (CCE) Role, or other primarily practice-focused role.",
+        value: roleTypes.practioner,
+        img: practioner,
+        unclicked: styles.practionerImg,
+        clicked: styles.practionerImgClicked
+    }
 
 ];
 
@@ -39,15 +27,14 @@ class RoleSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            checkedIndex: null,
             roleType: ""
         };
-        this.errors = true;
+        this.clicked = null;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.props.onSubmitData(this.state, this.errors);
+            this.props.onSubmitData(this.state, this.state.roleType === "");
         }
         return null;
     }
@@ -59,9 +46,9 @@ class RoleSelection extends Component {
         }
     }
 
-    handleSelectRole = event => {
-        var role = roleOptions[event.target.value].value;
-        this.setState({ checkedIndex: event.target.value, roleType: role });
+    handleSelectRole = (index, role) => {
+        this.clicked = index;
+        this.setState({ roleType: role });
     }
 
     handleIsValidationErrorChange = flag => {
@@ -70,31 +57,21 @@ class RoleSelection extends Component {
 
     render() {
         return (
-            <div className={styles.form}>
+            <div className={styles.rolePage}>
                 {
                     roleOptions.map((role, index) => {
                         return (
-                            <div className={styles.selection} key={index}>
-                                <input
-                                    className={styles.radio}
-                                    name="role"
-                                    type="radio"
-                                    value={index}
-                                    checked={index == this.state.checkedIndex}
-                                    onChange={this.handleSelectRole}
+                            <div className={styles.roleCard} key={index}>
+                                <img 
+                                    className={this.clicked === index ? role.clicked : role.unclicked} 
+                                    src={role.img} 
+                                    onClick={() => this.handleSelectRole(index, role.value)}
                                 />
-                                <label className={styles.label}>{role.text}</label>
+                                <p className={styles.roleText}>{role.text}</p>
                             </div>
                         )
                     })
                 }
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ roleType: this.state.roleType }}
-                    validationRules={{ minLength: 1 }}
-                    validationMessages={{ minLength: "Role is required." }}
-                />
             </div>
         )
     }
