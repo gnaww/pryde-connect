@@ -50,6 +50,13 @@
     color: white;
     text-decoration: none;
     margin: 50px auto;
+    /* box-sizing: border-box; */
+}
+
+#welcomeBanner a:hover{
+    background: none;
+    transition: 0.25s ease-in-out;
+    box-shadow: inset white 0px 0px 0px 1px;
 }
 
 #welcomeBanner button {
@@ -80,6 +87,7 @@
 #welcomeBanner button:hover > img {
     transform: translateY(15px);
 }
+
 
 .aboutUs {
     background: #ffab3f;
@@ -124,6 +132,7 @@
 
 .featuresText {
     padding: 110px;
+    padding-bottom: 0px;
     flex: 1;
 }
 
@@ -137,7 +146,7 @@
     font-family: Work Sans;
     font-size: 25px;
     margin-top: 25px;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .screenshots {
@@ -159,7 +168,7 @@
 
 .screenshots #screenshot2 {
     right: 0;
-    bottom: 25%;
+    bottom: 20%;
     z-index: 2;
 }
 
@@ -210,6 +219,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: 0.05s ease-in-out;
 }
 
 .actionLink img {
@@ -220,9 +230,13 @@
     margin: 0;
 }
 
+.actionLink:hover{
+    transform: scale(1.05);
+}
+
 .viewStudies {
-    width: 141px;
-    height: 109px;
+    width: 120px;
+    height: 120px;
     padding-top: 7px;
     padding-bottom: 30px;
 }

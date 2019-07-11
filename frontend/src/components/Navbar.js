@@ -23,10 +23,10 @@ const Navbar = () => (
                 SUBMIT A PROJECT
             </Link>
             <Link className={styles.link} to="/login">
-                LOGIN
+                LOG IN
             </Link>
             <Link className={styles.link} to="/signup">
-                SIGNUP
+                SIGN UP
             </Link>
         </div>
     </nav>
