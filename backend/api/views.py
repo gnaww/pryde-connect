@@ -52,7 +52,7 @@ class ProjectCreate(generics.CreateAPIView):
         user = PUser.objects.get(pk=request.user.pk)
 
         try:
-            study_created = Project.objects.create(
+            new_project = Project.objects.create(
                 name = request.data['name'],
                 owner = user,
                 status = request.data['status'],
