@@ -1,8 +1,7 @@
 from rest_framework import serializers
-
 from rest_auth.registration.serializers import RegisterSerializer
 
-
+# TODO: update this to match the new PUser model?
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
