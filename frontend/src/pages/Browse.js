@@ -24,7 +24,10 @@ class Browse extends Component {
                     id: 1,
                     type: "project",
                     name: "Project Name",
-                    owner: "John Smith",
+                    owner: {
+                        firstName: "John",
+                        lastName: "Smith"
+                    },
                     status: 'completed',
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
                 },
@@ -32,21 +35,26 @@ class Browse extends Component {
                     id: 2,
                     type: "project",
                     name: "totally a real project",
-                    owner: "Foo Bar",
+                    owner: {
+                        firstName: "Foo",
+                        lastName: "Bar"
+                    },
                     status: 'in-progress',
                     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                 },
                 {
                     id: 1,
                     type: "partner",
-                    name: "Mary Jane",
+                    firstName: "Mary",
+                    lastName: "Jane",
                     role: "Practitioner",
                     affiliation: "Cornell"
                 },
                 {
                     id: 2,
                     type: "partner",
-                    name: "Bill Nye",
+                    firstName: "Bill",
+                    lastName: "Nye",
                     role: "Researcher",
                     affiliation: "Cornell"
                 }
