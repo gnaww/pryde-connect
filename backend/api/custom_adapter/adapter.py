@@ -1,6 +1,6 @@
 from allauth.account.adapter import DefaultAccountAdapter
 
-# TODO: update this to match the new PUser model?
+# TODO: update this to match the new PUser model!
 class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=False):

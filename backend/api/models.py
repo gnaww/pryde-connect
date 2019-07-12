@@ -72,7 +72,7 @@ class PUser(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-
+# TODO: figure out difference between collaborators/owners, are they equivalent and will collaborators have the project show up on their profile?
 class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
