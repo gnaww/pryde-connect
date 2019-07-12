@@ -17,7 +17,8 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: {
-                name: "John Smith",
+                firstName: "John",
+                lastName: "Smith",
                 role: "Researcher",
                 displayRole: "4-H Practitioner",
                 affiliation: "Organization/Department",
@@ -179,7 +180,7 @@ class Profile extends Component {
                         <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
                     </div>
                     <div className={styles.personalInformation}>
-                        <h1>{user.name} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
+                        <h1>{`${user.firstName} ${user.lastName}`} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
                         <h2>{user.displayRole}</h2>
                         <h2>{user.affiliation}</h2>
                         <h2>{user.location}</h2>

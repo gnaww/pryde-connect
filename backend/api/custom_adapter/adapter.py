@@ -1,8 +1,6 @@
 from allauth.account.adapter import DefaultAccountAdapter
 
-
-# want to override the adapter to save the extra fields
-
+# TODO: update this to match the new PUser model!
 class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=False):

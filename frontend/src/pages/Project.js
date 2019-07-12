@@ -10,7 +10,8 @@ class Project extends Component {
             id: 1,
             name: "Project Name",
             owner: {
-                name: "John Smith",
+                firstName: "John",
+                lastName: "Smith",
                 affiliation: "Org Name",
                 location: "Ithaca, NY",
                 email: "something@something.edu",
@@ -19,14 +20,12 @@ class Project extends Component {
             },
             status: "completed",
             summary: "[this is where the goal question comes in] details or summary of project or research partner] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-            stats: {
-                researchTopics: ["Positive Youth Development", "Civic Engagement"],
-                ageRange: ["15-17 years old"],
-                deliveryModes: ["Afterschool Programs"],
-                timeline: "Next summer",
-                commitmentLength: "1 year",
-                incentives: ["Educators", "Participants"]
-            },
+            researchTopics: ["Positive Youth Development", "Civic Engagement"],
+            ageRanges: ["15-17 years old"],
+            deliveryModes: ["Afterschool Programs"],
+            timeline: "Next summer",
+            commitmentLength: "1 year",
+            incentives: ["Educators", "Participants"],
             collaborators: [
                 {
                     id: 1,
@@ -43,19 +42,17 @@ class Project extends Component {
                     affiliation: "Cornell"
                 }
             ],
-            additionalInformation: {
-                text: "[additional information] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-                files: [
-                    {
-                        filename: "results.pdf",
-                        source: "somelinkhere"
-                    },
-                    {
-                        filename: "stats.pdf",
-                        source: "somelinkhere"
-                    }
-                ]
-            }
+            additionalInformation: "[additional information] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
+            additionalFiles: [
+                {
+                    filename: "results.pdf",
+                    source: "somelinkhere"
+                },
+                {
+                    filename: "stats.pdf",
+                    source: "somelinkhere"
+                }
+            ]
         };
     }
 
@@ -63,7 +60,11 @@ class Project extends Component {
     }
 
     render() {
-        const { name, owner, status, summary, stats, collaborators, additionalInformation } = this.state;
+        const {
+            name, owner, status, summary, researchTopics, ageRanges,
+            deliveryModes, timeline, commitmentLength, incentives,
+            collaborators, additionalInformation, additionalFiles
+        } = this.state;
 
         let statusFormatted = '';
         if (status === "completed") {
@@ -85,7 +86,7 @@ class Project extends Component {
                     <header className={styles.projectHeader}>
                         <div>
                             <h1>{name}</h1>
-                            <h2>{`${owner.name} - ${owner.affiliation}`}</h2>
+                            <h2>{`${owner.firstName} ${owner.lastName} - ${owner.affiliation}`}</h2>
                             <h2>{owner.location}</h2>
                         </div>
                         <div className={styles.projectContact}>
@@ -114,29 +115,29 @@ class Project extends Component {
                                 <h3>Research Topics</h3>
                                 <ul>
                                     {
-                                        stats.researchTopics.map((interest, idx) => <li key={idx}>{interest}</li>)
+                                        researchTopics.map((interest, idx) => <li key={idx}>{interest}</li>)
                                     }
                                 </ul>
                                 <h3>Age Range</h3>
                                 <ul>
                                     {
-                                        stats.ageRange.map((interest, idx) => <li key={idx}>{interest}</li>)
+                                        ageRanges.map((interest, idx) => <li key={idx}>{interest}</li>)
                                     }
                                 </ul>
                                 <h3>Delivery Modes</h3>
                                 <ul>
                                     {
-                                        stats.deliveryModes.map((interest, idx) => <li key={idx}>{interest}</li>)
+                                        deliveryModes.map((interest, idx) => <li key={idx}>{interest}</li>)
                                     }
                                 </ul>
                                 <h3>Timeline</h3>
-                                <p>{stats.timeline}</p>
+                                <p>{timeline}</p>
                                 <h3>Participant Commitment Length</h3>
-                                <p>{stats.commitmentLength}</p>
+                                <p>{commitmentLength}</p>
                                 <h3>Benefits + Incentives</h3>
                                 <ul>
                                     {
-                                        stats.incentives.map((interest, idx) => <li key={idx}>{interest}</li>)
+                                        incentives.map((interest, idx) => <li key={idx}>{interest}</li>)
                                     }
                                 </ul>
                             </div>
@@ -153,9 +154,9 @@ class Project extends Component {
                     <section className={styles.additionalInformation}>
                         <h2 className={styles.sectionHeader}>ADDITIONAL INFORMATION</h2>
                         <div>
-                            <p>{additionalInformation.text}</p>
+                            <p>{additionalInformation}</p>
                             {
-                                additionalInformation.files.map((file, idx) => 
+                                additionalFiles.map((file, idx) =>
                                     <a key={idx} href={file.source}>
                                         {file.filename}
                                     </a>
