@@ -74,7 +74,7 @@ const qaForm = [
     }
 ];
 function Textbox({ placeholder }) {
-    
+
     const [ph, setPh] = React.useState(placeholder);
 
     return (
@@ -98,7 +98,7 @@ class ResearcherQuestions extends Component {
 
     setLocatedAtCornell = event => {
         console.log(event.target.value);
-        this.setState({ 
+        this.setState({
             locatedAtCornell: event.target.value,
             locationPlaceholders: event.target.value ?
             ["College", "Department"] :
@@ -134,10 +134,10 @@ class ResearcherQuestions extends Component {
                                         qa.id === 0 && this.state.locationPlaceholders &&
                                         (
                                             <div className={styles.form}>
-                                                <Textbox placeholder={ this.state.locatedAtCornell ? 'A' : 'B' } />
+                                                <Textbox placeholder={ this.state.locatedAtCornell === "true" ? 'A' : 'B' } />
                                                 <input
                                                     className={styles.mediumTextInput}
-                                                    placeholder={ this.state.locatedAtCornell ? 'A' : 'B' }
+                                                    placeholder={ this.state.locatedAtCornell === "true" ? 'A' : 'B' }
                                                     type="text"
                                                 />
                                             </div>
