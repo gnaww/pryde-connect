@@ -25,7 +25,7 @@ const Footer = () => (
                 pryde.bctr.cornell.edu
             </a>
             <p>Beebe Hall, Ithaca, NY, 14853, United States </p>
-            <p>607-254-5125 <a href="mailto:pryde@cornell.edu">pryde@cornell.edu</a></p>
+            <p>607-254-5125 | <a href="mailto:pryde@cornell.edu">pryde@cornell.edu</a></p>
         </div>
     </footer>
 );

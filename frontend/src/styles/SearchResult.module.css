@@ -17,7 +17,7 @@
 }
 
 .searchResult:hover {
-    transform: translateY(-7px);
+    transform: scale(1.02);
 }
 
 .projectResult {

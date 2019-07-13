@@ -56,7 +56,7 @@
 #welcomeBanner a:hover{
     background: none;
     transition: 0.25s ease-in-out;
-    box-shadow: inset white 0px 0px 0px 1px;
+    box-shadow: inset white 0px 0px 0px 2px;
 }
 
 #welcomeBanner button {
@@ -112,6 +112,7 @@
     font-family: Lato;
     font-size: 20px;
     letter-spacing: 0.05em;
+    line-height: 25px;
 }
 
 .aboutUs .connect {

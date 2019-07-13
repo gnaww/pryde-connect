@@ -20,6 +20,11 @@
 
 .socialMedia img {
     height: 60px;
+    transition: 0.25s;
+}
+
+.socialMedia img:hover {
+    transform: scale(1.2);
 }
 
 .contact {
@@ -38,15 +43,25 @@
 #prydeLink {
     font-weight: bold;
     font-size: 25px;
+    line-height: 50px;
 }
 
 .contact p {
     font-weight: normal;
-    font-size: 25px;
+    font-size: 20px;
     margin: 5px 0;
+    font-family: Lato;
 }
 
 .contact a {
     color: white;
     text-decoration: none;
+    font-family: Lato;
+    transition: 0.25s;
+}
+
+.contact a:hover {
+    opacity: 0.5;
+    text-decoration: none;
+    font-family: Lato;
 }
