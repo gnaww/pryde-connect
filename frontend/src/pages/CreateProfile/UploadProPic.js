@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
+import DragAndDrop from '../../components/DragAndDrop';
+
 
 class UploadProPic extends Component {
     constructor(props) {
@@ -27,21 +29,28 @@ class UploadProPic extends Component {
         this.setState({ profilePicture: proPic })
     }
 
+    setProfilePictureDragDrop = files => {
+        var proPic = URL.createObjectURL(files[0]);
+        this.setState({ profilePicture: proPic });
+    };
+
     render() {
         return (
             <div className={styles.form}>
-                <div className={styles.uploadHere}>
-                    {
-                        this.state.profilePicture === null ? (
-                            <>
-                                <p className={styles.dragAndDrop}>Drag and drop a file here</p>
-                                <p>OR</p>
-                                <label className={styles.imageUpload} for="propic">SELECT FILE TO UPLOAD</label>
-                                <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
-                            </>
-                        ) : <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.profilePicture} />
-                    }
-                </div>
+                <DragAndDrop handleDrop={this.setProfilePictureDragDrop}>
+                    <div className={styles.uploadHere}>
+                        {
+                            this.state.profilePicture === null ? (
+                                <>
+                                    <p className={styles.dragAndDrop}>Drag and drop a file here</p>
+                                    <p>OR</p>
+                                </>
+                            ) : (<img className={styles.uploadedImage} alt={"ERROR"} src={this.state.profilePicture} />)
+                        }
+                        <label className={styles.imageUpload} for="propic">SELECT FILE TO UPLOAD</label>
+                        <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
+                    </div>
+                </DragAndDrop>
             </div>
         )
     }

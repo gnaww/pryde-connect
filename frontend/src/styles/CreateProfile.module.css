@@ -269,14 +269,15 @@
 }
 
 .uploadedImage {
-    max-height: 411px;
-    width: auto;
+    height: 300px;
+    width: 200px;
+    border-radius: 50%;
 }
 
 .profileNavImg {
     composes: researcherImg;
-    width: 251px;
-    height: 209px;
+    width: 210px;
+    height: 210px;
     padding: 47px 21px 37px 21px;
 }
 

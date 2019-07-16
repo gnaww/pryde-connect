@@ -40,7 +40,7 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
+            page: 3,
             pageData: pages.map(() => { return null }),
             clickedNext: false,
             clickedBack: false

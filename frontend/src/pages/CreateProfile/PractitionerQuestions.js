@@ -14,7 +14,6 @@ class PractitionerQuestions extends Component {
             },
             roleDescriptions: getCheckedValuesArray(PractitionerInformation.RoleDescriptions),
             ageGroups: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            programTypes: getCheckedValuesArray(PractitionerInformation.YouthProgramTypes),
             deliveryTypes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
         }
@@ -28,15 +27,17 @@ class PractitionerQuestions extends Component {
         }
         function isInvalid(state) {
             var locationValid = state.location.instituition !== "" && state.location.address !== "";
-            var keys = ["roleDescriptions", "ageGroups", "programTypes", "deliveryTypes", "researchTopics"];
+            var keys = ["roleDescriptions", "ageGroups", "deliveryTypes", "researchTopics"];
             var validArray = keys.map(k => keyIsValid(state, k));
-            return !locationValid || validArray.filter(v => !v).length > 0;
+            console.log(validArray);
+            return !locationValid || validArray.filter(v => !v).length !== 0;
         }
 
         if (this.props.clickedNext) {
             var error = isInvalid(this.state);
             this.props.onSubmitData(this.state, error);
         }
+
         return null;
     }
 
