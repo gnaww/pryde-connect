@@ -9,9 +9,21 @@ class UploadProPic extends Component {
         };
     }
 
+    componentDidUpdate(_prevProps, _prevState) {
+        if (this.props.clickedNext) {
+            this.props.onSubmitData(this.state, this.state.profilePicture === null);
+        }
+        return null;
+    }
+
+    componentDidMount() {
+        if (this.props.savedData !== null) {
+            this.setState(this.props.savedData);
+        }
+    }
+
     setProfilePicture = event => {
         var proPic = URL.createObjectURL(event.target.files[0]);
-        console.log(proPic);
         this.setState({ profilePicture: proPic })
     }
 

@@ -30,7 +30,6 @@ class PractitionerQuestions extends Component {
             var locationValid = state.location.instituition !== "" && state.location.address !== "";
             var keys = ["roleDescriptions", "ageGroups", "programTypes", "deliveryTypes", "researchTopics"];
             var validArray = keys.map(k => keyIsValid(state, k));
-            console.log(validArray);
             return !locationValid || validArray.filter(v => !v).length > 0;
         }
 

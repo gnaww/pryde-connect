@@ -53,8 +53,8 @@ class OptionalQuestions extends Component {
         return (
             <div className={styles.form}>
                 {
-                    questions.map((qa) => {
-                        return getTextboxQuestion(qa, this.setTextboxValue, this.state)
+                    questions.map((qa, idx) => {
+                        return getTextboxQuestion(qa, this.setTextboxValue, this.state, idx)
                     })
                 }
             </div>

@@ -40,7 +40,7 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 3,
+            page: 0,
             pageData: pages.map(() => { return null }),
             clickedNext: false,
             clickedBack: false
@@ -77,7 +77,6 @@ class CreateProfile extends Component {
 
     render() {
         var PageContent = pages[this.state.page].content;
-        console.log(this.state.pageData);
         return (
             <div className={styles.root} >
                 <h1 className={styles.createProfile}>{this.state.page === pages.length - 1 ? "Thank you!" : "Create a profile"}</h1>
@@ -89,9 +88,8 @@ class CreateProfile extends Component {
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < pages.length - 1 ?
-                            (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />) :
-                            (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleFinish} />)
+                        this.state.page < pages.length - 1 &&
+                        (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
 
                 </div>

@@ -29,13 +29,14 @@ export const getDropDownQuestion = (qa, handlerFunction) => {
     )
 }
 
-export const getTextboxQuestion = (qa, handlerFunction, state) => {
+export const getTextboxQuestion = (qa, handlerFunction, state, index) => {
     return (
         qa.answer.type === AnswerTypes.Textbox &&
         (
             <>
                 <p className={styles.question}>{qa.questionText}</p>
                 <textarea
+                    key={index}
                     className={styles.answer}
                     placeholder={"Type your answer here"}
                     value={state[qa.answer.key]}

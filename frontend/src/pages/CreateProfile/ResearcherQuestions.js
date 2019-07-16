@@ -103,10 +103,6 @@ class ResearcherQuestions extends Component {
             var topicsSelected = state.researchTopics.filter(r => r.checked).length > 0;
             var typeSelected = state.researchType.option === "" ?
                 false : (state.researchType.option === "Other: " ? state.other !== "" : true);
-            console.log(`Location: ${locationValid ? "true" : "false"}`);
-            console.log(`Interests: ${interestsStated ? "true" : "false"}`);
-            console.log(`Topics: ${topicsSelected ? "true" : "false"}`);
-            console.log(`Type: ${topicsSelected ? "true" : "false"}`);
             return state.locatedAtCornell === null || !locationValid
                 || !interestsStated || !topicsSelected || !typeSelected;
         }
@@ -182,7 +178,6 @@ class ResearcherQuestions extends Component {
 
     setTextboxValue = key => event => {
         var val = event.target.value;
-        console.log(val)
         this.setState({
             [key]: val
         });
@@ -244,7 +239,7 @@ class ResearcherQuestions extends Component {
                 }
                 {getRadiobuttonQuestion(qa, this.setValuesRadio, this.state)}
                 {getCheckboxQuestion(qa, this.setValuesCheckbox, this.state)}
-                {getTextboxQuestion(qa, this.setTextboxValue, this.state)}
+                {getTextboxQuestion(qa, this.setTextboxValue, this.state, index)}
             </li>
         );
     }

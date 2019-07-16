@@ -271,3 +271,32 @@
     max-height: 411px;
     width: auto;
 }
+
+.profileNavImg {
+    composes: researcherImg;
+    width: 251px;
+    height: 209px;
+    padding: 47px 21px 37px 21px;
+}
+
+.navImgClicked {
+    composes: researcherImgClicked
+}
+
+.homeNavImg {
+    composes: researcherImg;
+    width: 251px;
+    height: 209px;
+    padding: 47px 21px 37px 21px;
+}
+
+.studiesNavImg {
+    composes: researcherImg;
+    width: 251px;
+    height: 201px;
+    padding: 53px 21px 37px 21px;
+}
+
+.finishPage {
+    display: flex;
+}
