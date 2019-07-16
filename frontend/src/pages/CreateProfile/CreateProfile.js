@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css'
 import BasicInfo from './BasicInfo';
 import RoleSelection from './RoleSelection';
-import PractionerQuestions from './PractionerQuestions';
+import PractitionerQuestions from './PractitionerQuestions';
 import ResearcherQuestions from './ResearcherQuestions';
 import OptionalQuestions from './OptionalQuestions';
 import UploadProPic from './UploadProPic';
@@ -20,7 +20,7 @@ var pages = [
     },
     {
         subtitle: "Great! Please complete the following fields.",
-        content: PractionerQuestions
+        content: PractitionerQuestions
     },
     {
         subtitle: "Almost there! The following questions are optional.",
@@ -40,11 +40,11 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 1,
+            page: 3,
             pageData: pages.map(() => { return null }),
             clickedNext: false,
             clickedBack: false
-        }
+        };
     }
 
     handleBack = event => {
@@ -64,8 +64,8 @@ class CreateProfile extends Component {
     handleOnSubmitData = (data, errors) => {
         if (!errors) {
             var nextPage = this.state.page + 1;
-            if(this.state.page === 1){
-                pages[nextPage].content = data.roleType === roleTypes.researcher ? ResearcherQuestions : PractionerQuestions;
+            if (this.state.page === 1) {
+                pages[nextPage].content = data.roleType === roleTypes.researcher ? ResearcherQuestions : PractitionerQuestions;
             }
             var pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;

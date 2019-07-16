@@ -1,4 +1,4 @@
 export var roleTypes = {
-    practioner: "practioners",
+    practitioner: "practitioners",
     researcher: "researcher"
 }
