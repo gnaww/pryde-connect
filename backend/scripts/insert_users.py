@@ -13,6 +13,7 @@ class User:
         self.location = location
         self.email = email
         self.phone = phone
+        self.website = website
         self.researchInterests = researchInterests
         self.researchDescription = researchDescription
         self.roles = roles
@@ -22,36 +23,29 @@ class User:
         self.researchNeeds = researchNeeds
         self.evaluationNeeds = evaluationNeeds
 
+def pump_into_servers():
+    #
+    # user1 = User("role", "display role", "affiliation", "location", "email", "phone", "website",
+    #              "research interests", "research description", "roles", "age ranges",
+    #              "youth program types", "delivery modes", "research Needs", "evaluation needs")
 
-# def pump_into_servers():
-#
-#     url = "https://localhost:8000/api/v1/rest-auth/resgistration/"
-#     headers = {
-#         'Content-Type': "application/json",
-#         'cache-control': "no-cache",
-#     }
-#
-#     for i, art in enumerate(articles):
-#         payload = {
-#             'source': art.source,
-#             'source_name': art.source_name,
-#             'author': str(art.author),
-#             'title': art.title,
-#             'description': art.description,
-#             'url': 'https://noozit-times-frontend.herokuapp.com/article/' + (str(i + 1)) + '/',
-#             'url_to_image': art.url_image,
-#             'publish_time': art.publish_time,
-#             'content': art.content
-#
-#         }
-#         # print(i)
-#         # print(art)
-#
-#         response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
-#
-#         print(response)
-#         print(response.text)
-#
-#
+
+    user1 = {
+        'email': 'test@gmail.com',
+        'password1': 'Kimber3915',
+        'password2': 'Kimber3915',
+        'first_name': 'test',
+        'last_name': 'user'
+    }
+
+    url = 'https://localhost:8000/api/v1/rest-auth/registration/'
+    headers = {
+        'Content-Type': 'application/json',
+        'cache-control': 'no-cache'
+    }
+
+    response = requests.request("POST", url, data=json.dumps(user1), headers=headers)
+    print(response)
+
 # pump_into_servers()
 
