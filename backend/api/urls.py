@@ -11,5 +11,5 @@ urlpatterns = [
 
     path('user/<int:pk>/', UserView.as_view()),
     path('user/', LoggedInUserView.as_view()),
-    path('user/<int:pk>/projects', UserProjectsList.as_view()),
+    path('user/<int:pk>/projects', UserProjectsList.as_view())
 ]

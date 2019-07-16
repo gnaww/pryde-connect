@@ -6,3 +6,4 @@ django-phonenumber-field
 phonenumbers
 django-rest-swagger
 django-cors-headers
+psycopg2
