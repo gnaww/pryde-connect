@@ -106,14 +106,6 @@ export const practitionerQAForm = [
         }
     },
     {
-        questionText: "What types of youth programs do you work with? (check all that apply)",
-        answer: {
-            type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.YouthProgramTypes,
-            key: "programTypes"
-        }
-    },
-    {
         questionText: "What types of program delivery models do you use? (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
