@@ -32,7 +32,7 @@ const Navbar = props => {
                         <Link className={styles.link} to="/myprofile">
                             MY PROFILE
                         </Link>
-                        <button className={styles.link}>
+                        <button className={styles.link} onClick={api.logout}>
                             LOGOUT
                         </button>
                     </>
