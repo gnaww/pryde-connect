@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SearchResult from '../components/SearchResult';
 import editButtonOrange from '../images/edit-button-orange.svg';
 import styles from '../styles/Project.module.css';
+import api from '../services/api/api';
 
 class Project extends Component {
     constructor(props) {
@@ -57,6 +58,12 @@ class Project extends Component {
     }
 
     componentDidMount() {
+        const { match } = this.props;
+        console.log(this.props.match);
+        const id = match.params.id;
+        api.getProjectByID(id)
+            .then(project => this.setState({ ...project }))
+            .catch(err => console.log(err));
     }
 
     render() {

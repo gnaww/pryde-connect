@@ -39,7 +39,10 @@ class Profile extends Component {
                         id: 1,
                         type: "project",
                         name: "Project Name",
-                        owner: "John Smith",
+                        owner: {
+                            firstName: "John",
+                            lastName: "Smith"
+                        },
                         status: 'completed',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     },
@@ -47,7 +50,10 @@ class Profile extends Component {
                         id: 2,
                         type: "project",
                         name: "totally a real project",
-                        owner: "Foo Bar",
+                        owner: {
+                            firstName: "Foo",
+                            lastName: "Bar"
+                        },
                         status: 'in-progress',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
                     }
@@ -72,55 +78,21 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        const { match } = this.props;
         console.log(localStorage);
-
-        api.getUser().then(response => {
-            console.log(response);
-
-            // this.setState({user: response});
-            // this.state.user.name = "barron";
-            // this.setState(user.name = response['first_name'] + ' ' + response['last_name'])
-            // this.setState({user: user.name = response['first_name'] + ' ' + response['last_name']})
-            // this.state.user.email = response['email'];
-            // this.state.user.location = response['location'];
-            // this.state.user.phone = response['phone_number'];
-            // this.state.user.website = response['website'];
-
-
-
-
-
-        }).catch(error => {
-            console.log(error);
-            // console.log(error.response.data);
-        })
-
-        // console.log("call api here");
-        // console.log(window.location.href);
-        // let url = window.location.href;
-        // console.log(url);
-        // let last_slash = url.lastIndexOf('/');
-        // let user_id = url.substr(last_slash +1);
-        // console.log(user_id);
-        //
-        //
-        // api.getUserByID(user_id).then(response => {
-        //
-        //     console.log("got a response");
-        //     console.log(response.data);
-        //     console.log(response);
-        // }).catch(error => {
-        //     console.log(error.response);
-        //     console.log(error.response.data);
-        //
-        // })
-
-
-
-
-
-
-
+        console.log(this.props.match);
+        if (match.url === "/myprofile") {
+            console.log("my profile");
+            api.getLoggedInUser()
+                .then(user => this.setState({ user: user }))
+                .catch(err => console.log(err));
+        } else {
+            const id = match.params.id;
+            console.log("user profile");
+            api.getUserByID(id)
+                .then(user => this.setState({ user: user }))
+                .catch(err => console.log(err));
+        }
     }
 
     render() {
