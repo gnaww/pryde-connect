@@ -17,8 +17,8 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: {
-                firstName: "John",
-                lastName: "Smith",
+                first_name: "John",
+                last_name: "Smith",
                 role: "Researcher",
                 displayRole: "4-H Practitioner",
                 affiliation: "Organization/Department",
@@ -40,8 +40,8 @@ class Profile extends Component {
                         type: "project",
                         name: "Project Name",
                         owner: {
-                            firstName: "John",
-                            lastName: "Smith"
+                            first_name: "John",
+                            last_name: "Smith"
                         },
                         status: 'completed',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
@@ -51,8 +51,8 @@ class Profile extends Component {
                         type: "project",
                         name: "totally a real project",
                         owner: {
-                            firstName: "Foo",
-                            lastName: "Bar"
+                            first_name: "Foo",
+                            last_name: "Bar"
                         },
                         status: 'in-progress',
                         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
@@ -152,7 +152,7 @@ class Profile extends Component {
                         <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
                     </div>
                     <div className={styles.personalInformation}>
-                        <h1>{`${user.firstName} ${user.lastName}`} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
+                        <h1>{`${user.first_name} ${user.last_name}`} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
                         <h2>{user.displayRole}</h2>
                         <h2>{user.affiliation}</h2>
                         <h2>{user.location}</h2>
