@@ -8,6 +8,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
+class AllUserView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    queryset = PUser.objects.all()
+
 class UserView(generics.RetrieveAPIView):
     permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
