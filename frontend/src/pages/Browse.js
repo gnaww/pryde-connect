@@ -203,12 +203,12 @@ class Browse extends Component {
                                 </ul>
                             </section>
                             {
-                                filterCategories.map((filterCategory, idx) => 
+                                filterCategories.map((filterCategory, idx) =>
                                     <FilterCategory
                                         key={idx}
                                         {...filterCategory}
                                         toggleVisibility={this.toggleFilterVisibility}
-                                        handleClick={this.handleFilterSelect} 
+                                        handleClick={this.handleFilterSelect}
                                     />
                                 )
                             }
