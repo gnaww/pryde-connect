@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:8000";
 const API_BASE_URL = "/api/v1";
 
 // TODO: will the value of this get updated when a user logs in/out?
-const USER_KEY = localStorage.getItem("pryde_key");
+let USER_KEY = localStorage.getItem("pryde_key");
 
 export default {
     async getLoggedInUser() {
