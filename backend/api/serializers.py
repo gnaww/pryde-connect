@@ -25,6 +25,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectShortSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
+
     class Meta:
         model = Project
         fields = ['pk', 'type', 'name', 'owner', 'status', 'summary']
@@ -44,4 +45,4 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', '`first_name', 'last_name', 'role', 'affiliation']
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation']
