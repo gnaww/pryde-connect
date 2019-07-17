@@ -67,6 +67,7 @@ class PUser(AbstractUser):
     deliveryModes = ArrayField(models.CharField(max_length=100), default=list, null=True)
     researchNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
     evaluationNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    type = models.CharField(max_length=100, default='partner')
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -94,3 +95,4 @@ class Project(models.Model):
     collaborators = JSONField(default=dict)
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
+    type = models.CharField(max_length=100, default='project')
