@@ -10,7 +10,6 @@ let USER_KEY = localStorage.getItem("pryde_key");
 
 export default {
     async getLoggedInUser() {
-        console.log(USER_KEY);
         let config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
@@ -46,7 +45,6 @@ export default {
             .then(response => {
                 if (response.status === 200) {
                     localStorage.removeItem("pryde_key");
-                    console.log("logout successful");
                     return true;
                 } else {
                     return false;

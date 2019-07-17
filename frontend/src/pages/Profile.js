@@ -56,16 +56,13 @@ class Profile extends Component {
 
     componentDidMount() {
         const { match } = this.props;
-        console.log(localStorage);
-        console.log(this.props.match);
+
         if (match.url === "/myprofile") {
-            console.log("my profile");
             api.getLoggedInUser()
                 .then(user => this.setState({ user: user }))
                 .catch(err => console.log(err));
         } else {
             const id = match.params.id;
-            console.log("user profile");
             api.getUserByID(id)
                 .then(user => this.setState({ user: user }))
                 .catch(err => console.log(err));

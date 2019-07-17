@@ -27,19 +27,16 @@ class Project extends Component {
             timeline: "",
             commitmentLength: "",
             incentives: [],
-            collaborators: [
-
-            ],
+            collaborators: [],
             additionalInformation: "",
             additionalFiles:[]
-
         };
     }
 
     componentDidMount() {
         const { match } = this.props;
-        console.log(this.props.match);
         const id = match.params.id;
+        
         api.getProjectByID(id)
             .then(project => this.setState({ ...project }))
             .catch(err => console.log(err));
