@@ -9,7 +9,8 @@ const Navbar = props => {
 
     const handleLogout = () => {
         api.logout();
-        this.props.history.push("/login")
+        props.setLoggedOut();
+        props.history.push("/login")
     }
 
     return (

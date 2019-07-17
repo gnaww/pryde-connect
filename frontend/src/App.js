@@ -18,9 +18,13 @@ class App extends Component {
         };
     }
 
+    setLoggedOut = () => {
+        this.setState({ loggedIn: false });
+    }
+
     componentDidMount() {
         if (localStorage.getItem("pryde_key")) {
-            this.setState({ loggedIn: true })
+            this.setState({ loggedIn: true });
         }
     }
 
@@ -28,7 +32,7 @@ class App extends Component {
         return (
             <Router>
                 <div className={styles.wrapper}>
-                    <Navbar loggedIn={this.state.loggedIn} />
+                    <Navbar loggedIn={this.state.loggedIn} setLoggedOut={this.setLoggedOut} />
                     <Switch>
                         <Route path="/" exact component={Homepage} />
                         <Route path="/browse" component={Browse} />

@@ -7,6 +7,7 @@ import SearchResult from '../components/SearchResult';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
 import styles from '../styles/Browse.module.css';
+import api from '../services/api/api';
 
 class Browse extends Component {
     constructor(props) {
@@ -122,6 +123,18 @@ class Browse extends Component {
 
         if (parsedURL.category) {
             this.setState({ searchProjects: parsedURL.category === "projects" });
+        }
+
+        if(!parsedURL.q) {
+            if (this.state.searchProjects) {
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
+                    .catch(err => console.log(err));
+            } else {
+                api.getUsers()
+                    .then(users => this.setState({ searchResults: users }))
+                    .catch(err => console.log(err));
+            }
         }
     }
 
@@ -269,7 +282,7 @@ class Browse extends Component {
                                         }
                                     </section>
                                 </> :
-                                <h2>Type something into the search bar above!</h2>
+                                <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
                             }
                         </section>
                     </div>

@@ -6,8 +6,5 @@ from .models import PUser, Project
 class PUserAdmin(admin.ModelAdmin):
     search_fields = ['email']
 
-
 admin.site.register(PUser, PUserAdmin)
 admin.site.register(Project)
-
-

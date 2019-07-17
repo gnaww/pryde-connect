@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-class AllUserView(generics.ListAPIView):
+class UserList(generics.ListAPIView):
     serializer_class = UserSerializer
     queryset = PUser.objects.all()
 
@@ -72,23 +72,23 @@ class CreateProject(generics.CreateAPIView):
         print("KLDJSFJSDLKJFLSDKJFLDK")
         try:
             new_project = Project.objects.create(
-                name=request.data['name'],
-                owner=user,
-                status=request.data['status'],
-                summary=request.data['summary'],
-                researchTopics=request.data['researchTopics'],
-                ageRanges=request.data['ageRanges'],
-                deliveryModes=request.data['deliveryModes'],
-                timeline=request.data['timeline'],
-                commitmentLength=request.data['timeline'],
-                incentives=request.data['incentives'],
-                collaborators=request.data['collaborators'], # TODO: this probably needs changing
-                additionalInformation=request.data['additionalInformation'],
-                additionalFiles=request.data['additionalFiles'], # TODO: this probably needs changing
+                name = request.data['name'],
+                owner = user,
+                status = request.data['status'],
+                summary = request.data['summary'],
+                researchTopics = request.data['researchTopics'],
+                ageRanges = request.data['ageRanges'],
+                deliveryModes = request.data['deliveryModes'],
+                timeline = request.data['timeline'],
+                commitmentLength = request.data['timeline'],
+                incentives = request.data['incentives'],
+                collaborators = request.data['collaborators'], # TODO: this probably needs changing
+                additionalInformation = request.data['additionalInformation'],
+                additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
             )
-            return Response({'status': 'Project successfully created.'}, status=status.HTTP_200_OK)
+            return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({
                 'status': 'Failure... something went wrong'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status = status.HTTP_400_BAD_REQUEST)

@@ -21,7 +21,11 @@ export default {
     },
     async getUserByID(id) {
         let user = await axios.get(`${BASE_URL}${API_BASE_URL}/user/${id}/`);
-        return user.data
+        return user.data;
+    },
+    async getUsers() {
+        let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`)
+        return users.data;
     },
     async register(data) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
@@ -50,15 +54,15 @@ export default {
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
     },
     async getProjects() {
-        let projects = await axios.get(`${BASE_URL}${API_BASE_URL}/project/`);
-        return projects.data
+        let projects = await axios.get(`${BASE_URL}${API_BASE_URL}/projects/`);
+        return projects.data;
     },
     async getProjectByID(id) {
         let project = await axios.get(`${BASE_URL}${API_BASE_URL}/project/${id}/`);
-        return project.data
+        return project.data;
     },
     async createProject(data) {
         let config = {
@@ -67,7 +71,7 @@ export default {
             }
         };
         // axios.defaults.headers.post['authorization'] = 'token ' + key
-        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config)
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
         return response.status === 200;
     }
 }
