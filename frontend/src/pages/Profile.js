@@ -17,47 +17,24 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: {
-                // first_name: "John",
-                // last_name: "Smith",
-                // role: "Researcher",
-                // displayRole: "4-H Practitioner",
-                // affiliation: "Organization/Department",
-                // location: "Ithaca, NY",
-                // email: "something@something.edu",
-                // phone: "1234567890",
-                // website: "https://something.com",
-                // researchInterests: ["Positive Youth Development", "Civic Engagement"],
-                // researchDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-                // roles: ["Lead youth programs", "Train volunteers"],
-                // ageRanges: ["Adolescents"],
-                // youthProgramTypes: ["Civic Engagement", "STEM"],
-                // deliveryModes: ["Afterschool Programs"],
-                // researchNeeds: ["foo"],
-                // evaluationNeeds: ["bar"],
-                // projects: [
-                //     {
-                //         id: 1,
-                //         type: "project",
-                //         name: "Project Name",
-                //         owner: {
-                //             first_name: "John",
-                //             last_name: "Smith"
-                //         },
-                //         status: 'completed',
-                //         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                //     },
-                //     {
-                //         id: 2,
-                //         type: "project",
-                //         name: "totally a real project",
-                //         owner: {
-                //             first_name: "Foo",
-                //             last_name: "Bar"
-                //         },
-                //         status: 'in-progress',
-                //         summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                //     }
-                // ]
+                first_name: "",
+                last_name: "",
+                role: "",
+                displayRole: "",
+                affiliation: "",
+                location: "",
+                email: "",
+                phone: "",
+                website: "",
+                researchInterests: [],
+                researchDescription: "",
+                roles: [],
+                ageRanges: [],
+                youthProgramTypes: [],
+                deliveryModes: [],
+                researchNeeds: [],
+                evaluationNeeds: [],
+                projects: []
             },
             statusFilter: "all",
             sortBy: "name-asc",
