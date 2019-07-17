@@ -8,7 +8,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     displayRole = serializers.IntegerField(max_value=7)
     affiliation = serializers.CharField(max_length=100)
     location = serializers.CharField(max_length=100)
-    phone = serializers.RegexField('\+[0-9]{11}')
+    phone = serializers.RegexField("[0-9]{10}")
     website = serializers.URLField()
     researchDescription = serializers.CharField(max_length=100)
     researchInterests = serializers.ListField(child=serializers.CharField(max_length=100))

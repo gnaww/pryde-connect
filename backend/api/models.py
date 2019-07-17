@@ -91,5 +91,6 @@ class Project(models.Model):
     commitmentLength = models.CharField(max_length=100)
     incentives = ArrayField(models.CharField(max_length=100), default=None)
     # collaborators = ArrayField(models.ForeignKey(PUser, on_delete=models.CASCADE))
+    collaborators = JSONField(default=dict)
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
