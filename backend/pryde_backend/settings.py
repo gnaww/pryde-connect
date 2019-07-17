@@ -103,7 +103,7 @@ AUTH_USER_MODEL = 'api.PUser'
 # settings for rest framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
         # 'rest_framework_api_key.permissions.HasAPIKey',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [

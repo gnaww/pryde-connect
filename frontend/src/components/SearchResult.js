@@ -11,7 +11,7 @@ const SearchResult = props => {
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
                     <section className={styles.projectDetails}>
                         <h3>{props.name}</h3>
-                        <h4>{`${props.owner.firstName} ${props.owner.lastName}`}</h4>
+                        <h4>{`${props.owner.first_name} ${props.owner.last_name}`}</h4>
                         <p>{props.summary}</p>
                     </section>
                     <section className={styles.stats}>
@@ -34,7 +34,7 @@ const SearchResult = props => {
                         <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />
                         <section>
                             <header>
-                                <h3>{`${props.firstName} ${props.lastName}`}</h3>
+                                <h3>{`${props.first_name} ${props.last_name}`}</h3>
                                 <img src={badge} alt="CCE badge" />
                             </header>
                             <h4>{props.role}</h4>

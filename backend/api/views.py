@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, UserSerializer
+from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer
 from .models import Project, PUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 
 class UserList(generics.ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserShortSerializer
     queryset = PUser.objects.all()
 
 
@@ -28,6 +28,11 @@ class LoggedInUserView(generics.RetrieveAPIView):
         return Response(data=serializer.data)
 
 
+class ProjectView(generics.RetrieveAPIView):
+    serializer_class = ProjectShortSerializer
+    queryset = Project.objects.all()
+
+
 class UserProjectsList(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
@@ -35,11 +40,6 @@ class UserProjectsList(generics.RetrieveAPIView):
         projects = Project.objects.filter(owner=user)
         serializer = ProjectSerializer(projects, many=True)
         return Response(data=serializer.data)
-
-
-class ProjectView(generics.RetrieveAPIView):
-    serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
 
 
 class ProjectList(generics.ListAPIView):

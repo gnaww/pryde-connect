@@ -11,8 +11,8 @@ class Project extends Component {
             id: 1,
             name: "Project Name",
             owner: {
-                firstName: "John",
-                lastName: "Smith",
+                first_name: "John",
+                last_name: "Smith",
                 affiliation: "Org Name",
                 location: "Ithaca, NY",
                 email: "something@something.edu",
@@ -31,16 +31,16 @@ class Project extends Component {
                 {
                     id: 1,
                     type: "partner",
-                    firstName: "Mary",
-                    lastName: "Jane",
+                    first_name: "Mary",
+                    last_name: "Jane",
                     role: "Practitioner",
                     affiliation: "Cornell"
                 },
                 {
                     id: 2,
                     type: "partner",
-                    firstName: "Bill",
-                    lastName: "Nye",
+                    first_name: "Bill",
+                    last_name: "Nye",
                     role: "Researcher",
                     affiliation: "Cornell"
                 }
@@ -95,7 +95,7 @@ class Project extends Component {
                     <header className={styles.projectHeader}>
                         <div>
                             <h1>{name}</h1>
-                            <h2>{`${owner.firstName} ${owner.lastName} - ${owner.affiliation}`}</h2>
+                            <h2>{`${owner.first_name} ${owner.last_name} - ${owner.affiliation}`}</h2>
                             <h2>{owner.location}</h2>
                         </div>
                         <div className={styles.projectContact}>
