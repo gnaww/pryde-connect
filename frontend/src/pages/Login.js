@@ -23,8 +23,6 @@ class Login extends Component {
     }
 
     handleLogin = event => {
-        console.log("clicked button");
-        console.log(this.state);
         event.preventDefault();
 
         api.login(this.state)
@@ -33,6 +31,7 @@ class Login extends Component {
                 console.log("login successful");
 
                 localStorage.setItem("pryde_key", response.data.key);
+                this.props.setLoggedIn();
                 this.props.history.push("/myprofile");
             })
             .catch(error => {

@@ -18,6 +18,10 @@ class App extends Component {
         };
     }
 
+    setLoggedIn = () => {
+        this.setState({ loggedIn: true });
+    }
+
     setLoggedOut = () => {
         this.setState({ loggedIn: false });
     }
@@ -36,7 +40,7 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact component={Homepage} />
                         <Route path="/browse" component={Browse} />
-                        <Route path="/login" exact component={Login} />
+                        <Route path="/login" exact render={() => <Login setLoggedIn={this.setLoggedIn} />} />
                         <Route path="/myprofile" exact component={Profile} />
                         <Route path="/user/:id" component={Profile} />
                         <Route path="/project/:id" component={Project} />
