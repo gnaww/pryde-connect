@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
 import logo from '../images/pryde-symbol.png';
 import api from '../services/api/api';
 
 const Navbar = props => {
     const { loggedIn } = props;
+
+    const handleLogout = () => {
+        api.logout();
+        this.props.history.push("/login")
+    }
 
     return (
         <nav className={styles.navbar}>
@@ -32,7 +37,7 @@ const Navbar = props => {
                         <Link className={styles.link} to="/myprofile">
                             MY PROFILE
                         </Link>
-                        <button className={styles.link} onClick={api.logout}>
+                        <button className={styles.link} onClick={handleLogout}>
                             LOGOUT
                         </button>
                     </>
@@ -51,4 +56,4 @@ const Navbar = props => {
     );
 }
 
-export default Navbar;
+export default withRouter(Navbar);
