@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
 import logo from '../images/pryde-symbol.png';

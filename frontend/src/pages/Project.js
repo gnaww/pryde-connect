@@ -8,54 +8,54 @@ class Project extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 1,
-            name: "Project Name",
-            owner: {
-                first_name: "John",
-                last_name: "Smith",
-                affiliation: "Org Name",
-                location: "Ithaca, NY",
-                email: "something@something.edu",
-                phone: "1234567890",
-                website: "https://something.com"
-            },
-            status: "completed",
-            summary: "[this is where the goal question comes in] details or summary of project or research partner] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-            researchTopics: ["Positive Youth Development", "Civic Engagement"],
-            ageRanges: ["15-17 years old"],
-            deliveryModes: ["Afterschool Programs"],
-            timeline: "Next summer",
-            commitmentLength: "1 year",
-            incentives: ["Educators", "Participants"],
-            collaborators: [
-                {
-                    id: 1,
-                    type: "partner",
-                    first_name: "Mary",
-                    last_name: "Jane",
-                    role: "Practitioner",
-                    affiliation: "Cornell"
-                },
-                {
-                    id: 2,
-                    type: "partner",
-                    first_name: "Bill",
-                    last_name: "Nye",
-                    role: "Researcher",
-                    affiliation: "Cornell"
-                }
-            ],
-            additionalInformation: "[additional information] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-            additionalFiles: [
-                {
-                    filename: "results.pdf",
-                    source: "somelinkhere"
-                },
-                {
-                    filename: "stats.pdf",
-                    source: "somelinkhere"
-                }
-            ]
+            // id: 1,
+            // name: "Project Name",
+            // owner: {
+            //     first_name: "John",
+            //     last_name: "Smith",
+            //     affiliation: "Org Name",
+            //     location: "Ithaca, NY",
+            //     email: "something@something.edu",
+            //     phone: "1234567890",
+            //     website: "https://something.com"
+            // },
+            // status: "completed",
+            // summary: "[this is where the goal question comes in] details or summary of project or research partner] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
+            // researchTopics: ["Positive Youth Development", "Civic Engagement"],
+            // ageRanges: ["15-17 years old"],
+            // deliveryModes: ["Afterschool Programs"],
+            // timeline: "Next summer",
+            // commitmentLength: "1 year",
+            // incentives: ["Educators", "Participants"],
+            // collaborators: [
+            //     {
+            //         id: 1,
+            //         type: "partner",
+            //         first_name: "Mary",
+            //         last_name: "Jane",
+            //         role: "Practitioner",
+            //         affiliation: "Cornell"
+            //     },
+            //     {
+            //         id: 2,
+            //         type: "partner",
+            //         first_name: "Bill",
+            //         last_name: "Nye",
+            //         role: "Researcher",
+            //         affiliation: "Cornell"
+            //     }
+            // ],
+            // additionalInformation: "[additional information] Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
+            // additionalFiles: [
+            //     {
+            //         filename: "results.pdf",
+            //         source: "somelinkhere"
+            //     },
+            //     {
+            //         filename: "stats.pdf",
+            //         source: "somelinkhere"
+            //     }
+            // ]
         };
     }
 
