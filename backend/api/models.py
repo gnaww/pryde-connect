@@ -36,6 +36,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 # TODO: should probably rethink the names of the fields in the PUser model, especially the role related fields
 class PUser(AbstractUser):
     # seems like these fields are already created by django auth?
@@ -61,19 +62,21 @@ class PUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(default=None, null=True, unique=False)
     website = models.URLField(default=None, null=True)
-    # researchInterests = ArrayField(models.CharField(max_length=100))
+    researchInterests = ArrayField(models.CharField(max_length=100), default=list, null=True)
     researchDescription = models.TextField()
-    # roles = ArrayField(models.CharField(max_length=100))
-    # ageRanges = ArrayField(models.CharField(max_length=100))
-    # youthProgramTypes = ArrayField(models.CharField(max_length=100))
-    # deliveryModes = ArrayField(models.CharField(max_length=100))
-    # researchNeeds = ArrayField(models.CharField(max_length=100))
-    # evaluationNeeds = ArrayField(models.CharField(max_length=100))
+    roles = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    ageRanges = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    youthProgramTypes = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    deliveryModes = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    researchNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    evaluationNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-# TODO: figure out difference between collaborators/owners, are they equivalent and will collaborators have the project show up on their profile?
+
+# TODO: figure out difference between collaborators/owners, are they equivalent
+#  and will collaborators have the project show up on their profile?
 class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
@@ -84,12 +87,12 @@ class Project(models.Model):
     )
     status = models.IntegerField(choices=STATUS, default=None, null=True)
     summary = models.TextField()
-    # researchTopics = ArrayField(models.CharField(max_length=100))
-    # ageRanges = ArrayField(models.CharField(max_length=100))
-    # deliveryModes = ArrayField(models.CharField(max_length=100))
+    researchTopics = ArrayField(models.CharField(max_length=100), default=None)
+    ageRanges = ArrayField(models.CharField(max_length=100), default=None)
+    deliveryModes = ArrayField(models.CharField(max_length=100), default=None)
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
-    # incentives = ArrayField(models.CharField(max_length=100))
-    # collaborators = ArrayField(PUser())
+    incentives = ArrayField(models.CharField(max_length=100), default=None)
+    # collaborators = ArrayField(models.ForeignKey(PUser, on_delete=models.CASCADE))
     additionalInformation = models.TextField()
-    # additionalFiles = ArrayField(models.FileField(upload_to='uploads/'))
+    additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
