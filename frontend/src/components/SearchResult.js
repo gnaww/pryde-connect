@@ -6,8 +6,15 @@ import styles from '../styles/SearchResult.module.css';
 
 const SearchResult = props => {
     if (props.type === "project") {
+        let link = ""
+        if (props.pk) {
+            link = `/project/${props.pk}`;
+        } else {
+            link = `/project/${props.id}`;
+        }
+
         return (
-            <Link className={styles.linkWrapper} to={`/project/${props.pk}`}>
+            <Link className={styles.linkWrapper} to={link}>
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
                     <section className={styles.projectDetails}>
                         <h3>{props.name}</h3>
@@ -27,8 +34,15 @@ const SearchResult = props => {
             </Link>
         );
     } else if (props.type === "partner") {
+        let link = ""
+        if (props.pk) {
+            link = `/user/${props.pk}`;
+        } else {
+            link = `/user/${props.id}`;
+        }
+
         return (
-            <Link className={styles.linkWrapper} to={`/user/${props.pk}`}>
+            <Link className={styles.linkWrapper} to={link}>
                 <div className={`${styles.searchResult} ${styles.partnerResult} ${styles[props.role.toLowerCase()]}`}>
                     <section className={styles.partnerDetails}>
                         <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />
