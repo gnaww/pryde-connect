@@ -1,0 +1,256 @@
+.container {
+    flex: 1;
+}
+
+.container h1, .container h2 {
+    font-family: Work Sans;
+}
+
+#welcomeBanner {
+    height: 700px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-clip: padding-box;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#welcomeBanner div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#welcomeBanner h1 {
+    margin: 50px 0 0 0;
+    font-size: 50px;
+}
+
+#welcomeBanner p {
+    font-family: Work Sans;
+    font-size: 25px;
+    margin: 15px 0;
+}
+
+#welcomeBanner a {
+    width: 303px;
+    height: 64px;
+    background: #49aee9;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Lato;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: white;
+    text-decoration: none;
+    margin: 50px auto;
+}
+
+#welcomeBanner button {
+    background: transparent;
+    border: none;
+    font-family: Lato;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 50px;
+    padding: 10px;
+}
+
+#welcomeBanner button:focus {
+    outline: none;
+}
+
+#welcomeBanner button span {
+    display: block;
+}
+
+#welcomeBanner button img {
+    padding-top: 20px;
+    transition: all 0.25s ease-in-out;
+}
+
+#welcomeBanner button:hover > img {
+    transform: translateY(15px);
+}
+
+.aboutUs {
+    background: #ffab3f;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.aboutUs .aboutUsText {
+    padding: 70px 50px 70px 130px;
+    flex: 1;
+}
+
+.aboutUs div h2 {
+    font-size: 40px;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.aboutUs div p {
+    font-family: Lato;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+}
+
+.aboutUs .connect {
+    width: 673px;
+    height: 350px;
+    overflow: hidden;
+}
+
+.aboutUs .connect img {
+    height: 100%;
+    position: relative;
+}
+
+.features {
+    display: flex;
+    padding-bottom: 70px;
+}
+
+.featuresText {
+    padding: 110px;
+    flex: 1;
+}
+
+.featuresText h2 {
+    font-size: 40px;
+    letter-spacing: 0.1em;
+    margin: 0;
+}
+
+.featuresText p {
+    font-family: Work Sans;
+    font-size: 25px;
+    margin-top: 25px;
+    margin-bottom: 100px;
+}
+
+.screenshots {
+    position: relative;
+    width: 680px;
+    padding: 40px 0;
+    overflow: hidden;
+}
+
+.screenshots img {
+    position: absolute;
+}
+
+.screenshots #screenshot1 {
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+}
+
+.screenshots #screenshot2 {
+    right: 0;
+    bottom: 25%;
+    z-index: 2;
+}
+
+.screenshots #screenshot3 {
+    right: 0;
+    z-index: 1;
+}
+
+.getStarted {
+    background: #49aee9;
+    display: flex;
+    color: white;
+}
+
+.actionsWrapper {
+    padding: 70px 70px 70px 110px;
+}
+
+.getStarted h2 {
+    font-size: 40px;
+    letter-spacing: 0.1em;
+    margin-bottom: 50px;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    width: 550px;
+}
+
+.actionCard {
+    width: 236px;
+    text-align: center;
+}
+
+.actionLink {
+    width: 236px;
+    height: 236px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    color: black;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.actionLink img {
+    margin: 0 auto;
+}
+
+.actionLink p {
+    margin: 0;
+}
+
+.viewStudies {
+    width: 141px;
+    height: 109px;
+    padding-top: 7px;
+    padding-bottom: 30px;
+}
+
+.addPerson {
+    width: 102px;
+    height: 136px;
+    padding-top: 3px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+}
+
+.actionDescription {
+    font-family: Lato;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    width: 185px;
+    margin: 25px auto;
+}
+
+.logoWrapper {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.logoWrapper img {
+    height: 80%;
+}

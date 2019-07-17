@@ -1,3 +1,8 @@
+.container {
+    flex: 1;
+    padding: 30px 15px;
+}
+
 .browseWrapper {
     padding: 30px 100px;
 }
@@ -70,7 +75,7 @@
 }
 
 .filtersContainer .activeCategory {
-    background-color: #E9E9E9;
+    background-color: #FFDFBF;
 }
 
 .searchResultsContainer {
@@ -87,7 +92,7 @@
     display: flex;
 }
 
-.searchResultsContainer header h3, .searchResultsContainer header h4 {
+.searchResultsHeader {
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;

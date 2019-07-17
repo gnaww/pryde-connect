@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Homepage from './pages/Homepage';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
 import CreateProfile from './pages/CreateProfile/CreateProfile';
+import Profile from './pages/Profile';
+import Project from './pages/Project';
 import PageNotFound from './pages/PageNotFound';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,14 +16,15 @@ function App() {
         <Router>
             <div className={styles.wrapper}>
                 <Navbar />
-                <main className={styles.container}>
-                    <Switch>
-                        <Route path="/login" exact component={Login} />
-                        <Route path="/browse" component={Browse} />
-                        <Route path="/signup" component={CreateProfile} />
-                        <Route component={PageNotFound} />
-                    </Switch>
-                </main>
+                <Switch>
+                    <Route path="/" exact component={Homepage} />
+                    <Route path="/browse" component={Browse} />
+                    <Route path="/login" exact component={Login} />
+                    <Route path="/signup" component={CreateProfile} />
+                    <Route path="/user/:id" component={Profile} />
+                    <Route path="/project/:id" component={Project} />
+                    <Route component={PageNotFound} />
+                </Switch>
                 <Footer />
             </div>
         </Router>
