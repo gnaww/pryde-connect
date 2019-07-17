@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
-    queryset = PUser.objects.all()
+    queryset = PUser.objects.filter(is_staff=False)
 
 
 class UserView(generics.RetrieveAPIView):
