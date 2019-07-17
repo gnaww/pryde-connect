@@ -12,6 +12,7 @@ class AllUserView(generics.ListAPIView):
     serializer_class = UserSerializer
     queryset = PUser.objects.all()
 
+
 class UserView(generics.RetrieveAPIView):
     permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
@@ -23,9 +24,6 @@ class LoggedInUserView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request, *args, **kwargs):
-        # print(request.user)
-        # print(request.auth)
-        # print(request.user.pk)
         user = PUser.objects.get(pk=request.user.pk)
         serializer = UserSerializer(user)
         return Response(data=serializer.data)
@@ -35,7 +33,7 @@ class UserProjectsList(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs['pk']
         user = PUser.objects.get(pk=pk)
-        projects = Project.objects.filter(user=user)
+        projects = Project.objects.filter(owner=user)
         serializer = ProjectSerializer(projects, many=True)
         return Response(data=serializer.data)
 
@@ -61,21 +59,32 @@ class CreateProject(generics.CreateAPIView):
         print(request.user.pk)
         user = PUser.objects.get(pk=request.user.pk)
 
+
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
+        print("KLDJSFJSDLKJFLSDKJFLDK")
         try:
             new_project = Project.objects.create(
-                name = request.data['name'],
-                owner = user,
-                status = request.data['status'],
-                summary = request.data['summary'],
-                researchTopics = request.data['researchTopics'],
-                ageRanges = request.data['ageRanges'],
-                deliveryModes = request.data['deliveryModes'],
-                timeline = request.data['timeline'],
-                commitmentLength = request.data['timeline'],
-                incentives = request.data['incentives'],
-                collaborators = request.data['collaborators'], # TODO: this probably needs changing
-                additionalInformation = request.data['additionalInformation'],
-                additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
+                name=request.data['name'],
+                owner=user,
+                status=request.data['status'],
+                summary=request.data['summary'],
+                researchTopics=request.data['researchTopics'],
+                ageRanges=request.data['ageRanges'],
+                deliveryModes=request.data['deliveryModes'],
+                timeline=request.data['timeline'],
+                commitmentLength=request.data['timeline'],
+                incentives=request.data['incentives'],
+                collaborators=request.data['collaborators'], # TODO: this probably needs changing
+                additionalInformation=request.data['additionalInformation'],
+                additionalFiles=request.data['additionalFiles'], # TODO: this probably needs changing
             )
             return Response({'status': 'Project successfully created.'}, status=status.HTTP_200_OK)
         except Exception as e:
