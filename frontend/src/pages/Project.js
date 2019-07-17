@@ -31,14 +31,16 @@ class Project extends Component {
                 {
                     id: 1,
                     type: "partner",
-                    name: "Mary Jane",
+                    firstName: "Mary",
+                    lastName: "Jane",
                     role: "Practitioner",
                     affiliation: "Cornell"
                 },
                 {
                     id: 2,
                     type: "partner",
-                    name: "Bill Nye",
+                    firstName: "Bill",
+                    lastName: "Nye",
                     role: "Researcher",
                     affiliation: "Cornell"
                 }

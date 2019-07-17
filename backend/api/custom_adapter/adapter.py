@@ -1,6 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
 
-# TODO: update this to match the new PUser model!
 class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=False):
@@ -12,7 +11,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.displayRole = data.get('displayRole')
         user.affiliation = data.get('affiliation')
         user.location = data.get('location')
-        user.phonenumber = data.get('phonenumber')
+        user.phone = data.get('phone')
         user.website = data.get('website')
         user.researchDescription = data.get('researchDescription')
         user.researchInterests = data.get('researchInterests')
@@ -22,7 +21,5 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.deliveryModes = data.get('deliveryModes')
         user.researchNeeds = data.get('researchNeeds')
         user.evaluationNeeds = data.get('evaluationNeeds')
-        # user.researchInterests = data.get('researchInterests')
-        # user.type = data.get('type')
         user.save()
         return user

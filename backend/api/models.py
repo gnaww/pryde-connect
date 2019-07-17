@@ -39,9 +39,6 @@ class UserManager(BaseUserManager):
 
 # TODO: should probably rethink the names of the fields in the PUser model, especially the role related fields
 class PUser(AbstractUser):
-    # seems like these fields are already created by django auth?
-    # firstName = models.CharField(max_length=100)
-    # lastName = models.CharField(max_length=100)
     ROLE = (
         (1, 'Practitioner'),
         (2, 'Researcher')
@@ -94,5 +91,6 @@ class Project(models.Model):
     commitmentLength = models.CharField(max_length=100)
     incentives = ArrayField(models.CharField(max_length=100), default=None)
     # collaborators = ArrayField(models.ForeignKey(PUser, on_delete=models.CASCADE))
+    collaborators = JSONField(default=dict)
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
