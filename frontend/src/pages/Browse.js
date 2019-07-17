@@ -94,11 +94,18 @@ class Browse extends Component {
                         this.setState({ searchResults: projects })
                     })
                     .catch(err => console.log(err));
-            } else {
+            } else if (parsedURL.category === "partners") {
                 api.getUsers()
                     .then(users => {
                         console.log(users)
                         this.setState({ searchResults: users })
+                    })
+                    .catch(err => console.log(err));
+            } else {
+                api.getProjects()
+                    .then(projects => {
+                        console.log(projects)
+                        this.setState({ searchResults: projects })
                     })
                     .catch(err => console.log(err));
             }
