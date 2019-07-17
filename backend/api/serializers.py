@@ -12,19 +12,18 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('pk', 'name', 'owner', 'status', 'summary')
+        fields = ['pk', 'name', 'owner', 'status', 'summary']
 
 class UserSerializer(serializers.ModelSerializer):
     projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = '__all__'
+        exclude = ['date_joined', 'groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions']
 
 # Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
-    projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ('pk', 'firstName', 'lastName', 'role', 'affiliation')
+        fields = ['pk', 'first_name', 'last_name', 'role', 'affiliation']
