@@ -23,9 +23,14 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 # Used for the project cards in the browse page
 class ProjectShortSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
+    owner = MiniUserSerializer(many=False, read_only=True)
     class Meta:
         model = Project
-        fields = ['pk', 'name', 'owner', 'status', 'summary']
+        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary']
+
+    def get_status(self, obj):
+        return obj.get_status_display()
 
 class UserSerializer(serializers.ModelSerializer):
     projects = ProjectSerializer(many=True, read_only=True)
@@ -39,4 +44,4 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'first_name', 'last_name', 'role', 'affiliation']
+        fields = ['pk', 'type', '`first_name', 'last_name', 'role', 'affiliation']

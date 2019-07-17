@@ -36,7 +36,7 @@ class Project extends Component {
     componentDidMount() {
         const { match } = this.props;
         const id = match.params.id;
-        
+
         api.getProjectByID(id)
             .then(project => this.setState({ ...project }))
             .catch(err => console.log(err));

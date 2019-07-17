@@ -7,7 +7,7 @@ import styles from '../styles/SearchResult.module.css';
 const SearchResult = props => {
     if (props.type === "project") {
         return (
-            <Link className={styles.linkWrapper} to={`/project/${props.id}`}>
+            <Link className={styles.linkWrapper} to={`/project/${props.pk}`}>
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
                     <section className={styles.projectDetails}>
                         <h3>{props.name}</h3>
@@ -28,7 +28,7 @@ const SearchResult = props => {
         );
     } else if (props.type === "partner") {
         return (
-            <Link className={styles.linkWrapper} to={`/user/${props.id}`}>
+            <Link className={styles.linkWrapper} to={`/user/${props.pk}`}>
                 <div className={`${styles.searchResult} ${styles.partnerResult} ${styles[props.role.toLowerCase()]}`}>
                     <section className={styles.partnerDetails}>
                         <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />

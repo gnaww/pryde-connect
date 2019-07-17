@@ -89,11 +89,17 @@ class Browse extends Component {
         if(!parsedURL.q) {
             if (parsedURL.category === "projects") {
                 api.getProjects()
-                    .then(projects => this.setState({ searchResults: projects }))
+                    .then(projects => {
+                        console.log(projects)
+                        this.setState({ searchResults: projects })
+                    })
                     .catch(err => console.log(err));
             } else {
                 api.getUsers()
-                    .then(users => this.setState({ searchResults: users }))
+                    .then(users => {
+                        console.log(users)
+                        this.setState({ searchResults: users })
+                    })
                     .catch(err => console.log(err));
             }
         }
@@ -243,7 +249,18 @@ class Browse extends Component {
                                         }
                                     </section>
                                 </> :
-                                <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                <>
+                                    <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                    <section className={styles.searchResults}>
+                                        {
+                                            this.state.searchResults.map((searchResult, idx) =>
+                                                <SearchResult key={idx} {...searchResult} />
+                                            )
+                                        }
+                                    </section>
+                                </>
+
+
                             }
                         </section>
                     </div>
