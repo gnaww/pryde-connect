@@ -14,7 +14,6 @@ class UserList(generics.ListAPIView):
 
 
 class UserView(generics.RetrieveAPIView):
-    permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
     queryset = PUser.objects.all()
 
@@ -58,18 +57,6 @@ class CreateProject(generics.CreateAPIView):
         print(request.data)
         print(request.user.pk)
         user = PUser.objects.get(pk=request.user.pk)
-
-
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
-        print("KLDJSFJSDLKJFLSDKJFLDK")
         try:
             new_project = Project.objects.create(
                 name = request.data['name'],
