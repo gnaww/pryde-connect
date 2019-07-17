@@ -39,9 +39,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project2 = {
@@ -54,9 +54,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project3 = {
@@ -69,9 +69,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project4 = {
@@ -84,9 +84,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project5 = {
@@ -99,9 +99,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project6 = {
@@ -114,9 +114,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project7 = {
@@ -129,9 +129,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project8 = {
@@ -144,9 +144,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project9 = {
@@ -159,9 +159,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     project10 = {
@@ -174,9 +174,9 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": {"collaborator1": "me?"},
+        "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [""]
+        "additionalFiles": []
     }
 
     projects = [project1, project2, project3, project4, project5, project6, project7, project8, project9, project10]
