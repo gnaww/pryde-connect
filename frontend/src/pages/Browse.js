@@ -126,7 +126,7 @@ class Browse extends Component {
         }
 
         if(!parsedURL.q) {
-            if (this.state.searchProjects) {
+            if (parsedURL.category === "projects") {
                 api.getProjects()
                     .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => console.log(err));
