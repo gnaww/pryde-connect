@@ -29,7 +29,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
 
 
 class ProjectView(generics.RetrieveAPIView):
-    serializer_class = ProjectShortSerializer
+    serializer_class = ProjectSerializer
     queryset = Project.objects.all()
 
 
@@ -43,7 +43,7 @@ class UserProjectsList(generics.RetrieveAPIView):
 
 
 class ProjectList(generics.ListAPIView):
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectShortSerializer
     queryset = Project.objects.all()
 
 
