@@ -163,7 +163,7 @@ class Profile extends Component {
                                 <a href={`mailto:${user.email}`}>{user.email}</a>
                             </li>
                             <li>
-                                <a href={`tel:${user.phone}`}>({user.phone.slice(0, 3)})-{user.phone.slice(3, 6)}-{user.phone.slice(6, 10)}</a>
+                                <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
                             </li>
                             <li>
                                 <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>
