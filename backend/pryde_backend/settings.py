@@ -43,20 +43,10 @@ INSTALLED_APPS = [
     # django app used by rest-auth
     'django.contrib.sites',
 
-
-
-
     # local
     'api.apps.ApiConfig',
 
-
-
-
-
-
-
     # 3rd party
-
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
@@ -66,14 +56,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
 
-
     'phonenumber_field',
 
-
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
-    'corsheaders',
-
-
+    'corsheaders'
 ]
 
 
@@ -165,10 +151,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # }
 
 MIDDLEWARE = [
-
-
     'corsheaders.middleware.CorsMiddleware',
-
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -177,9 +160,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
-
     # middleware for django-cors-headers
 ]
 
