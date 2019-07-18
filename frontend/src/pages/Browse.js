@@ -248,7 +248,26 @@ class Browse extends Component {
                                     </section>
                                 </> :
                                 <>
-                                    <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                    <header>
+                                        <div>
+                                            <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                        </div>
+                                        <CustomDropdown
+                                            handleChange={this.setSort}
+                                            name="sort"
+                                            label="SORT BY"
+                                            options={[
+                                                {
+                                                    value: "name-asc",
+                                                    text: "Name ↑"
+                                                },
+                                                {
+                                                    value: "name-desc",
+                                                    text: "Name ↓"
+                                                }
+                                            ]}
+                                        />
+                                    </header>
                                     <section className={styles.searchResults}>
                                         {
                                             this.state.searchResults.map((searchResult, idx) =>
