@@ -43,7 +43,7 @@ class OptionalQuestions extends Component {
     }
 
     setTextboxValue = key => event => {
-        var val = event.target.value;
+        let val = event.target.value;
         this.setState({
             [key]: val
         });

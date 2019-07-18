@@ -31,32 +31,8 @@ class BasicInfo extends Component {
         }
     }
 
-    handleFirstNameChange = event => {
-        this.setState({ firstName: event.target.value });
-    }
-
-    handleLastNameChange = event => {
-        this.setState({ lastName: event.target.value });
-    }
-
-    handleEmailAddressChange = event => {
-        this.setState({ emailAddress: event.target.value });
-    }
-
-    handlePasswordChange = event => {
-        this.setState({ password: event.target.value });
-    }
-
-    handlePhoneNumberChange = event => {
-        this.setState({ phoneNumber: event.target.value });
-    }
-
-    handleConfirmPasswordChange = event => {
-        this.setState({ confirmPassword: event.target.value });
-    }
-
-    handleWebsiteChange = event => {
-        this.setState({ website: event.target.value });
+    handleChange = inputField => event => {
+        this.setState({ [inputField]: event.target.value });
     }
 
     handleIsValidationErrorChange = flag => {
@@ -72,14 +48,14 @@ class BasicInfo extends Component {
                         placeholder="First Name"
                         type="text"
                         value={this.state.firstName}
-                        onChange={this.handleFirstNameChange}
+                        onChange={this.handleChange('firstName')}
                     />
                     <input
                         className={styles.smallTextInput}
                         placeholder="Last Name"
                         type="text"
                         value={this.state.lastName}
-                        onChange={this.handleLastNameChange}
+                        onChange={this.handleChange('lastName')}
                     />
                 </div>
                 <input
@@ -87,7 +63,7 @@ class BasicInfo extends Component {
                     placeholder="Email address"
                     type="text"
                     value={this.state.emailAddress}
-                    onChange={this.handleEmailAddressChange}
+                    onChange={this.handleChange('emailAddress')}
                 />
                 <div>
                     <input
@@ -95,14 +71,14 @@ class BasicInfo extends Component {
                         placeholder="Password"
                         type="password"
                         value={this.state.password}
-                        onChange={this.handlePasswordChange}
+                        onChange={this.handleChange('password')}
                     />
                     <input
                         className={styles.mediumTextInput}
                         placeholder="Phone number (optional)"
                         type="text"
                         value={this.state.phoneNumber}
-                        onChange={this.handlePhoneNumberChange}
+                        onChange={this.handleChange('phoneNumber')}
                     />
                 </div>
                 <div>
@@ -111,14 +87,14 @@ class BasicInfo extends Component {
                         placeholder="Confirm your password"
                         type="password"
                         value={this.state.confirmPassword}
-                        onChange={this.handleConfirmPasswordChange}
+                        onChange={this.handleChange('confirmPassword')}
                     />
                     <input
                         className={styles.mediumTextInput}
                         placeholder="Website (optional)"
                         type="text"
                         value={this.state.website}
-                        onChange={this.handleWebsiteChange}
+                        onChange={this.handleChange('website')}
                     />
                 </div>
                 <Validator

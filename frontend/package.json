@@ -11,8 +11,7 @@
     "react-dropzone": "^10.1.5",
     "react-forms-validator": "^1.0.8",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
-    "superagent": "^5.1.0"
+    "react-scripts": "3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

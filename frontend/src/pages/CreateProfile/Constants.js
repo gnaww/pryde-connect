@@ -3,7 +3,7 @@ export const AnswerTypes = {
     Checkbox: "checkbox",
     Textbox: "textbox",
     Radiobutton: "radiobutton"
-}
+};
 
 export const PractitionerInformation = {
     RoleDescriptions: [
@@ -47,7 +47,7 @@ export const PractitionerInformation = {
         "Civic Engagement",
         "Other: "
     ]
-}
+};
 
 export const practitionerQAForm = [
     {

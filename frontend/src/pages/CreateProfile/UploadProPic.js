@@ -25,12 +25,12 @@ class UploadProPic extends Component {
     }
 
     setProfilePicture = event => {
-        var proPic = URL.createObjectURL(event.target.files[0]);
+        let proPic = URL.createObjectURL(event.target.files[0]);
         this.setState({ profilePicture: proPic })
     }
 
     setProfilePictureDragDrop = files => {
-        var proPic = URL.createObjectURL(files[0]);
+        let proPic = URL.createObjectURL(files[0]);
         this.setState({ profilePicture: proPic });
     };
 

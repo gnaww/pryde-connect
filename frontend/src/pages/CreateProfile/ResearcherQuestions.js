@@ -90,7 +90,7 @@ class ResearcherQuestions extends Component {
 
     componentDidUpdate(_prevProps, _prevState) {
         function isInvalid(state) {
-            var locationValid;
+            let locationValid;
             if (state.locatedAtCornell) {
                 locationValid = state.location.college !== "" &&
                     state.location.department !== "";
@@ -99,16 +99,16 @@ class ResearcherQuestions extends Component {
                 locationValid = state.location.organization !== "" &&
                     state.location.address !== "";
             }
-            var interestsStated = state.researchInterests !== "";
-            var topicsSelected = state.researchTopics.filter(r => r.checked).length > 0;
-            var typeSelected = state.researchType.option === "" ?
+            let interestsStated = state.researchInterests !== "";
+            let topicsSelected = state.researchTopics.filter(r => r.checked).length > 0;
+            let typeSelected = state.researchType.option === "" ?
                 false : (state.researchType.option === "Other: " ? state.other !== "" : true);
             return state.locatedAtCornell === null || !locationValid
                 || !interestsStated || !topicsSelected || !typeSelected;
         }
 
         if (this.props.clickedNext) {
-            var error = isInvalid(this.state);
+            let error = isInvalid(this.state);
             this.props.onSubmitData(this.state, error);
         }
         return null;
@@ -134,7 +134,7 @@ class ResearcherQuestions extends Component {
     }
 
     setValuesCheckbox = (key, index, text) => {
-        var copy = Array.from(this.state[key]);
+        let copy = Array.from(this.state[key]);
         if (text !== null) {
             copy[index].other = text;
         }
@@ -167,7 +167,7 @@ class ResearcherQuestions extends Component {
     }
 
     setLocationTextbox = key => event => {
-        var value = event.target.value;
+        let value = event.target.value;
         this.setState((prevState, _props) => ({
             location: {
                 ...prevState.location,
@@ -177,7 +177,7 @@ class ResearcherQuestions extends Component {
     }
 
     setTextboxValue = key => event => {
-        var val = event.target.value;
+        let val = event.target.value;
         this.setState({
             [key]: val
         });

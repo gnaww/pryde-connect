@@ -9,7 +9,7 @@ class PractitionerQuestions extends Component {
         this.state = {
             locatedAtCornell: null,
             location: {
-                instituition: "",
+                institution: "",
                 address: ""
             },
             roleDescriptions: getCheckedValuesArray(PractitionerInformation.RoleDescriptions),
@@ -21,20 +21,20 @@ class PractitionerQuestions extends Component {
 
     componentDidUpdate(_prevProps, _prevState) {
         function keyIsValid(state, key) {
-            var last = state[key].length - 1;
+            let last = state[key].length - 1;
             return state[key].filter(r => r.checked).length > 0
                 && (!state[key][last].checked || state[key][last].other !== "");
         }
+
         function isInvalid(state) {
-            var locationValid = state.location.instituition !== "" && state.location.address !== "";
-            var keys = ["roleDescriptions", "ageGroups", "deliveryTypes", "researchTopics"];
-            var validArray = keys.map(k => keyIsValid(state, k));
-            console.log(validArray);
+            let locationValid = state.location.institution !== "" && state.location.address !== "";
+            let keys = ["roleDescriptions", "ageGroups", "deliveryTypes", "researchTopics"];
+            let validArray = keys.map(k => keyIsValid(state, k));
             return !locationValid || validArray.filter(v => !v).length !== 0;
         }
 
         if (this.props.clickedNext) {
-            var error = isInvalid(this.state);
+            let error = isInvalid(this.state);
             this.props.onSubmitData(this.state, error);
         }
 
@@ -51,7 +51,7 @@ class PractitionerQuestions extends Component {
         this.setState({
             locatedAtCornell: event.target.value,
             location: {
-                instituition: "",
+                institution: "",
                 address: ""
             }
         });
@@ -60,14 +60,14 @@ class PractitionerQuestions extends Component {
     setLocationDropdown = event => {
         this.setState({
             location: {
-                instituition: "Cornell Cooperative Extension",
+                institution: "Cornell Cooperative Extension",
                 address: event.target.value
             }
         });
     }
 
     setLocationTextbox = key => event => {
-        var value = event.target.value;
+        let value = event.target.value;
         this.setState((prevState, _props) => ({
             location: {
                 ...prevState.location,
@@ -77,7 +77,7 @@ class PractitionerQuestions extends Component {
     }
 
     setValues = (key, index, text) => {
-        var copy = Array.from(this.state[key]);
+        let copy = Array.from(this.state[key]);
         if (text !== null) {
             copy[index].other = text;
         }
@@ -109,10 +109,10 @@ class PractitionerQuestions extends Component {
                                     <>
                                         <input
                                             className={styles.longTextInput}
-                                            placeholder="What is your instituition or organization?"
+                                            placeholder="What is your institution or organization?"
                                             type="text"
-                                            value={this.state.location.instituition}
-                                            onChange={this.setLocationTextbox("instituition")}
+                                            value={this.state.location.institution}
+                                            onChange={this.setLocationTextbox("institution")}
                                         />
                                         <input
                                             className={styles.longTextInput}

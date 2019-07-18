@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../../styles/CreateProfile.module.css'
+import styles from '../../styles/CreateProfile.module.css';
 import BasicInfo from './BasicInfo';
 import RoleSelection from './RoleSelection';
 import PractitionerQuestions from './PractitionerQuestions';
@@ -9,7 +9,7 @@ import UploadProPic from './UploadProPic';
 import ReviewFinish from './ReviewFinish';
 import { roleTypes } from './Options';
 
-var pages = [
+let pages = [
     {
         subtitle: "Welcome! Please complete the following fields.",
         content: BasicInfo
@@ -57,17 +57,13 @@ class CreateProfile extends Component {
         this.setState({ clickedNext: true });
     }
 
-    handleFinish = event => {
-        event.preventDefault();
-    }
-
     handleOnSubmitData = (data, errors) => {
         if (!errors) {
-            var nextPage = this.state.page + 1;
+            let nextPage = this.state.page + 1;
             if (this.state.page === 1) {
                 pages[nextPage].content = data.roleType === roleTypes.researcher ? ResearcherQuestions : PractitionerQuestions;
             }
-            var pageDataCopy = Array.from(this.state.pageData);
+            let pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;
             this.setState({ pageData: pageDataCopy });
             this.setState({ page: nextPage });
@@ -76,7 +72,7 @@ class CreateProfile extends Component {
     }
 
     render() {
-        var PageContent = pages[this.state.page].content;
+        let PageContent = pages[this.state.page].content;
         return (
             <div className={styles.root} >
                 <h1 className={styles.createProfile}>{this.state.page === pages.length - 1 ? "Thank you!" : "Create a profile"}</h1>

@@ -1,13 +1,20 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+
 class DragAndDrop extends Component {
-    state = {
-        drag: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            drag: false
+        };
     }
+
     dropRef = React.createRef()
+
     handleDrag = (e) => {
         e.preventDefault()
         e.stopPropagation()
     }
+
     handleDragIn = (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -16,6 +23,7 @@ class DragAndDrop extends Component {
             this.setState({ drag: true })
         }
     }
+
     handleDragOut = (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -41,6 +49,7 @@ class DragAndDrop extends Component {
         div.addEventListener('dragover', this.handleDrag)
         div.addEventListener('drop', this.handleDrop)
     }
+
     componentWillUnmount() {
         let div = this.dropRef.current
         div.removeEventListener('dragenter', this.handleDragIn)
@@ -48,6 +57,7 @@ class DragAndDrop extends Component {
         div.removeEventListener('dragover', this.handleDrag)
         div.removeEventListener('drop', this.handleDrop)
     }
+
     render() {
         return (
             <div
@@ -78,13 +88,12 @@ class DragAndDrop extends Component {
                                 fontSize: 36
                             }}
                         >
-                            <div>drop here :)</div>
                         </div>
                     </div>
                 }
                 {this.props.children}
             </div>
-        )
+        );
     }
 }
 export default DragAndDrop;

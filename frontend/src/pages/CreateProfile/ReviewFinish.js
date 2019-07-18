@@ -48,7 +48,7 @@ class ReviewFinish extends Component {
                                         className={nav.unclicked}
                                         src={nav.img}
                                         onClick={this.handleClick(index)}
-                                        alt={"TODO"}
+                                        alt={"Go to another page."}
                                     />
                                 </Link>
                             </div>

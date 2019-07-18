@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import researcher from '../../images/researcher.svg';
 import practitioner from '../../images/practitioner.svg';
-import { roleTypes } from './Options'
+import { roleTypes } from './Options';
 
 const roleOptions = [
     {
@@ -19,7 +19,6 @@ const roleOptions = [
         unclicked: styles.practitionerImg,
         clicked: styles.practitionerImgClicked
     }
-
 ];
 
 class RoleSelection extends Component {
@@ -63,7 +62,7 @@ class RoleSelection extends Component {
                                     className={this.state.clicked === index ? role.clicked : role.unclicked}
                                     src={role.img}
                                     onClick={() => this.handleSelectRole(index, role.value)}
-                                    alt={"TODO"}
+                                    alt={"Choose a role."}
                                 />
                                 <p className={styles.roleText}>{role.text}</p>
                             </div>

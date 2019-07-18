@@ -1,4 +1,4 @@
-export var roleTypes = {
+export let roleTypes = {
     practitioner: "practitioners",
     researcher: "researcher"
 }
