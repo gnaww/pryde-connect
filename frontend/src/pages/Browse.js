@@ -80,7 +80,7 @@ class Browse extends Component {
     componentDidMount() {
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        this.setState({ query: parsedURL.q });
+        this.setState({ query: parsedURL.q ? parsedURL.q : '' });
 
         if (parsedURL.category) {
             this.setState({ searchProjects: parsedURL.category === "projects" });
@@ -89,24 +89,15 @@ class Browse extends Component {
         if(!parsedURL.q) {
             if (parsedURL.category === "projects") {
                 api.getProjects()
-                    .then(projects => {
-                        console.log(projects)
-                        this.setState({ searchResults: projects })
-                    })
+                    .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => console.log(err));
             } else if (parsedURL.category === "partners") {
                 api.getUsers()
-                    .then(users => {
-                        console.log(users)
-                        this.setState({ searchResults: users })
-                    })
+                    .then(users => this.setState({ searchResults: users }))
                     .catch(err => console.log(err));
             } else {
                 api.getProjects()
-                    .then(projects => {
-                        console.log(projects)
-                        this.setState({ searchResults: projects })
-                    })
+                    .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => console.log(err));
             }
         }

@@ -225,9 +225,9 @@ class Profile extends Component {
                         <div>
                             {
                                 this.state.statusFilter === "all" ?
-                                    user.projects.map(project => <SearchResult {...project} />)
+                                    user.projects.map((project, idx) => <SearchResult key={idx} {...project} />)
                                 :
-                                    user.projects.filter(project => project.status === this.state.statusFilter).map(project => <SearchResult {...project} />)
+                                    user.projects.filter(project=> project.status === this.state.statusFilter).map((project, idx) => <SearchResult key={idx} {...project} />)
                             }
                         </div>
                     </section>
