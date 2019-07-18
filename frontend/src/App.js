@@ -40,11 +40,11 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact component={Homepage} />
                         <Route path="/browse" component={Browse} />
-                        <Route path="/login" exact render={() => {
-                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Login setLoggedIn={this.setLoggedIn} />
+                        <Route path="/login" exact render={renderProps => {
+                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Login setLoggedIn={this.setLoggedIn} {...renderProps} />
                         }} />
-                        <Route path="/myprofile" exact render={() => {
-                            return !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile />
+                        <Route path="/myprofile" exact render={renderProps => {
+                            return !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile {...renderProps} />
                         }} />
                         <Route path="/user/:id" component={Profile} />
                         <Route path="/project/:id" component={Project} />
