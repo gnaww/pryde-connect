@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Homepage from './pages/Homepage';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
@@ -40,8 +40,12 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact component={Homepage} />
                         <Route path="/browse" component={Browse} />
-                        <Route path="/login" exact render={() => <Login setLoggedIn={this.setLoggedIn} />} />
-                        <Route path="/myprofile" exact component={Profile} />
+                        <Route path="/login" exact render={() => {
+                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Login setLoggedIn={this.setLoggedIn} />
+                        }} />
+                        <Route path="/myprofile" exact render={() => {
+                            return !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile />
+                        }} />
                         <Route path="/user/:id" component={Profile} />
                         <Route path="/project/:id" component={Project} />
                         <Route component={PageNotFound} />
