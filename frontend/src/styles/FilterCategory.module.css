@@ -1,5 +1,5 @@
 .filterCategory {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .filterCategory h4 {
@@ -25,6 +25,9 @@
 .filterCategory label {
     margin-left: -4px;
     margin-right: 0;
+    margin-top: 10px;
+    font-size: 16px;
+    font-family: Lato;
 }
 
 .filterCategory .checkbox:hover {
