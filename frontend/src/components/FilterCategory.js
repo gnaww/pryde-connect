@@ -30,7 +30,7 @@ const FilterCategory = ({ isVisible, toggleVisibility, handleClick, categoryName
                                 <li key={idx}>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox 
+                                            <Checkbox
                                                 color="default"
                                                 className={styles.checkbox}
                                                 name={categoryName.toLowerCase()}
