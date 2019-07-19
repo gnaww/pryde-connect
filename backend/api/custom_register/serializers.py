@@ -5,7 +5,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)
     role = serializers.IntegerField(max_value=2)
-    displayRole = serializers.IntegerField(max_value=7)
+    displayRole = serializers.CharField(max_length=50)
     affiliation = serializers.CharField(max_length=100)
     location = serializers.CharField(max_length=100)
     phone = serializers.RegexField("[0-9]{10}")
@@ -15,8 +15,12 @@ class CustomRegisterSerializer(RegisterSerializer):
     roles = serializers.ListField(child=serializers.CharField(max_length=100))
     ageRanges = serializers.ListField(child=serializers.CharField(max_length=100))
     deliveryModes = serializers.ListField(child=serializers.CharField(max_length=100))
-    researchNeeds = serializers.ListField(child=serializers.CharField(max_length=100))
-    evaluationNeeds = serializers.ListField(child=serializers.CharField(max_length=100))
+
+    researchNeeds = serializers.CharField(max_length=100)
+    evaluationNeeds = serializers.CharField(max_length=100)
+
+    locatedAtCornell = serializers.BooleanField()
+    locatedAtCCE = serializers.BooleanField()
 
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
@@ -36,5 +40,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         data_dict['deliveryModes'] = self.validated_data.get('deliveryModes', '')
         data_dict['researchNeeds'] = self.validated_data.get('researchNeeds', '')
         data_dict['evaluationNeeds'] = self.validated_data.get('evaluationNeeds', '')
+        data_dict['locatedAtCCE'] = self.validated_data.get('locatedAtCCE', '')
+        data_dict['locatedAtCornell'] = self.validated_data.get('locatedAtCornell', '')
+
 
         return data_dict

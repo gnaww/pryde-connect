@@ -20,5 +20,8 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.deliveryModes = data.get('deliveryModes')
         user.researchNeeds = data.get('researchNeeds')
         user.evaluationNeeds = data.get('evaluationNeeds')
+
+        user.locatedAtCornell = data.get('locatedAtCornell')
+        user.locatedAtCCE = data.get('locatedAtCCE')
         user.save()
         return user

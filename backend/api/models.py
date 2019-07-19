@@ -85,3 +85,6 @@ class Project(models.Model):
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
     type = models.CharField(max_length=100, default='project')
+
+
+
