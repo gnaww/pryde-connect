@@ -71,8 +71,11 @@ class CreateProfile extends Component {
         this.setState({ clickedNext: false });
     }
 
-    createProfile = () => {
+    createProfile = event => {
         console.log("send all data to API here");
+        console.log(this.state.pageData);
+        event.preventDefault();
+        this.setState({ clickedNext: true });
     }
 
     render() {
@@ -93,7 +96,7 @@ class CreateProfile extends Component {
                     }
                     {
                         this.state.page === pages.length - 2 &&
-                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
+                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.createProfile} />)
                     }
                 </div>
             </div>

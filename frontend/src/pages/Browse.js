@@ -77,7 +77,19 @@ class Browse extends Component {
         this.setState({ sortBy: event.target.value });
     }
 
+    submitQuery = event => {
+        event.preventDefault();
+
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        parsedURL.q = this.state.query;
+
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
+        window.location.reload();
+    }
+
     componentDidMount() {
+        console.log('mount')
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         this.setState({ query: parsedURL.q ? parsedURL.q : '' });
@@ -86,7 +98,9 @@ class Browse extends Component {
             this.setState({ searchProjects: parsedURL.category === "projects" });
         }
 
-        if(!parsedURL.q) {
+        const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
+
+        if(!parsedURL.q && noFiltersSelected) {
             if (parsedURL.category === "projects") {
                 api.getProjects()
                     .then(projects => this.setState({ searchResults: projects }))
@@ -105,6 +119,7 @@ class Browse extends Component {
 
     render() {
         const parsedURL = queryString.parse(this.props.location.search, { arrayFormat: "comma" });
+        const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
         const filterCategories = [
             {
                 categoryName: "Affiliation",
@@ -192,7 +207,7 @@ class Browse extends Component {
                             }
                         </aside>
                         <section className={styles.searchResultsContainer}>
-                            <form className={styles.searchForm}>
+                            <form className={styles.searchForm} onSubmit={this.submitQuery}>
                                 <div>
                                     <input
                                         type="text"
@@ -216,12 +231,11 @@ class Browse extends Component {
                             </form>
                             {!this.state.searchProjects && <img className={styles.map} src={map} alt="New York map" />}
                             {
-                                parsedURL.q ?
+                                !parsedURL.q && noFiltersSelected ?
                                 <>
                                     <header>
                                         <div>
-                                            <h3 className={styles.searchResultsHeader}>{this.state.searchResults.length} results</h3>
-                                            <h3 className={styles.searchResultsHeader}>Results for "{parsedURL.q}"</h3>
+                                            <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }{` (${this.state.searchResults.length} results)`}</h2>
                                         </div>
                                         <CustomDropdown
                                             handleChange={this.setSort}
@@ -246,11 +260,12 @@ class Browse extends Component {
                                             )
                                         }
                                     </section>
-                                </> :
+                                </>
+                                :
                                 <>
                                     <header>
                                         <div>
-                                            <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                            <h2>{`${this.state.searchResults.length} results`}</h2>
                                         </div>
                                         <CustomDropdown
                                             handleChange={this.setSort}
