@@ -302,9 +302,11 @@ span.qaOptionText {
 }
 
 .disclaimer {
+    font-family: Lato;
     margin: 0;
-    color: #FF7F00;
-    font-size: 20px;
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    margin-bottom: 50px;
 }
 
 .uploadedImage {

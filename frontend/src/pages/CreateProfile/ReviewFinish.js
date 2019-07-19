@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from '../../styles/CreateProfile.module.css';
 import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
-import StudiesButton from '../../images/studies.png';
+import ProjectsButton from '../../images/projects.png';
 
 const navigationOptions = [
     {
@@ -19,12 +19,11 @@ const navigationOptions = [
         text: "BACK TO HOME"
     },
     {
-        img: StudiesButton,
+        img: ProjectsButton,
         styling: styles.studiesNavImg,
         link: "/browse",
-        text: "BROWSE STUDIES"
+        text: "BROWSE PROJECTS"
     }
-
 ];
 
 const ReviewFinish = () => (

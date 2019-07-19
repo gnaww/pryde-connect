@@ -15,7 +15,7 @@ let pages = [
         content: BasicInfo
     },
     {
-        subtitle: "Which of the following best describes you?*",
+        subtitle: "Which of the following best describes you?",
         content: RoleSelection
     },
     {

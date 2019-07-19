@@ -34,7 +34,8 @@ export const PractitionerInformation = {
         "Middle Childhood (6-8 years)",
         "Middle Childhood (9-11 years)",
         "Young Teens (12-14 years)",
-        "Teenagers (15-17 years)"
+        "Teenagers (15-17 years)",
+        "Young adults (18-24 years)"
     ],
     ProgramDeliveryModels: [
         "Afterschool programs",
