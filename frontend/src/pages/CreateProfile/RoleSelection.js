@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import researcher from '../../images/researcher.svg';
 import practitioner from '../../images/practitioner.svg';
-import { roleTypes } from './Options';
+import { ROLE_TYPE } from './FormContent';
 
 const roleOptions = [
     {
         text: "Cornell faculty, academic staff, graduate or undergraduate student, or other primarily research-focused role.",
-        value: roleTypes.researcher,
+        value: ROLE_TYPE.researcher,
         img: researcher,
         unclicked: styles.researcherImg,
         clicked: styles.researcherImgClicked
     },
     {
         text: "4-H Educator, other Cornell Cooperative Extension (CCE) Role, or other primarily practice-focused role.",
-        value: roleTypes.practitioner,
+        value: ROLE_TYPE.practitioner,
         img: practitioner,
         unclicked: styles.practitionerImg,
         clicked: styles.practitionerImgClicked
@@ -34,7 +34,6 @@ class RoleSelection extends Component {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, this.state.roleType === "");
         }
-        return null;
     }
 
     componentDidMount() {
@@ -53,23 +52,26 @@ class RoleSelection extends Component {
 
     render() {
         return (
-            <div className={styles.rolePage}>
-                {
-                    roleOptions.map((role, index) => {
-                        return (
-                            <div className={styles.roleCard} key={index}>
-                                <img
-                                    className={this.state.clicked === index ? role.clicked : role.unclicked}
-                                    src={role.img}
-                                    onClick={() => this.handleSelectRole(index, role.value)}
-                                    alt={"Choose a role."}
-                                />
-                                <p className={styles.roleText}>{role.text}</p>
-                            </div>
-                        )
-                    })
-                }
-            </div>
+            <>
+                <div className={styles.rolePage}>
+                    {
+                        roleOptions.map((role, index) => {
+                            return (
+                                <div className={styles.roleCard} key={index}>
+                                    <img
+                                        className={this.state.clicked === index ? role.clicked : role.unclicked}
+                                        src={role.img}
+                                        onClick={() => this.handleSelectRole(index, role.value)}
+                                        alt="Choose a role."
+                                    />
+                                    <p className={styles.roleText}>{role.text}</p>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <p className={styles.disclaimer}>*Choosing either option will <b><i>not</i></b> restrict you from any of PRYDE Research Connect's features!</p>
+            </>
         )
     }
 }
