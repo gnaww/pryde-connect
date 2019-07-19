@@ -20,8 +20,8 @@ function App() {
                     <Route path="/" exact component={Homepage} />
                     <Route path="/browse" component={Browse} />
                     <Route path="/login" exact component={Login} />
-                    <Route path="/signup" render={() => {
-                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <CreateProfile />
+                    <Route path="/signup" render={renderProps => {
+                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <CreateProfile {...renderProps} />
                         }} />
                     <Route path="/user/:id" component={Profile} />
                     <Route path="/project/:id" component={Project} />
