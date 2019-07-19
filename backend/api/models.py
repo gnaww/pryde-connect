@@ -80,11 +80,15 @@ class Project(models.Model):
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
     incentives = ArrayField(models.CharField(max_length=100), default=None)
-    # collaborators = ArrayField(models.ForeignKey(PUser, on_delete=models.CASCADE))
     collaborators = JSONField(default=dict)
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
     type = models.CharField(max_length=100, default='project')
 
 
-
+class Collaborators(models.Model):
+    collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    editPermission = models.BooleanField()
+    deletePermission = models.BooleanField()
+    addCollaboratorPermission = models.BooleanField()
