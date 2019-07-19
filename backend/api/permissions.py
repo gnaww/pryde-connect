@@ -3,7 +3,7 @@ from .models import PUser, Project, Collaborators
 
 
 class CanAddCollaborator(permissions.BasePermission):
-    message = 'You cannot add collaborators to this project'
+    message = 'You do not have permission to add collaborators to this project'
 
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
@@ -19,32 +19,39 @@ class CanAddCollaborator(permissions.BasePermission):
         # Instance must have an attribute named `owner`.
 
         try:
-            hasCollabPermission = Collaborators.objects.get(project=obj, collaborator=request.user).addCollaboratorPermission
+            hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).addCollaboratorPermission
 
         except Exception as e:
-            hasCollabPermission = False
+            hasPermission = False
 
-        return (obj.owner == request.user) or hasCollabPermission
+        return (obj.owner == request.user) or hasPermission
 
 
 class CanDeleteProject(permissions.BasePermission):
-    message = "You do not have permission to delete this!!"
+    message = "You do not have permission to delete this project"
 
     def has_object_permission(self, request, view, obj):
-        #
-        # print("HELLO WORLD")
-        # print("My first custom permission")
-        # print(request)
-        # print(view)
-        # print(obj.owner)
-        # print(request.user)
 
-        # get the collaborators on the project
         try:
-           hasCollabPermission = Collaborators.objects.get(project=obj, collaborator=request.user).deletePermission
+           hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).deletePermission
 
         except Exception as e:
-            hasCollabPermission = False
+            hasPermission = False
 
         # Instance obj must have an attribute named `owner`.
-        return (obj.owner == request.user) or hasCollabPermission
+        return (obj.owner == request.user) or hasPermission
+
+
+class CanEditProject(permissions.BasePermission):
+    message = "You do not have permission to make edits on this project"
+
+    def has_object_permission(self, request, view, obj):
+
+        try:
+            hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).editPermission
+
+        except Exception as e:
+            hasPermission = False
+
+        # Instance obj must have an attribute named `owner`.
+        return (obj.owner == request.user) or hasPermission
