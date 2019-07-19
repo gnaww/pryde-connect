@@ -73,7 +73,6 @@ class CreateProject(generics.CreateAPIView):
                 timeline = request.data['timeline'],
                 commitmentLength = request.data['timeline'],
                 incentives = request.data['incentives'],
-                # collaborators = request.data['collaborators'], # TODO: this probably needs changing
                 additionalInformation = request.data['additionalInformation'],
                 additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
             )
