@@ -20,11 +20,17 @@ class MiniUserSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
-    collaborators = CollaboratorSerializer(many=True, read_only=True)
+    collaborators = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = '__all__'
+
+    def get_collaborators(self, obj):
+        #query for them here and serialize with CollaboratorSerializer
+        followers_queryset = Collaborators.objects.filter(project=obj)
+        return CollaboratorSerializer(followers_queryset, many=True).data
+
 
     def get_status(self, obj):
         return obj.get_status_display()
