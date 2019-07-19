@@ -30,7 +30,6 @@ class Profile extends Component {
                 researchDescription: "",
                 roles: [],
                 ageRanges: [],
-                youthProgramTypes: [],
                 deliveryModes: [],
                 researchNeeds: [],
                 evaluationNeeds: [],
@@ -176,12 +175,6 @@ class Profile extends Component {
                                         <ul>
                                             {
                                                 user.ageRanges.map((ageRange, idx) => <li key={idx}>{ageRange}</li>)
-                                            }
-                                        </ul>
-                                        <h2>Types of Youth Programs</h2>
-                                        <ul>
-                                            {
-                                                user.youthProgramTypes.map((youthProgram, idx) => <li key={idx}>{youthProgram}</li>)
                                             }
                                         </ul>
                                         <h2>Delivery Modes</h2>

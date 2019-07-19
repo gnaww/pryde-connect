@@ -37,25 +37,17 @@ class UserManager(BaseUserManager):
         return user
 
 
-# TODO: should probably rethink the names of the fields in the PUser model, especially the role related fields
 class PUser(AbstractUser):
     ROLE = (
         (1, 'Practitioner'),
         (2, 'Researcher')
     )
+    locatedAtCornell = models.BooleanField(default=False)
+    locatedAtCCE = models.BooleanField(default=False)
     role = models.IntegerField(choices=ROLE, default=None, null=True)
-    DISPLAY_ROLE = (
-        (1, '4-H Educator'),
-        (2, 'Other CCE Role'),
-        (3, 'Practice Focused Role'),
-        (4, 'Cornell Faculty'),
-        (5, 'Cornell Student'),
-        (6, 'Research Focused Role'),
-        (7, '4-H Practitioner')
-    )
-    displayRole = models.IntegerField(choices=DISPLAY_ROLE, default=None, null=True)
+    displayRole = models.CharField(max_length=50, default=None, null=True)
     affiliation = models.CharField(max_length=100)
-    location = models.CharField(max_length=30, null=True, default=None)
+    location = models.CharField(max_length=100, null=True, default=None)
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(default=None, null=True, unique=False)
     website = models.URLField(default=None, null=True)
@@ -63,18 +55,15 @@ class PUser(AbstractUser):
     researchDescription = models.TextField()
     roles = ArrayField(models.CharField(max_length=100), default=list, null=True)
     ageRanges = ArrayField(models.CharField(max_length=100), default=list, null=True)
-    youthProgramTypes = ArrayField(models.CharField(max_length=100), default=list, null=True)
     deliveryModes = ArrayField(models.CharField(max_length=100), default=list, null=True)
-    researchNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
-    evaluationNeeds = ArrayField(models.CharField(max_length=100), default=list, null=True)
-    type = models.CharField(max_length=100, default='partner')
+    researchNeeds = models.TextField()
+    evaluationNeeds = models.TextField()
+    type = models.CharField(max_length=15, default='partner')
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
 
-# TODO: figure out difference between collaborators/owners, are they equivalent
-#  and will collaborators have the project show up on their profile?
 class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)

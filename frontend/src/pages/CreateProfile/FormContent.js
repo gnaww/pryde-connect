@@ -36,13 +36,6 @@ export const PractitionerInformation = {
         "Young Teens (12-14 years)",
         "Teenagers (15-17 years)"
     ],
-    YouthProgramTypes: [
-        "Animal Science",
-        "Civic Engagement",
-        "Cooking",
-        "STEM",
-        "Other: "
-    ],
     ProgramDeliveryModels: [
         "Afterschool programs",
         "Camps",

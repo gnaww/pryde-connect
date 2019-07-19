@@ -21,10 +21,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_status(self, obj):
         return obj.get_status_display()
 
+
 # Used for the project cards in the browse page
 class ProjectShortSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
+
     class Meta:
         model = Project
         fields = ['pk', 'type', 'name', 'owner', 'status', 'summary']
@@ -35,8 +37,8 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     projects = ProjectSerializer(many=True, read_only=True)
-    displayRole = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
+
     class Meta:
         model = get_user_model()
         exclude = ['date_joined', 'groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions']
@@ -44,12 +46,11 @@ class UserSerializer(serializers.ModelSerializer):
     def get_role(self, obj):
         return obj.get_role_display()
 
-    def get_displayRole(self, obj):
-        return obj.get_displayRole_display()
+
 # Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
-    # displayRole = serializers.SerializerMethodField()
+
     class Meta:
         model = get_user_model()
         fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation',]

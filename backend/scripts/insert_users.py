@@ -5,7 +5,7 @@ import json
 class User:
 
     def __init__(self, role, display_role, affiliation, location, email, phone, website,
-                 researchInterests, researchDescription, roles, ageRanges, youthProgramTypes, deliveryModes,
+                 researchInterests, researchDescription, roles, ageRanges, deliveryModes,
                  researchNeeds, evaluationNeeds):
         self.role = role
         self.display_role = display_role
@@ -18,7 +18,6 @@ class User:
         self.researchDescription = researchDescription
         self.roles = roles
         self.ageRanges = ageRanges
-        self.youthProgramTypes = youthProgramTypes
         self.deliveryModes = deliveryModes
         self.researchNeeds = researchNeeds
         self.evaluationNeeds = evaluationNeeds
@@ -38,7 +37,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user1",
         "role": 1,
-        "displayRole": 3,
+        "displayRole": "Practice Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -47,10 +46,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     user2 = {
@@ -60,7 +60,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user1",
         "role": 1,
-        "displayRole": 3,
+        "displayRole": "Practice Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -69,10 +69,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     user3 = {
@@ -82,7 +83,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 1,
-        "displayRole": 2,
+        "displayRole": "Other CCE Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -91,10 +92,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": True
     }
 
     user4 = {
@@ -104,7 +106,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -113,10 +115,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user5 = {
@@ -126,7 +129,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -135,10 +138,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user6 = {
@@ -148,7 +152,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -157,10 +161,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user7 = {
@@ -170,7 +175,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -179,10 +184,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user8 = {
@@ -192,7 +198,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -201,10 +207,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user9 = {
@@ -214,7 +221,7 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
+        "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
         "location": "ithaca, NY",
         "phone": "+14432232248",
@@ -223,10 +230,11 @@ def pump_into_servers():
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user10 = {
@@ -236,19 +244,20 @@ def pump_into_servers():
         "first_name": "test",
         "last_name": "user",
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Rutgers University",
+        "location": "New Brunswick, NJ",
         "phone": "+14432232248",
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
         "ageRanges": ["3-5", "7-10"],
         "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
         "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchNeeds": "this is a research need!",
+        "evaluationNeeds": "this is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     users = [user1, user2, user3, user4, user5, user6, user7, user8, user9, user10]
