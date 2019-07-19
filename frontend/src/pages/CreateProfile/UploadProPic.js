@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import DragAndDrop from '../../components/DragAndDrop';
 
 
 class UploadProPic extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            filePreview: null,
             profilePicture: null
         };
     }
@@ -15,44 +15,42 @@ class UploadProPic extends Component {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, this.state.profilePicture === null);
         }
-        return null;
     }
 
     componentDidMount() {
         if (this.props.savedData !== null) {
             this.setState(this.props.savedData);
         }
+
+        const input = document.getElementById("propic");
+        input.addEventListener('change', this.onSelectFile, false);
+    }
+
+    componentWillUnmount() {
+        const input = document.getElementById("propic");
+        input.removeEventListener('change', this.onSelectFile, false);
+    }
+
+    onSelectFile = () => {
+        const input = document.getElementById("propic");
+        this.setState({ profilePicture: input.files[0] })
     }
 
     setProfilePicture = event => {
         let proPic = URL.createObjectURL(event.target.files[0]);
-        this.setState({ profilePicture: proPic })
+        this.setState({ filePreview: proPic })
     }
-
-    setProfilePictureDragDrop = files => {
-        let proPic = URL.createObjectURL(files[0]);
-        this.setState({ profilePicture: proPic });
-    };
 
     render() {
         return (
             <div className={styles.form}>
-                <DragAndDrop handleDrop={this.setProfilePictureDragDrop}>
-                    <div className={styles.uploadHere}>
-                        {
-                            this.state.profilePicture === null ? (
-                                <>
-                                    <p className={styles.dragAndDrop}>Drag and drop a file here</p>
-                                    <p>OR</p>
-                                </>
-                            ) : (<img className={styles.uploadedImage} alt={"ERROR"} src={this.state.profilePicture} />)
-                        }
-                        <label className={styles.imageUpload} for="propic">SELECT FILE TO UPLOAD</label>
-                        <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
-                    </div>
-                </DragAndDrop>
+                <label className={styles.imageUpload} for="propic">SELECT A FILE TO UPLOAD</label>
+                <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
+                {
+                    this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />
+                }
             </div>
-        )
+        );
     }
 }
 
