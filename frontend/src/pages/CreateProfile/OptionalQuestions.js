@@ -1,24 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import { getTextboxQuestion } from './QAComponents';
-import { AnswerTypes } from './Constants';
-
-const questions = [
-    {
-        questionText: "What research needs do you see in your programs?",
-        answer: {
-            type: AnswerTypes.Textbox,
-            key: "researchNeeds"
-        }
-    },
-    {
-        questionText: "What evaluation needs do you see in your programs?",
-        answer: {
-            type: AnswerTypes.Textbox,
-            key: "evaluationNeeds"
-        }
-    }
-];
+import { optionalQAForm } from './FormContent';
 
 class OptionalQuestions extends Component {
     constructor(props) {
@@ -33,7 +16,6 @@ class OptionalQuestions extends Component {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, false);
         }
-        return null;
     }
 
     componentDidMount() {
@@ -53,7 +35,7 @@ class OptionalQuestions extends Component {
         return (
             <div className={styles.form}>
                 {
-                    questions.map((qa, idx) => {
+                    optionalQAForm.map((qa, idx) => {
                         return getTextboxQuestion(qa, this.setTextboxValue, this.state, idx)
                     })
                 }
