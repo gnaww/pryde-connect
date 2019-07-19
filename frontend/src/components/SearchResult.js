@@ -6,12 +6,19 @@ import styles from '../styles/SearchResult.module.css';
 
 const SearchResult = props => {
     if (props.type === "project") {
+        let link = ""
+        if (props.pk) {
+            link = `/project/${props.pk}`;
+        } else {
+            link = `/project/${props.id}`;
+        }
+
         return (
-            <Link className={styles.linkWrapper} to={`/project/${props.id}`}>
+            <Link className={styles.linkWrapper} to={link}>
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
                     <section className={styles.projectDetails}>
                         <h3>{props.name}</h3>
-                        <h4>{props.owner}</h4>
+                        <h4>{`${props.owner.first_name} ${props.owner.last_name}`}</h4>
                         <p>{props.summary}</p>
                     </section>
                     <section className={styles.stats}>
@@ -27,14 +34,21 @@ const SearchResult = props => {
             </Link>
         );
     } else if (props.type === "partner") {
+        let link = ""
+        if (props.pk) {
+            link = `/user/${props.pk}`;
+        } else {
+            link = `/user/${props.id}`;
+        }
+
         return (
-            <Link className={styles.linkWrapper} to={`/user/${props.id}`}>
+            <Link className={styles.linkWrapper} to={link}>
                 <div className={`${styles.searchResult} ${styles.partnerResult} ${styles[props.role.toLowerCase()]}`}>
                     <section className={styles.partnerDetails}>
                         <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />
                         <section>
                             <header>
-                                <h3>{props.name}</h3>
+                                <h3>{`${props.first_name} ${props.last_name}`}</h3>
                                 <img src={badge} alt="CCE badge" />
                             </header>
                             <h4>{props.role}</h4>

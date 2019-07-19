@@ -10,46 +10,31 @@ import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import styles from '../styles/Profile.module.css';
+import api from '../services/api/api';
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: {
-                name: "John Smith",
-                role: "Researcher",
-                displayRole: "4-H Practitioner",
-                affiliation: "Organization/Department",
-                location: "Ithaca, NY",
-                email: "something@something.edu",
-                phone: "1234567890",
-                website: "https://something.com",
-                researchInterests: ["Positive Youth Development", "Civic Engagement"],
-                researchDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris.",
-                roles: ["Lead youth programs", "Train volunteers"],
-                ageRanges: ["Adolescents"],
-                youthProgramTypes: ["Civic Engagement", "STEM"],
-                deliveryModes: ["Afterschool Programs"],
-                researchNeeds: ["foo"],
-                evaluationNeeds: ["bar"],
-                projects: [
-                    {
-                        id: 1,
-                        type: "project",
-                        name: "Project Name",
-                        owner: "John Smith",
-                        status: 'completed',
-                        summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                    },
-                    {
-                        id: 2,
-                        type: "project",
-                        name: "totally a real project",
-                        owner: "Foo Bar",
-                        status: 'in-progress',
-                        summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                    }
-                ]
+                first_name: "",
+                last_name: "",
+                role: "",
+                displayRole: "",
+                affiliation: "",
+                location: "",
+                email: "",
+                phone: "",
+                website: "",
+                researchInterests: [],
+                researchDescription: "",
+                roles: [],
+                ageRanges: [],
+                youthProgramTypes: [],
+                deliveryModes: [],
+                researchNeeds: [],
+                evaluationNeeds: [],
+                projects: []
             },
             statusFilter: "all",
             sortBy: "name-asc",
@@ -70,6 +55,18 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+        const { match } = this.props;
+
+        if (match.url === "/myprofile") {
+            api.getLoggedInUser()
+                .then(user => this.setState({ user: user }))
+                .catch(err => console.log(err));
+        } else {
+            const id = match.params.id;
+            api.getUserByID(id)
+                .then(user => this.setState({ user: user }))
+                .catch(err => console.log(err));
+        }
     }
 
     render() {
@@ -129,7 +126,7 @@ class Profile extends Component {
                         <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
                     </div>
                     <div className={styles.personalInformation}>
-                        <h1>{user.name} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
+                        <h1>{`${user.first_name} ${user.last_name}`} { user.role === "Practitioner" ? <img src={badge} alt="CCE badge" /> : <img src={badgeGreen} alt="Cornell badge" /> }</h1>
                         <h2>{user.displayRole}</h2>
                         <h2>{user.affiliation}</h2>
                         <h2>{user.location}</h2>
@@ -140,7 +137,7 @@ class Profile extends Component {
                                 <a href={`mailto:${user.email}`}>{user.email}</a>
                             </li>
                             <li>
-                                <a href={`tel:${user.phone}`}>({user.phone.slice(0, 3)})-{user.phone.slice(3, 6)}-{user.phone.slice(6, 10)}</a>
+                                <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
                             </li>
                             <li>
                                 <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>
@@ -214,7 +211,7 @@ class Profile extends Component {
                                         <p>{user.researchDescription}</p>
                                     </>
                             }
-                            
+
                         </div>
                     </section>
                     <section className={styles.projects}>
@@ -228,9 +225,9 @@ class Profile extends Component {
                         <div>
                             {
                                 this.state.statusFilter === "all" ?
-                                    user.projects.map(project => <SearchResult {...project} />)
+                                    user.projects.map((project, idx) => <SearchResult key={idx} {...project} />)
                                 :
-                                    user.projects.filter(project => project.status === this.state.statusFilter).map(project => <SearchResult {...project} />)
+                                    user.projects.filter(project=> project.status === this.state.statusFilter).map((project, idx) => <SearchResult key={idx} {...project} />)
                             }
                         </div>
                     </section>

@@ -7,50 +7,20 @@ import SearchResult from '../components/SearchResult';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
 import styles from '../styles/Browse.module.css';
+import api from '../services/api/api';
 
 class Browse extends Component {
     constructor(props) {
         super(props);
         this.state = {
             query: '',
-            searchOpportunities: true,
+            searchProjects: true,
             showAffiliation: true,
             showTopic: true,
             showStatus: true,
             showLocation: true,
             sortBy: "name-asc",
-            searchResults: [
-                {
-                    id: 1,
-                    type: "project",
-                    name: "Project Name",
-                    owner: "John Smith",
-                    status: 'completed',
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
-                },
-                {
-                    id: 2,
-                    type: "project",
-                    name: "totally a real project",
-                    owner: "Foo Bar",
-                    status: 'in-progress',
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                },
-                {
-                    id: 1,
-                    type: "partner",
-                    name: "Mary Jane",
-                    role: "Practitioner",
-                    affiliation: "Cornell"
-                },
-                {
-                    id: 2,
-                    type: "partner",
-                    name: "Bill Nye",
-                    role: "Researcher",
-                    affiliation: "Cornell"
-                }
-            ]
+            searchResults: []
         };
     }
 
@@ -90,9 +60,15 @@ class Browse extends Component {
     }
 
     setCategory = category => {
-        this.setState({ searchOpportunities: category === "opportunities" });
+        this.setState({ searchProjects: category === "projects" });
+
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        parsedURL.category = category === "projects"  ? "projects" : "partners";
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
+        window.location.reload();
     }
-    
+
     toggleFilterVisibility = filter => {
         this.setState(prevState => ({ [filter]: !prevState[filter] }));
     }
@@ -104,7 +80,27 @@ class Browse extends Component {
     componentDidMount() {
         const { location } = this.props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        this.setState({ query: parsedURL.q });
+        this.setState({ query: parsedURL.q ? parsedURL.q : '' });
+
+        if (parsedURL.category) {
+            this.setState({ searchProjects: parsedURL.category === "projects" });
+        }
+
+        if(!parsedURL.q) {
+            if (parsedURL.category === "projects") {
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
+                    .catch(err => console.log(err));
+            } else if (parsedURL.category === "partners") {
+                api.getUsers()
+                    .then(users => this.setState({ searchResults: users }))
+                    .catch(err => console.log(err));
+            } else {
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
+                    .catch(err => console.log(err));
+            }
+        }
     }
 
     render() {
@@ -159,7 +155,7 @@ class Browse extends Component {
         return (
             <div className={styles.container}>
                 <div className={styles.browseWrapper}>
-                    <h1 id={styles.pageHeader}>Browse opportunities and partners</h1>
+                    <h1 id={styles.pageHeader}>Browse projects and partners</h1>
                     <div className={styles.searchWrapper}>
                         <aside className={styles.filtersContainer}>
                             <h2>FILTER</h2>
@@ -167,16 +163,16 @@ class Browse extends Component {
                                 <h3>CATEGORY</h3>
                                 <ul>
                                     <li>
-                                        <button 
-                                            className={this.state.searchOpportunities ? styles.activeCategory : ''}
-                                            onClick={() => this.setCategory("opportunities")}
+                                        <button
+                                            className={this.state.searchProjects ? styles.activeCategory : ''}
+                                            onClick={() => this.setCategory("projects")}
                                         >
-                                            Research Opportunities
+                                            Research Projects
                                         </button>
                                     </li>
                                     <li>
-                                        <button 
-                                            className={!this.state.searchOpportunities ? styles.activeCategory : ''}
+                                        <button
+                                            className={!this.state.searchProjects ? styles.activeCategory : ''}
                                             onClick={() => this.setCategory("partners")}
                                         >
                                             Research Partners
@@ -185,12 +181,12 @@ class Browse extends Component {
                                 </ul>
                             </section>
                             {
-                                filterCategories.map((filterCategory, idx) => 
-                                    <FilterCategory 
+                                filterCategories.map((filterCategory, idx) =>
+                                    <FilterCategory
                                         key={idx}
                                         {...filterCategory}
                                         toggleVisibility={this.toggleFilterVisibility}
-                                        handleClick={this.handleFilterSelect} 
+                                        handleClick={this.handleFilterSelect}
                                     />
                                 )
                             }
@@ -198,21 +194,27 @@ class Browse extends Component {
                         <section className={styles.searchResultsContainer}>
                             <form className={styles.searchForm}>
                                 <div>
-                                    <input 
+                                    <input
                                         type="text"
                                         name="q"
                                         value={this.state.query}
                                         onChange={this.handleQueryChange}
-                                        placeholder={this.state.searchOpportunities ?
-                                            "Search for research opportunities" :
+                                        placeholder={this.state.searchProjects ?
+                                            "Search for research projects" :
                                             "Search for research partners"}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="category"
+                                        value={this.state.searchProjects ? "projects" : "partners"}
+                                        hidden
                                     />
                                     <button type="submit" value="Submit">
                                         <img src={searchIcon} alt="Search icon" />
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchOpportunities && <img className={styles.map} src={map} alt="New York map" />}
+                            {!this.state.searchProjects && <img className={styles.map} src={map} alt="New York map" />}
                             {
                                 parsedURL.q ?
                                 <>
@@ -239,13 +241,43 @@ class Browse extends Component {
                                     </header>
                                     <section className={styles.searchResults}>
                                         {
-                                            this.state.searchResults.map((searchResult, idx) => 
+                                            this.state.searchResults.map((searchResult, idx) =>
                                                 <SearchResult key={idx} {...searchResult} />
                                             )
                                         }
                                     </section>
                                 </> :
-                                <h2>Type something into the search bar above!</h2>
+                                <>
+                                    <header>
+                                        <div>
+                                            <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }</h2>
+                                        </div>
+                                        <CustomDropdown
+                                            handleChange={this.setSort}
+                                            name="sort"
+                                            label="SORT BY"
+                                            options={[
+                                                {
+                                                    value: "name-asc",
+                                                    text: "Name ↑"
+                                                },
+                                                {
+                                                    value: "name-desc",
+                                                    text: "Name ↓"
+                                                }
+                                            ]}
+                                        />
+                                    </header>
+                                    <section className={styles.searchResults}>
+                                        {
+                                            this.state.searchResults.map((searchResult, idx) =>
+                                                <SearchResult key={idx} {...searchResult} />
+                                            )
+                                        }
+                                    </section>
+                                </>
+
+
                             }
                         </section>
                     </div>

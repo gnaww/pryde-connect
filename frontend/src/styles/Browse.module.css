@@ -85,7 +85,7 @@
 
 .searchResultsContainer h2 {
     font-family: Lato;
-    padding-left: 30px;
+    margin: 0;
 }
 
 .searchResultsContainer header {

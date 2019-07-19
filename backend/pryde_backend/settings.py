@@ -43,20 +43,10 @@ INSTALLED_APPS = [
     # django app used by rest-auth
     'django.contrib.sites',
 
-
-
-
     # local
     'api.apps.ApiConfig',
 
-
-
-
-
-
-
     # 3rd party
-
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
@@ -65,15 +55,12 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
-
+    'allauth.socialaccount',
 
     'phonenumber_field',
 
-
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
-    'corsheaders',
-
-
+    'corsheaders'
 ]
 
 
@@ -117,7 +104,7 @@ AUTH_USER_MODEL = 'api.PUser'
 # settings for rest framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
         # 'rest_framework_api_key.permissions.HasAPIKey',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -165,10 +152,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # }
 
 MIDDLEWARE = [
-
-
     'corsheaders.middleware.CorsMiddleware',
-
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -177,9 +161,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-
-
     # middleware for django-cors-headers
 ]
 
@@ -206,11 +187,14 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pryde',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
