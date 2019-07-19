@@ -35,7 +35,6 @@
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;
-    color: #808080;
     margin-bottom: 17px;
 }
 
@@ -62,6 +61,7 @@
     line-height: 24px;
     letter-spacing: 0.19em;
     color: white;
+    cursor: pointer;
 }
 
 .backButton {
@@ -79,7 +79,6 @@
 .label {
     margin-left: 16px;
     font-family: Lato;
-    font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 24px;
@@ -118,8 +117,7 @@
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;
-    color: #808080;
-    padding-top: 32px;
+    padding-top: 26px;
     padding-left: 30px; 
 }
 
@@ -134,7 +132,7 @@
     flex-direction: column;
     align-items: center;
     border: 2px dashed black;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
 
 .dragAndDrop {
@@ -164,11 +162,13 @@
 }
 
 .imageUpload {
-    composes: nextButton; 
-    cursor: pointer;
+    composes: nextButton;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 400px;
-    text-align: center;
-    padding-top: 16px;
+    padding: 5px 16px;
+    margin-bottom: 30px;
 }
 
 .form {
@@ -176,21 +176,12 @@
     flex-direction: column;
 }
 
-.qaOptionText {
+span.qaOptionText {
     font-family: Lato;
-    font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;
-}
-
-.qaOptionCheckbox {
-    width: 20px;
-    height: 18px;  
-    background: #E9E9E9;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
-    border-radius: 2px;
 }
 
 .dropdownQuestion {
@@ -200,13 +191,18 @@
 
 .dropdown {
     margin-left: 20px;
+    margin-top: 20px;
+    font-size: 18px;
 }
 
 .otherTextbox {
+    font-family: Lato;
+    font-size: 20px;
     width: 137px;
     height: 24px;
     border-width: 0;
     background: #E9E9E9;
+    padding-left: 10px;
 }
 
 .numberedList {
@@ -214,40 +210,45 @@
 }
 
 .researcherImg {
-    width: 118px;
-    height: 179px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    width: 294px;
+    height: 294px;
+    background: white;
+    box-sizing: border-box;
+    cursor: pointer;
     padding: 68px 87px 45px 87px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .researcherImgClicked {
     composes: researcherImg;
-    border: 1px solid rgba(0, 0, 0, 0.25);
+    border: 4px solid #99d85d;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
 }
 
 .practitionerImg {
     composes: researcherImg;
-    width: 251px;
-    height: 150px;
+    width: 294px;
+    height: 294px;
     padding: 97px 18px 45px 18px;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .practitionerImgClicked {
     composes: practitionerImg;
-    border: 1px solid rgba(0, 0, 0, 0.25);
+    border: 4px solid #49aee9;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
 }
 
 .roleText {
     width: 338px;
     height: 118px;
-
     font-family: Lato;
-    font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 24px;
@@ -258,47 +259,76 @@
 }
 
 .roleCard {
+    width: 292px;
+    margin-right: 62px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.roleLink {
+    width: 292px;
+    height: 292px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    color: black;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.1em;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-right: 62px;
+    justify-content: center;
+}
+
+.roleLink img {
+    padding-top: 20px;
+    margin: 0 auto;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.roleLink p {
+    margin-top: 35px;
 }
 
 .rolePage {
     display: flex;
 }
 
+.disclaimer {
+    margin: 0;
+    color: #FF7F00;
+    font-size: 20px;
+}
+
 .uploadedImage {
-    height: 300px;
-    width: 200px;
+    height: 220px;
+    width: 220px;
     border-radius: 50%;
 }
 
 .profileNavImg {
-    composes: researcherImg;
-    width: 210px;
-    height: 210px;
-    padding: 47px 21px 37px 21px;
-}
-
-.navImgClicked {
-    composes: researcherImgClicked
+    width: 117px;
+    height: 145px;
 }
 
 .homeNavImg {
-    composes: researcherImg;
-    width: 251px;
-    height: 209px;
-    padding: 47px 21px 37px 21px;
+    width: 151px;
+    height: 144px;
 }
 
 .studiesNavImg {
-    composes: researcherImg;
-    width: 251px;
-    height: 201px;
-    padding: 53px 21px 37px 21px;
+    width: 175px;
+    height: 134px;
 }
 
 .finishPage {
+    padding: 40px 0;
     display: flex;
 }
