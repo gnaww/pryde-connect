@@ -39,7 +39,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -54,7 +54,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -69,7 +69,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -84,7 +84,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -99,7 +99,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -114,7 +114,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -129,7 +129,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -144,7 +144,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -159,7 +159,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
@@ -174,7 +174,7 @@ def insert_posts():
         "timeline": "May to August",
         "commitmentLength": "build a website",
         "incentives": ["none"],
-        "collaborators": [],
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }

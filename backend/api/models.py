@@ -80,7 +80,7 @@ class Project(models.Model):
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
     incentives = ArrayField(models.CharField(max_length=100), default=None)
-    collaborators = JSONField(default=dict)
+    # collaborators = JSONField(default=dict) TODO: i dont think this needs to be here anymore
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
     type = models.CharField(max_length=100, default='project')
