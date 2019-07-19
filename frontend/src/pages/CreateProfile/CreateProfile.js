@@ -7,7 +7,7 @@ import ResearcherQuestions from './ResearcherQuestions';
 import OptionalQuestions from './OptionalQuestions';
 import UploadProPic from './UploadProPic';
 import ReviewFinish from './ReviewFinish';
-import { roleTypes } from './Options';
+import { ROLE_TYPE } from './FormContent';
 
 let pages = [
     {
@@ -15,7 +15,7 @@ let pages = [
         content: BasicInfo
     },
     {
-        subtitle: "Which of the following best describes you?",
+        subtitle: "Which of the following best describes you?*",
         content: RoleSelection
     },
     {
@@ -27,7 +27,7 @@ let pages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Finally, upload a profile picture.",
+        subtitle: "Finally, upload a profile picture.*",
         content: UploadProPic
     },
     {
@@ -61,7 +61,7 @@ class CreateProfile extends Component {
         if (!errors) {
             let nextPage = this.state.page + 1;
             if (this.state.page === 1) {
-                pages[nextPage].content = data.roleType === roleTypes.researcher ? ResearcherQuestions : PractitionerQuestions;
+                pages[nextPage].content = data.roleType === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
             }
             let pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;
@@ -69,6 +69,10 @@ class CreateProfile extends Component {
             this.setState({ page: nextPage });
         }
         this.setState({ clickedNext: false });
+    }
+
+    createProfile = () => {
+        console.log("send all data to API here");
     }
 
     render() {
@@ -84,10 +88,13 @@ class CreateProfile extends Component {
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < pages.length - 1 &&
+                        this.state.page < pages.length - 2 &&
                         (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
-
+                    {
+                        this.state.page === pages.length - 2 &&
+                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
+                    }
                 </div>
             </div>
         );
