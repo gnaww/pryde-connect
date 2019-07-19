@@ -1,11 +1,15 @@
 from rest_framework import generics, status
 from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer
-from .models import Project, PUser
+from .models import Project, PUser, Collaborators
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
+# custom permissions
+from .permissions import CanAddCollaborator, CanDeleteProject
 
 
 class UserList(generics.ListAPIView):
@@ -69,13 +73,56 @@ class CreateProject(generics.CreateAPIView):
                 timeline = request.data['timeline'],
                 commitmentLength = request.data['timeline'],
                 incentives = request.data['incentives'],
-                collaborators = request.data['collaborators'], # TODO: this probably needs changing
+                # collaborators = request.data['collaborators'], # TODO: this probably needs changing
                 additionalInformation = request.data['additionalInformation'],
                 additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
             )
+
+            #TODO create the collaborator thing here
             return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({
                 'status': 'Failure... something went wrong'
             }, status = status.HTTP_400_BAD_REQUEST)
+
+
+class AddCollaborator(generics.CreateAPIView):
+
+
+    authentication_classes = []
+    # TODO create custom permission class: owner of project or a collaborator
+    # with addCollaboratorPermission should be allowed to do this
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+
+        print(request.data)
+        print(request.data['user'])
+        print(request.data['editPermission'])
+        print(request.data['deletePermission'])
+        print(request.data['addCollaboratorPermission'])
+        print(args)
+        print(kwargs)
+
+
+        try:
+            Collaborators.objects.create(project=Project.objects.get(pk=kwargs['pk']),
+                                         collaborator=PUser.objects.get(pk=request.data['user']),
+                                         editPermission=request.data['editPermission'],
+                                         deletePermission=request.data['deletePermission'],
+                                         addCollaboratorPermission=request.data['addCollaboratorPermission'])
+
+            return Response({'message': 'Success! Collaborator added'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Failure... something went wrong'},status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class DeleteProject(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanDeleteProject & IsAuthenticated, ]
+    queryset = Project.objects.all()

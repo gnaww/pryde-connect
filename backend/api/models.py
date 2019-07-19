@@ -92,3 +92,4 @@ class Collaborators(models.Model):
     editPermission = models.BooleanField()
     deletePermission = models.BooleanField()
     addCollaboratorPermission = models.BooleanField()
+    showProjectOnProfile = models.BooleanField(default=True)

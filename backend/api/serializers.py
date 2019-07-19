@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import PUser, Project
+from .models import PUser, Project, Collaborators
+
+
+class CollaboratorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Collaborators
+        fields = '__all__'
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -13,6 +20,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
+    collaborators = CollaboratorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
