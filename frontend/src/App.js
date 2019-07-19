@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import Homepage from './pages/Homepage';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
+import CreateProfile from './pages/CreateProfile/CreateProfile';
 import Profile from './pages/Profile';
 import Project from './pages/Project';
 import PageNotFound from './pages/PageNotFound';
@@ -42,6 +43,9 @@ class App extends Component {
                         <Route path="/browse" component={Browse} />
                         <Route path="/login" exact render={renderProps => {
                             return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Login setLoggedIn={this.setLoggedIn} {...renderProps} />
+                        }} />
+                        <Route path="/signup" render={renderProps => {
+                            return localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <CreateProfile {...renderProps} />
                         }} />
                         <Route path="/myprofile" exact render={renderProps => {
                             return !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile {...renderProps} />
