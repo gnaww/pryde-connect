@@ -6,11 +6,11 @@ class BasicInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            firstName: '',
-            lastName: '',
-            emailAddress: '',
+            first_name: '',
+            last_name: '',
+            email: '',
             password: '',
-            phoneNumber: '',
+            phone: '',
             confirmPassword: '',
             website: '',
         };
@@ -21,7 +21,6 @@ class BasicInfo extends Component {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, this.errors);
         }
-        return null;
     }
 
     componentDidMount() {
@@ -45,30 +44,30 @@ class BasicInfo extends Component {
                 <div>
                     <input
                         className={styles.smallTextInput}
-                        placeholder="First Name"
+                        placeholder="First name*"
                         type="text"
-                        value={this.state.firstName}
-                        onChange={this.handleChange('firstName')}
+                        value={this.state.first_name}
+                        onChange={this.handleChange('first_name')}
                     />
                     <input
                         className={styles.smallTextInput}
-                        placeholder="Last Name"
+                        placeholder="Last name*"
                         type="text"
-                        value={this.state.lastName}
-                        onChange={this.handleChange('lastName')}
+                        value={this.state.last_name}
+                        onChange={this.handleChange('last_name')}
                     />
                 </div>
                 <input
                     className={styles.longTextInput}
-                    placeholder="Email address"
+                    placeholder="Email address*"
                     type="text"
-                    value={this.state.emailAddress}
-                    onChange={this.handleChange('emailAddress')}
+                    value={this.state.email}
+                    onChange={this.handleChange('email')}
                 />
                 <div>
                     <input
                         className={styles.longTextInput}
-                        placeholder="Password"
+                        placeholder="Password*"
                         type="password"
                         value={this.state.password}
                         onChange={this.handleChange('password')}
@@ -77,14 +76,14 @@ class BasicInfo extends Component {
                         className={styles.mediumTextInput}
                         placeholder="Phone number (optional)"
                         type="text"
-                        value={this.state.phoneNumber}
-                        onChange={this.handleChange('phoneNumber')}
+                        value={this.state.phone}
+                        onChange={this.handleChange('phone')}
                     />
                 </div>
                 <div>
                     <input
                         className={styles.longTextInput}
-                        placeholder="Confirm your password"
+                        placeholder="Confirm your password*"
                         type="password"
                         value={this.state.confirmPassword}
                         onChange={this.handleChange('confirmPassword')}
@@ -100,21 +99,21 @@ class BasicInfo extends Component {
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
                     isFormSubmitted={this.props.clickedNext}
-                    reference={{ firstName: this.state.firstName }}
+                    reference={{ first_name: this.state.first_name }}
                     validationRules={{ required: true }}
                     validationMessages={{ required: "First name is required." }}
                 />
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
                     isFormSubmitted={this.props.clickedNext}
-                    reference={{ lastName: this.state.lastName }}
+                    reference={{ last_name: this.state.last_name }}
                     validationRules={{ required: true }}
                     validationMessages={{ required: "Last name is required." }}
                 />
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
                     isFormSubmitted={this.props.clickedNext}
-                    reference={{ emailAddress: this.state.emailAddress }}
+                    reference={{ email: this.state.email }}
                     validationRules={{ required: true, email: true }}
                     validationMessages={{ required: "Email address is required.", email: "Not a valid email address." }}
                 />
@@ -135,9 +134,9 @@ class BasicInfo extends Component {
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
                     isFormSubmitted={this.props.clickedNext}
-                    reference={{ phoneNumber: this.state.phoneNumber }}
-                    validationRules={this.state.phoneNumber.length === 0 ? { required: false } : { number: true }}
-                    validationMessages={this.state.phoneNumber.length === 0 ? { required: false } : { number: "Not a valid phone number." }}
+                    reference={{ phone: this.state.phone }}
+                    validationRules={this.state.phone.length === 0 ? { required: false } : { number: true }}
+                    validationMessages={this.state.phone.length === 0 ? { required: false } : { number: "Not a valid phone number." }}
                 />
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
