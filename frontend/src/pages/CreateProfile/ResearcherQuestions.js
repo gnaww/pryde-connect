@@ -1,117 +1,64 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { AnswerTypes } from './Constants';
+import { ResearcherInformation, researcherQAForm } from './FormContent';
 import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from './QAComponents';
-
-const ResearcherInformation = {
-    ResearcherType: [
-        "Faculty",
-        "Academic Staff",
-        "Postdoctoral Fellow",
-        "Graduate Student",
-        "Undergraduate Student",
-        "Other: "
-    ],
-    ResearchTopics: [
-        "Positive Youth Development",
-        "Self and Identity",
-        "Diversity, Equity, and Inclusion",
-        "Education and Learning",
-        "STEM education",
-        "Health",
-        "Civic Engagement",
-        "Other: "
-    ]
-}
-
-const qaForm = [
-    {
-        questionText: "Are you located at Cornell?",
-        answer: {
-            type: AnswerTypes.Dropdown,
-            label: "SELECT",
-            options: [
-                {
-                    value: true,
-                    text: "YES"
-                },
-                {
-                    value: false,
-                    text: "NO"
-                }
-            ]
-        },
-        id: 0, //put an id here for questions that have special properties
-    },
-    {
-        questionText: "Which of the following best describes you?",
-        answer: {
-            type: AnswerTypes.Radiobutton,
-            options: ResearcherInformation.ResearcherType,
-            key: "researchType"
-        }
-    },
-    {
-        questionText: "What research topics do you study?",
-        answer: {
-            type: AnswerTypes.Checkbox,
-            options: ResearcherInformation.ResearchTopics,
-            key: "researchTopics"
-        }
-    },
-    {
-        questionText: "In 1-2 sentences, please describe your research interests.",
-        answer: {
-            type: AnswerTypes.Textbox,
-            key: "researchInterests"
-        }
-    }
-];
 
 class ResearcherQuestions extends Component {
     constructor(props) {
         super(props);
         this.state = {
             locatedAtCornell: null,
-            location: {
+            metaLocation: {
                 college: "",
                 department: "",
                 organization: "",
                 address: ""
             },
-            researchInterests: "",
-            researchTopics: getCheckedValuesArray(ResearcherInformation.ResearchTopics),
-            researchType: {
+            researchDescription: "",
+            researchInterests: getCheckedValuesArray(ResearcherInformation.ResearchTopics),
+            displayRole: {
                 option: "",
                 other: ""
             }
-        }
+        };
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         function isInvalid(state) {
             let locationValid;
+
             if (state.locatedAtCornell) {
-                locationValid = state.location.college !== "" &&
-                    state.location.department !== "";
+                locationValid = state.metaLocation.college !== "" &&
+                    state.metaLocation.department !== "";
             }
             else {
-                locationValid = state.location.organization !== "" &&
-                    state.location.address !== "";
+                locationValid = state.metaLocation.organization !== "" &&
+                    state.metaLocation.address !== "";
             }
-            let interestsStated = state.researchInterests !== "";
-            let topicsSelected = state.researchTopics.filter(r => r.checked).length > 0;
-            let typeSelected = state.researchType.option === "" ?
-                false : (state.researchType.option === "Other: " ? state.other !== "" : true);
+
+            let interestsStated = state.researchDescription !== "";
+            let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0;
+            let typeSelected = state.displayRole.option === "" ?
+                false : (state.displayRole.option === "Other: " ? state.other !== "" : true);
+
             return state.locatedAtCornell === null || !locationValid
                 || !interestsStated || !topicsSelected || !typeSelected;
         }
 
         if (this.props.clickedNext) {
             let error = isInvalid(this.state);
-            this.props.onSubmitData(this.state, error);
+            let data = Object.assign({}, this.state);
+
+            if (data.locatedAtCornell) {
+                data.location = "Cornell University";
+                data.affiliation = `${data.metaLocation.department} at ${data.metaLocation.college}`;
+            } else {
+                data.location = data.metaLocation.address;
+                data.affiliation = data.metaLocation.organization;
+            }
+
+            this.props.onSubmitData(data, error);
         }
-        return null;
     }
 
     componentDidMount() {
@@ -122,14 +69,13 @@ class ResearcherQuestions extends Component {
 
     setLocatedAtCornell = event => {
         this.setState({
-            locatedAtCornell: event.target.value,
-            location: {
+            locatedAtCornell: event.target.value === "true",
+            metaLocation: {
                 college: "",
                 department: "",
                 organization: "",
                 address: ""
-            },
-
+            }
         });
     }
 
@@ -154,7 +100,7 @@ class ResearcherQuestions extends Component {
                     option: option,
                     other: text
                 }
-            })
+            });
         }
         else {
             this.setState({
@@ -162,15 +108,15 @@ class ResearcherQuestions extends Component {
                     option: option,
                     other: ""
                 }
-            })
+            });
         }
     }
 
     setLocationTextbox = key => event => {
         let value = event.target.value;
         this.setState((prevState, _props) => ({
-            location: {
-                ...prevState.location,
+            metaLocation: {
+                ...prevState.metaLocation,
                 [key]: value
             }
         }));
@@ -184,52 +130,52 @@ class ResearcherQuestions extends Component {
     }
 
     getQAComponent = (qa, index) => {
+        const defaultLocatedAtCornell = this.state.locatedAtCornell !== null ? this.state.locatedAtCornell : "";
         return (
             <li className={styles.numberedList} key={index}>
-
-                {getDropDownQuestion(qa, this.setLocatedAtCornell)}
+                { getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell) }
                 {
                     qa.id === 0 && this.state.locatedAtCornell !== null &&
                     (
                         <div className={styles.form}>
                             <input
                                 className={
-                                    this.state.locatedAtCornell === "true" ?
+                                    this.state.locatedAtCornell ?
                                         styles.mediumTextInput : styles.longTextInput
                                 }
                                 placeholder={
-                                    this.state.locatedAtCornell === "true" ?
+                                    this.state.locatedAtCornell ?
                                         "College" : "What is your institution or organization?"
                                 }
                                 type="text"
                                 value={
-                                    this.state.locatedAtCornell === "true" ?
-                                        this.state.location.college : this.state.location.organization
+                                    this.state.locatedAtCornell ?
+                                        this.state.metaLocation.college : this.state.metaLocation.organization
                                 }
                                 onChange={
                                     this.setLocationTextbox(
-                                        this.state.locatedAtCornell === "true" ?
+                                        this.state.locatedAtCornell ?
                                             "college" : "organization"
                                     )
                                 }
                             />
                             <input
                                 className={
-                                    this.state.locatedAtCornell === "true" ?
+                                    this.state.locatedAtCornell ?
                                         styles.mediumTextInput : styles.longTextInput
                                 }
                                 placeholder={
-                                    this.state.locatedAtCornell === "true" ?
+                                    this.state.locatedAtCornell ?
                                         "Department" : "Where are you located?"
                                 }
                                 type="text"
                                 value={
-                                    this.state.locatedAtCornell === "true" ?
-                                        this.state.location.department : this.state.location.address
+                                    this.state.locatedAtCornell ?
+                                        this.state.metaLocation.department : this.state.metaLocation.address
                                 }
                                 onChange={
                                     this.setLocationTextbox(
-                                        this.state.locatedAtCornell === "true" ?
+                                        this.state.locatedAtCornell ?
                                             "department" : "address"
                                     )
                                 }
@@ -237,9 +183,9 @@ class ResearcherQuestions extends Component {
                         </div>
                     )
                 }
-                {getRadiobuttonQuestion(qa, this.setValuesRadio, this.state)}
-                {getCheckboxQuestion(qa, this.setValuesCheckbox, this.state)}
-                {getTextboxQuestion(qa, this.setTextboxValue, this.state, index)}
+                { getRadiobuttonQuestion(qa, this.setValuesRadio, this.state) }
+                { getCheckboxQuestion(qa, this.setValuesCheckbox, this.state) }
+                { getTextboxQuestion(qa, this.setTextboxValue, this.state, index) }
             </li>
         );
     }
@@ -249,8 +195,8 @@ class ResearcherQuestions extends Component {
             <div className={styles.form}>
                 <ol>
                     {
-                        qaForm.map((qa, index) => {
-                            return this.getQAComponent(qa, index)
+                        researcherQAForm.map((qa, index) => {
+                            return this.getQAComponent(qa, index);
                         })
                     }
                 </ol>
