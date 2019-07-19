@@ -306,7 +306,8 @@ span.qaOptionText {
     margin: 0;
     font-size: 24px;
     letter-spacing: 0.1em;
-    margin-bottom: 50px;
+    margin-top: -30px;
+    margin-bottom: 60px;
 }
 
 .uploadedImage {
