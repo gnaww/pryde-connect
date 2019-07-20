@@ -25,14 +25,14 @@ class RoleSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roleType: "",
+            role: "",
             clicked: null
         };
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.props.onSubmitData(this.state, this.state.roleType === "");
+            this.props.onSubmitData(this.state, this.state.role === "");
         }
     }
 
@@ -43,7 +43,7 @@ class RoleSelection extends Component {
     }
 
     handleSelectRole = (index, role) => {
-        this.setState({ roleType: role, clicked: index });
+        this.setState({ role: role, clicked: index });
     }
 
     handleIsValidationErrorChange = flag => {

@@ -82,7 +82,7 @@ class CreateProject(generics.CreateAPIView):
         except Exception as e:
             print(e)
             return Response({
-                'status': 'Failure... something went wrong'
+                'status': 'Something went wrong while creating the project.'
             }, status = status.HTTP_400_BAD_REQUEST)
 
 
@@ -112,13 +112,11 @@ class AddCollaborator(generics.CreateAPIView):
                                          deletePermission=request.data['deletePermission'],
                                          addCollaboratorPermission=request.data['addCollaboratorPermission'])
 
-            return Response({'message': 'Success! Collaborator added'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'Failure... something went wrong'},status=status.HTTP_400_BAD_REQUEST)
-
-
+            return Response({'message': 'Something went wrong while adding a collaborator.'},status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteProject(generics.DestroyAPIView):

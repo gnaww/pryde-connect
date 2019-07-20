@@ -44,7 +44,7 @@ class UploadProPic extends Component {
     render() {
         return (
             <div className={styles.form}>
-                <label className={styles.imageUpload} for="propic">SELECT A FILE TO UPLOAD</label>
+                <label className={styles.imageUpload} htmlFor="propic">SELECT A FILE TO UPLOAD</label>
                 <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
                 {
                     this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />

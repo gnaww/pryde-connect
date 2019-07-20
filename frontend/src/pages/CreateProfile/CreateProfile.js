@@ -49,7 +49,13 @@ class CreateProfile extends Component {
 
     handleBack = event => {
         event.preventDefault();
-        this.setState({ page: this.state.page - 1 });
+
+        // skip research needs and evaluation needs question if user is researcher
+        if (this.state.page === 4 && this.state.pageData[1].role === "Researcher") {
+            this.setState({ page: 2 });
+        } else {
+            this.setState({ page: this.state.page - 1 });
+        }
     }
 
     handleNext = event => {
@@ -61,8 +67,13 @@ class CreateProfile extends Component {
         if (!errors) {
             let nextPage = this.state.page + 1;
             if (this.state.page === 1) {
-                pages[nextPage].content = data.roleType === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                pages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
             }
+            // skip research needs and evaluation needs question if user is researcher
+            if (this.state.page === 2 && this.state.pageData[1].role === "Researcher") {
+                nextPage += 1;
+            }
+
             let pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;
             this.setState({ pageData: pageDataCopy });
