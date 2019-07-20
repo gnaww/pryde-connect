@@ -178,3 +178,10 @@
 .projectsHeader div span {
     margin: 0 10px;
 }
+
+.profileNotFound {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    padding: 50px;
+}

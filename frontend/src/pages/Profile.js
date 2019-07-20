@@ -39,7 +39,8 @@ class Profile extends Component {
             },
             statusFilter: "all",
             sortBy: "name-asc",
-            showModal: false
+            showModal: false,
+            invalidProfile: false
         };
     }
 
@@ -61,17 +62,24 @@ class Profile extends Component {
         if (match.url === "/myprofile") {
             api.getLoggedInUser()
                 .then(user => this.setState({ user: user }))
-                .catch(err => console.log(err));
+                .catch(err => {
+                    this.setState({ invalidProfile: true });
+                    console.log(err);
+                });
         } else {
             const id = match.params.id;
             api.getUserByID(id)
                 .then(user => this.setState({ user: user }))
-                .catch(err => console.log(err));
+                .catch(err => {
+                    this.setState({ invalidProfile: true });
+                    console.log(err);
+                });
         }
     }
 
     render() {
         const { user } = this.state;
+        const { match } = this.props;
         const statusDropdown = {
             label: "STATUS",
             name: "status",
@@ -113,6 +121,9 @@ class Profile extends Component {
 
         return (
             <div className={styles.container}>
+            {
+                !this.state.invalidProfile ?
+                <>
                 <header className={user.role === "Practitioner" ? `${styles.profileHeader} ${styles.practitioner}` : `${styles.profileHeader} ${styles.researcher}`}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
@@ -223,6 +234,20 @@ class Profile extends Component {
                         </div>
                     </section>
                 </main>
+                </>
+                :
+                <section className={styles.profileNotFound}>
+                    <div>
+                        <h1>Oops!</h1>
+                        {
+                            match.url === "/myprofile" ?
+                            <p>An error occurred while accessing your profile page. Please log out and log back in again.</p>
+                            :
+                            <p>We can't seem to find the profile page you're looking for.</p>
+                        }
+                    </div>
+                </section>
+            }
             </div>
         );
     }

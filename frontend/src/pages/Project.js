@@ -29,7 +29,9 @@ class Project extends Component {
             incentives: [],
             collaborators: [],
             additionalInformation: "",
-            additionalFiles:[]
+            additionalFiles:[],
+            invalidProject: false,
+            canEdit: false
         };
     }
 
@@ -39,7 +41,10 @@ class Project extends Component {
 
         api.getProjectByID(id)
             .then(project => this.setState({ ...project }))
-            .catch(err => console.log(err));
+            .catch(err => {
+                this.setState({ invalidProject: true });
+                console.log(err);
+            });
     }
 
     render() {
@@ -48,7 +53,7 @@ class Project extends Component {
             deliveryModes, timeline, commitmentLength, incentives,
             collaborators, additionalInformation, additionalFiles
         } = this.state;
-
+        const { match } = this.props;
         let statusFormatted = '';
         if (status === "completed") {
             statusFormatted = "COMPLETE"
@@ -60,12 +65,18 @@ class Project extends Component {
 
         return (
             <div className={styles.container}>
+            {
+                !this.state.invalidProject ?
+                <>
                 <main className={styles.projectWrapper}>
-                    <div className={styles.editButtonWrapper}>
-                        <button className={styles.editButton}>
-                            <img src={editButtonOrange} alt="Edit button" />
-                        </button>
-                    </div>
+                    {
+                        this.state.canEdit &&
+                        <div className={styles.editButtonWrapper}>
+                            <button className={styles.editButton}>
+                                <img src={editButtonOrange} alt="Edit button" />
+                            </button>
+                        </div>
+                    }
                     <header className={styles.projectHeader}>
                         <div>
                             <h1>{name}</h1>
@@ -148,6 +159,15 @@ class Project extends Component {
                         </div>
                     </section>
                 </main>
+                </>
+                :
+                <section className={styles.projectNotFound}>
+                    <div>
+                        <h1>Oops!</h1>
+                        <p>We can't seem to find the project page you're looking for.</p>
+                    </div>
+                </section>
+            }
             </div>
         );
     }
