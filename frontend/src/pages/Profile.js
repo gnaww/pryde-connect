@@ -10,7 +10,7 @@ import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import styles from '../styles/Profile.module.css';
-import api from '../services/api/api';
+import api from '../services/api';
 
 class Profile extends Component {
     constructor(props) {
@@ -152,12 +152,18 @@ class Profile extends Component {
                             <li>
                                 <a href={`mailto:${user.email}`}>{user.email}</a>
                             </li>
-                            <li>
-                                <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
-                            </li>
-                            <li>
-                                <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>
-                            </li>
+                            {
+                                user.phone !== "" &&
+                                <li>
+                                    <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
+                                </li>
+                            }
+                            {
+                                user.website !== "" &&
+                                <li>
+                                    <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <button id={styles.editProfile}>
@@ -202,9 +208,9 @@ class Profile extends Component {
                                         </ul>
                                         <hr />
                                         <h2>Research Needs</h2>
-                                        <p>{user.researchNeeds}</p>
+                                        <p>{user.researchNeeds ? user.researchNeeds : "None."}</p>
                                         <h2>Evaluation Needs</h2>
-                                        <p>{user.evaluationNeeds}</p>
+                                        <p>{user.evaluationNeeds ? user.evaluationNeeds : "None."}</p>
                                     </>
                                 :
                                     <>
