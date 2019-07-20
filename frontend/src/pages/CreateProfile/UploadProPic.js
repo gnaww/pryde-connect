@@ -13,7 +13,12 @@ class UploadProPic extends Component {
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.props.onSubmitData(this.state, this.state.profilePicture === null);
+            if (this.state.profilePicture === null) {
+                this.props.onSubmitData(this.state, this.state.profilePicture === null);
+            } else {
+                this.props.onSubmitData(this.state, false);
+                this.props.readyToSubmit();
+            }
         }
     }
 

@@ -12,12 +12,6 @@ export const AnswerTypes = {
 };
 
 export const PractitionerInformation = {
-    PractitionerType: [
-        "4-H Educator",
-        "Other CCE Role",
-        "Practice Focused Role",
-        "Other: "
-    ],
     RoleDescriptions: [
         "Lead youth programs",
         "Design youth programs",
@@ -31,9 +25,9 @@ export const PractitionerInformation = {
         "Toddlers (1-2 years)",
         "Toddlers (2-3 years)",
         "Preschoolers (3-5 years)",
-        "Middle Childhood (6-8 years)",
-        "Middle Childhood (9-11 years)",
-        "Young Teens (12-14 years)",
+        "Middle childhood (6-8 years)",
+        "Middle childhood (9-11 years)",
+        "Young teens (12-14 years)",
         "Teenagers (15-17 years)",
         "Young adults (18-24 years)"
     ],
@@ -48,7 +42,7 @@ export const PractitionerInformation = {
         "Self and Identity",
         "Diversity, Equity, and Inclusion",
         "Education and Learning",
-        "STEM education",
+        "STEM Education",
         "Health",
         "Civic Engagement",
         "Other: "
@@ -391,7 +385,7 @@ export const ResearcherInformation = {
         "Self and Identity",
         "Diversity, Equity, and Inclusion",
         "Education and Learning",
-        "STEM education",
+        "STEM Education",
         "Health",
         "Civic Engagement",
         "Other: "
