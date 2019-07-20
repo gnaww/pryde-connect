@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
 import logo from '../images/pryde-symbol.png';
-import api from '../services/api/api';
+import api from '../services/api';
 
 const Navbar = props => {
     const { loggedIn, location } = props;

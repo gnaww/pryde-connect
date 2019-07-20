@@ -7,7 +7,7 @@ import SearchResult from '../components/SearchResult';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
 import styles from '../styles/Browse.module.css';
-import api from '../services/api/api';
+import api from '../services/api';
 
 class Browse extends Component {
     constructor(props) {

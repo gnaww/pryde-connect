@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SearchResult from '../components/SearchResult';
 import editButtonOrange from '../images/edit-button-orange.svg';
 import styles from '../styles/Project.module.css';
-import api from '../services/api/api';
+import api from '../services/api';
 
 class Project extends Component {
     constructor(props) {
