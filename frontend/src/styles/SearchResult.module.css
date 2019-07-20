@@ -100,6 +100,14 @@
     margin-left: 15px;
 }
 
+.CCEBadge {
+    width: 68px;
+}
+
+.CornellBadge {
+    width: 100px;
+}
+
 .partnerResult .stats {
     color: white;
 }

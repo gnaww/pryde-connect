@@ -14,7 +14,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PUser
-        fields = ('pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website')
+        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -67,7 +67,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation',]
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE']
 
     def get_role(self, obj):
         return obj.get_role_display()

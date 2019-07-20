@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import profilePicture from '../images/profile-picture.png';
-import badge from '../images/badge.svg';
+import CCEBadge from '../images/cce-badge.svg';
+import CornellBadge from '../images/cornell-badge.svg';
 import styles from '../styles/SearchResult.module.css';
 
 const SearchResult = props => {
@@ -49,7 +50,8 @@ const SearchResult = props => {
                         <section>
                             <header>
                                 <h3>{`${props.first_name} ${props.last_name}`}</h3>
-                                <img src={badge} alt="CCE badge" />
+                                { props.locatedAtCCE && <img className={styles.CCEBadge} src={CCEBadge} alt="CCE badge" /> }
+                                { props.locatedAtCornell && <img className={styles.CornellBadge} src={CornellBadge} alt="Cornell badge" /> }
                             </header>
                             <h4>{props.role}</h4>
                             <h4>{props.affiliation}</h4>

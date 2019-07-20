@@ -65,9 +65,14 @@
     margin: 0;
 }
 
-.personalInformation img {
+.CCEBadge {
     width: 93px;
     margin-left: 15px;
+}
+
+.CornellBadge {
+    composes: CCEBadge;
+    width: 131px;
 }
 
 .contactInformation {
