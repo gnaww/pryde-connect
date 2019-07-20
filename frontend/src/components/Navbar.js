@@ -6,7 +6,7 @@ import api from '../services/api/api';
 
 const Navbar = props => {
     const { loggedIn, location } = props;
-    const 
+    const url = location.pathname;
 
     const handleLogout = () => {
         api.logout();
@@ -27,28 +27,28 @@ const Navbar = props => {
                 </Link>
             </div>
             <div className={styles.linksContainer}>
-                <Link className={styles.link} to="/browse">
+                <Link className={url === "/browse" ? styles.activeLink : styles.link} to="/browse">
                     BROWSE
                 </Link>
-                <Link className={styles.link} to="/submit">
+                <Link className={url === "/submit" ? styles.activeLink : styles.link} to="/submit">
                     SUBMIT A PROJECT
                 </Link>
                 {
                     loggedIn ?
                     <>
-                        <Link className={styles.link} to="/myprofile">
+                        <Link className={url === "/myprofile" ? styles.activeLink : styles.link} to="/myprofile">
                             MY PROFILE
                         </Link>
                         <button className={styles.link} onClick={handleLogout}>
                             LOGOUT
                         </button>
                     </>
-                    :
+                    : 
                     <>
-                        <Link className={styles.link} to="/login">
+                        <Link className={url === "/login" ? styles.activeLink : styles.link} to="/login">
                             LOGIN
                         </Link>
-                        <Link className={styles.link} to="/signup">
+                        <Link className={url === "/signup" ? styles.activeLink : styles.link} to="/signup">
                             SIGNUP
                         </Link>
                     </>
@@ -56,6 +56,6 @@ const Navbar = props => {
             </div>
         </nav>
     );
-}
+};
 
 export default withRouter(Navbar);
