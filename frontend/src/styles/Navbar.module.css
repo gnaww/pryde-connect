@@ -68,3 +68,7 @@ button.link {
 button:focus.link {
     outline: none;
 }
+
+.active {
+    text-decoration: underline;
+}

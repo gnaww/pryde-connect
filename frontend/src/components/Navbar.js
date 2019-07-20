@@ -5,7 +5,8 @@ import logo from '../images/pryde-symbol.png';
 import api from '../services/api/api';
 
 const Navbar = props => {
-    const { loggedIn } = props;
+    const { loggedIn, location } = props;
+    const 
 
     const handleLogout = () => {
         api.logout();
