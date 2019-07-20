@@ -19,7 +19,7 @@ class UserList(generics.ListAPIView):
 
 class UserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
-    queryset = PUser.objects.all()
+    queryset = PUser.objects.filter(is_staff=False)
 
 
 class LoggedInUserView(generics.RetrieveAPIView):
