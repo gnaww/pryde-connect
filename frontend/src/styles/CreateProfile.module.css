@@ -1,10 +1,8 @@
 .root {
-    margin-left: 150px;
-    margin-top: 87px;
+    margin: 87px 150px;
 }
 
 .createProfile {
-    width: 42%;
     font-family: Work Sans;
     font-weight: bold;
     font-size: 40px;
