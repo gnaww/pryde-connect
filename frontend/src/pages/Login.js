@@ -10,7 +10,8 @@ class Login extends Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            errorMessage: ''
         };
     }
 
@@ -25,16 +26,20 @@ class Login extends Component {
     handleLogin = event => {
         event.preventDefault();
 
-        api.login(this.state)
-            .then(response => {
-                localStorage.setItem("pryde_key", response.data.key);
-                this.props.setLoggedIn();
-                this.props.history.push("/myprofile");
-            })
-            .catch(error => {
-                console.log(error);
-                console.log(error.response.data);
-            })
+        if (!this.state.email || !this.state.password) {
+            this.setState({ errorMessage: "Both fields must be filled in."});
+        } else {
+            api.login(this.state)
+                .then(response => {
+                    localStorage.setItem("pryde_key", response.data.key);
+                    this.props.setLoggedIn();
+                    this.props.history.push("/myprofile");
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({ errorMessage: Object.values(error.response.data)[0][0] });
+                })
+        }
     }
 
     render() {
@@ -52,6 +57,7 @@ class Login extends Component {
                 <form className={styles.loginForm} onSubmit={this.handleLogin}>
                     <input className={styles.textInput} placeholder="Email address" type="text" value={this.state.email} onChange={this.handleEmailChange} />
                     <input className={styles.textInput} placeholder="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange} />
+                    <p className={styles.errorMessage}>{this.state.errorMessage}</p>
                     <input className={styles.loginButton} type="submit" value="LOG IN" />
                 </form>
                 <div className={styles.links}>

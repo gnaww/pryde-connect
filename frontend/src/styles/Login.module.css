@@ -115,3 +115,10 @@
     align-content: space-around;
     margin-bottom: 75px;
 }
+
+.errorMessage {
+    font-family: Lato;
+    color: red;
+    text-align: center;
+    font-size: 22px;
+}

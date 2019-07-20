@@ -53,7 +53,7 @@ class Project extends Component {
             deliveryModes, timeline, commitmentLength, incentives,
             collaborators, additionalInformation, additionalFiles
         } = this.state;
-        const { match } = this.props;
+
         let statusFormatted = '';
         if (status === "completed") {
             statusFormatted = "COMPLETE"
