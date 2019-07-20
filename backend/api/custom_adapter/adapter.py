@@ -23,4 +23,5 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.locatedAtCornell = data.get('locatedAtCornell')
         user.locatedAtCCE = data.get('locatedAtCCE')
         user.save()
+
         return user
