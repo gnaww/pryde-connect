@@ -7,7 +7,6 @@ import editButtonGreen from '../images/edit-button-green.svg';
 import editIcon from '../images/edit-icon.svg';
 import editIconGreen from '../images/edit-icon-green.svg';
 import CustomDropdown from '../components/CustomDropdown';
-import SearchResult from '../components/SearchResult';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
