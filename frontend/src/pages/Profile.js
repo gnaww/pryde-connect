@@ -9,6 +9,7 @@ import editIconGreen from '../images/edit-icon-green.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import SearchResult from '../components/SearchResult';
 import ProfilePictureModal from '../components/ProfilePictureModal';
+import { sortOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
 import api from '../services/api';
 
@@ -38,7 +39,7 @@ class Profile extends Component {
                 projects: []
             },
             statusFilter: "all",
-            sortBy: "name-asc",
+            sortBy: "",
             showModal: false,
             invalidProfile: false
         };
@@ -106,16 +107,7 @@ class Profile extends Component {
         const sortDropdown = {
             label: "SORT BY",
             name: "sort",
-            options: [
-                {
-                    value: "name-asc",
-                    text: "Name ↑"
-                },
-                {
-                    value: "name-desc",
-                    text: "Name ↓"
-                }
-            ],
+            options: sortOptions,
             handleChange: this.handleDropdownChange("sortBy")
         };
 
@@ -233,9 +225,9 @@ class Profile extends Component {
                         <div>
                             {
                                 this.state.statusFilter === "all" ?
-                                    user.projects.map((project, idx) => <SearchResult key={idx} {...project} />)
+                                    <SortableList sortBy={this.state.sortBy} list={user.projects} />
                                 :
-                                    user.projects.filter(project=> project.status === this.state.statusFilter).map((project, idx) => <SearchResult key={idx} {...project} />)
+                                    <SortableList sortBy={this.state.sortBy} list={user.projects.filter(project=> project.status === this.state.statusFilter)} />
                             }
                         </div>
                     </section>

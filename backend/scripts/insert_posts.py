@@ -11,8 +11,8 @@ def login_user():
     }
 
     login = {
-        'email': 'test1111@gmail.com',
-        'password': 'Kimber3915'
+        'email': 'test1@gmail.com',
+        'password': 'password'
     }
     response = requests.request("POST", url, data=json.dumps(login), headers=headers)
     return response.json()['key']
@@ -30,7 +30,7 @@ def insert_posts():
 
 
     project1 = {
-        "name": "My Frist Study",
+        "name": "aaa",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -45,7 +45,7 @@ def insert_posts():
     }
 
     project2 = {
-        "name": "My Frist Study",
+        "name": "bb",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -60,7 +60,7 @@ def insert_posts():
     }
 
     project3 = {
-        "name": "My Frist Study",
+        "name": "gg",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -75,7 +75,7 @@ def insert_posts():
     }
 
     project4 = {
-        "name": "My Frist Study",
+        "name": "zz",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -90,7 +90,7 @@ def insert_posts():
     }
 
     project5 = {
-        "name": "My Frist Study",
+        "name": "eee",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -105,7 +105,7 @@ def insert_posts():
     }
 
     project6 = {
-        "name": "My Frist Study",
+        "name": "ddd",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -120,7 +120,7 @@ def insert_posts():
     }
 
     project7 = {
-        "name": "My Frist Study",
+        "name": "lll",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -135,7 +135,7 @@ def insert_posts():
     }
 
     project8 = {
-        "name": "My Frist Study",
+        "name": "asdf",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -150,7 +150,7 @@ def insert_posts():
     }
 
     project9 = {
-        "name": "My Frist Study",
+        "name": "foo bar",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
@@ -165,7 +165,7 @@ def insert_posts():
     }
 
     project10 = {
-        "name": "My Frist Study",
+        "name": "test study",
         "status": 2,
         "summary": "summary about the project",
         "researchTopics": ["website building"],

@@ -3,9 +3,9 @@ import queryString from 'query-string';
 import { withRouter } from 'react-router-dom';
 import searchIcon from '../images/magnifying-glass.svg';
 import map from '../images/ny-map.svg';
-import SearchResult from '../components/SearchResult';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
+import { sortOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
 
@@ -19,7 +19,7 @@ class Browse extends Component {
             showTopic: true,
             showStatus: true,
             showLocation: true,
-            sortBy: "name-asc",
+            sortBy: "",
             searchResults: []
         };
     }
@@ -240,23 +240,12 @@ class Browse extends Component {
                                             handleChange={this.setSort}
                                             name="sort"
                                             label="SORT BY"
-                                            options={[
-                                                {
-                                                    value: "name-asc",
-                                                    text: "Name ↑"
-                                                },
-                                                {
-                                                    value: "name-desc",
-                                                    text: "Name ↓"
-                                                }
-                                            ]}
+                                            options={sortOptions}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>
                                         {
-                                            this.state.searchResults.map((searchResult, idx) =>
-                                                <SearchResult key={idx} {...searchResult} />
-                                            )
+                                            <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
                                         }
                                     </section>
                                 </>
@@ -270,23 +259,12 @@ class Browse extends Component {
                                             handleChange={this.setSort}
                                             name="sort"
                                             label="SORT BY"
-                                            options={[
-                                                {
-                                                    value: "name-asc",
-                                                    text: "Name ↑"
-                                                },
-                                                {
-                                                    value: "name-desc",
-                                                    text: "Name ↓"
-                                                }
-                                            ]}
+                                            options={sortOptions}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>
                                         {
-                                            this.state.searchResults.map((searchResult, idx) =>
-                                                <SearchResult key={idx} {...searchResult} />
-                                            )
+                                            <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
                                         }
                                     </section>
                                 </>

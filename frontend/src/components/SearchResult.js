@@ -14,6 +14,8 @@ const SearchResult = props => {
             link = `/project/${props.id}`;
         }
 
+        const status = props.status.replace("-", " ");
+
         return (
             <Link className={styles.linkWrapper} to={link}>
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
@@ -23,7 +25,7 @@ const SearchResult = props => {
                         <p>{props.summary}</p>
                     </section>
                     <section className={styles.stats}>
-                        <h4>{props.status.toUpperCase()}</h4>
+                        <h4>{status.toUpperCase()}</h4>
                         <p>
                             stats/numbers about
                             project/research

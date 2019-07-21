@@ -31,11 +31,11 @@ def pump_into_servers():
     }
 
     user1 = {
-        "email": "test1111@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user1",
+        "email": "test1@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "ace",
+        "last_name": "ventura",
         "role": 1,
         "displayRole": "Practice Focused Role",
         "affiliation": "cornell university",
@@ -54,10 +54,10 @@ def pump_into_servers():
     }
 
     user2 = {
-        "email": "test22222@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
+        "email": "test2@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "austin",
         "last_name": "user1",
         "role": 1,
         "displayRole": "Practice Focused Role",
@@ -77,11 +77,11 @@ def pump_into_servers():
     }
 
     user3 = {
-        "email": "test33333@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test3@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "bob",
+        "last_name": "smith",
         "role": 1,
         "displayRole": "Other CCE Role",
         "affiliation": "cornell university",
@@ -100,11 +100,11 @@ def pump_into_servers():
     }
 
     user4 = {
-        "email": "test44444@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test4@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "john",
+        "last_name": "smith",
         "role": 2,
         "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
@@ -123,10 +123,10 @@ def pump_into_servers():
     }
 
     user5 = {
-        "email": "test55555@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
+        "email": "test5@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "nicole",
         "last_name": "user",
         "role": 2,
         "displayRole": "Research Focused Role",
@@ -146,11 +146,11 @@ def pump_into_servers():
     }
 
     user6 = {
-        "email": "test6666@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test6@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "john",
+        "last_name": "bar",
         "role": 2,
         "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
@@ -169,9 +169,9 @@ def pump_into_servers():
     }
 
     user7 = {
-        "email": "test777@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
+        "email": "test7@gmail.com",
+        "password1": "password",
+        "password2": "password",
         "first_name": "test",
         "last_name": "user",
         "role": 2,
@@ -192,11 +192,11 @@ def pump_into_servers():
     }
 
     user8 = {
-        "email": "test8888@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test8@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "harry",
+        "last_name": "potter",
         "role": 2,
         "displayRole": "Research Focused Role",
         "affiliation": "cornell university",
@@ -215,10 +215,10 @@ def pump_into_servers():
     }
 
     user9 = {
-        "email": "test9999@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
+        "email": "test9@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "tyler",
         "last_name": "user",
         "role": 2,
         "displayRole": "Research Focused Role",
@@ -238,11 +238,11 @@ def pump_into_servers():
     }
 
     user10 = {
-        "email": "test101010@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test10@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": "foo",
+        "last_name": "bar",
         "role": 2,
         "displayRole": "Research Focused Role",
         "affiliation": "Rutgers University",
