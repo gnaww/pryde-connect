@@ -110,6 +110,20 @@ class Profile extends Component {
             options: sortOptions,
             handleChange: this.handleDropdownChange("sortBy")
         };
+        let projectsDisplay;
+        if (user.projects.length === 0) {
+            projectsDisplay = <h2>No projects yet.</h2>
+        } else {
+            if (this.state.statusFilter === "all") {
+                projectsDisplay = <SortableList sortBy={this.state.sortBy} list={user.projects} />
+            } else {
+                if (user.projects.filter(project=> project.status === this.state.statusFilter).length === 0) {
+                    projectsDisplay = <h2>No projects matching filter.</h2>
+                } else {
+                    projectsDisplay = <SortableList sortBy={this.state.sortBy} list={user.projects.filter(project=> project.status === this.state.statusFilter)} />
+                }
+            }
+        }
 
         return (
             <div className={styles.container}>
@@ -223,12 +237,7 @@ class Profile extends Component {
                             </div>
                         </div>
                         <div>
-                            {
-                                this.state.statusFilter === "all" ?
-                                    <SortableList sortBy={this.state.sortBy} list={user.projects} />
-                                :
-                                    <SortableList sortBy={this.state.sortBy} list={user.projects.filter(project=> project.status === this.state.statusFilter)} />
-                            }
+                            { projectsDisplay }
                         </div>
                     </section>
                 </main>

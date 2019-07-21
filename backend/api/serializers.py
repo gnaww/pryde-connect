@@ -50,7 +50,7 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    projects = ProjectSerializer(many=True, read_only=True)
+    projects = ProjectShortSerializer(many=True, read_only=True)
     role = serializers.SerializerMethodField()
 
     class Meta:
