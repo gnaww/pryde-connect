@@ -25,7 +25,7 @@ class Login extends Component {
 
     render() {
         return (
-            <>
+            <div className={styles.container}>
                 <h1 className={styles.joinOurCommunity}>
                     Join our community
                 </h1>
@@ -41,7 +41,7 @@ class Login extends Component {
                     <Link className={styles.link} to="/signup">Create an account</Link>
                     <Link className={styles.link} to="/forgotpassword">Forgot password?</Link>
                 </div>
-            </>
+            </div>
         );
     }
 }
