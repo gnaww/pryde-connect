@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 # custom permissions
-from .permissions import CanAddCollaborator, CanDeleteProject
+from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser
 
 
 class UserList(generics.ListAPIView):
@@ -21,6 +21,15 @@ class UserView(generics.RetrieveAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
+class UserProjectsList(generics.RetrieveAPIView):
+    def get(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        user = PUser.objects.get(pk=pk)
+        projects = Project.objects.filter(owner=user)
+        serializer = ProjectSerializer(projects, many=True)
+        return Response(data=serializer.data)
+
+
 class LoggedInUserView(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -31,22 +40,19 @@ class LoggedInUserView(generics.RetrieveAPIView):
         return Response(data=serializer.data)
 
 
-class ProjectView(generics.RetrieveAPIView):
-    serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
-
-
-class UserProjectsList(generics.RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        user = PUser.objects.get(pk=pk)
-        projects = Project.objects.filter(owner=user)
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(data=serializer.data)
+class DeleteUser(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    queryset = PUser.objects.all()
 
 
 class ProjectList(generics.ListAPIView):
     serializer_class = ProjectShortSerializer
+    queryset = Project.objects.all()
+
+
+class ProjectView(generics.RetrieveAPIView):
+    serializer_class = ProjectSerializer
     queryset = Project.objects.all()
 
 
@@ -85,6 +91,12 @@ class CreateProject(generics.CreateAPIView):
             }, status = status.HTTP_400_BAD_REQUEST)
 
 
+class DeleteProject(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanDeleteProject & IsAuthenticated, ]
+    queryset = Project.objects.all()
+
+
 class AddCollaborator(generics.CreateAPIView):
     authentication_classes = []
     # TODO create custom permission class: owner of project or a collaborator
@@ -114,9 +126,3 @@ class AddCollaborator(generics.CreateAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while adding a collaborator.'},status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteProject(generics.DestroyAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [CanDeleteProject & IsAuthenticated, ]
-    queryset = Project.objects.all()

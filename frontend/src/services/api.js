@@ -29,6 +29,18 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
     },
+    async deleteUser(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        let config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/user/${id}/delete/`, config);
+        return response.status === 204;
+    },
     async login(data) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/login/`, data);
         return response;

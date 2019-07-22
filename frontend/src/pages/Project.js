@@ -41,8 +41,9 @@ class Project extends Component {
     handleDeleteProject = () => {
         const { history } = this.props;
 
+        // TODO: need more elegant action to take after successful delete
         if (window.confirm("Are you sure you want to delete this project?")) {
-            api.deleteProject(11)
+            api.deleteProject(this.state.id)
                 .then(res => history.push("/myprofile"))
                 .catch(err => {
                     console.log(err);

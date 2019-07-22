@@ -2,21 +2,52 @@
     flex: 1;
 }
 
-.profileHeader {
+.profileHeaderPractitioner {
     width: 100%;
-    height: 340px;
+    padding: 60px 0;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    position: relative;
-}
-
-.practitioner {
     background: linear-gradient(180deg, #49AEE9 0%, #218AE0 100%);
 }
 
-.researcher {
+.profileHeaderResearcher {
+    composes: profileHeaderPractitioner;
     background: linear-gradient(180deg, #99D85D 0%, #78C130 100%);
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: -44px;
+}
+
+.editButton {
+    border: none;
+    background: none;
+    padding: 0;
+    margin-left: 30px;
+    cursor: pointer;
+    height: 100%;
+    width: 110px;
+}
+
+.editButton:focus {
+    outline: none;
+}
+
+.deleteButton {
+    composes: editButton;
+    width: 145px;
+}
+
+.deleteButton:focus {
+    outline: none;
+}
+
+.buttonWrapper {
+    height: 44px;
 }
 
 .profilePicture {
@@ -96,15 +127,6 @@
 .contactInformation a {
     text-decoration: none;
     color: white;
-}
-
-#editProfile {
-    position: absolute;
-    top: 40px;
-    right: 100px;
-    border: none;
-    background: none;
-    cursor: pointer;
 }
 
 .profileContent {

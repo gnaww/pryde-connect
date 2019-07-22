@@ -6,6 +6,7 @@ import editButton from '../images/edit-button.svg';
 import editButtonGreen from '../images/edit-button-green.svg';
 import editIcon from '../images/edit-icon.svg';
 import editIconGreen from '../images/edit-icon-green.svg';
+import deleteButton from '../images/delete-button-borderless.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortOptions, SortableList } from '../components/SortableList';
@@ -40,7 +41,8 @@ class Profile extends Component {
             statusFilter: "all",
             sortBy: "",
             showModal: false,
-            invalidProfile: false
+            invalidProfile: false,
+            canEditDelete: false
         };
     }
 
@@ -56,12 +58,26 @@ class Profile extends Component {
         this.setState({ showModal: false });
     }
 
+    handleDeleteProfile = () => {
+        const { history } = this.props;
+
+        // TODO: need more elegant action to take after successful delete
+        if (window.confirm("Are you sure you want to delete your account?")) {
+            api.deleteUser(this.state.user.id)
+                .then(res => history.push("/"))
+                .catch(err => {
+                    console.log(err);
+                    alert("An error occurred while deleting your account.");
+                });
+        }
+    }
+
     componentDidMount() {
         const { match } = this.props;
 
         if (match.url === "/myprofile") {
             api.getLoggedInUser()
-                .then(user => this.setState({ user: user }))
+                .then(user => this.setState({ user: user, canEditDelete: true }))
                 .catch(err => {
                     this.setState({ invalidProfile: true });
                     console.log(err);
@@ -69,7 +85,7 @@ class Profile extends Component {
         } else {
             const id = match.params.id;
             api.getUserByID(id)
-                .then(user => this.setState({ user: user }))
+                .then(userPage => this.setState({ user: userPage }))
                 .catch(err => {
                     this.setState({ invalidProfile: true });
                     console.log(err);
@@ -129,7 +145,7 @@ class Profile extends Component {
             {
                 !this.state.invalidProfile ?
                 <>
-                <header className={user.role === "Practitioner" ? `${styles.profileHeader} ${styles.practitioner}` : `${styles.profileHeader} ${styles.researcher}`}>
+                <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
                         <button className={styles.profilePictureEdit} onClick={this.showModal}>
@@ -153,6 +169,24 @@ class Profile extends Component {
                         <h2>{user.location}</h2>
                     </div>
                     <div className={styles.contactInformation}>
+                        <div className={styles.buttonWrapper}>
+                            {
+                                this.state.canEditDelete &&
+                                <>
+                                <button className={styles.editButton}>
+                                    {
+                                        user.role === "Practitioner" ?
+                                            <img src={editButton} alt="Edit button" />
+                                        :
+                                            <img src={editButtonGreen} alt="Edit button" />
+                                    }
+                                </button>
+                                <button className={styles.deleteButton} onClick={this.handleDeleteProfile}>
+                                    <img src={deleteButton} alt="Edit button" />
+                                </button>
+                                </>
+                            }
+                        </div>
                         <ul>
                             <li>
                                 <a href={`mailto:${user.email}`}>{user.email}</a>
@@ -171,14 +205,6 @@ class Profile extends Component {
                             }
                         </ul>
                     </div>
-                    <button id={styles.editProfile}>
-                        {
-                            user.role === "Practitioner" ?
-                                <img src={editButton} alt="Edit button" />
-                            :
-                                <img src={editButtonGreen} alt="Edit button" />
-                        }
-                    </button>
                 </header>
                 <main className={styles.profileContent}>
                     <section className={styles.profileSummary}>

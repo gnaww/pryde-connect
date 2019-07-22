@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.conf.urls import url
 from .views import ProjectList, CreateProject, ProjectView, UserView, UserProjectsList,\
-    LoggedInUserView, UserList, DeleteProject, AddCollaborator
+    LoggedInUserView, UserList, DeleteProject, AddCollaborator, DeleteUser
 
 
 
@@ -9,6 +9,7 @@ from .views import ProjectList, CreateProject, ProjectView, UserView, UserProjec
 urlpatterns = [
 
     path('user/<int:pk>/', UserView.as_view()),
+    path('user/<int:pk>/delete/', DeleteUser.as_view()),
     path('user/', LoggedInUserView.as_view()),
     path('user/<int:pk>/projects/', UserProjectsList.as_view()),
     path('users/', UserList.as_view()),

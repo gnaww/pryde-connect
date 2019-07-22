@@ -55,3 +55,9 @@ class CanEditProject(permissions.BasePermission):
 
         # Instance obj must have an attribute named `owner`.
         return (obj.owner == request.user) or hasPermission
+
+class CanEditDeleteUser(permissions.BasePermission):
+    message = "You do not have permission to edit or delete this user."
+
+    def has_object_permission(self, request, view, obj):
+        return obj == request.user
