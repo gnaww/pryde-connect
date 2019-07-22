@@ -332,3 +332,19 @@ span.qaOptionText {
     padding: 40px 0;
     display: flex;
 }
+
+.label {
+    margin-left: 0;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+}
+
+.uploadButton {
+    composes: nextButton;
+    width: 264px;
+    background: #99D85D;
+}

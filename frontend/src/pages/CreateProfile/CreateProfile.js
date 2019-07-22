@@ -6,7 +6,7 @@ import PractitionerQuestions from './PractitionerQuestions';
 import ResearcherQuestions from './ResearcherQuestions';
 import OptionalQuestions from './OptionalQuestions';
 import UploadProPic from './UploadProPic';
-import ReviewFinish from './ReviewFinish';
+// import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 
 let pages = [
@@ -29,11 +29,12 @@ let pages = [
     {
         subtitle: "Finally, upload a profile picture.*",
         content: UploadProPic
-    },
-    {
-        subtitle: "You can edit your answers to these questions at anytime through your profile page.",
-        content: ReviewFinish
     }
+    // ,
+    // {
+    //     subtitle: "You can edit your answers to these questions at anytime through your profile page.",
+    //     content: ReviewFinish
+    // }
 ];
 
 class CreateProfile extends Component {

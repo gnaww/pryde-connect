@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import { ResearcherInformation, researcherQAForm } from './FormContent';
-import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from './QAComponents';
+import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from '../../components/QAComponents';
 
 class ResearcherQuestions extends Component {
     constructor(props) {
@@ -133,7 +133,7 @@ class ResearcherQuestions extends Component {
         const defaultLocatedAtCornell = this.state.locatedAtCornell !== null ? this.state.locatedAtCornell : "";
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell) }
+                {getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell)}
                 {
                     qa.id === 0 && this.state.locatedAtCornell !== null &&
                     (
@@ -183,9 +183,10 @@ class ResearcherQuestions extends Component {
                         </div>
                     )
                 }
-                { getRadiobuttonQuestion(qa, this.setValuesRadio, this.state) }
-                { getCheckboxQuestion(qa, this.setValuesCheckbox, this.state) }
-                { getTextboxQuestion(qa, this.setTextboxValue, this.state, index) }
+                {getRadiobuttonQuestion(qa, this.setValuesRadio, this.state)}
+                {getCheckboxQuestion(qa, this.setValuesCheckbox, this.state)}
+                {getTextboxQuestion(qa, this.setTextboxValue, this.state, index)}
+                {}
             </li>
         );
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getPractitionerRoleQuestion } from './QAComponents';
+import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getInputboxQuestion } from '../../components/QAComponents';
 import { PractitionerInformation, practitionerQAForm } from './FormContent';
 
 class PractitionerQuestions extends Component {
@@ -120,33 +120,33 @@ class PractitionerQuestions extends Component {
 
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE) }
-                { getCheckboxQuestion(qa, this.setValues, this.state) }
-                { getPractitionerRoleQuestion(qa, this.setDisplayRole, this.state)}
+                {getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE)}
+                {getCheckboxQuestion(qa, this.setValues, this.state)}
+                {getInputboxQuestion(qa, this.setDisplayRole, this.state)}
                 {
                     qa.id === 0 && this.state.locatedAtCCE !== null &&
                     (
                         <div className={styles.form}>
                             {
                                 this.state.locatedAtCCE ?
-                                getDropDownQuestion(qa.extra, this.setLocationDropdown, defaultCounty)
-                                :
-                                <>
-                                    <input
-                                        className={styles.longTextInput}
-                                        placeholder="What is your institution or organization?"
-                                        type="text"
-                                        value={this.state.affiliation}
-                                        onChange={this.setLocationTextbox("affiliation")}
-                                    />
-                                    <input
-                                        className={styles.longTextInput}
-                                        placeholder="Where are you located?"
-                                        type="text"
-                                        value={this.state.location}
-                                        onChange={this.setLocationTextbox("location")}
-                                    />
-                                </>
+                                    getDropDownQuestion(qa.extra, this.setLocationDropdown, defaultCounty)
+                                    :
+                                    <>
+                                        <input
+                                            className={styles.longTextInput}
+                                            placeholder="What is your institution or organization?"
+                                            type="text"
+                                            value={this.state.affiliation}
+                                            onChange={this.setLocationTextbox("affiliation")}
+                                        />
+                                        <input
+                                            className={styles.longTextInput}
+                                            placeholder="Where are you located?"
+                                            type="text"
+                                            value={this.state.location}
+                                            onChange={this.setLocationTextbox("location")}
+                                        />
+                                    </>
                             }
                         </div>
                     )

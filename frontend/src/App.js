@@ -4,6 +4,7 @@ import Homepage from './pages/Homepage';
 import Browse from './pages/Browse';
 import Login from './pages/Login';
 import CreateProfile from './pages/CreateProfile/CreateProfile';
+import CreateProject from './pages/CreateProject/CreateProject';
 import Profile from './pages/Profile';
 import Project from './pages/Project';
 import PageNotFound from './pages/PageNotFound';
@@ -50,6 +51,7 @@ class App extends Component {
                         <Route path="/myprofile" exact render={renderProps => {
                             return !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile {...renderProps} />
                         }} />
+                        <Route path="/submit" exact component={CreateProject} />
                         <Route path="/user/:id" component={Profile} />
                         <Route path="/project/:id" component={Project} />
                         <Route component={PageNotFound} />
