@@ -7,22 +7,40 @@
     font-family: Lato;
 }
 
-.editButtonWrapper {
+.buttonWrapper {
     height: 44px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .editButton {
     border: none;
     background: none;
     padding: 0;
+    margin-left: 30px;
     cursor: pointer;
-    float: right;
-    height: 44px;
+    height: 100%;
     width: 110px;
 }
 
 .editButton:focus {
     outline: none;
+}
+
+.deleteButton {
+    composes: editButton;
+    width: 145px;
+}
+
+.deleteButton:focus {
+    outline: none;
+}
+
+.errorMessage {
+    color: red;
+    font-family: Lato;
+    font-size: 24px;
 }
 
 .projectHeader {

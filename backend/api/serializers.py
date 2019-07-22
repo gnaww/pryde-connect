@@ -31,15 +31,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         followers_queryset = Collaborators.objects.filter(project=obj)
         return CollaboratorSerializer(followers_queryset, many=True).data
 
-
     def get_status(self, obj):
         return obj.get_status_display()
 
 
 # Used for the project cards in the browse page
 class ProjectShortSerializer(serializers.ModelSerializer):
-    status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Project

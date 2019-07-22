@@ -3,7 +3,7 @@ from .models import PUser, Project, Collaborators
 
 
 class CanAddCollaborator(permissions.BasePermission):
-    message = 'You do not have permission to add collaborators to this project'
+    message = "You do not have permission to add collaborators to this project."
 
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
@@ -28,7 +28,7 @@ class CanAddCollaborator(permissions.BasePermission):
 
 
 class CanDeleteProject(permissions.BasePermission):
-    message = "You do not have permission to delete this project"
+    message = "You do not have permission to delete this project."
 
     def has_object_permission(self, request, view, obj):
 
@@ -43,7 +43,7 @@ class CanDeleteProject(permissions.BasePermission):
 
 
 class CanEditProject(permissions.BasePermission):
-    message = "You do not have permission to make edits on this project"
+    message = "You do not have permission to make edits on this project."
 
     def has_object_permission(self, request, view, obj):
 

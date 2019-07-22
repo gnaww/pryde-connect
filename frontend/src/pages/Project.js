@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SearchResult from '../components/SearchResult';
+import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
 import styles from '../styles/Project.module.css';
 import api from '../services/api';
@@ -31,20 +32,53 @@ class Project extends Component {
             additionalInformation: "",
             additionalFiles:[],
             invalidProject: false,
-            canEdit: false
+            canEdit: false,
+            canDelete: false,
+            errorDeleting: false
         };
+    }
+
+    handleDeleteProject = () => {
+        const { history } = this.props;
+
+        if (window.confirm("Are you sure you want to delete this project?")) {
+            api.deleteProject(11)
+                .then(res => history.push("/myprofile"))
+                .catch(err => {
+                    console.log(err);
+                    this.setState({ errorDeleting: true });
+                });
+        }
     }
 
     componentDidMount() {
         const { match } = this.props;
         const id = match.params.id;
 
-        api.getProjectByID(id)
-            .then(project => this.setState({ ...project }))
-            .catch(err => {
-                this.setState({ invalidProject: true });
-                console.log(err);
-            });
+        // user is logged in
+        if (localStorage.getItem("pryde_key")) {
+            Promise.all([api.getProjectByID(id), api.getLoggedInUser()])
+                .then(values => {
+                    const project = values[0];
+                    const loggedInUser = values[1];
+                    if (project.owner.pk === loggedInUser.id) {
+                        this.setState({ ...project, canEdit: true, canDelete: true });
+                    } else {
+                        this.setState({ ...project });
+                    }
+                })
+                .catch(err => {
+                    this.setState({ invalidProject: true });
+                    console.log(err);
+                })
+        } else {
+            api.getProjectByID(id)
+                .then(project => this.setState({ ...project }))
+                .catch(err => {
+                    this.setState({ invalidProject: true });
+                    console.log(err);
+                });
+        }
     }
 
     render() {
@@ -54,14 +88,7 @@ class Project extends Component {
             collaborators, additionalInformation, additionalFiles
         } = this.state;
 
-        let statusFormatted = '';
-        if (status === "completed") {
-            statusFormatted = "COMPLETE"
-        } else if (status === "not-started") {
-            statusFormatted = "NOT STARTED";
-        } else if (status === "in-progress") {
-            statusFormatted = "IN PROGRESS"
-        }
+        let statusFormatted = status.replace("-", " ").toUpperCase();
 
         return (
             <div className={styles.container}>
@@ -70,11 +97,24 @@ class Project extends Component {
                 <>
                 <main className={styles.projectWrapper}>
                     {
-                        this.state.canEdit &&
-                        <div className={styles.editButtonWrapper}>
-                            <button className={styles.editButton}>
-                                <img src={editButtonOrange} alt="Edit button" />
-                            </button>
+                        (this.state.canEdit || this.state.canDelete) &&
+                        <div className={styles.buttonWrapper}>
+                            {
+                                this.state.errorDeleting &&
+                                <p className={styles.errorMessage}>An error occurred while deleting this project.</p>
+                            }
+                            {
+                                this.state.canEdit &&
+                                    <button className={styles.editButton}>
+                                        <img src={editButtonOrange} alt="Edit button" />
+                                    </button>
+                            }
+                            {
+                                this.state.canDelete &&
+                                    <button className={styles.deleteButton} onClick={this.handleDeleteProject}>
+                                        <img src={deleteButton} alt="Delete button" />
+                                    </button>
+                            }
                         </div>
                     }
                     <header className={styles.projectHeader}>

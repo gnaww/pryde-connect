@@ -74,5 +74,17 @@ export default {
 
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
         return response.status === 200;
+    },
+    async deleteProject(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        let config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/delete/`, config);
+        return response.status === 204;
     }
 }

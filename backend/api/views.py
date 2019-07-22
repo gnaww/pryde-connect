@@ -7,7 +7,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
 # custom permissions
 from .permissions import CanAddCollaborator, CanDeleteProject
 
@@ -87,8 +86,6 @@ class CreateProject(generics.CreateAPIView):
 
 
 class AddCollaborator(generics.CreateAPIView):
-
-
     authentication_classes = []
     # TODO create custom permission class: owner of project or a collaborator
     # with addCollaboratorPermission should be allowed to do this
