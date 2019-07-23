@@ -3,11 +3,7 @@ from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborators
 
 
-class CollaboratorSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Collaborators
-        fields = '__all__'
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -15,6 +11,17 @@ class MiniUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = PUser
         fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website']
+
+class CollaboratorSerializer(serializers.ModelSerializer):
+    collaboratorInfo = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Collaborators
+        fields = ['collaboratorInfo']
+
+    def get_collaboratorInfo(self, obj):
+        return MiniUserSerializer(PUser.objects.get(email=obj.collaborator)).data
+
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -27,9 +34,12 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_collaborators(self, obj):
-        #query for them here and serialize with CollaboratorSerializer
-        followers_queryset = Collaborators.objects.filter(project=obj)
-        return CollaboratorSerializer(followers_queryset, many=True).data
+        collaborator_queryset = Collaborators.objects.filter(project=obj)
+        userInfo = []
+        for collaborator in collaborator_queryset:
+            userInfo.append(MiniUserSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+        # return CollaboratorSerializer(collaborators, many=True).data
+        return userInfo
 
     def get_status(self, obj):
         return obj.get_status_display()

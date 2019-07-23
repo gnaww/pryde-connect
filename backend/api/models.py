@@ -86,6 +86,7 @@ class Project(models.Model):
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
     type = models.CharField(max_length=100, default='project')
     # collaborators = models.ManyToManyField(Collaborators)
+    isApproved = models.BooleanField(default=True)
 
 
 class Collaborators(models.Model):
