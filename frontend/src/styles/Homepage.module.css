@@ -50,6 +50,12 @@
     color: white;
     text-decoration: none;
     margin: 50px auto;
+    transition: 0.25s ease-in-out;
+}
+
+#welcomeBanner a:hover{
+    background: none;
+    box-shadow: inset white 0px 0px 0px 2px;
 }
 
 #welcomeBanner button {
@@ -81,6 +87,7 @@
     transform: translateY(15px);
 }
 
+
 .aboutUs {
     background: #ffab3f;
     color: white;
@@ -104,6 +111,7 @@
     font-family: Lato;
     font-size: 20px;
     letter-spacing: 0.05em;
+    line-height: 25px;
 }
 
 .aboutUs .connect {
@@ -124,6 +132,7 @@
 
 .featuresText {
     padding: 110px;
+    padding-bottom: 0px;
     flex: 1;
 }
 
@@ -137,7 +146,7 @@
     font-family: Work Sans;
     font-size: 25px;
     margin-top: 25px;
-    margin-bottom: 100px;
+    margin-bottom: 60px;
 }
 
 .screenshots {
@@ -159,7 +168,7 @@
 
 .screenshots #screenshot2 {
     right: 0;
-    bottom: 25%;
+    bottom: 15%;
     z-index: 2;
 }
 
@@ -210,6 +219,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: 0.05s ease-in-out;
 }
 
 .actionLink img {
@@ -226,9 +236,13 @@
     margin: 0;
 }
 
+.actionLink:hover{
+    transform: scale(1.05);
+}
+
 .viewProjects {
-    width: 141px;
-    height: 109px;
+    width: 120px;
+    height: 120px;
     padding-top: 7px;
     padding-bottom: 30px;
 }

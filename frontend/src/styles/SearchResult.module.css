@@ -11,13 +11,13 @@
     border-radius: 5px;
     width: 100%;
     margin: 30px 0;
-    padding: 20px 30px;
+    padding: 30px 30px;
     cursor: pointer;
     transition: 0.2s all ease-in-out
 }
 
 .searchResult:hover {
-    transform: translateY(-7px);
+    transform: scale(1.02);
 }
 
 .projectResult {
@@ -44,7 +44,6 @@
 }
 
 .projectDetails, .partnerDetails {
-    border-right: 2px solid black;
     padding-right: 30px;
     flex: 2;
 }
@@ -55,6 +54,7 @@
     line-height: 35px;
     margin: 0;
     padding-bottom: 6px;
+    letter-spacing: 0.05em;
 }
 
 .projectDetails h4 {
@@ -70,7 +70,6 @@
 
 .partnerDetails {
     display: flex;
-    border-right: 2px solid white;
 }
 
 .partnerDetails h3 {
@@ -125,4 +124,12 @@
     letter-spacing: 0.1em;
     color: #FF7F00;
     margin: 0;
+}
+
+.linkWrapper img {
+    margin-right: 10px;
+}
+
+.line {
+    padding-bottom:10px;
 }

@@ -188,8 +188,9 @@ class Browse extends Component {
                     <div className={styles.searchWrapper}>
                         <aside className={styles.filtersContainer}>
                             <h2>FILTER</h2>
+                            <div className={styles.box}>
                             <section>
-                                <h3>CATEGORY</h3>
+                                <h3>BROWSE</h3>
                                 <ul>
                                     <li>
                                         <button
@@ -219,6 +220,7 @@ class Browse extends Component {
                                     />
                                 )
                             }
+                            </div>
                         </aside>
                         <section className={styles.searchResultsContainer}>
                             <form className={styles.searchForm} onSubmit={this.submitQuery}>
