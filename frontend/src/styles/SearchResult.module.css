@@ -44,7 +44,6 @@
 }
 
 .projectDetails, .partnerDetails {
-    border-right: 2px solid black;
     padding-right: 30px;
     flex: 2;
 }
@@ -71,7 +70,6 @@
 
 .partnerDetails {
     display: flex;
-    border-right: 2px solid white;
 }
 
 .partnerDetails h3 {
@@ -118,4 +116,12 @@
     letter-spacing: 0.1em;
     color: #FF7F00;
     margin: 0;
+}
+
+.linkWrapper img {
+    margin-right: 10px;
+}
+
+.line {
+    padding-bottom:10px;
 }
