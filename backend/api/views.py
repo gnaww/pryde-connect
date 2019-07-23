@@ -98,23 +98,37 @@ class DeleteProject(generics.DestroyAPIView):
 
 
 class AddCollaborator(generics.CreateAPIView):
-    authentication_classes = []
+    authentication_classes = [TokenAuthentication]
     # TODO create custom permission class: owner of project or a collaborator
     # with addCollaboratorPermission should be allowed to do this
-    permission_classes = []
+    permission_classes = [CanAddCollaborator & IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
+        # get the object we need to check the permissions on
+        try:
+            obj = Project.objects.get(pk=kwargs['pk'])
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Project not found'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        print(request.data)
-        print(request.data['user'])
-        print(request.data['editPermission'])
-        print(request.data['deletePermission'])
-        print(request.data['addCollaboratorPermission'])
-        print(args)
-        print(kwargs)
 
+        # check to see if they have proper permission to perform this request
+        # this will throw an error if they do not have permissions
+        self.check_object_permissions(request, obj)
 
         try:
+            # the owner of the project should not be able to add themselves as a collaborator
+            if obj.owner == PUser.objects.get(pk=request.data['user']):
+                return Response({'message': 'You cannot add yourself as a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # user shouldn't be able to add themselves as a collaborator to a project that they own
+
+            # check to see if the user is already added as a collaborator to this project
+            if Collaborators.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
+                                         collaborator=PUser.objects.get(pk=request.data['user'])).exists():
+                return Response({'message': 'This user is already a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+
             Collaborators.objects.create(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user']),
                                          editPermission=request.data['editPermission'],

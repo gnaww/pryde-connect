@@ -5,6 +5,7 @@ from .models import PUser, Project, Collaborators
 class CanAddCollaborator(permissions.BasePermission):
     message = "You do not have permission to add collaborators to this project."
 
+
     def has_object_permission(self, request, view, obj):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
@@ -16,6 +17,8 @@ class CanAddCollaborator(permissions.BasePermission):
         print(request)
         print(view)
         print(obj)
+        print(request.user)
+        print(obj.owner)
         # Instance must have an attribute named `owner`.
 
         try:
@@ -24,7 +27,7 @@ class CanAddCollaborator(permissions.BasePermission):
         except Exception as e:
             hasPermission = False
 
-        return (obj.owner == request.user) or hasPermission
+        return hasPermission or (obj.owner == request.user)
 
 
 class CanDeleteProject(permissions.BasePermission):
