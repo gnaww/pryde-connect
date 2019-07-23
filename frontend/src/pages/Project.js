@@ -131,7 +131,7 @@ class Project extends Component {
                                     <a href={`mailto:${owner.email}`}>{owner.email}</a>
                                 </li>
                                 <li>
-                                    <a href={`tel:${owner.phone}`}>({owner.phone.slice(0, 3)})-{owner.phone.slice(3, 6)}-{owner.phone.slice(6, 10)}</a>
+                                    <a href={`tel:${owner.phone}`}>({owner.phone.slice(2, 5)})-{owner.phone.slice(5, 8)}-{owner.phone.slice(8, 12)}</a>
                                 </li>
                                 <li>
                                     <a href={owner.website} target="_blank" rel="noopener noreferrer">{owner.website.replace(/(^\w+:|^)\/\//, '')}</a>
