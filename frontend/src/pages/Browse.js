@@ -135,9 +135,24 @@ class Browse extends Component {
             {
                 categoryName: "Topic",
                 filterOptions: [
-                    "Purpose in Life",
-                    "Health",
-                    "skf"
+                    "Animal Science & Agriculture",
+                    "Civic Engagement",
+                    "Diversity, Equity & Inclusion",
+                    "Education & Learning",
+                    "Environment & Sustainability",
+                    "Families",
+                    "Health & Wellness",
+                    "Peer Relationships",
+                    "Positive Youth Development",
+                    "Policy Analysis",
+                    "Program Evaluation",
+                    "Media & Technology",
+                    "Motivation",
+                    "Nutrition",
+                    "Risk Behavior",
+                    "Self & Identity",
+                    "Science, Technology, Engineering & Math (STEM)",
+                   "Youth/Adult Relationships"
                 ],
                 isVisible: this.state.showTopic,
                 defaultValues: parsedURL.topic
@@ -147,7 +162,7 @@ class Browse extends Component {
                 filterOptions: [
                     "Not Started",
                     "In Progress",
-                    "Completed"
+                    "Completed",
                 ],
                 isVisible: this.state.showStatus,
                 defaultValues: parsedURL.status
