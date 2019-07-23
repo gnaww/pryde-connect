@@ -22,11 +22,10 @@
     user-select: none;
 }
 
-.filterCategory label {
-    margin-left: -4px;
+span.filterCategoryLabel {
     margin-right: 0;
-    margin-top: 10px;
     font-size: 16px;
+    line-height: 24px;
     font-family: Lato;
 }
 
@@ -35,7 +34,7 @@
 }
 
 .filterCategory .checkbox {
-    padding: 0 5px 0 0;
+    padding: 0 5px 0 6px;
 }
 
 .open {

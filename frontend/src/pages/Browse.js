@@ -88,8 +88,8 @@ class Browse extends Component {
         window.location.reload();
     }
 
-    componentDidMount() {
-        const { location } = this.props;
+    retrieveResults = props => {
+        const { location } = props;
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         this.setState({ query: parsedURL.q ? parsedURL.q : '' });
 
@@ -114,6 +114,17 @@ class Browse extends Component {
                     .catch(err => console.log(err));
             }
         }
+    }
+
+    componentWillReceiveProps(newProps){
+        if(newProps.location.search !== this.props.location.search) {
+            console.log('new', newProps);
+            this.retrieveResults(newProps);
+        }
+    }
+
+    componentDidMount() {
+        this.retrieveResults(this.props);
     }
 
     render() {

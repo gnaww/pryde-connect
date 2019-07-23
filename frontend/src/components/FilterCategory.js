@@ -14,7 +14,7 @@ const FilterCategory = ({ isVisible, toggleVisibility, handleClick, categoryName
     return (
         <section className={styles.filterCategory}>
             <h4 onClick={() => toggleVisibility(`show${categoryName}`)}>
-                <img 
+                <img
                     src={arrow}
                     alt="Down arrow"
                     className={isVisible ? styles.open : styles.closed}
@@ -40,6 +40,7 @@ const FilterCategory = ({ isVisible, toggleVisibility, handleClick, categoryName
                                                 disableRipple
                                             />
                                         }
+                                        classes={{ label: styles.filterCategoryLabel}}
                                         label={filter}
                                     />
                                 </li>
