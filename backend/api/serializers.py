@@ -8,9 +8,14 @@ from .models import PUser, Project, Collaborators
 
 class MiniUserSerializer(serializers.ModelSerializer):
 
+    role = serializers.SerializerMethodField()
     class Meta:
         model = PUser
-        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website']
+        fields = ['pk', 'first_name', 'last_name', 'affiliation',
+                  'location', 'email', 'phone', 'website', 'type', 'role']
+
+    def get_role(self, obj):
+        return obj.get_role_display()
 
 class CollaboratorSerializer(serializers.ModelSerializer):
     collaboratorInfo = serializers.SerializerMethodField()
