@@ -11,7 +11,7 @@ import screenshot1 from '../images/screenshot1.png';
 import screenshot2 from '../images/screenshot2.png';
 import screenshot3 from '../images/screenshot3.png';
 import addPerson from '../images/add-person.png';
-import studies from '../images/studies.png';
+import projects from '../images/projects.png';
 import styles from '../styles/Homepage.module.css';
 import { Link } from 'react-router-dom';
 
@@ -72,7 +72,7 @@ class Homepage extends Component {
                         <div>
                             <h2>Browse our archives</h2>
                             <p>
-                                View results and documentation from studies completed in the past
+                                View results and documentation from projects completed in the past
                             </p>
                         </div>
                         <div>
@@ -94,11 +94,11 @@ class Homepage extends Component {
                         <div className={styles.actions}>
                             <div className={styles.actionCard}>
                                 <Link className={styles.actionLink} to="/browse">
-                                    <img className={styles.viewStudies} src={studies} alt="View studies" />
-                                    <p>VIEW STUDIES</p>
+                                    <img className={styles.viewProjects} src={projects} alt="View project" />
+                                    <p>VIEW PROJECTS</p>
                                 </Link>
                                 <p className={styles.actionDescription}>
-                                    View studies and profiles right now without an account.
+                                    View projects and profiles right now without an account.
                                 </p>
                             </div>
                             <div className={styles.actionCard}>

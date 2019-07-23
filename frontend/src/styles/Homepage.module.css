@@ -224,6 +224,12 @@
 
 .actionLink img {
     margin: 0 auto;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .actionLink p {
@@ -234,7 +240,7 @@
     transform: scale(1.05);
 }
 
-.viewStudies {
+.viewProjects {
     width: 120px;
     height: 120px;
     padding-top: 7px;
