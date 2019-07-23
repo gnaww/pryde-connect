@@ -64,13 +64,31 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    projects = ProjectShortSerializer(many=True, read_only=True)
+    projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
 
+    # projects_and_collabs = serializers.SerializerMethodField()
     class Meta:
         model = get_user_model()
         exclude = ['date_joined', 'groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions']
 
+    def get_projects(self, obj):
+        # get the projects that the user owns
+        print(obj)
+        print(obj.email)
+        projects = []
+        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+
+        for collab in collabs:
+            print(collab.project)
+            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
+
+        owned_projects = Project.objects.filter(owner=obj.pk)
+        for project in owned_projects:
+            projects.append(ProjectShortSerializer(project).data)
+        return projects
+
+        # also need to get the projects that the user is collaborating on
     def get_role(self, obj):
         return obj.get_role_display()
 

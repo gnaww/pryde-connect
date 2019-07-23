@@ -99,7 +99,6 @@ class DeleteProject(generics.DestroyAPIView):
 
 class AddCollaborator(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
-    # TODO create custom permission class: owner of project or a collaborator
     # with addCollaboratorPermission should be allowed to do this
     permission_classes = [CanAddCollaborator & IsAuthenticated]
 
