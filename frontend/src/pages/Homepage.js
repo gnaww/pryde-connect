@@ -11,7 +11,7 @@ import screenshot1 from '../images/screenshot1.png';
 import screenshot2 from '../images/screenshot2.png';
 import screenshot3 from '../images/screenshot3.png';
 import addPerson from '../images/add-person.png';
-import studies from '../images/Studies.png';
+import studies from '../images/studies.png';
 import styles from '../styles/Homepage.module.css';
 import { Link } from 'react-router-dom';
 

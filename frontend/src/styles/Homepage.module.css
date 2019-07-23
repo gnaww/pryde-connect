@@ -50,12 +50,11 @@
     color: white;
     text-decoration: none;
     margin: 50px auto;
-    /* box-sizing: border-box; */
+    transition: 0.25s ease-in-out;
 }
 
 #welcomeBanner a:hover{
     background: none;
-    transition: 0.25s ease-in-out;
     box-shadow: inset white 0px 0px 0px 2px;
 }
 
@@ -169,7 +168,7 @@
 
 .screenshots #screenshot2 {
     right: 0;
-    bottom: 20%;
+    bottom: 15%;
     z-index: 2;
 }
 
