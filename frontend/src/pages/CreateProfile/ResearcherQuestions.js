@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import { ResearcherInformation, researcherQAForm } from './FormContent';
-import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from './QAComponents';
+import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from '../../components/QAComponents';
 
 class ResearcherQuestions extends Component {
     constructor(props) {
@@ -21,10 +21,11 @@ class ResearcherQuestions extends Component {
                 other: ""
             }
         };
+        this.errors = researcherQAForm.map(_qa => { return false });
     }
 
     componentDidUpdate(_prevProps, _prevState) {
-        function isInvalid(state) {
+        function isInvalid(state, obj) {
             let locationValid;
 
             if (state.locatedAtCornell) {
@@ -40,13 +41,16 @@ class ResearcherQuestions extends Component {
             let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0;
             let typeSelected = state.displayRole.option === "" ?
                 false : (state.displayRole.option === "Other: " ? state.other !== "" : true);
-
+            obj.errors[0] = state.locatedAtCornell === null || !locationValid;
+            obj.errors[1] = !typeSelected;
+            obj.errors[2] = !topicsSelected;
+            obj.errors[3] = !interestsStated;
             return state.locatedAtCornell === null || !locationValid
                 || !interestsStated || !topicsSelected || !typeSelected;
         }
 
         if (this.props.clickedNext) {
-            let error = isInvalid(this.state);
+            let error = isInvalid(this.state, this);
             let data = Object.assign({}, this.state);
 
             if (data.locatedAtCornell) {
@@ -56,7 +60,6 @@ class ResearcherQuestions extends Component {
                 data.location = data.metaLocation.address;
                 data.affiliation = data.metaLocation.organization;
             }
-
             this.props.onSubmitData(data, error);
         }
     }
@@ -133,7 +136,7 @@ class ResearcherQuestions extends Component {
         const defaultLocatedAtCornell = this.state.locatedAtCornell !== null ? this.state.locatedAtCornell : "";
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell) }
+                {getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell, this.errors[index])}
                 {
                     qa.id === 0 && this.state.locatedAtCornell !== null &&
                     (
@@ -183,9 +186,9 @@ class ResearcherQuestions extends Component {
                         </div>
                     )
                 }
-                { getRadiobuttonQuestion(qa, this.setValuesRadio, this.state) }
-                { getCheckboxQuestion(qa, this.setValuesCheckbox, this.state) }
-                { getTextboxQuestion(qa, this.setTextboxValue, this.state, index) }
+                {getRadiobuttonQuestion(qa, this.setValuesRadio, this.state, this.errors[index])}
+                {getCheckboxQuestion(qa, this.setValuesCheckbox, this.state, this.errors[index])}
+                {getTextboxQuestion(qa, this.setTextboxValue, this.state, index, this.errors[index])}
             </li>
         );
     }

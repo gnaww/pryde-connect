@@ -329,7 +329,52 @@ span.qaOptionText {
     height: 134px;
 }
 
+.submitProjImg {
+    width: 128px;
+    height: 130px;
+}
+
 .finishPage {
     padding: 40px 0;
     display: flex;
+}
+
+.label {
+    margin-left: 0;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+}
+
+.uploadButton {
+    composes: imageUpload;
+    width: 264px;
+    background: #99D85D;
+}
+
+.fileUploaded {
+    display: flex;
+}
+
+.fileUploaded p {
+    font-size: 16px;
+    line-height: 20px;
+    width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 20px;
+    text-align: left;
+}
+
+.errorMsg {
+    color: red;
+    font-family: -"Segoe UI", "Roboto", "Oxygen";
+    font-size: 16px;
+    line-height: 18px;
 }
