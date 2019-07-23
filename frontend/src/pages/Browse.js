@@ -33,6 +33,9 @@ class Browse extends Component {
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         let filter = parsedURL[event.target.name];
 
+        console.log(parsedURL)
+        console.log(filter)
+
         if (filter) {
             if (Array.isArray(filter)) {
                 if (event.target.checked) {
@@ -148,7 +151,7 @@ class Browse extends Component {
                 filterOptions: [
                     "Animal Science & Agriculture",
                     "Civic Engagement",
-                    "Diversity, Equity & Inclusion",
+                    "Diversity Equity & Inclusion",
                     "Education & Learning",
                     "Environment & Sustainability",
                     "Families",
@@ -162,8 +165,8 @@ class Browse extends Component {
                     "Nutrition",
                     "Risk Behavior",
                     "Self & Identity",
-                    "Science, Technology, Engineering & Math (STEM)",
-                   "Youth/Adult Relationships"
+                    "Science Technology Engineering & Math (STEM)",
+                    "Youth/Adult Relationships"
                 ],
                 isVisible: this.state.showTopic,
                 defaultValues: parsedURL.topic
