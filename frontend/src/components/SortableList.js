@@ -15,10 +15,65 @@ const nameCompareDesc = (a, b) => {
     return -nameCompareAsc(a, b);
 };
 
-export const sortOptions = [
+export const sortProjectsOptions = [
     {
         value: "",
         text: "None"
+    },
+    {
+        value: "status-asc",
+        text: "Status ↑"
+    },
+    {
+        value: "status-desc",
+        text: "Status ↓"
+    },
+    {
+        value: "location-asc",
+        text: "Location ↑"
+    },
+    {
+        value: "location-desc",
+        text: "Location ↓"
+    },
+    {
+        value: "name-asc",
+        text: "Owner ↑"
+    },
+    {
+        value: "name-desc",
+        text: "Owner ↓"
+    },
+    {
+        value: "date-asc",
+        text: "Date Posted ↑"
+    },
+    {
+        value: "date-desc",
+        text: "Date Posted ↓"
+    }
+];
+
+export const sortUsersOptions = [
+    {
+        value: "",
+        text: "None"
+    },
+    {
+        value: "location-asc",
+        text: "Location ↑"
+    },
+    {
+        value: "location-desc",
+        text: "Location ↓"
+    },
+    {
+        value: "projects-asc",
+        text: "# Projects ↑"
+    },
+    {
+        value: "projects-desc",
+        text: "# Projects ↓"
     },
     {
         value: "name-asc",
@@ -27,6 +82,14 @@ export const sortOptions = [
     {
         value: "name-desc",
         text: "Name ↓"
+    },
+    {
+        value: "joined-asc",
+        text: "Date Joined ↑"
+    },
+    {
+        value: "joined-desc",
+        text: "Date Joined ↓"
     }
 ];
 
