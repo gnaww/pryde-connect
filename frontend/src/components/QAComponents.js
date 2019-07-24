@@ -64,7 +64,7 @@ export const getInputboxQuestion = (qa, handlerFunction, state, hasError) => {
     )
 };
 
-export const getButtonInput = (qa, handlerFunction, state, index) => {
+export const getButtonInput = (qa, handlerFunction, state) => {
     return (
         qa.answer.type === AnswerTypes.Button &&
         (

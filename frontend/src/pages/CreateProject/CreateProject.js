@@ -50,7 +50,7 @@ class CreateProject extends Component {
                 <div className={styles.buttons}>
                     {
                         this.state.page < pages.length - 1 &&
-                        (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
+                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
                     }
                 </div>
             </div>

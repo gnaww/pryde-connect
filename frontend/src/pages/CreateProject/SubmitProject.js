@@ -46,6 +46,7 @@ class SubmitProject extends Component {
 
         function hasError(pair, state) {
             if (pair.type === KeyTypes.String) {
+                // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
                     return false;
                 }
@@ -131,7 +132,7 @@ class SubmitProject extends Component {
             <li className={styles.numberedList} key={index}>
                 { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
                 { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
-                { getTextboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
+                { getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index]) }
                 { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
                 { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
             </li>

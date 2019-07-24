@@ -280,7 +280,8 @@ class Browse extends Component {
                     "Wayne",
                     "Westchester",
                     "Wyoming",
-                    "Yates"
+                    "Yates",
+                    "Other"
                 ],
                 defaultValues: parsedURL.location
             },
