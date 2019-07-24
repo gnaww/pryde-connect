@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion } from '../../components/QAComponents';
+import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getTextboxQuestion } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
 
@@ -16,11 +16,10 @@ class SubmitProject extends Component {
             deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
             timeline: "",
             commitmentLength: "",
-            incentivesForProgram: "", // part of incentives
-            incentivesForParticipants: "", // part of incentives
+            incentives: "",
             additionalInformation: "",
             additionalFiles: [],
-            collaborators: "",
+            collaborators: [], // TODO: need to implement form for adding/editing collaborators
             website: "" //not in model
         };
         this.errors = projectQAForm.map(_q => { return false });
@@ -32,10 +31,13 @@ class SubmitProject extends Component {
         }
 
         function nonEmptyArray(key, state) {
-            var checkedAtLeastOne = state[key].filter(o => o.checked).length > 0;
-            var hasOther = state[key].filter(o => o.value === "Other: ");
-            var checkedAndAnswerOther = hasOther[0] ? hasOther[0].checked ? hasOther[0].other !== "" : true : true;
-            return checkedAtLeastOne && checkedAndAnswerOther;
+            return state[key].filter(answer => {
+                if (answer.value === "Other: ") {
+                    return answer.other !== ""
+                } else {
+                    return answer.checked;
+                }
+            }).length > 0;
         }
 
         function nonEmptyEnum(key, state) {
@@ -127,10 +129,11 @@ class SubmitProject extends Component {
     getQAComponent = (qa, index) => {
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index])}
-                {getInputboxQuestion(qa, this.setTextbox, this, this.errors[index])}
-                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
-                {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
+                { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
+                { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
+                { getTextboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
+                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
             </li>
         );
     }

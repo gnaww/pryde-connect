@@ -11,7 +11,7 @@ let pages = [
     },
     {
         title: "Thank you!",
-        subtitle: "Your study has been submitted for approval.",
+        subtitle: "Your project has been submitted for approval.",
         content: FinishSubmit
     }
 ];
@@ -28,7 +28,6 @@ class CreateProject extends Component {
 
     submitData = (data, errors) => {
         if (!errors) {
-            data.incentives = [data.incentivesForProgram, data.incentivesForParticipants];
             let nextPage = this.state.page + 1;
             let pageDataCopy = Array.from(this.state.pageData);
             pageDataCopy[this.state.page] = data;
