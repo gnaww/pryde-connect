@@ -158,7 +158,7 @@ class BasicInfo extends Component {
             <div className={styles.errorContainer}>
                 { this.firstNameError && <span className={styles.errorMsg}>First name is required.</span> }
                 { this.lastNameError && <span className={styles.errorMsg}>Last name is required.</span> }
-                { this.passwordError && <span className={styles.errorMsg}>Password is required and must at least 8 characters.</span> }
+                { this.passwordError && <span className={styles.errorMsg}>Password is required and must be at least 8 characters.</span> }
                 { this.confirmPasswordError && <span className={styles.errorMsg}>Passwords do not match.</span> }
                 { this.emailError && <span className={styles.errorMsg}>Invalid email.</span> }
                 { this.phoneNumberError && <span className={styles.errorMsg}>Invalid phone number.</span> }

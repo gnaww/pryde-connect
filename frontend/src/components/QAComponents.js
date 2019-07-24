@@ -225,7 +225,7 @@ export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => 
         qa.answer.type === AnswerTypes.ContactInfo &&
         <>
             <p className={styles.question}>{qa.questionText}</p>
-            {hasError && <p className={styles.errorMsg}>All required fields must be filled in. Email, phone, and website must be valid.</p>}
+            {hasError && <p className={styles.errorMsg}>All required fields must be filled in.<br/> Email, phone, and website must be valid.</p>}
             <div>
                 <input
                     className={styles.smallTextInput}
