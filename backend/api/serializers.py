@@ -33,7 +33,7 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted']
+        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'alternateLocation', 'alternateContact']
 
     def get_status(self, obj):
         return obj.get_status_display()
