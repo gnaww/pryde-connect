@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { ResearcherInformation, researcherQAForm } from './FormContent';
+import { PractitionerInformation, ResearcherInformation, researcherQAForm } from './FormContent';
 import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from '../../components/QAComponents';
 
 class ResearcherQuestions extends Component {
@@ -14,6 +14,7 @@ class ResearcherQuestions extends Component {
                 organization: "",
                 address: ""
             },
+            ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
             researchDescription: "",
             researchInterests: getCheckedValuesArray(ResearcherInformation.ResearchTopics),
             displayRole: {
