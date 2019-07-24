@@ -170,11 +170,7 @@ class Project extends Component {
                                 <h3>Participant Commitment Length</h3>
                                 <p>{commitmentLength}</p>
                                 <h3>Benefits + Incentives</h3>
-                                <ul>
-                                    {
-                                        incentives.map((interest, idx) => <li key={idx}>{interest}</li>)
-                                    }
-                                </ul>
+                                <p>{incentives}</p>
                             </div>
                         </section>
                         <section className={styles.collaborators}>

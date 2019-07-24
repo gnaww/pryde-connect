@@ -4,6 +4,8 @@ from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager
+from django.utils import timezone
+import datetime
 
 
 class UserManager(BaseUserManager):
@@ -81,10 +83,13 @@ class Project(models.Model):
     deliveryModes = ArrayField(models.CharField(max_length=100), default=None)
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
-    incentives = ArrayField(models.CharField(max_length=100), default=None)
+    incentives = models.TextField()
     additionalInformation = models.TextField()
     additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
     type = models.CharField(max_length=100, default='project')
+    datePosted = models.DateTimeField(auto_now_add=True)
+    alternateContact = JSONField(default=dict)
+    alternateLocation = models.CharField(max_length=200, null=True, blank=True, default=None)
     # collaborators = models.ManyToManyField(Collaborators)
     isApproved = models.BooleanField(default=True)
 
