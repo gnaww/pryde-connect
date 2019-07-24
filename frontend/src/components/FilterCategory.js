@@ -17,7 +17,7 @@ class FilterCategory extends Component {
     }
 
     render() {
-        let { isVisible, handleClick, categoryName, filterOptions, defaultValues } = this.props;
+        let { handleClick, categoryName, filterOptions, defaultValues } = this.props;
 
         if (defaultValues === undefined) {
             defaultValues = [];
