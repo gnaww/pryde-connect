@@ -3,9 +3,6 @@ from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborators
 
 
-
-
-
 class MiniUserSerializer(serializers.ModelSerializer):
 
     role = serializers.SerializerMethodField()
@@ -17,6 +14,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
     def get_role(self, obj):
         return obj.get_role_display()
 
+
 class CollaboratorSerializer(serializers.ModelSerializer):
     collaboratorInfo = serializers.SerializerMethodField()
 
@@ -26,9 +24,6 @@ class CollaboratorSerializer(serializers.ModelSerializer):
 
     def get_collaboratorInfo(self, obj):
         return MiniUserSerializer(PUser.objects.get(email=obj.collaborator)).data
-
-
-
 
 
 # Used for the project cards in the browse page
