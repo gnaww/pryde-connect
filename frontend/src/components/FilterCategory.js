@@ -54,6 +54,7 @@ class FilterCategory extends Component {
                                                     disableRipple
                                                 />
                                             }
+                                            classes={{ label: styles.filterCategoryLabel }}
                                             label={filter}
                                         />
                                     </li>
