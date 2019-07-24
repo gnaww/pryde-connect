@@ -59,7 +59,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -74,7 +74,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -89,7 +89,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -104,7 +104,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -119,7 +119,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -134,7 +134,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -149,7 +149,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -164,7 +164,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -179,7 +179,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
@@ -194,7 +194,7 @@ def insert_posts():
         "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
+        "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
