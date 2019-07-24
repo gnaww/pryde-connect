@@ -14,6 +14,7 @@ export const AnswerTypes = {
     Radiobutton: "radiobutton",
     Inputbox: "inputbox",
     MultipleAnswers: "mutipleanswers",
+    ContactInfo: "contactinfo",
     Button: "button"
 };
 
@@ -105,7 +106,7 @@ export const getTextboxQuestion = (qa, handlerFunction, state, index, hasError) 
                 <textarea
                     key={index}
                     className={styles.answer}
-                    placeholder={"Type your answer here"}
+                    placeholder={qa.answer.placeholder ? qa.answer.placeholder : "Type your answer here"}
                     value={state[qa.answer.key]}
                     onChange={handlerFunction(qa.answer.key)}
                 >
@@ -208,12 +209,61 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
                 qa.answers.map((q, index) => {
                     return (
                         <>
-                            {getInputboxQuestion(q, handlerFunction, state, false)}
-                            {getButtonInput(q, handlerFunction, state, index, false)}
+                            { getTextboxQuestion(q, handlerFunction, state, index, false) }
+                            { getInputboxQuestion(q, handlerFunction, state, false) }
+                            { getButtonInput(q, handlerFunction, state, index, false) }
                         </>
                     )
                 })
             }
+        </>
+    )
+}
+
+export const getContactInfoQuestion = (qa, handlerFunction, state) => {
+    return (
+        qa.answer.type === AnswerTypes.ContactInfo &&
+        <>
+            <p className={styles.question}>{qa.questionText}</p>
+            <div>
+                <input
+                    className={styles.smallTextInput}
+                    placeholder="First name*"
+                    type="text"
+                    value={state.alternateContact.first_name}
+                    onChange={handlerFunction('first_name')}
+                />
+                <input
+                    className={styles.smallTextInput}
+                    placeholder="Last name*"
+                    type="text"
+                    value={state.alternateContact.last_name}
+                    onChange={handlerFunction('last_name')}
+                />
+            </div>
+            <input
+                className={styles.longTextInput}
+                placeholder="Email address*"
+                type="text"
+                value={state.alternateContact.email}
+                onChange={handlerFunction('email')}
+            />
+            <div className={styles.optionalField}>
+                <input
+                    className={styles.smallTextInput}
+                    placeholder="Phone # (optional)"
+                    type="text"
+                    value={state.alternateContact.phone}
+                    onChange={handlerFunction('phone')}
+                />
+                <input
+                    className={styles.smallTextInput}
+                    placeholder="Website (optional)"
+                    type="text"
+                    value={state.alternateContact.website}
+                    onChange={handlerFunction('website')}
+                />
+            </div>
         </>
     )
 }

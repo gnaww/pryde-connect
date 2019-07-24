@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getTextboxQuestion } from '../../components/QAComponents';
+import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
 
@@ -20,7 +20,14 @@ class SubmitProject extends Component {
             additionalInformation: "",
             additionalFiles: [],
             collaborators: [], // TODO: need to implement form for adding/editing collaborators
-            website: "" //not in model
+            alternateContact: {
+                first_name: "",
+                last_name: "",
+                email: "",
+                phone: "",
+                website: ""
+            },
+            alternateLocation: ""
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
@@ -44,21 +51,25 @@ class SubmitProject extends Component {
             return state[key] !== null;
         }
 
+        function validContact(key, state) {
+            // TODO: validate website/phone
+            // TODO: make sure that if any of the required fields are filled then the rest are as well
+        }
+
         function hasError(pair, state) {
             if (pair.type === KeyTypes.String) {
                 // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
                     return false;
-                }
-                else {
+                } else {
                     return !nonEmptyString(pair.key, state);
                 }
-            }
-            else if (pair.type === KeyTypes.Enum) {
+            } else if (pair.type === KeyTypes.Enum) {
                 return !nonEmptyEnum(pair.key, state);
-            }
-            else if (pair.type === KeyTypes.Array) {
+            } else if (pair.type === KeyTypes.Array) {
                 return !nonEmptyArray(pair.key, state);
+            } else if (pair.type === KeyTypes.Object) {
+                return !validContact(pair.key, state)
             }
         }
 
@@ -127,6 +138,19 @@ class SubmitProject extends Component {
         }
     }
 
+    setContactInfo = key => event => {
+        event.persist();
+
+        this.setState(prevState => {
+            return {
+                alternateContact: {
+                    ...prevState.alternateContact,
+                    [key]: event.target.value
+                }
+            }
+        });
+    }
+
     getQAComponent = (qa, index) => {
         return (
             <li className={styles.numberedList} key={index}>
@@ -135,6 +159,7 @@ class SubmitProject extends Component {
                 { getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index]) }
                 { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
                 { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
+                { getContactInfoQuestion(qa, this.setContactInfo, this.state) }
             </li>
         );
     }

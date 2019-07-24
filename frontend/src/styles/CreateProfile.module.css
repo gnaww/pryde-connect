@@ -403,4 +403,5 @@ span.qaOptionText {
 .errorMsg {
     color: red;
     letter-spacing: 0;
+    font-size: 20px;
 }

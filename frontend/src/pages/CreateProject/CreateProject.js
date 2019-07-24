@@ -8,7 +8,7 @@ import FinishSubmit from './FinishSubmit';
 let pages = [
     {
         title: "Submit a project",
-        subtitle: "Welcome! Please complete the following fields.",
+        subtitle: "Welcome! Please complete the following questions.",
         content: SubmitProject
     },
     {

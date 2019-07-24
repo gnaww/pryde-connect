@@ -18,6 +18,29 @@ export const ProjectInformation = {
     ]
 };
 
+const alternateContactQA = {
+    questionText: "Specify alternate contact information (by default uses your contact information):",
+    answer: {
+        type: AnswerTypes.ContactInfo
+    }
+}
+
+const alternateLocationQA = {
+    questionText: "Specify alternate project location (by default uses your location):",
+    answer: {
+        type: AnswerTypes.MultipleAnswers
+    },
+    answers: [
+        {
+            questionText: "",
+            answer: {
+                type: AnswerTypes.Inputbox,
+                placeholder: "Where is your project located?",
+                key: "alternateLocation",
+            }
+        }
+    ]
+}
 const additionalQA = {
     questionText: "Is there any additional information you would like to include?",
     answer: {
@@ -27,19 +50,10 @@ const additionalQA = {
         {
             questionText: "",
             answer: {
-                type: AnswerTypes.Inputbox,
-                placeholder: "Enter text here",
+                type: AnswerTypes.Textbox,
+                placeholder: "Additional descriptions, notes, etc.",
                 key: "additionalInformation",
                 label: "Additional description or text:"
-            }
-        },
-        {
-            questionText: "",
-            answer: {
-                type: AnswerTypes.Inputbox,
-                placeholder: "Enter text here",
-                key: "website",
-                label: "Website or other link:"
             }
         },
         {
@@ -63,10 +77,12 @@ export const projectQAForm = [
             key: "name"
         }
     },
+    alternateContactQA,
+    alternateLocationQA,
     {
-        questionText: "Add any other collaborators on your project:",
+        questionText: "Add any other collaborators on your project (optional):",
         answer: {
-            type: AnswerTypes.Inputbox,
+            type: AnswerTypes.Inputbox, // TODO: need to change this
             placeholder: "Type your answer here",
             key: "collaborators"
         }
@@ -144,7 +160,8 @@ export const projectQAForm = [
 export const KeyTypes = {
     String: "string",
     Enum: "enum",
-    Array: "array"
+    Array: "array",
+    Object: "object"
 };
 
 export const pairs = [
@@ -153,7 +170,15 @@ export const pairs = [
         type: KeyTypes.String
     },
     {
-        key: "collaborators",
+        key: "alternateContact",
+        type: KeyTypes.Object
+    },
+    {
+        key: "alternateLocation",
+        type: KeyTypes.String
+    },
+    {
+        key: "collaborators", // TODO: need to change this
         type: KeyTypes.String
     },
     {

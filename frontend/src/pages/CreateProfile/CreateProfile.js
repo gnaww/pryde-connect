@@ -14,7 +14,7 @@ import api from '../../services/api';
 
 let pages = [
     {
-        subtitle: "Welcome! Please complete the following fields.",
+        subtitle: "Welcome! Please complete the following questions.",
         content: BasicInfo
     },
     {
@@ -22,7 +22,7 @@ let pages = [
         content: RoleSelection
     },
     {
-        subtitle: "Great! Please complete the following fields.",
+        subtitle: "Great! Please complete the following questions.",
         content: PractitionerQuestions
     },
     {
