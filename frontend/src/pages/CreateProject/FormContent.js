@@ -16,7 +16,7 @@ export const ProjectInformation = {
             text: "Not Started"
         }
     ]
-}
+};
 
 const additionalQA = {
     questionText: "Is there any additional information you would like to include?",
@@ -56,7 +56,7 @@ const additionalQA = {
 
 export const projectQAForm = [
     {
-        questionText: "What is the name of your study?*",
+        questionText: "What is the name of your project?*",
         answer: {
             type: AnswerTypes.Inputbox,
             placeholder: "Type your answer here",
@@ -64,7 +64,7 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "Name any other collaborators your study",
+        questionText: "Add any other collaborators on your project:",
         answer: {
             type: AnswerTypes.Inputbox,
             placeholder: "Type your answer here",
@@ -73,7 +73,7 @@ export const projectQAForm = [
     },
     {
         questionText:
-            "What is the status of this study?*",
+            "What is the status of your project?*",
         answer: {
             type: AnswerTypes.Dropdown,
             label: "SELECT",
@@ -82,7 +82,7 @@ export const projectQAForm = [
     },
     {
         questionText:
-            "What research topics does your study cover?* (check all that apply)",
+            "What research topics does your project cover?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
             options: PractitionerInformation.ResearchTopics,
@@ -91,7 +91,7 @@ export const projectQAForm = [
     },
     {
         questionText:
-            "What age youth are eligible?*",
+            "What age youth are eligible to participate in your project?*",
         answer: {
             type: AnswerTypes.Checkbox,
             options: PractitionerInformation.AgeGroups,
@@ -99,15 +99,15 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "What is the goal of your study?*",
+        questionText: "What is the goal of your project?*",
         answer: {
-            type: AnswerTypes.Inputbox,
+            type: AnswerTypes.Textbox,
             placeholder: "Type your answer here",
             key: "summary"
         }
     },
     {
-        questionText: "What is the expected timeline for your study?*",
+        questionText: "What is the expected timeline for your project?*",
         answer: {
             type: AnswerTypes.Inputbox,
             placeholder: "Type your answer here",
@@ -115,7 +115,7 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "How long is each participant involved in your study?*",
+        questionText: "How long will each participant be involved in your project?*",
         answer: {
             type: AnswerTypes.Inputbox,
             placeholder: "Type your answer here",
@@ -123,23 +123,15 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "Are there any benefits or incentives for programs or educators who become involved with your study?*",
+        questionText: "Are there any benefits or incentives for youth or programs that become involved with your project?*",
         answer: {
             type: AnswerTypes.Inputbox,
             placeholder: "Type your answer here",
-            key: "incentivesForProgram"
+            key: "incentives"
         }
     },
     {
-        questionText: "Are there any benefits or incentives for participants who complete your study?*",
-        answer: {
-            type: AnswerTypes.Inputbox,
-            placeholder: "Type your answer here",
-            key: "incentivesForParticipants"
-        }
-    },
-    {
-        questionText: "What types of program delivery models would be good for your study?* (check all that apply)",
+        questionText: "What types of program delivery models would be good for your project?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
             options: PractitionerInformation.ProgramDeliveryModels,
@@ -189,11 +181,7 @@ export const pairs = [
         type: KeyTypes.String
     },
     {
-        key: "incentivesForProgram",
-        type: KeyTypes.String
-    },
-    {
-        key: "incentivesForParticipants",
+        key: "incentives",
         type: KeyTypes.String
     },
     {
