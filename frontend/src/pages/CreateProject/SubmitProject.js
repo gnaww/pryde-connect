@@ -9,19 +9,19 @@ class SubmitProject extends Component {
         super(props);
         this.state = {
             name: "",
-            collaborators: "",
             status: null,
             summary: "",
-            timeline: "",
-            commitmentLength: "",
-            incentivesForProgram: "",
-            incentivesForParticipants: "",
-            deliveryModels: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
+            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
+            timeline: "",
+            commitmentLength: "",
+            incentivesForProgram: "", // part of incentives
+            incentivesForParticipants: "", // part of incentives
             additionalInformation: "",
-            website: "",
-            additionalFiles: []
+            additionalFiles: [],
+            collaborators: "",
+            website: "" //not in model
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
@@ -32,7 +32,10 @@ class SubmitProject extends Component {
         }
 
         function nonEmptyArray(key, state) {
-            return state[key].filter(e => e.checked) > 0;
+            var checkedAtLeastOne = state[key].filter(o => o.checked).length > 0;
+            var hasOther = state[key].filter(o => o.value === "Other: ");
+            var checkedAndAnswerOther = hasOther[0] ? hasOther[0].checked ? hasOther[0].other !== "" : true : true;
+            return checkedAtLeastOne && checkedAndAnswerOther;
         }
 
         function nonEmptyEnum(key, state) {
@@ -61,8 +64,8 @@ class SubmitProject extends Component {
                 this.errors[i] = hasError(pairs[i], this.state);
             }
             var error = this.errors.filter(e => e === true).length;
-            console.log(error);
             this.props.onSubmitData(this.state, error > 0);
+            window.scrollTo(0, 0);
         }
     }
 
@@ -117,14 +120,14 @@ class SubmitProject extends Component {
             this.setFileUploads(key, event);
         }
         else {
-            this.setTextbox(key, event);
+            this.setTextbox(key)(event);
         }
     }
 
     getQAComponent = (qa, index) => {
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setProjectStatus, this.errors[index])}
+                {getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index])}
                 {getInputboxQuestion(qa, this.setTextbox, this, this.errors[index])}
                 {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
                 {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}

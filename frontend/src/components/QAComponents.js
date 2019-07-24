@@ -208,8 +208,8 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
                 qa.answers.map((q, index) => {
                     return (
                         <>
-                            {getInputboxQuestion(q, handlerFunction, state)}
-                            {getButtonInput(q, handlerFunction, state, index)}
+                            {getInputboxQuestion(q, handlerFunction, state, false)}
+                            {getButtonInput(q, handlerFunction, state, index, false)}
                         </>
                     )
                 })

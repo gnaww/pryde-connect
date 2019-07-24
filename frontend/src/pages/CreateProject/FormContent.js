@@ -94,7 +94,7 @@ export const projectQAForm = [
             "What age youth are eligible?*",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.ResearchTopics,
+            options: PractitionerInformation.AgeGroups,
             key: "ageRanges"
         }
     },
@@ -143,7 +143,7 @@ export const projectQAForm = [
         answer: {
             type: AnswerTypes.Checkbox,
             options: PractitionerInformation.ProgramDeliveryModels,
-            key: "deliveryModels"
+            key: "deliveryModes"
         }
     },
     additionalQA
@@ -197,7 +197,7 @@ export const pairs = [
         type: KeyTypes.String
     },
     {
-        key: "deliveryModels",
+        key: "deliveryModes",
         type: KeyTypes.Array
     }
 ];

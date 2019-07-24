@@ -15,10 +15,12 @@ class BasicInfo extends Component {
             website: '',
         };
         this.errors = true;
+        this.phoneNumberError = false;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
+            this.handleIsPhoneNumberInvalid(this.state.phone);
             this.props.onSubmitData(this.state, this.errors);
         }
     }
@@ -30,7 +32,15 @@ class BasicInfo extends Component {
         }
     }
 
+    handleIsPhoneNumberInvalid = phone => {
+        this.phoneNumberError =
+            !phone.match(/^(\d{10}|\d{12})$/g);
+    }
+
     handleChange = inputField => event => {
+        if (inputField === "phone") {
+            this.handleIsPhoneNumberInvalid(event.target.value);
+        }
         this.setState({ [inputField]: event.target.value });
     }
 
@@ -134,17 +144,11 @@ class BasicInfo extends Component {
                 <Validator
                     isValidationError={this.handleIsValidationErrorChange}
                     isFormSubmitted={this.props.clickedNext}
-                    reference={{ phone: this.state.phone }}
-                    validationRules={this.state.phone.length === 0 ? { required: false } : { number: true }}
-                    validationMessages={this.state.phone.length === 0 ? { required: false } : { number: "Not a valid phone number." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
                     reference={{ website: this.state.website }}
                     validationRules={this.state.website.length === 0 ? { required: false } : { url: true }}
                     validationMessages={this.state.website.length === 0 ? { required: false } : { url: "Not a valid website URL." }}
                 />
+                {this.phoneNumberError && <p className={styles.errorMsg}>Invalid phone number.</p>}
             </div>
         )
     }
