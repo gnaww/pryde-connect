@@ -29,26 +29,6 @@ class CollaboratorSerializer(serializers.ModelSerializer):
 
 
 
-class ProjectSerializer(serializers.ModelSerializer):
-    status = serializers.SerializerMethodField()
-    owner = MiniUserSerializer(many=False, read_only=True)
-    collaborators = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Project
-        fields = '__all__'
-
-    def get_collaborators(self, obj):
-        collaborator_queryset = Collaborators.objects.filter(project=obj)
-        userInfo = []
-        for collaborator in collaborator_queryset:
-            if collaborator.showProjectOnProfile:
-                userInfo.append(MiniUserSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
-        # return CollaboratorSerializer(collaborators, many=True).data
-        return userInfo
-
-    def get_status(self, obj):
-        return obj.get_status_display()
 
 
 # Used for the project cards in the browse page
@@ -119,3 +99,25 @@ class UserShortSerializer(serializers.ModelSerializer):
             projects.append(ProjectShortSerializer(project).data)
 
         return len(projects)
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
+    owner = MiniUserSerializer(many=False, read_only=True)
+    collaborators = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+    def get_collaborators(self, obj):
+        collaborator_queryset = Collaborators.objects.filter(project=obj)
+        userInfo = []
+        for collaborator in collaborator_queryset:
+            if collaborator.showProjectOnProfile:
+                userInfo.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+        # return CollaboratorSerializer(collaborators, many=True).data
+        return userInfo
+
+    def get_status(self, obj):
+        return obj.get_status_display()
