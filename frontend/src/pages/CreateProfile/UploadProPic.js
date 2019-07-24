@@ -9,12 +9,12 @@ class UploadProPic extends Component {
             filePreview: null,
             profilePicture: null
         };
-        this.error = false;
+        this.errors = false;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.error = this.state.profilePicture === null;
+            this.errors = this.state.profilePicture === null;
             if (this.state.profilePicture === null) {
                 this.props.onSubmitData(this.state, this.state.profilePicture === null);
             } else {
@@ -56,7 +56,7 @@ class UploadProPic extends Component {
                 {
                     this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />
                 }
-                {this.error && <p className={styles.errorMsg}>You must upload a profile picture.</p>}
+                {this.errors && <p className={styles.errorMsg}>You must upload a profile picture.</p>}
             </div>
         );
     }

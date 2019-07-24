@@ -22,7 +22,8 @@
 }
 
 .smallTextInput {
-    width: 19%;
+    /* width: 19%; */
+    width: 278px;
     margin-right: 28px;
     height: 64px;
     background: #E9E9E9;
@@ -38,12 +39,13 @@
 
 .mediumTextInput {
     composes: smallTextInput;
-    width: 26%;
+    /* width: 26%; */
+    width: 383px;
 }
 
 .longTextInput {
     composes: smallTextInput;
-    width: 41%;
+    width: 618px;
 }
 
 .nextButton {
@@ -100,7 +102,7 @@
     font-size: 30px;
     line-height: 36px;
     letter-spacing: 0.1em;
-    color: black;   
+    color: black;
     margin-bottom: 15px;
 }
 
@@ -116,7 +118,7 @@
     line-height: 24px;
     letter-spacing: 0.1em;
     padding-top: 26px;
-    padding-left: 30px; 
+    padding-left: 30px;
 }
 
 .QAitem {
@@ -171,7 +173,18 @@
 
 .form {
     display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.form .requiredFields {
+    width: 680px;
+}
+
+.form .optionalFields {
+    display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 }
 
 span.qaOptionText {
@@ -372,9 +385,13 @@ span.qaOptionText {
     text-align: left;
 }
 
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+}
 .errorMsg {
     color: red;
-    font-family: -"Segoe UI", "Roboto", "Oxygen";
     font-size: 16px;
-    line-height: 18px;
+    margin: 0;
+    display: block;
 }
