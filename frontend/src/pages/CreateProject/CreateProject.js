@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import stylesUnauthorized from '../../styles/PageNotFound.module.css';
 import styles from '../../styles/CreateProfile.module.css';
 import SubmitProject from './SubmitProject';
 import FinishSubmit from './FinishSubmit';
@@ -43,17 +45,28 @@ class CreateProject extends Component {
     render() {
         let PageContent = pages[this.state.page].content;
         return (
-            <div className={styles.root} >
-                <h1 className={styles.createProfile}>{pages[this.state.page].title}</h1>
-                <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
-                <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} />
-                <div className={styles.buttons}>
-                    {
-                        this.state.page < pages.length - 1 &&
-                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
-                    }
+            localStorage.getItem("pryde_key") ?
+                <div className={styles.root} >
+                    <h1 className={styles.createProfile}>{pages[this.state.page].title}</h1>
+                    <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} />
+                    <div className={styles.buttons}>
+                        {
+                            this.state.page < pages.length - 1 &&
+                            (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
+                        }
+                    </div>
                 </div>
-            </div>
+            :
+                <div className={stylesUnauthorized.container}>
+                    <section className={stylesUnauthorized.pageNotFound}>
+                        <div>
+                            <h1>Unauthorized!</h1>
+                            <p>You must be signed in to submit a new project.</p>
+                            <p><Link to="/login">Log in</Link> to your account or <Link to="/signup">sign up</Link> for a new account.</p>
+                        </div>
+                    </section>
+                </div>
         )
     }
 }

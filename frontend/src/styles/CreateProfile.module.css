@@ -398,12 +398,9 @@ span.qaOptionText {
 
 .errorContainer span {
     font-size: 20px;
-    margin: 5px 0;
 }
 
 .errorMsg {
     color: red;
-    font-size: 20px;
-    margin: 5px 0;
     letter-spacing: 0;
 }
