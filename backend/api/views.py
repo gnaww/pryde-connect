@@ -161,5 +161,14 @@ class FilterProjects(generics.ListAPIView):
             for param in status_params:
                 filtered_set = filtered_set | Project.objects.filter(status=status_dict[param])
 
+        if 'researchtopic' in request.GET:
+            filtered_researchtopic_set = Project.objects.none()
+            research_topics = request.GET['researchtopic'].split(',')
+            for topic in research_topics:
+                filtered_researchtopic_set = filtered_researchtopic_set |\
+                                             Project.objects.filter(researchTopics__contains=[topic])
+
+            filtered_set = filtered_set & filtered_researchtopic_set
+
             serializer = ProjectShortSerializer(filtered_set, many=True)
             return Response(data=serializer.data)
