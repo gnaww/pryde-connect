@@ -19,7 +19,7 @@ export const PractitionerInformation = {
         "Toddlers (1-2 years)",
         "Toddlers (2-3 years)",
         "Preschoolers (3-5 years)",
-        "Middle childhood (6-8 years)",
+        "Early childhood (6-8 years)",
         "Middle childhood (9-11 years)",
         "Young teens (12-14 years)",
         "Teenagers (15-17 years)",
@@ -420,6 +420,14 @@ export const researcherQAForm = [
             type: AnswerTypes.Checkbox,
             options: ResearcherInformation.ResearchTopics,
             key: "researchInterests"
+        }
+    },
+    {
+        questionText: "What age youth do you typically work with in your research projects? (check all that apply)",
+        answer: {
+            type: AnswerTypes.Checkbox,
+            options: PractitionerInformation.AgeGroups,
+            key: "ageRanges"
         }
     },
     {
