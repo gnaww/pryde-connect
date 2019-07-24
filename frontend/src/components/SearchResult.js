@@ -6,12 +6,22 @@ import ageIcon from '../images/age-icon.svg';
 import categoryIcon from '../images/category-icon.svg';
 import placeIcon from '../images/place-icon.svg';
 import locationIcon from '../images/location-icon-white.svg';
+import locationIconBlack from '../images/location-icon-black.svg'
 import projectIcon from '../images/project-icon-white.svg';
 import categoryIconWhite from '../images/category-icon-white.svg';
 import mailIcon from '../images/mail-icon-white.svg';
 import CCEBadge from '../images/cce-badge.svg';
 import CornellBadge from '../images/cornell-badge.svg';
 import styles from '../styles/SearchResult.module.css';
+
+const listFormatter = (str, elt, idx, arr) => {
+    if (idx < arr.length - 1) {
+        str += `${elt}, `;
+    } else {
+        str += elt;
+    }
+    return str;
+};
 
 const SearchResult = props => {
     if (props.type === "project") {
@@ -29,26 +39,48 @@ const SearchResult = props => {
                 <div className={`${styles.searchResult} ${styles.projectResult}`}>
                     <section className={styles.projectDetails}>
                         <h3>{props.name}</h3>
-                        <h4>{`${props.owner.first_name} ${props.owner.last_name}`}</h4>
-                        <p>{props.summary}</p>
+                        <div>
+                            <h4>{`${props.owner.first_name} ${props.owner.last_name}`}</h4>
+                            <h4><img src={locationIconBlack} alt="Location icon" />{ props.owner.location }</h4>
+                        </div>
+                        <h4>{ props.owner.affiliation }</h4>
+                        {
+                            // truncate summary at a word if longer than 200 characters
+                            props.summary.length > 200 ?
+                                <p>{`${props.summary.replace(/^(.{200}[^\s]*).*/, "$1")}...`} <span className={styles.readMore}>read more</span></p>
+                            :
+                                <p>{ props.summary }</p>
+                        }
                     </section>
                     <section className={styles.stats}>
-                        <section className={styles.line}>
-                            <h4> <img className={styles.statusIcon} src={statusIcon} alt="status icon" />
-                            {status.toUpperCase()}</h4>
-                        </section>
-                        <section className={styles.line}>
-                            <p> <img className={styles.ageIcon} src={ageIcon} alt="age icon" />
-                            Age Range</p>
-                        </section>
-                        <section className={styles.line}>
-                            <p> <img className={styles.categoryIcon} src={categoryIcon} alt="category icon" />
-                            Research Category </p>
-                        </section>
-                        <section className={styles.line}>
-                            <p> <img className={styles.placeIcon} src={placeIcon} alt="place icon" />
-                            Club or Afterschool/Camp </p>
-                        </section>
+                    <section className={styles.line}>
+                        <h4><img src={statusIcon} alt="status icon" />
+                        {status.toUpperCase()}</h4>
+                    </section>
+                    <section className={styles.line}>
+                        <img src={ageIcon} alt="Age icon" />
+                        <span>
+                            {
+                                props.ageRanges.reduce(listFormatter, "")
+                            }
+                        </span>
+                    </section>
+                    <section className={styles.line}>
+                        <img src={categoryIcon} alt="Category icon" />
+                        <span>
+                            {
+                                props.researchTopics.reduce(listFormatter, "")
+                            }
+                        </span>
+                    </section>
+                    <section className={styles.line}>
+                        <img src={placeIcon} alt="Place icon" />
+                        <span>
+                            {
+                                props.deliveryModes.reduce(listFormatter, "")
+                            }
+                        </span>
+                    </section>
                     </section>
                 </div>
             </Link>
@@ -74,24 +106,24 @@ const SearchResult = props => {
                             </header>
                             <h4>{props.role}</h4>
                             <h4>{props.affiliation}</h4>
-                            <section className={styles.line}>
-                                <h4> <img className={styles.categoryIconWhite} src={categoryIconWhite} alt="category icon white" />
-                                Research Interests </h4>
-                            </section>
+                            <h4 className={styles.researchInterests}>
+                                <img src={categoryIconWhite} alt="Category icon" />
+                                <span>{props.researchInterests.reduce(listFormatter, "")}</span>
+                            </h4>
                         </section>
                     </section>
                     <section className={styles.stats}>
                         <section className={styles.line}>
-                            <p> <img className={styles.locationIcon} src={locationIcon} alt="location icon" />
-                            Town, NY</p>
+                            <p><img src={locationIcon} alt="Location icon" />
+                            {props.location}</p>
                         </section>
                         <section className={styles.line}>
-                            <p> <img className={styles.projectIcon} src={projectIcon} alt="project icon" />
-                            ## projects </p>
+                            <p><img src={projectIcon} alt="Project icon" />
+                            {props.numProjects} projects</p>
                         </section>
                         <section className={styles.line}>
-                            <p> <img className={styles.mailIcon} src={mailIcon} alt="mail icon" />
-                            someone@something.com </p>
+                            <p><img src={mailIcon} alt="Email icon" />
+                            {props.email}</p>
                         </section>
                     </section>
                 </div>

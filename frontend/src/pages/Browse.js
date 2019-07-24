@@ -176,7 +176,7 @@ class Browse extends Component {
                 filterOptions: [
                     "Not Started",
                     "In Progress",
-                    "Completed",
+                    "Completed"
                 ],
                 isVisible: this.state.showStatus,
                 defaultValues: parsedURL.status

@@ -57,7 +57,7 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary']
+        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes']
 
     def get_status(self, obj):
         return obj.get_status_display()
@@ -96,10 +96,25 @@ class UserSerializer(serializers.ModelSerializer):
 # Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
+    numProjects = serializers.SerializerMethodField('num_projects')
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE']
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects']
 
     def get_role(self, obj):
         return obj.get_role_display()
+
+    def num_projects(self, obj):
+        projects = []
+        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+
+        for collab in collabs:
+            print(collab.project)
+            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
+
+        owned_projects = Project.objects.filter(owner=obj.pk)
+        for project in owned_projects:
+            projects.append(ProjectShortSerializer(project).data)
+
+        return len(projects)
