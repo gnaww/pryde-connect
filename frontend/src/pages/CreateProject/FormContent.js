@@ -19,14 +19,14 @@ export const ProjectInformation = {
 };
 
 const alternateContactQA = {
-    questionText: "Specify alternate contact information (by default uses your contact information):",
+    questionText: "Specify contact information (optional: if left blank uses your contact information)",
     answer: {
         type: AnswerTypes.ContactInfo
     }
 }
 
 const alternateLocationQA = {
-    questionText: "Specify alternate project location (by default uses your location):",
+    questionText: "Specify project location (optional: if left blank uses your location)",
     answer: {
         type: AnswerTypes.MultipleAnswers
     },
@@ -42,7 +42,7 @@ const alternateLocationQA = {
     ]
 }
 const additionalQA = {
-    questionText: "Is there any additional information you would like to include?",
+    questionText: "Is there any additional information you would like to include? (optional)",
     answer: {
         type: AnswerTypes.MultipleAnswers
     },

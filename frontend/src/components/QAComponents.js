@@ -220,11 +220,12 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
     )
 }
 
-export const getContactInfoQuestion = (qa, handlerFunction, state) => {
+export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => {
     return (
         qa.answer.type === AnswerTypes.ContactInfo &&
         <>
             <p className={styles.question}>{qa.questionText}</p>
+            {hasError && <p className={styles.errorMsg}>This question is required.</p>}
             <div>
                 <input
                     className={styles.smallTextInput}
