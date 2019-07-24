@@ -5,7 +5,7 @@ import searchIcon from '../images/magnifying-glass.svg';
 import map from '../images/ny-map.svg';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
-import { sortOptions, SortableList } from '../components/SortableList';
+import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
 
@@ -15,10 +15,6 @@ class Browse extends Component {
         this.state = {
             query: '',
             searchProjects: true,
-            showAffiliation: true,
-            showTopic: true,
-            showStatus: true,
-            showLocation: true,
             sortBy: "",
             searchResults: []
         };
@@ -119,29 +115,7 @@ class Browse extends Component {
     render() {
         const parsedURL = queryString.parse(this.props.location.search, { arrayFormat: "comma" });
         const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
-        const filterCategories = [
-            {
-                categoryName: "Affiliation",
-                filterOptions: [
-                    "PRYDE Researcher",
-                    "4-H Practitioner",
-                    "Student",
-                    "Cornell",
-                    "CCE"
-                ],
-                isVisible: this.state.showAffiliation,
-                defaultValues: parsedURL.affiliation
-            },
-            {
-                categoryName: "Topic",
-                filterOptions: [
-                    "Purpose in Life",
-                    "Health",
-                    "skf"
-                ],
-                isVisible: this.state.showTopic,
-                defaultValues: parsedURL.topic
-            },
+        const filterProjectsCategories = [
             {
                 categoryName: "Status",
                 filterOptions: [
@@ -149,22 +123,172 @@ class Browse extends Component {
                     "In Progress",
                     "Completed"
                 ],
-                isVisible: this.state.showStatus,
                 defaultValues: parsedURL.status
+            },
+            {
+                categoryName: "Research Topic",
+                filterOptions: [
+                    "Animal Science & Agriculture",
+                    "Civic Engagement",
+                    "Diversity Equity & Inclusion",
+                    "Education & Learning",
+                    "Environment & Sustainability",
+                    "Families",
+                    "Health & Wellness",
+                    "Peer Relationships",
+                    "Positive Youth Development",
+                    "Policy Analysis",
+                    "Program Evaluation",
+                    "Media & Technology",
+                    "Motivation",
+                    "Nutrition",
+                    "Risk Behavior",
+                    "Self & Identity",
+                    "Science Technology Engineering & Math (STEM)",
+                    "Youth/Adult Relationships",
+                    "Other"
+                ],
+                defaultValues: parsedURL.researchtopic
+            },
+            {
+                categoryName: "Age Ranges",
+                filterOptions: [
+                    "Infants (0-1 year)",
+                    "Toddlers (1-2 years)",
+                    "Toddlers (2-3 years)",
+                    "Preschoolers (3-5 years)",
+                    "Early childhood (6-8 years)",
+                    "Middle childhood (9-11 years)",
+                    "Young teens (12-14 years)",
+                    "Teenagers (15-17 years)",
+                    "Young adults (18-24 years)"
+                ],
+                defaultValues: parsedURL.ageranges
+            },
+            {
+                categoryName: "Delivery Modes",
+                filterOptions: [
+                    "Afterschool",
+                    "Camps",
+                    "Clubs",
+                    "Other"
+                ],
+                defaultValues: parsedURL.deliverymodes
+            }
+        ];
+        const filterUsersCategories = [
+            {
+                categoryName: "Research Interest",
+                filterOptions: [
+                    "Animal Science & Agriculture",
+                    "Civic Engagement",
+                    "Diversity Equity & Inclusion",
+                    "Education & Learning",
+                    "Environment & Sustainability",
+                    "Families",
+                    "Health & Wellness",
+                    "Peer Relationships",
+                    "Positive Youth Development",
+                    "Policy Analysis",
+                    "Program Evaluation",
+                    "Media & Technology",
+                    "Motivation",
+                    "Nutrition",
+                    "Risk Behavior",
+                    "Self & Identity",
+                    "Science Technology Engineering & Math (STEM)",
+                    "Youth/Adult Relationships",
+                    "Other"
+                ],
+                defaultValues: parsedURL.researchinterest
             },
             {
                 categoryName: "Location",
                 filterOptions: [
-                    "Ithaca",
-                    "Tompkins County",
-                    "Broome County",
-                    "Niagara County",
-                    "Cayuga County"
+                    "Albany",
+                    "Allegany",
+                    "Bronx",
+                    "Broome",
+                    "Cattaraugus",
+                    "Cayuga",
+                    "Chautauqua",
+                    "Chemung",
+                    "Chenango",
+                    "Clinton",
+                    "Columbia",
+                    "Cortland",
+                    "Delaware",
+                    "Dutchess",
+                    "Erie",
+                    "Essex",
+                    "Franklin",
+                    "Fulton",
+                    "Genesee",
+                    "Greene",
+                    "Hamilton",
+                    "Herkimer",
+                    "Jefferson",
+                    "Kings (Brooklyn)",
+                    "Lewis",
+                    "Livingston",
+                    "Madison",
+                    "Monroe",
+                    "Montgomery",
+                    "Nassau",
+                    "New York (Manhattan)",
+                    "Niagara",
+                    "Oneida",
+                    "Onondaga",
+                    "Ontario",
+                    "Orange",
+                    "Orleans",
+                    "Oswego",
+                    "Otsego",
+                    "Putnam",
+                    "Queens",
+                    "Rensselaer",
+                    "Richmond (Staten Island)",
+                    "Rockland",
+                    "Saint Lawrence",
+                    "Saratoga",
+                    "Schenectady",
+                    "Schoharie",
+                    "Schuyler",
+                    "Seneca",
+                    "Steuben",
+                    "Suffolk",
+                    "Sullivan",
+                    "Tioga",
+                    "Tompkins",
+                    "Ulster",
+                    "Warren",
+                    "Washington",
+                    "Wayne",
+                    "Westchester",
+                    "Wyoming",
+                    "Yates"
                 ],
-                isVisible: this.state.showLocation,
                 defaultValues: parsedURL.location
+            },
+            {
+                categoryName: "Age Ranges",
+                filterOptions: [
+                    "Infants (0-1 year)",
+                    "Toddlers (1-2 years)",
+                    "Toddlers (2-3 years)",
+                    "Preschoolers (3-5 years)",
+                    "Early childhood (6-8 years)",
+                    "Middle childhood (9-11 years)",
+                    "Young teens (12-14 years)",
+                    "Teenagers (15-17 years)",
+                    "Young adults (18-24 years)"
+                ],
+                defaultValues: parsedURL.ageranges
             }
-        ]
+        ];
+        const filterCategories = this.state.searchProjects ? filterProjectsCategories : filterUsersCategories;
+
+        const sortOptions = this.state.searchProjects ? sortProjectsOptions : sortUsersOptions;
 
         return (
             <div className={styles.container}>
