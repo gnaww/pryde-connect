@@ -59,6 +59,16 @@ class CanEditProject(permissions.BasePermission):
         # Instance obj must have an attribute named `owner`.
         return (obj.owner == request.user) or hasPermission
 
+
+class IsCollaborator(permissions.BasePermission):
+    message = "You do not have permission to make edits on this project."
+
+    def has_object_permission(self, request, view, obj):
+
+        # Instance obj must have an attribute named `owner`.
+        return (obj.owner == request.user) or Collaborators.objects.filter(project=obj,
+                                                                           collaborator=request.user).exists()
+
 class CanEditDeleteUser(permissions.BasePermission):
     message = "You do not have permission to edit or delete this user."
 
