@@ -225,7 +225,7 @@ class Profile extends Component {
                                                 user.roles.map((role, idx) => <li key={idx}>{role}</li>)
                                             }
                                         </ul>
-                                        <h2>Age Range</h2>
+                                        <h2>Age Ranges</h2>
                                         <ul>
                                             {
                                                 user.ageRanges.map((ageRange, idx) => <li key={idx}>{ageRange}</li>)
@@ -245,6 +245,12 @@ class Profile extends Component {
                                     </>
                                 :
                                     <>
+                                        <h2>Age Ranges</h2>
+                                        <ul>
+                                            {
+                                                user.ageRanges.map((ageRange, idx) => <li key={idx}>{ageRange}</li>)
+                                            }
+                                        </ul>
                                         <hr />
                                         <h2>Research Description</h2>
                                         <p>{user.researchDescription}</p>
