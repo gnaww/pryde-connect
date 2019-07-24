@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
 import Validator from 'react-forms-validator';
+import Phone from 'phone'
 
 class BasicInfo extends Component {
     constructor(props) {
@@ -33,8 +34,7 @@ class BasicInfo extends Component {
     }
 
     handleIsPhoneNumberInvalid = phone => {
-        this.phoneNumberError =
-            !phone.match(/^(\d{10}|\d{12})$/g);
+        this.phoneNumberError = Phone(phone).length === 0;
     }
 
     handleChange = inputField => event => {
