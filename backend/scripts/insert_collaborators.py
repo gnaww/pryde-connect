@@ -45,6 +45,7 @@ def get_list_users():
 
     return user_ids
 
+
 def add_collaborators():
     user_ids = get_list_users()
     tuple = get_projects_from_user()
@@ -70,7 +71,6 @@ def add_collaborators():
             }
 
             print(requests.request("POST", url, data=json.dumps(body), headers=headers))
-
 
 
 add_collaborators()

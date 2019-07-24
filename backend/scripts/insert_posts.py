@@ -151,7 +151,7 @@ def insert_posts():
 
     project9 = {
         "name": "foo bar",
-        "status": 2,
+        "status": 1,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -166,7 +166,7 @@ def insert_posts():
 
     project10 = {
         "name": "test study",
-        "status": 2,
+        "status": 3,
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
