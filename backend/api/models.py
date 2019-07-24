@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager
 from django.utils import timezone
-import datetime
 
 
 class UserManager(BaseUserManager):

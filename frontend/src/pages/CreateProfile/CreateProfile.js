@@ -61,12 +61,14 @@ class CreateProfile extends Component {
         } else {
             this.setState({ page: this.state.page - 1 });
         }
+        // height of navbar
         window.scrollTo(0, 110);
     }
 
     handleNext = event => {
         event.preventDefault();
         this.setState({ clickedNext: true });
+        // height of navbar
         window.scrollTo(0, 110);
     }
 

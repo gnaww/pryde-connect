@@ -3,6 +3,7 @@ import styles from '../../styles/CreateProfile.module.css';
 import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
+import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
 
 class SubmitProject extends Component {
     constructor(props) {
@@ -52,8 +53,25 @@ class SubmitProject extends Component {
         }
 
         function validContact(key, state) {
-            // TODO: validate website/phone
-            // TODO: make sure that if any of the required fields are filled then the rest are as well
+            const contactInfo = state[key];
+            const allRequiredFieldsFilled = contactInfo.first_name !== "" && contactInfo.last_name !== ""&& contactInfo.email !== "";
+            const allRequiredFieldsBlank = contactInfo.first_name === "" && contactInfo.last_name === ""&& contactInfo.email === "";
+
+            if (allRequiredFieldsFilled) {
+                if (!isValidEmail(contactInfo.email)) {
+                    return false;
+                } else if (contactInfo.phone && !isValidPhoneNumber(contactInfo.phone)) {
+                    return false;
+                } else if (contactInfo.website && !isValidURL(contactInfo.website)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else if (allRequiredFieldsBlank) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function hasError(pair, state) {

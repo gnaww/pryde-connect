@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import Validator from 'react-forms-validator';
-import phone from 'phone';
+import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
 
 class BasicInfo extends Component {
     constructor(props) {
@@ -15,13 +14,27 @@ class BasicInfo extends Component {
             confirmPassword: '',
             website: '',
         };
-        this.errors = false;
+        this.firstNameError = false;
+        this.lastNameError = false;
+        this.emailError = false;
+        this.passwordError = false;
+        this.confirmPasswordError = false;
         this.phoneNumberError = false;
+        this.websiteError = false;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            const hasErrors = this.errors || this.phoneNumberError;
+            this.phoneNumberIsInvalid(this.state.phone);
+            this.emailIsInvalid(this.state.email);
+            this.websiteIsInvalid(this.state.website);
+            this.firstNameIsInvalid(this.state.first_name);
+            this.lastNameIsInvalid(this.state.last_name);
+            this.passwordIsInvalid(this.state.password);
+            this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
+
+            const hasErrors = this.phoneNumberError || this.emailError || this.websiteError || this.firstNameError || this.lastNameError || this.passwordError || this.confirmPasswordError;
+            console.log(hasErrors)
             this.props.onSubmitData(this.state, hasErrors);
         }
     }
@@ -33,19 +46,51 @@ class BasicInfo extends Component {
         }
     }
 
-    handleIsPhoneNumberInvalid = phoneNum => {
-        this.phoneNumberError = phoneNum !== '' && phone(phoneNum).length === 0;
+    phoneNumberIsInvalid = phoneNumber => {
+        this.phoneNumberError = phoneNumber !== '' && !isValidPhoneNumber(phoneNumber);
+    }
+
+    emailIsInvalid = email => {
+        this.emailError = !isValidEmail(email);
+    }
+
+    websiteIsInvalid = website => {
+        this.websiteError = website !== '' && !isValidURL(website);
+    }
+
+    firstNameIsInvalid = firstName => {
+        this.firstNameError = firstName.trim().length === 0;
+    }
+
+    lastNameIsInvalid = lastName => {
+        this.lastNameError = lastName.trim().length === 0;
+    }
+
+    passwordIsInvalid = password => {
+        this.passwordError = password.trim().length < 8;
+    }
+
+    confirmPasswordIsInvalid = (password, confirmPassword) => {
+        this.confirmPasswordError = confirmPassword !== password;
     }
 
     handleChange = inputField => event => {
         if (inputField === "phone") {
-            this.handleIsPhoneNumberInvalid(event.target.value);
+            this.phoneNumberIsInvalid(event.target.value);
+        } else if (inputField === "email") {
+            this.emailIsInvalid(event.target.value);
+        } else if (inputField === "website") {
+            this.websiteIsInvalid(event.target.value);
+        } else if (inputField === "first_name") {
+            this.firstNameIsInvalid(event.target.value);
+        } else if (inputField === "last_name") {
+            this.lastNameIsInvalid(event.target.value);
+        } else if (inputField === "password") {
+            this.passwordIsInvalid(event.target.value);
+        } else if (inputField === "confirmPassword") {
+            this.confirmPasswordIsInvalid(this.state.password, event.target.value);
         }
         this.setState({ [inputField]: event.target.value });
-    }
-
-    handleIsValidationErrorChange = flag => {
-        this.errors = flag;
     }
 
     render() {
@@ -111,49 +156,13 @@ class BasicInfo extends Component {
                 </div>
             </div>
             <div className={styles.errorContainer}>
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ first_name: this.state.first_name }}
-                    validationRules={{ required: true }}
-                    validationMessages={{ required: "First name is required." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ last_name: this.state.last_name }}
-                    validationRules={{ required: true }}
-                    validationMessages={{ required: "Last name is required." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ email: this.state.email }}
-                    validationRules={{ required: true, email: true }}
-                    validationMessages={{ required: "Email address is required.", email: "Invalid email address." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ password: this.state.password }}
-                    validationRules={{ required: true, minLength: 8 }}
-                    validationMessages={{ required: "Password is required", minLength: "Password not long enough." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ confirmPassword: this.state.confirmPassword }}
-                    validationRules={{ required: true, equalTo: this.state.password }}
-                    validationMessages={{ required: "Must confirm password.", equalTo: "Passwords do not match." }}
-                />
-                <Validator
-                    isValidationError={this.handleIsValidationErrorChange}
-                    isFormSubmitted={this.props.clickedNext}
-                    reference={{ website: this.state.website }}
-                    validationRules={this.state.website.length === 0 ? { required: false } : { url: true }}
-                    validationMessages={this.state.website.length === 0 ? { required: false } : { url: "Not a valid website URL." }}
-                />
-                {(this.phoneNumberError && this.state.phone !== '') && <span className={styles.errorMsg}>Invalid phone number.</span>}
+                { this.firstNameError && <span className={styles.errorMsg}>First name is required.</span> }
+                { this.lastNameError && <span className={styles.errorMsg}>Last name is required.</span> }
+                { this.passwordError && <span className={styles.errorMsg}>Password is required and must at least 8 characters.</span> }
+                { this.confirmPasswordError && <span className={styles.errorMsg}>Passwords do not match.</span> }
+                { this.emailError && <span className={styles.errorMsg}>Invalid email.</span> }
+                { this.phoneNumberError && <span className={styles.errorMsg}>Invalid phone number.</span> }
+                { this.websiteError && <span className={styles.errorMsg}>Invalid website.</span> }
             </div>
             </>
         )
