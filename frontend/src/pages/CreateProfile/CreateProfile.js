@@ -32,7 +32,8 @@ let pages = [
     {
         subtitle: "Finally, upload a profile picture.*",
         content: UploadProPic
-    },
+    }
+    ,
     {
         subtitle: "You can edit your answers to these questions at anytime through your profile page.",
         content: ReviewFinish
@@ -60,13 +61,13 @@ class CreateProfile extends Component {
         } else {
             this.setState({ page: this.state.page - 1 });
         }
-        window.scrollTo(0,0);
+        window.scrollTo(0, 110);
     }
 
     handleNext = event => {
         event.preventDefault();
         this.setState({ clickedNext: true });
-        window.scrollTo(0,0);
+        window.scrollTo(0, 110);
     }
 
     handleOnSubmitData = (data, errors) => {
@@ -141,7 +142,7 @@ class CreateProfile extends Component {
             })
             .catch(err => {
                 console.log(err);
-                console.log(err.response.data);
+                //console.log(err.response.data);
             });
     }
 

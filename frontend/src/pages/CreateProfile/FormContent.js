@@ -1,14 +1,8 @@
+import { AnswerTypes } from '../../components/QAComponents';
+
 export const ROLE_TYPE = {
     practitioner: "Practitioner",
     researcher: "Researcher"
-};
-
-export const AnswerTypes = {
-    Dropdown: "dropdown",
-    Checkbox: "checkbox",
-    Textbox: "textbox",
-    Radiobutton: "radiobutton",
-    Inputbox: "inputbox"
 };
 
 export const PractitionerInformation = {
@@ -341,7 +335,8 @@ export const practitionerQAForm = [
         questionText: "Please enter your job or position title.*",
         answer: {
             type: AnswerTypes.Inputbox,
-            key: "displayRole"
+            key: "displayRole",
+            placeholder: "Ex: 4-H Educator"
         }
     },
     {
@@ -447,6 +442,14 @@ export const researcherQAForm = [
             type: AnswerTypes.Checkbox,
             options: ResearcherInformation.ResearchTopics,
             key: "researchInterests"
+        }
+    },
+    {
+        questionText: "What age youth do you typically work with in your research projects? (check all that apply)",
+        answer: {
+            type: AnswerTypes.Checkbox,
+            options: PractitionerInformation.AgeGroups,
+            key: "ageRanges"
         }
     },
     {

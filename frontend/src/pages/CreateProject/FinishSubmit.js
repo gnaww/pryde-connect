@@ -4,6 +4,7 @@ import styles from '../../styles/CreateProfile.module.css';
 import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
 import ProjectsButton from '../../images/projects.png';
+import SubmitProject from '../../images/submitproject.png';
 
 const navigationOptions = [
     {
@@ -23,10 +24,16 @@ const navigationOptions = [
         styling: styles.studiesNavImg,
         link: "/browse",
         text: "BROWSE PROJECTS"
+    },
+    {
+        img: SubmitProject,
+        styling: styles.submitProjImg,
+        link: "/submit",
+        text: "SUBMIT A PROJECT"
     }
 ];
 
-const ReviewFinish = () => (
+const FinishSubmit = () => (
     <div className={styles.finishPage}>
         {
             navigationOptions.map((nav, index) => {
@@ -47,4 +54,4 @@ const ReviewFinish = () => (
     </div>
 );
 
-export default ReviewFinish;
+export default FinishSubmit;
