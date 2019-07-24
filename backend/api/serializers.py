@@ -50,13 +50,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_projects(self, obj):
         # get the projects that the user owns
-        print(obj)
-        print(obj.email)
+        # print(obj)
+        # print(obj.email)
         projects = []
         collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            print(collab.project)
+            # print(collab.project)
             projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
 
         owned_projects = Project.objects.filter(owner=obj.pk)
@@ -86,7 +86,7 @@ class UserShortSerializer(serializers.ModelSerializer):
         collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            print(collab.project)
+            # print(collab.project)
             projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
 
         owned_projects = Project.objects.filter(owner=obj.pk)

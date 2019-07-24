@@ -70,9 +70,9 @@ class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
     STATUS = (
-        (1, 'completed'),
-        (2, 'in-progress'),
-        (3, 'not-started'),
+        (1, 'Completed'),
+        (2, 'In Progress'),
+        (3, 'Not Started'),
     )
     status = models.IntegerField(choices=STATUS, default=None, null=True)
     summary = models.TextField()

@@ -139,3 +139,27 @@ class AddCollaborator(generics.CreateAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while adding a collaborator.'},status=status.HTTP_400_BAD_REQUEST)
+
+
+class FilterProjects(generics.ListAPIView):
+
+    def get(self, request, *args, **kwargs):
+
+        print(request.GET)
+        filtered_set = Project.objects.none()
+
+        # deal with status query
+        if 'status' in request.GET:
+            status_dict = {
+                'Completed': 1,
+                'In Progress': 2,
+                'Not Started': 3
+            }
+            status_params = request.GET['status'].split(',')
+
+            print(status_params)
+            for param in status_params:
+                filtered_set = filtered_set | Project.objects.filter(status=status_dict[param])
+
+            serializer = ProjectShortSerializer(filtered_set, many=True)
+            return Response(data=serializer.data)
