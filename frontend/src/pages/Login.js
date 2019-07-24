@@ -52,7 +52,7 @@ class Login extends Component {
                     Join our community
                 </h1>
                 <h2 className={styles.loginToCreate}>
-                    Log in to create a profile or post a study.
+                    Log in to create a profile or post a study
                 </h2>
                 <form className={styles.loginForm} onSubmit={this.handleLogin}>
                     <input className={styles.textInput} placeholder="Email address" type="text" value={this.state.email} onChange={this.handleEmailChange} />

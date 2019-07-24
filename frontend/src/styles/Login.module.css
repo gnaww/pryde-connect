@@ -19,7 +19,8 @@
 }
 
 #loginBlue img {
-    height: 100%;
+    height: 35vw;
+    max-height: 100%;
     position: relative;
     left: -250px;
 }
@@ -29,7 +30,8 @@
 }
 
 #loginGreen img {
-    height: 100%;
+    height:35vw;
+    max-height: 100%;
     position: relative;
     right: -250px;
 }
@@ -85,6 +87,14 @@
     align-self: center;
     letter-spacing: 0.19em;
     color: white;
+    cursor: pointer;
+}
+
+.loginButton:hover{
+    background: none;
+    transition: 0.25s ease-in-out;
+    color: #49AEE9;
+    box-shadow: inset #49AEE9 0px 0px 0px 2px;
 }
 
 .loginForm {
@@ -97,7 +107,7 @@
 
 .link {
     font-family: Lato;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 18px;
     margin-bottom: 12px;
     align-self: center;
@@ -105,6 +115,11 @@
     letter-spacing: 0.1em;
     text-decoration-line: underline;
     color: #808080;
+}
+
+.link:hover{
+    opacity: 0.5;
+    transition: 0.25s;
 }
 
 .links {

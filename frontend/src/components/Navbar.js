@@ -40,16 +40,16 @@ const Navbar = props => {
                             MY PROFILE
                         </Link>
                         <button className={styles.link} onClick={handleLogout}>
-                            LOGOUT
+                            LOG OUT
                         </button>
                     </>
-                    : 
+                    :
                     <>
                         <Link className={url === "/login" ? styles.activeLink : styles.link} to="/login">
-                            LOGIN
+                            LOG IN
                         </Link>
                         <Link className={url === "/signup" ? styles.activeLink : styles.link} to="/signup">
-                            SIGNUP
+                            SIGN UP
                         </Link>
                     </>
                 }

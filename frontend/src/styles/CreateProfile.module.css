@@ -22,7 +22,8 @@
 }
 
 .smallTextInput {
-    width: 19%;
+    /* width: 19%; */
+    width: 278px;
     margin-right: 28px;
     height: 64px;
     background: #E9E9E9;
@@ -38,16 +39,17 @@
 
 .mediumTextInput {
     composes: smallTextInput;
-    width: 26%;
+    /* width: 26%; */
+    width: 383px;
 }
 
 .longTextInput {
     composes: smallTextInput;
-    width: 41%;
+    width: 618px;
 }
 
 .nextButton {
-    width: 11%;
+    width: 161px;
     height: 56px;
     background: #49AEE9;
     border: none;
@@ -100,8 +102,8 @@
     font-size: 30px;
     line-height: 36px;
     letter-spacing: 0.1em;
-    color: black;   
-    margin-bottom: 15px;
+    color: black;
+    margin: 20px 0;
 }
 
 .answer {
@@ -109,14 +111,15 @@
     background: #E9E9E9;
     border-radius: 5px;
     border: none;
-    width: 62%;
+    width: 100%;
+    max-width: 893px;
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;
     padding-top: 26px;
-    padding-left: 30px; 
+    padding-left: 30px;
 }
 
 .QAitem {
@@ -171,7 +174,23 @@
 
 .form {
     display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.locationForm {
+    display: flex;
     flex-direction: column;
+}
+
+.form .requiredFields {
+    width: 680px;
+}
+
+.form .optionalFields {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 span.qaOptionText {
@@ -189,14 +208,13 @@ span.qaOptionText {
 
 .dropdown {
     margin-left: 20px;
-    margin-top: 20px;
     font-size: 18px;
 }
 
 .otherTextbox {
     font-family: Lato;
     font-size: 20px;
-    width: 137px;
+    width: 200px;
     height: 24px;
     border-width: 0;
     background: #E9E9E9;
@@ -329,7 +347,61 @@ span.qaOptionText {
     height: 134px;
 }
 
+.submitProjImg {
+    width: 128px;
+    height: 130px;
+}
+
 .finishPage {
     padding: 40px 0;
     display: flex;
+}
+
+.label {
+    margin-left: 0;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+}
+
+.uploadButton {
+    composes: imageUpload;
+    width: 264px;
+    background: #99D85D;
+}
+
+.fileUploaded {
+    display: flex;
+}
+
+.fileUploaded p {
+    font-size: 16px;
+    line-height: 20px;
+    width: 360px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    max-height: 20px;
+    text-align: left;
+}
+
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    font-family: Lato;
+}
+
+.errorContainer span {
+    font-size: 20px;
+}
+
+.errorMsg {
+    color: red;
+    letter-spacing: 0;
+    font-size: 20px;
 }

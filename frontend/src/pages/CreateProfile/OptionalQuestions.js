@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getTextboxQuestion } from './QAComponents';
+import { getTextboxQuestion } from '../../components/QAComponents';
 import { optionalQAForm } from './FormContent';
 
 class OptionalQuestions extends Component {

@@ -90,7 +90,7 @@ class Homepage extends Component {
                 </section>
                 <section className={styles.getStarted}>
                     <div className={styles.actionsWrapper}>
-                        <h2>GET STARTED</h2>
+                        <h2>Get Started</h2>
                         <div className={styles.actions}>
                             <div className={styles.actionCard}>
                                 <Link className={styles.actionLink} to="/browse">

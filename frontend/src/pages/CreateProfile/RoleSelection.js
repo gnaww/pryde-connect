@@ -28,10 +28,12 @@ class RoleSelection extends Component {
             role: "",
             clicked: null
         };
+        this.errors = false;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
+            this.errors = this.state.role === "";
             this.props.onSubmitData(this.state, this.state.role === "");
         }
     }
@@ -70,6 +72,9 @@ class RoleSelection extends Component {
                             )
                         })
                     }
+                </div>
+                <div>
+                    {this.errors && (<p className={styles.errorMsg}>You must pick a role.</p>)}
                 </div>
             </>
         )
