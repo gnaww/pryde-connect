@@ -9,7 +9,7 @@ import editIconGreen from '../images/edit-icon-green.svg';
 import deleteButton from '../images/delete-button-borderless.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import ProfilePictureModal from '../components/ProfilePictureModal';
-import { sortOptions, SortableList } from '../components/SortableList';
+import { sortProjectsOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
 import api from '../services/api';
 
@@ -122,7 +122,7 @@ class Profile extends Component {
         const sortDropdown = {
             label: "SORT BY",
             name: "sort",
-            options: sortOptions,
+            options: sortProjectsOptions,
             handleChange: this.handleDropdownChange("sortBy")
         };
         let projectsDisplay;
