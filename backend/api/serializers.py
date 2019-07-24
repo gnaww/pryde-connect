@@ -42,7 +42,8 @@ class ProjectSerializer(serializers.ModelSerializer):
         collaborator_queryset = Collaborators.objects.filter(project=obj)
         userInfo = []
         for collaborator in collaborator_queryset:
-            userInfo.append(MiniUserSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+            if collaborator.showProjectOnProfile:
+                userInfo.append(MiniUserSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
         # return CollaboratorSerializer(collaborators, many=True).data
         return userInfo
 
