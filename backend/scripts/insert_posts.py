@@ -1,5 +1,6 @@
 import requests
 import json
+import random
 
 
 def login_user():
@@ -31,7 +32,7 @@ def insert_posts():
 
     project1 = {
         "name": "aaa",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -46,7 +47,7 @@ def insert_posts():
 
     project2 = {
         "name": "bb",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -61,7 +62,7 @@ def insert_posts():
 
     project3 = {
         "name": "gg",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -76,7 +77,7 @@ def insert_posts():
 
     project4 = {
         "name": "zz",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -91,7 +92,7 @@ def insert_posts():
 
     project5 = {
         "name": "eee",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -106,7 +107,7 @@ def insert_posts():
 
     project6 = {
         "name": "ddd",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -121,7 +122,7 @@ def insert_posts():
 
     project7 = {
         "name": "lll",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -136,7 +137,7 @@ def insert_posts():
 
     project8 = {
         "name": "asdf",
-        "status": 2,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -151,7 +152,7 @@ def insert_posts():
 
     project9 = {
         "name": "foo bar",
-        "status": 1,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
@@ -166,7 +167,7 @@ def insert_posts():
 
     project10 = {
         "name": "test study",
-        "status": 3,
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
         "researchTopics": ["website building"],
         "ageRanges": ["19-22"],
