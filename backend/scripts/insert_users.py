@@ -1,27 +1,25 @@
 import requests
 import json
+import random
+
+researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
+           'Diversity Equity & Inclusion', 'Education & Learning',
+           'Environment & Sustainability', 'Families',
+           'Health & Wellness', 'Peer Relationships',
+           'Positive Youth Development', 'Policy Analysis',
+           'Program Evaluation', 'Media & Technology',
+           'Motivation', 'Nutrition', 'Risk Behavior',
+           'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+           'Youth/Adult Relationships', 'Other']
 
 
-class User:
+deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'Other']
 
-    def __init__(self, role, display_role, affiliation, location, email, phone, website,
-                 researchInterests, researchDescription, roles, ageRanges, deliveryModes,
-                 researchNeeds, evaluationNeeds):
-        self.role = role
-        self.display_role = display_role
-        self.affiliation = affiliation
-        self.location = location
-        self.email = email
-        self.phone = phone
-        self.website = website
-        self.researchInterests = researchInterests
-        self.researchDescription = researchDescription
-        self.roles = roles
-        self.ageRanges = ageRanges
-        self.deliveryModes = deliveryModes
-        self.researchNeeds = researchNeeds
-        self.evaluationNeeds = evaluationNeeds
-
+ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
+             'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
+             'Early childhood (6-8 years)', 'Middle childhood (9-11 years)',
+             'Young teens (12-14 years)', 'Teenagers (15-17 years)',
+             'Young adults (18-24 years)']
 
 def pump_into_servers():
     url = 'http://localhost:8000/api/v1/rest-auth/registration/'
@@ -44,9 +42,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": False,
@@ -67,9 +65,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": False,
@@ -90,9 +88,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": False,
@@ -113,9 +111,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -136,9 +134,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -159,9 +157,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -182,9 +180,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -205,9 +203,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -228,9 +226,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": True,
@@ -251,9 +249,9 @@ def pump_into_servers():
         "website": "http://www.google.com",
         "researchDescription": "i love doing research",
         "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "researchNeeds": "this is a research need!",
         "evaluationNeeds": "this is an evaluation need!",
         "locatedAtCornell": False,
