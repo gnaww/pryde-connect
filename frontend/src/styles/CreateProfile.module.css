@@ -49,7 +49,7 @@
 }
 
 .nextButton {
-    width: 11%;
+    width: 161px;
     height: 56px;
     background: #49AEE9;
     border: none;
@@ -103,7 +103,7 @@
     line-height: 36px;
     letter-spacing: 0.1em;
     color: black;
-    margin-bottom: 15px;
+    margin: 20px 0;
 }
 
 .answer {
@@ -111,7 +111,8 @@
     background: #E9E9E9;
     border-radius: 5px;
     border: none;
-    width: 62%;
+    width: 100%;
+    max-width: 893px;
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;
@@ -177,6 +178,11 @@
     flex-wrap: wrap;
 }
 
+.locationForm {
+    display: flex;
+    flex-direction: column;
+}
+
 .form .requiredFields {
     width: 680px;
 }
@@ -202,7 +208,6 @@ span.qaOptionText {
 
 .dropdown {
     margin-left: 20px;
-    margin-top: 20px;
     font-size: 18px;
 }
 
@@ -388,10 +393,17 @@ span.qaOptionText {
 .errorContainer {
     display: flex;
     flex-direction: column;
+    font-family: Lato;
 }
+
+.errorContainer span {
+    font-size: 20px;
+    margin: 5px 0;
+}
+
 .errorMsg {
     color: red;
-    font-size: 16px;
-    margin: 0;
-    display: block;
+    font-size: 20px;
+    margin: 5px 0;
+    letter-spacing: 0;
 }

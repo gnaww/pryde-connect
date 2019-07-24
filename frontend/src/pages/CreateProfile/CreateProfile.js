@@ -61,13 +61,13 @@ class CreateProfile extends Component {
         } else {
             this.setState({ page: this.state.page - 1 });
         }
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 110);
     }
 
     handleNext = event => {
         event.preventDefault();
         this.setState({ clickedNext: true });
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 110);
     }
 
     handleOnSubmitData = (data, errors) => {

@@ -55,7 +55,7 @@ class PractitionerQuestions extends Component {
 
         if (this.props.clickedNext) {
             isInvalid(this.state, this);
-            this.props.onSubmitData(this.state, this.errors.filter(e => e === true).length > 0);
+            this.props.onSubmitData(this.state, this.errors.filter(e => e).length > 0);
         }
     }
 
@@ -138,7 +138,7 @@ class PractitionerQuestions extends Component {
                                 this.state.locatedAtCCE ?
                                     getDropDownQuestion(qa.extra, this.setLocationDropdown, defaultCounty)
                                     :
-                                    <>
+                                    <div className={styles.locationForm}>
                                         <input
                                             className={styles.longTextInput}
                                             placeholder="What is your institution or organization?"
@@ -153,7 +153,7 @@ class PractitionerQuestions extends Component {
                                             value={this.state.location}
                                             onChange={this.setLocationTextbox("location")}
                                         />
-                                    </>
+                                    </div>
                             }
                         </div>
                     )

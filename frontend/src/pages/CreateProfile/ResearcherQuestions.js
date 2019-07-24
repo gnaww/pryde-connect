@@ -37,10 +37,15 @@ class ResearcherQuestions extends Component {
                     state.metaLocation.address !== "";
             }
 
+            let typeSelected = state.displayRole.option === "Other: " ? state.displayRole.other !== "" : state.displayRole.option !== "";
+            let topicsSelected = state.researchInterests.filter(r => {
+                if (r.value === "Other: ") {
+                    return r.other !== ""
+                } else {
+                    return r.checked;
+                }
+            }).length > 0;
             let interestsStated = state.researchDescription !== "";
-            let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0;
-            let typeSelected = state.displayRole.option === "" ?
-                false : (state.displayRole.option === "Other: " ? state.other !== "" : true);
             obj.errors[0] = state.locatedAtCornell === null || !locationValid;
             obj.errors[1] = !typeSelected;
             obj.errors[2] = !topicsSelected;
@@ -60,6 +65,7 @@ class ResearcherQuestions extends Component {
                 data.location = data.metaLocation.address;
                 data.affiliation = data.metaLocation.organization;
             }
+
             this.props.onSubmitData(data, error);
         }
     }
@@ -136,16 +142,13 @@ class ResearcherQuestions extends Component {
         const defaultLocatedAtCornell = this.state.locatedAtCornell !== null ? this.state.locatedAtCornell : "";
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell, this.errors[index])}
+                { getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell, this.errors[index]) }
                 {
                     qa.id === 0 && this.state.locatedAtCornell !== null &&
                     (
-                        <div className={styles.form}>
+                        <div className={styles.locationForm}>
                             <input
-                                className={
-                                    this.state.locatedAtCornell ?
-                                        styles.mediumTextInput : styles.longTextInput
-                                }
+                                className={styles.longTextInput}
                                 placeholder={
                                     this.state.locatedAtCornell ?
                                         "College" : "What is your institution or organization?"
@@ -163,10 +166,7 @@ class ResearcherQuestions extends Component {
                                 }
                             />
                             <input
-                                className={
-                                    this.state.locatedAtCornell ?
-                                        styles.mediumTextInput : styles.longTextInput
-                                }
+                                className={styles.longTextInput}
                                 placeholder={
                                     this.state.locatedAtCornell ?
                                         "Department" : "Where are you located?"
@@ -186,9 +186,9 @@ class ResearcherQuestions extends Component {
                         </div>
                     )
                 }
-                {getRadiobuttonQuestion(qa, this.setValuesRadio, this.state, this.errors[index])}
-                {getCheckboxQuestion(qa, this.setValuesCheckbox, this.state, this.errors[index])}
-                {getTextboxQuestion(qa, this.setTextboxValue, this.state, index, this.errors[index])}
+                { getRadiobuttonQuestion(qa, this.setValuesRadio, this.state, this.errors[index]) }
+                { getCheckboxQuestion(qa, this.setValuesCheckbox, this.state, this.errors[index]) }
+                { getTextboxQuestion(qa, this.setTextboxValue, this.state, index, this.errors[index]) }
             </li>
         );
     }

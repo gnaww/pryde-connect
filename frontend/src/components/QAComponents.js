@@ -24,12 +24,11 @@ export const getCheckedValuesArray = values => {
 export const getDropDownQuestion = (qa, handlerFunction, defaultValue, hasError) => {
     return (
         qa.answer.type === AnswerTypes.Dropdown &&
-        <div className={styles.dropdownQuestion}>
-            <div>
-                <p className={styles.question}>{qa.questionText}</p>
-                {hasError && <p className={styles.errorMsg}>This question is required.</p>}
-            </div>
-            {
+        <>
+            <div className={styles.dropdownQuestion}>
+                <div>
+                    <p className={styles.question}>{qa.questionText}</p>
+                </div>
                 <div className={styles.dropdown}>
                     <CustomDropdown
                         handleChange={handlerFunction}
@@ -39,8 +38,9 @@ export const getDropDownQuestion = (qa, handlerFunction, defaultValue, hasError)
                         defaultValue={defaultValue}
                     />
                 </div>
-            }
-        </div>
+            </div>
+            {hasError && <p className={styles.errorMsg}>This question is required.</p>}
+        </>
     )
 };
 
