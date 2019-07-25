@@ -34,8 +34,8 @@ const ProjectCard = props => {
                     <section>
                         <header>
                             <h3>{`${props.first_name} ${props.last_name}`}</h3>
-                            { props.locatedAtCCE && <img className={styles.CCEBadge} src={CCEBadge} alt="CCE badge" /> }
-                            { props.locatedAtCornell && <img className={styles.CornellBadge} src={CornellBadge} alt="Cornell badge" /> }
+                            {/* { props.locatedAtCCE && <img className={styles.CCEBadge} src={CCEBadge} alt="CCE badge" /> } */}
+                            {/* { props.locatedAtCornell && <img className={styles.CornellBadge} src={CornellBadge} alt="Cornell badge" /> } */}
                         </header>
                         <h4>{props.role}</h4>
                         <h4>{props.affiliation}</h4>
