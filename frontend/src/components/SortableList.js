@@ -108,5 +108,5 @@ export const SortableList = ({ sortBy, list }) => {
             break;
     }
 
-    return sortList(list).map((elt, idx) => <SearchResult key={idx} {...elt} />)
+    return sortList(list).map(elt => <SearchResult key={elt.pk} {...elt} />)
 };
