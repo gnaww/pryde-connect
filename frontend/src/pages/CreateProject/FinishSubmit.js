@@ -4,7 +4,7 @@ import styles from '../../styles/CreateProfile.module.css';
 import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
 import ProjectsButton from '../../images/projects.png';
-import SubmitProject from '../../images/submitproject.jpg';
+import SubmitProject from '../../images/submitproject.png';
 
 const navigationOptions = [
     {
