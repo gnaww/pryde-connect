@@ -29,9 +29,6 @@ class Browse extends Component {
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         let filter = parsedURL[event.target.name];
 
-        console.log(parsedURL)
-        console.log(filter)
-
         if (filter) {
             if (Array.isArray(filter)) {
                 if (event.target.checked) {
@@ -117,7 +114,6 @@ class Browse extends Component {
 
     componentWillReceiveProps(newProps){
         if(newProps.location.search !== this.props.location.search) {
-            console.log('new', newProps);
             this.retrieveResults(newProps);
         }
     }

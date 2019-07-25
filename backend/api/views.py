@@ -80,6 +80,8 @@ class CreateProject(generics.CreateAPIView):
                 incentives = request.data['incentives'],
                 additionalInformation = request.data['additionalInformation'],
                 additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
+                alternateContact = request.data['alternateContact'],
+                alternateLocation = request.data['alternateLocation']
             )
 
             #TODO create the collaborator thing here

@@ -98,7 +98,6 @@ class SubmitProject extends Component {
             for (let i = 0; i < pairs.length; i++) {
                 this.errors[i] = hasError(pairs[i], this.state);
             }
-            console.log(this.errors);
             const error = this.errors.filter(e => e === true).length;
             this.props.onSubmitData(this.state, error > 0);
             window.scrollTo(0, 0);

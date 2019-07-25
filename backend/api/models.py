@@ -89,7 +89,6 @@ class Project(models.Model):
     datePosted = models.DateTimeField(auto_now_add=True)
     alternateContact = JSONField(default=dict)
     alternateLocation = models.CharField(max_length=200, null=True, blank=True, default=None)
-    # collaborators = models.ManyToManyField(Collaborators)
     isApproved = models.BooleanField(default=True)
 
 

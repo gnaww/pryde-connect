@@ -20,6 +20,8 @@ class Project extends Component {
                 phone: "",
                 website: ""
             },
+            alternateContact: {},
+            alternateLocation: "",
             status: "",
             summary: "",
             researchTopics: [],
@@ -27,7 +29,7 @@ class Project extends Component {
             deliveryModes: [],
             timeline: "",
             commitmentLength: "",
-            incentives: [],
+            incentives: "",
             collaborators: [],
             additionalInformation: "",
             additionalFiles:[],
@@ -84,11 +86,13 @@ class Project extends Component {
 
     render() {
         const {
-            name, owner, status, summary, researchTopics, ageRanges,
+            name, owner, alternateContact, alternateLocation, status, summary, researchTopics, ageRanges,
             deliveryModes, timeline, commitmentLength, incentives,
             collaborators, additionalInformation, additionalFiles
         } = this.state;
 
+        const contact = Object.entries(alternateContact).length !== 0 ? alternateContact : owner;
+        const location = alternateLocation ? alternateLocation : owner.location;
         let statusFormatted = status.replace("-", " ").toUpperCase();
 
         return (
@@ -121,21 +125,34 @@ class Project extends Component {
                     <header className={styles.projectHeader}>
                         <div>
                             <h1>{name}</h1>
-                            <h2>{`${owner.first_name} ${owner.last_name} - ${owner.affiliation}`}</h2>
-                            <h2>{owner.location}</h2>
+                            <h2>
+                                {
+                                    contact.affiliation ?
+                                    `${contact.first_name} ${contact.last_name} - ${contact.affiliation}`
+                                    :
+                                    `${contact.first_name} ${contact.last_name}`
+                                }
+                            </h2>
+                            <h2>{location}</h2>
                         </div>
                         <div className={styles.projectContact}>
                             <h3>{statusFormatted}</h3>
                             <ul>
                                 <li>
-                                    <a href={`mailto:${owner.email}`}>{owner.email}</a>
+                                    <a href={`mailto:${contact.email}`}>{contact.email}</a>
                                 </li>
-                                <li>
-                                    <a href={`tel:${owner.phone}`}>({owner.phone.slice(2, 5)})-{owner.phone.slice(5, 8)}-{owner.phone.slice(8, 12)}</a>
-                                </li>
-                                <li>
-                                    <a href={owner.website} target="_blank" rel="noopener noreferrer">{owner.website.replace(/(^\w+:|^)\/\//, '')}</a>
-                                </li>
+                                {
+                                    contact.phone !== "" &&
+                                    <li>
+                                        <a href={`tel:${contact.phone}`}>({contact.phone.slice(2, 5)})-{contact.phone.slice(5, 8)}-{contact.phone.slice(8, 12)}</a>
+                                    </li>
+                                }
+                                {
+                                    contact.website !== "" &&
+                                    <li>
+                                        <a href={contact.website} target="_blank" rel="noopener noreferrer">{contact.website.replace(/(^\w+:|^)\/\//, '')}</a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </header>
@@ -177,7 +194,7 @@ class Project extends Component {
                             <h2 className={styles.sectionHeader}>COLLABORATORS</h2>
                             <div className={styles.collaboratorsWrapper}>
                                 {
-                                    collaborators.map(collaborator => <SearchResult {...collaborator} />)
+                                    collaborators.map(collaborator => <SearchResult key={collaborator.pk} {...collaborator} />)
                                 }
                             </div>
                         </section>
