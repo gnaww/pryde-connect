@@ -40,6 +40,10 @@ class Project extends Component {
         };
     }
 
+    handleEditProject = () => {
+
+    }
+
     handleDeleteProject = () => {
         const { history } = this.props;
 
@@ -110,7 +114,7 @@ class Project extends Component {
                             }
                             {
                                 this.state.canEdit &&
-                                    <button className={styles.editButton}>
+                                    <button className={styles.editButton} onClick={this.handleEditProject}>
                                         <img src={editButtonOrange} alt="Edit button" />
                                     </button>
                             }

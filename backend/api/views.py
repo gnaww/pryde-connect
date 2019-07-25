@@ -40,10 +40,16 @@ class LoggedInUserView(generics.RetrieveAPIView):
         return Response(data=serializer.data)
 
 
+class UpdateUser(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    queryset = PUser.objects.filter(is_staff=False)
+
+
 class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    queryset = PUser.objects.all()
+    queryset = PUser.objects.filter(is_staff=False)
 
 
 class ProjectList(generics.ListAPIView):
@@ -97,6 +103,7 @@ class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
     queryset = Project.objects.all()
+
 
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
@@ -167,8 +174,6 @@ class HideProject(generics.UpdateAPIView):
         collab.showOnProfile = not collab.showOnProfile
         collab.save()
         return Response({'message': 'Your preference has been changed'}, status=status.HTTP_200_OK)
-
-
 
 
 class FilterProjects(generics.ListAPIView):

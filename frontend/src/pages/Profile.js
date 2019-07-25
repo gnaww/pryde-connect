@@ -58,6 +58,10 @@ class Profile extends Component {
         this.setState({ showModal: false });
     }
 
+    handleEditProfile = () => {
+
+    }
+
     handleDeleteProfile = () => {
         const { history } = this.props;
 
@@ -173,7 +177,7 @@ class Profile extends Component {
                             {
                                 this.state.canEditDelete &&
                                 <>
-                                <button className={styles.editButton}>
+                                <button className={styles.editButton} onClick={this.handleEditProfile}>
                                     {
                                         user.role === "Practitioner" ?
                                             <img src={editButton} alt="Edit button" />
