@@ -45,23 +45,23 @@ const FinishSubmit = () => (
                     <div className={styles.roleCard} key={index}>
                         {
                             nav.link === "/submit" ?
-                            <Link className={styles.roleLink} to={nav.link} onClick={() => window.location.reload()}>
-                                <img
-                                    s className={nav.styling}
-                                    src={nav.img}
-                                    alt={nav.alt}
-                                />
-                                <p>{nav.text}</p>
-                            </Link>
-                            :
-                            <Link className={styles.roleLink} to={nav.link}>
-                                <img
-                                    s className={nav.styling}
-                                    src={nav.img}
-                                    alt={nav.alt}
-                                />
-                                <p>{nav.text}</p>
-                            </Link>
+                                <Link className={styles.roleLink} to={nav.link} onClick={() => window.location.reload()}>
+                                    <img
+                                        className={nav.styling}
+                                        src={nav.img}
+                                        alt={nav.alt}
+                                    />
+                                    <p>{nav.text}</p>
+                                </Link>
+                                :
+                                <Link className={styles.roleLink} to={nav.link}>
+                                    <img
+                                        className={nav.styling}
+                                        src={nav.img}
+                                        alt={nav.alt}
+                                    />
+                                    <p>{nav.text}</p>
+                                </Link>
                         }
                     </div>
                 );

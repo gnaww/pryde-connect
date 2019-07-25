@@ -14,7 +14,7 @@ class SubmitProject extends Component {
             summary: "",
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
+            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
             timeline: "",
             commitmentLength: "",
             incentives: "",

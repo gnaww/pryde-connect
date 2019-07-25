@@ -25,7 +25,7 @@ export const PractitionerInformation = {
         "Teenagers (15-17 years)",
         "Young adults (18-24 years)"
     ],
-    ProgramDeliveryModels: [
+    ProgramDeliveryModes: [
         "Afterschool programs",
         "Camps",
         "Clubs",
@@ -362,7 +362,7 @@ export const practitionerQAForm = [
         answer: {
             type: AnswerTypes.Checkbox,
             options:
-                PractitionerInformation.ProgramDeliveryModels,
+                PractitionerInformation.ProgramDeliveryModes,
             key: "deliveryModes"
         }
     },

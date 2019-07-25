@@ -16,7 +16,7 @@ class PractitionerQuestions extends Component {
             },
             roles: getCheckedValuesArray(PractitionerInformation.RoleDescriptions),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
+            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
             researchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
         };
         this.errors = practitionerQAForm.map(_qa => { return false });
