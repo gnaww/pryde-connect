@@ -3,7 +3,7 @@ import CreateProfile from './CreateProfile/CreateProfile';
 
 const EditProfile = ({ location }) => {
     console.log(location.state.userData);
-    let editProfileData = location.state.userData;
+    let editProfileData = Object.assign({}, location.state.userData);
     // TODO: reverse below transformations to fit into CreateProfile.js
     // let user = {};
     // const formatArray = arr => {

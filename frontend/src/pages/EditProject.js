@@ -3,7 +3,11 @@ import CreateProject from './CreateProject/CreateProject';
 
 const EditProject = ({ location }) => {
     console.log(location.state.projectData);
-    let editProjectData = location.state.projectData;
+    let editProjectData = Object.assign({}, location.state.projectData);
+    delete editProjectData.invalidProject;
+    delete editProjectData.canEdit;
+    delete editProjectData.canDelete;
+    delete editProjectData.errorDeleting;
     // TODO: reverse below transformation to fit into CreateProject.js
     // let project = Object.assign({}, data);
     // const formatArray = arr => {
