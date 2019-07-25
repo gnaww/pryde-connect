@@ -23,7 +23,7 @@ class CreateProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 1,
+            page: 0,
             clickedNext: false
         };
     }
