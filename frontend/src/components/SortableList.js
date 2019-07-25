@@ -1,5 +1,6 @@
 import React from 'react';
-import SearchResult from './SearchResult';
+import UserCard from './UserCard';
+import ProjectCard from './ProjectCard';
 
 const stringCompareAsc = stringType => (a, b) => {
     if (stringType === "name" && a.type === "partner")  {
@@ -179,5 +180,11 @@ export const SortableList = ({ sortBy, list }) => {
             break;
     }
 
-    return sortList(list).map(elt => <SearchResult key={elt.pk} {...elt} />)
+    return sortList(list).map(elt => {
+        if (elt.type === "project") {
+            return <ProjectCard key={elt.pk} {...elt} />
+        } else {
+            return <UserCard key={elt.pk} {...elt} />
+        }
+    });
 };

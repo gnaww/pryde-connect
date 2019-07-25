@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import SearchResult from '../components/SearchResult';
+import UserCard from '../components/UserCard';
 import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
 import styles from '../styles/Project.module.css';
@@ -202,7 +202,7 @@ class Project extends Component {
                             <h2 className={styles.sectionHeader}>COLLABORATORS</h2>
                             <div className={styles.collaboratorsWrapper}>
                                 {
-                                    collaborators.map(collaborator => <SearchResult key={collaborator.pk} {...collaborator} />)
+                                    collaborators.map(collaborator => <UserCard key={collaborator.pk} {...collaborator} />)
                                 }
                             </div>
                         </section>

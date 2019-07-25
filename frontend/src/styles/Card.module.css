@@ -45,7 +45,7 @@
 
 .projectDetails, .partnerDetails {
     padding-right: 30px;
-    flex: 2;
+    flex: 5;
 }
 
 .projectDetails div {
@@ -134,7 +134,7 @@
 
 .stats {
    padding-left: 30px;
-   flex: 1;
+   flex: 2;
 }
 
 .stats h4 {
