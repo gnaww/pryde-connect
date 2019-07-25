@@ -41,7 +41,6 @@ class BasicInfo extends Component {
     componentDidMount() {
         if (this.props.savedData !== null) {
             this.setState(this.props.savedData);
-            this.errors = false;
         }
     }
 

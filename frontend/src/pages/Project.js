@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import SearchResult from '../components/SearchResult';
 import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
@@ -38,10 +39,6 @@ class Project extends Component {
             canDelete: false,
             errorDeleting: false
         };
-    }
-
-    handleEditProject = () => {
-
     }
 
     handleDeleteProject = () => {
@@ -114,9 +111,16 @@ class Project extends Component {
                             }
                             {
                                 this.state.canEdit &&
-                                    <button className={styles.editButton} onClick={this.handleEditProject}>
-                                        <img src={editButtonOrange} alt="Edit button" />
-                                    </button>
+                                    <Link
+                                    to={{
+                                        pathname: "/editproject",
+                                        state: { projectData: this.state }
+                                    }}
+                                    >
+                                        <button className={styles.editButton}>
+                                            <img src={editButtonOrange} alt="Edit button" />
+                                        </button>
+                                    </Link>
                             }
                             {
                                 this.state.canDelete &&

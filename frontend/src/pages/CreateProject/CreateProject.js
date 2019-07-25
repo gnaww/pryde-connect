@@ -6,6 +6,7 @@ import SubmitProject from './SubmitProject';
 import FinishSubmit from './FinishSubmit';
 import api from '../../services/api';
 
+// TODO: change pages subtitles when in edit mode, add new last confirmation page
 let pages = [
     {
         title: "Submit a project",
@@ -24,6 +25,7 @@ class CreateProject extends Component {
         super(props);
         this.state = {
             page: 0,
+            pageData: null,
             clickedNext: false
         };
     }
@@ -48,19 +50,30 @@ class CreateProject extends Component {
         // TODO: add collaborators to projects
         // project.collaborators = data.collaborators;
         project.collaborators = [];
-        // TODO: add error handling for if creating project fails
-        api.createProject(project)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => {
-                console.log(err);
-                //console.log(err.response.data);
-            });
+        // TODO: add error handling for if creating/updating project fails
+        if (this.props.editing === true) {
+            // TODO: get proper id to pass in here
+            // api.updateProject(id, project)
+            //     .then(response => {
+            //         console.log(response);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //         //console.log(err.response.data);
+            //     });
+        } else {
+            api.createProject(project)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                    //console.log(err.response.data);
+                });
+        }
     }
 
     submitData = (data, errors) => {
-        console.log(errors);
         if (!errors) {
             this.createProject(data);
             this.setState({ page: 1 });
@@ -72,6 +85,12 @@ class CreateProject extends Component {
         this.setState({ clickedNext: true });
     }
 
+    componentDidMount() {
+        if (this.props.editProjectData) {
+            this.setState({ pageData: this.props.editProjectData });
+        }
+    }
+
     render() {
         let PageContent = pages[this.state.page].content;
         return (
@@ -79,7 +98,7 @@ class CreateProject extends Component {
                 <div className={styles.root} >
                     <h1 className={styles.createProfile}>{pages[this.state.page].title}</h1>
                     <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} />
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} />
                     <div className={styles.buttons}>
                         {
                             this.state.page < pages.length - 1 &&

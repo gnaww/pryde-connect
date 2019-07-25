@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import profilePicture from '../images/profile-picture.png';
 import CCEBadge from '../images/cce-badge.svg';
 import CornellBadge from '../images/cornell-badge.svg';
@@ -56,10 +57,6 @@ class Profile extends Component {
 
     hideModal = () => {
         this.setState({ showModal: false });
-    }
-
-    handleEditProfile = () => {
-
     }
 
     handleDeleteProfile = () => {
@@ -152,6 +149,7 @@ class Profile extends Component {
                 <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                     <div className={styles.profilePicture}>
                         <img src={profilePicture} alt="Profile pic" />
+                        {/* TODO: make editing profile picture here functional */}
                         <button className={styles.profilePictureEdit} onClick={this.showModal}>
                             {
                                 user.role === "Practitioner" ?
@@ -177,14 +175,21 @@ class Profile extends Component {
                             {
                                 this.state.canEditDelete &&
                                 <>
-                                <button className={styles.editButton} onClick={this.handleEditProfile}>
-                                    {
-                                        user.role === "Practitioner" ?
-                                            <img src={editButton} alt="Edit button" />
-                                        :
-                                            <img src={editButtonGreen} alt="Edit button" />
-                                    }
-                                </button>
+                                <Link
+                                    to={{
+                                        pathname: "/editproject",
+                                        state: { userData: this.state.user }
+                                    }}
+                                >
+                                    <button className={styles.editButton}>
+                                        {
+                                            user.role === "Practitioner" ?
+                                                <img src={editButton} alt="Edit button" />
+                                            :
+                                                <img src={editButtonGreen} alt="Edit button" />
+                                        }
+                                    </button>
+                                </Link>
                                 <button className={styles.deleteButton} onClick={this.handleDeleteProfile}>
                                     <img src={deleteButton} alt="Edit button" />
                                 </button>

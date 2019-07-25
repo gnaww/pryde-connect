@@ -12,6 +12,7 @@ import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
 
+// TODO: change pages subtitles when in edit mode, add new last confirmation page
 let pages = [
     {
         subtitle: "Welcome! Please complete the following questions.",
@@ -32,8 +33,7 @@ let pages = [
     {
         subtitle: "Finally, upload a profile picture.*",
         content: UploadProPic
-    }
-    ,
+    },
     {
         subtitle: "You can edit your answers to these questions at anytime through your profile page.",
         content: ReviewFinish
@@ -137,15 +137,27 @@ class CreateProfile extends Component {
         // TODO: add profile picture to users
         // user.profilePicture = data[4].profilePicture;
 
-        // TODO: add error handling for if registering user fails
-        api.register(user)
-            .then(response => {
-                localStorage.setItem("pryde_key", response.data.key);
-            })
-            .catch(err => {
-                console.log(err);
-                //console.log(err.response.data);
-            });
+        // TODO: add error handling for if registering/updating user fails
+        if (this.props.editing === true) {
+            // TODO: get proper id to pass in here
+            // api.updateUser(id, user)
+            //     .then(response => {
+            //         console.log(response);
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //         //console.log(err.response.data);
+            //     });
+        } else {
+            api.register(user)
+                .then(response => {
+                    localStorage.setItem("pryde_key", response.data.key);
+                })
+                .catch(err => {
+                    console.log(err);
+                    //console.log(err.response.data);
+                });
+        }
     }
 
     componentDidUpdate(_prevProps, _prevState) {
@@ -154,10 +166,17 @@ class CreateProfile extends Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.editProfileData) {
+            this.setState({ pageData: this.props.editProfileData });
+        }
+    }
+
     render() {
         let PageContent = pages[this.state.page].content;
         return (
             <div className={styles.root} >
+                {/* TODO: change headers when in edit mode */}
                 <h1 className={styles.createProfile}>{this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"}</h1>
                 <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
                 <PageContent savedData={this.state.pageData[this.state.page]} clickedNext={this.state.clickedNext} onSubmitData={this.handleOnSubmitData} readyToSubmit={this.readyToSubmit} />

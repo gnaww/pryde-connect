@@ -104,6 +104,12 @@ class SubmitProject extends Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.savedData !== null) {
+            this.setState(this.props.savedData);
+        }
+    }
+
     setTextbox = key => event => {
         let value = event.target.value;
 
