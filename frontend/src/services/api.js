@@ -29,6 +29,18 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
     },
+    async updateUser(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        let config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/${id}/update/`, config);
+        return response.status === 200;
+    },
     async deleteUser(id) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
@@ -85,6 +97,18 @@ export default {
         };
 
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
+        return response.status === 200;
+    },
+    async updateProject(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        let config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/update/`, config);
         return response.status === 200;
     },
     async deleteProject(id) {
