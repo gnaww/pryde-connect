@@ -25,11 +25,12 @@ const ProjectCard = props => {
     } else {
         link = `/user/${props.id}`;
     }
+    const researchInterests = props.researchInterests.reduce(listFormatter, "");
 
     return (
         <Link className={styles.linkWrapper} to={link}>
-            <div className={`${styles.searchResult} ${styles.partnerResult} ${styles[props.role.toLowerCase()]}`}>
-                <section className={styles.partnerDetails}>
+            <div className={`${styles.card} ${styles.userCard} ${styles[props.role.toLowerCase()]}`}>
+                <section className={styles.userDetails}>
                     <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />
                     <section>
                         <header>
@@ -41,7 +42,14 @@ const ProjectCard = props => {
                         <h4>{props.affiliation}</h4>
                         <h4 className={styles.researchInterests}>
                             <img src={categoryIconWhite} alt="Category icon" />
-                            <span>{props.researchInterests.reduce(listFormatter, "")}</span>
+                            <span>
+                                {
+                                    researchInterests.length > 100 ?
+                                        `${researchInterests.replace(/^(.{70}[^\s]*).*/, "$1")}...`
+                                    :
+                                        researchInterests
+                                }
+                            </span>
                         </h4>
                     </section>
                 </section>
