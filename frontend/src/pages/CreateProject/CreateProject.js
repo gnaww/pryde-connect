@@ -45,6 +45,9 @@ class CreateProject extends Component {
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];
+        // TODO: add collaborators to projects
+        // project.collaborators = data.collaborators;
+        project.collaborators = [];
         // TODO: add error handling for if creating project fails
         api.createProject(project)
             .then(response => {

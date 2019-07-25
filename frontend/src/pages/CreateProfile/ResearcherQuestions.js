@@ -40,12 +40,14 @@ class ResearcherQuestions extends Component {
 
             let typeSelected = state.displayRole.option === "Other: " ? state.displayRole.other !== "" : state.displayRole.option !== "";
             let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0
-            && (state.researchInterests[state.researchInterests.length - 1].checked || state.researchInterests[state.researchInterests.length - 1].other !== "");
+            && (!state.researchInterests[state.researchInterests.length - 1].checked || state.researchInterests[state.researchInterests.length - 1].other !== "");
+            let ageRangesSelected = state.ageRanges.filter(r => r.checked).length > 0;
             let interestsStated = state.researchDescription !== "";
             obj.errors[0] = state.locatedAtCornell === null || !locationValid;
             obj.errors[1] = !typeSelected;
             obj.errors[2] = !topicsSelected;
-            obj.errors[3] = !interestsStated;
+            obj.errors[3] = !ageRangesSelected;
+            obj.errors[4] = !interestsStated;
             return state.locatedAtCornell === null || !locationValid
                 || !interestsStated || !topicsSelected || !typeSelected;
         }

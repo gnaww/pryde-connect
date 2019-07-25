@@ -34,7 +34,6 @@ class BasicInfo extends Component {
             this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
 
             const hasErrors = this.phoneNumberError || this.emailError || this.websiteError || this.firstNameError || this.lastNameError || this.passwordError || this.confirmPasswordError;
-            console.log(hasErrors)
             this.props.onSubmitData(this.state, hasErrors);
         }
     }

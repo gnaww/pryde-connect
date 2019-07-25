@@ -80,6 +80,8 @@ class SubmitProject extends Component {
                 // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
                     return false;
+                } else if (pair.key === "alternateLocation") {
+                    return false;
                 } else {
                     return !nonEmptyString(pair.key, state);
                 }
@@ -93,10 +95,11 @@ class SubmitProject extends Component {
         }
 
         if (this.props.clickedNext) {
-            for (var i = 0; i < pairs.length; i++) {
+            for (let i = 0; i < pairs.length; i++) {
                 this.errors[i] = hasError(pairs[i], this.state);
             }
-            var error = this.errors.filter(e => e === true).length;
+            console.log(this.errors);
+            const error = this.errors.filter(e => e === true).length;
             this.props.onSubmitData(this.state, error > 0);
             window.scrollTo(0, 0);
         }
@@ -173,12 +176,6 @@ class SubmitProject extends Component {
 
     getQAComponent = (qa, index) => {
         return (
-            // alternate location, 3rd question is not required
-            index === 2 ?
-            <li className={styles.numberedList} key={index}>
-                { getInputboxQuestion(qa, this.setTextbox, this, false) }
-            </li>
-            :
             <li className={styles.numberedList} key={index}>
                 { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
                 { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
