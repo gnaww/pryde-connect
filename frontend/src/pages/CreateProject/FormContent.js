@@ -138,10 +138,10 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "What types of program delivery models would be good for your project?* (check all that apply)",
+        questionText: "What types of program delivery modes would be good for your project?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.ProgramDeliveryModels,
+            options: PractitionerInformation.ProgramDeliveryModes,
             key: "deliveryModes"
         }
     },

@@ -180,18 +180,18 @@ class FilterProjects(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
 
-        print(request.GET)
+        print(request.data)
         filtered_set = Project.objects.all()
 
         # deal with status query
-        if 'status' in request.GET:
+        if 'status' in request.data:
             filter_status_set = Project.objects.none()
             status_dict = {
                 'Completed': 1,
                 'In Progress': 2,
                 'Not Started': 3
             }
-            status_params = request.GET['status'].split(',')
+            status_params = request.data['status'].split(',')
 
             print(status_params)
             for param in status_params:
@@ -199,27 +199,27 @@ class FilterProjects(generics.ListAPIView):
 
             filtered_set = filtered_set & filter_status_set
 
-        if 'researchtopic' in request.GET:
+        if 'researchtopic' in request.data:
             filtered_researchtopic_set = Project.objects.none()
-            research_topics = request.GET['researchtopic'].split(',')
+            research_topics = request.data['researchtopic'].split(',')
             for topic in research_topics:
                 filtered_researchtopic_set = filtered_researchtopic_set |\
                                              Project.objects.filter(researchTopics__contains=[topic])
 
             filtered_set = filtered_set & filtered_researchtopic_set
 
-        if 'deliverymodes' in request.GET:
+        if 'deliverymodes' in request.data:
             filtered_deliverymodes_set = Project.objects.none()
-            delivery_modes = request.GET['deliverymodes'].split(',')
+            delivery_modes = request.data['deliverymodes'].split(',')
             for mode in delivery_modes:
                 filtered_deliverymodes_set = filtered_deliverymodes_set |\
                                              Project.objects.filter(deliveryModes__contains=[mode])
 
             filtered_set = filtered_set & filtered_deliverymodes_set
 
-        if 'ageranges' in request.GET:
+        if 'ageranges' in request.data:
             filtered_ageranges_set = Project.objects.none()
-            ageranges = request.GET['ageranges'].split(',')
+            ageranges = request.data['ageranges'].split(',')
             for age in ageranges:
                 filtered_ageranges_set = filtered_ageranges_set | \
                                          Project.objects.filter(ageRanges__contains=[age])

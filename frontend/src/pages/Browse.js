@@ -109,6 +109,10 @@ class Browse extends Component {
                     .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => console.log(err));
             }
+        } else {
+            api.search(parsedURL)
+                .then(results => this.setState({ searchResults: results }))
+                .catch(err => console.log(err));
         }
     }
 

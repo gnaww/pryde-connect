@@ -25,7 +25,7 @@ export const PractitionerInformation = {
         "Teenagers (15-17 years)",
         "Young adults (18-24 years)"
     ],
-    ProgramDeliveryModels: [
+    ProgramDeliveryModes: [
         "Afterschool programs",
         "Camps",
         "Clubs",
@@ -358,11 +358,11 @@ export const practitionerQAForm = [
     },
     {
         questionText:
-            "What types of program delivery models do you use?* (check all that apply)",
+            "What types of program delivery modes do you use?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
             options:
-                PractitionerInformation.ProgramDeliveryModels,
+                PractitionerInformation.ProgramDeliveryModes,
             key: "deliveryModes"
         }
     },

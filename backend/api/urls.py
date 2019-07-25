@@ -25,7 +25,7 @@ urlpatterns = [
 
 
     #TODO: finish filtering
-    url(r'^project/filter$', FilterProjects.as_view()),
+    path('project/filter/', FilterProjects.as_view()),
 
 
     #TODO: write endpoint to flip showProjectOnProfile for collaborator relationships
