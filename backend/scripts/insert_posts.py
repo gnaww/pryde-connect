@@ -62,7 +62,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project2 = {
@@ -77,7 +79,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project3 = {
@@ -92,7 +96,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project4 = {
@@ -107,7 +113,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project5 = {
@@ -122,7 +130,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project6 = {
@@ -137,7 +147,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project7 = {
@@ -152,7 +164,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project8 = {
@@ -167,7 +181,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project9 = {
@@ -182,7 +198,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     project10 = {
@@ -197,7 +215,9 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": []
+        "additionalFiles": [],
+        "alternateContact": {},
+        "alternateLocation": ""
     }
 
     projects = [project1, project2, project3, project4, project5, project6, project7, project8, project9, project10]
