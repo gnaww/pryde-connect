@@ -9,15 +9,15 @@ const roleOptions = [
         text: "Cornell faculty, academic staff, graduate or undergraduate student, or other primarily research-focused role.",
         value: ROLE_TYPE.researcher,
         img: researcher,
-        unclicked: styles.researcherImg,
-        clicked: styles.researcherImgClicked
+        imgStyle: styles.researcherImg,
+        clicked: styles.researcherClicked
     },
     {
         text: "4-H Educator, other Cornell Cooperative Extension (CCE) Role, or other primarily practice-focused role.",
         value: ROLE_TYPE.practitioner,
         img: practitioner,
-        unclicked: styles.practitionerImg,
-        clicked: styles.practitionerImgClicked
+        imgStyle: styles.practitionerImg,
+        clicked: styles.practitionerClicked
     }
 ];
 
@@ -60,13 +60,14 @@ class RoleSelection extends Component {
                     {
                         roleOptions.map((role, index) => {
                             return (
-                                <div className={styles.roleCard} key={index}>
-                                    <img
-                                        className={this.state.clicked === index ? role.clicked : role.unclicked}
-                                        src={role.img}
-                                        onClick={() => this.handleSelectRole(index, role.value)}
-                                        alt="Choose a role."
-                                    />
+                                <div className={styles.roleCardWrapper}>
+                                    <div className={this.state.clicked === index ? role.clicked : styles.roleCard} key={index} onClick={() => this.handleSelectRole(index, role.value)}>
+                                        <img
+                                            className={role.imgStyle}
+                                            src={role.img}
+                                            alt="Choose a role."
+                                        />
+                                    </div>
                                     <p className={styles.roleText}>{role.text}</p>
                                 </div>
                             )
