@@ -83,7 +83,7 @@ export const getButtonInput = (qa, handlerFunction, state) => {
                     state[qa.answer.key] &&
                     state[qa.answer.key].map((f, i) => {
                         return (
-                            <div className={styles.fileUploaded}>
+                            <div key={f[1]} className={styles.fileUploaded}>
                                 <p>{f[1]}</p>
                                 <img onClick={handlerFunction(i)} src={DeleteIcon} alt="Delete" />
                             </div>
@@ -207,10 +207,10 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
             {
                 qa.answers.map((q, index) => {
                     return (
-                        <>
-                            { getTextboxQuestion(q, handlerFunction, state, index, false) }
-                            { getButtonInput(q, handlerFunction, state, index, false) }
-                        </>
+                        <div key={index}>
+                            {getTextboxQuestion(q, handlerFunction, state, index, false)}
+                            {getButtonInput(q, handlerFunction, state, index, false)}
+                        </div>
                     )
                 })
             }
@@ -223,7 +223,7 @@ export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => 
         qa.answer.type === AnswerTypes.ContactInfo &&
         <>
             <p className={styles.question}>{qa.questionText}</p>
-            {hasError && <p className={styles.errorMsg}>All required fields must be filled in.<br/> Email, phone, and website must be valid.</p>}
+            {hasError && <p className={styles.errorMsg}>All required fields must be filled in.<br /> Email, phone, and website must be valid.</p>}
             <div>
                 <input
                     className={styles.smallTextInput}

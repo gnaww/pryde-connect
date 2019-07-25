@@ -54,8 +54,8 @@ class SubmitProject extends Component {
 
         function validContact(key, state) {
             const contactInfo = state[key];
-            const allRequiredFieldsFilled = contactInfo.first_name !== "" && contactInfo.last_name !== ""&& contactInfo.email !== "";
-            const allRequiredFieldsBlank = contactInfo.first_name === "" && contactInfo.last_name === ""&& contactInfo.email === "";
+            const allRequiredFieldsFilled = contactInfo.first_name !== "" && contactInfo.last_name !== "" && contactInfo.email !== "";
+            const allRequiredFieldsBlank = contactInfo.first_name === "" && contactInfo.last_name === "" && contactInfo.email === "";
 
             if (allRequiredFieldsFilled) {
                 if (!isValidEmail(contactInfo.email)) {
@@ -182,12 +182,12 @@ class SubmitProject extends Component {
     getQAComponent = (qa, index) => {
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
-                { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
-                { getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index]) }
-                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
-                { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
-                { getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index]) }
+                {getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index])}
+                {getInputboxQuestion(qa, this.setTextbox, this, this.errors[index])}
+                {getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index])}
+                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
+                {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
+                {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}
             </li>
         );
     }
