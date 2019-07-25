@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer
-from .models import Project, PUser, Collaborators
+from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -136,11 +136,11 @@ class AddCollaborator(generics.CreateAPIView):
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
             # check to see if the user is already added as a collaborator to this project
-            if Collaborators.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
+            if Collaborator.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user'])).exists():
                 return Response({'message': 'This user is already a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
 
-            Collaborators.objects.create(project=Project.objects.get(pk=kwargs['pk']),
+            Collaborator.objects.create(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user']),
                                          editPermission=request.data['editPermission'],
                                          deletePermission=request.data['deletePermission'],
@@ -168,7 +168,7 @@ class HideProject(generics.UpdateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         self.check_object_permissions(request, obj)
 
-        collab = Collaborators.objects.get(user=request.user, project=obj)
+        collab = Collaborator.objects.get(user=request.user, project=obj)
         collab.showOnProfile = not collab.showOnProfile
         collab.save()
         return Response({'message': 'Your preference has been changed'}, status=status.HTTP_200_OK)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborators
+from .models import PUser, Project, Collaborator
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class CollaboratorSerializer(serializers.ModelSerializer):
     collaboratorInfo = serializers.SerializerMethodField()
 
     class Meta:
-        model = Collaborators
+        model = Collaborator
         fields = ['collaboratorInfo']
 
     def get_collaboratorInfo(self, obj):
@@ -53,7 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
         # print(obj)
         # print(obj.email)
         projects = []
-        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+        collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
             # print(collab.project)
@@ -83,7 +83,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     def num_projects(self, obj):
         projects = []
-        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+        collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
             # print(collab.project)
@@ -106,7 +106,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_collaborators(self, obj):
-        collaborator_queryset = Collaborators.objects.filter(project=obj)
+        collaborator_queryset = Collaborator.objects.filter(project=obj)
         userInfo = []
         for collaborator in collaborator_queryset:
             if collaborator.showProjectOnProfile:
