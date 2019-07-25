@@ -1,5 +1,26 @@
 import requests
 import json
+import random
+
+researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
+           'Diversity Equity & Inclusion', 'Education & Learning',
+           'Environment & Sustainability', 'Families',
+           'Health & Wellness', 'Peer Relationships',
+           'Positive Youth Development', 'Policy Analysis',
+           'Program Evaluation', 'Media & Technology',
+           'Motivation', 'Nutrition', 'Risk Behavior',
+           'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+           'Youth/Adult Relationships', 'Other']
+
+
+deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'Other']
+
+ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
+             'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
+             'Early childhood (6-8 years)', 'Middle childhood (9-11 years)',
+             'Young teens (12-14 years)', 'Teenagers (15-17 years)',
+             'Young adults (18-24 years)']
+
 
 
 def login_user():
@@ -11,8 +32,8 @@ def login_user():
     }
 
     login = {
-        'email': 'test1111@gmail.com',
-        'password': 'Kimber3915'
+        'email': 'test1@gmail.com',
+        'password': 'password'
     }
     response = requests.request("POST", url, data=json.dumps(login), headers=headers)
     return response.json()['key']
@@ -30,151 +51,151 @@ def insert_posts():
 
 
     project1 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "aaa",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project2 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "bb",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project3 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "gg",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project4 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "zz",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project5 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "eee",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project6 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "ddd",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project7 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "lll",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project8 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "asdf",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project9 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "foo bar",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }
 
     project10 = {
-        "name": "My Frist Study",
-        "status": 2,
+        "name": "test study",
+        "status": random.choice([1, 2, 3]),
         "summary": "summary about the project",
-        "researchTopics": ["website building"],
-        "ageRanges": ["19-22"],
-        "deliveryModes": ["aslkdjf", "alkdsjf", "oiweur"],
+        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
         "timeline": "May to August",
         "commitmentLength": "build a website",
-        "incentives": ["none"],
-        "collaborators": [],
+        "incentives": "none",
+        # "collaborators": [],
         "additionalInformation": "django and react",
         "additionalFiles": []
     }

@@ -3,28 +3,30 @@ import { Link } from 'react-router-dom';
 import styles from '../../styles/CreateProfile.module.css';
 import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
-import StudiesButton from '../../images/studies.png';
+import ProjectsButton from '../../images/projects.png';
 
 const navigationOptions = [
     {
         img: ProfileButton,
         styling: styles.profileNavImg,
         link: "/myprofile",
-        text: "VIEW YOUR PROFILE"
+        text: "VIEW YOUR PROFILE",
+        alt: "View profile"
     },
     {
         img: HomeButton,
         styling: styles.homeNavImg,
         link: "/",
-        text: "BACK TO HOME"
+        text: "BACK TO HOME",
+        alt: "Home"
     },
     {
-        img: StudiesButton,
+        img: ProjectsButton,
         styling: styles.studiesNavImg,
         link: "/browse",
-        text: "BROWSE STUDIES"
+        text: "BROWSE PROJECTS",
+        alt: "Browse projects"
     }
-
 ];
 
 const ReviewFinish = () => (
@@ -37,7 +39,7 @@ const ReviewFinish = () => (
                             <img
                                 className={nav.styling}
                                 src={nav.img}
-                                alt="Go to another page."
+                                alt={nav.alt}
                             />
                             <p>{nav.text}</p>
                         </Link>

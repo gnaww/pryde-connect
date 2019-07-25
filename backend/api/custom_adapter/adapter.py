@@ -17,9 +17,11 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.researchInterests = data.get('researchInterests')
         user.roles = data.get('roles')
         user.ageRanges = data.get('ageRanges')
-        user.youthProgramTypes = data.get('youthProgramTypes')
         user.deliveryModes = data.get('deliveryModes')
         user.researchNeeds = data.get('researchNeeds')
         user.evaluationNeeds = data.get('evaluationNeeds')
+        user.locatedAtCornell = data.get('locatedAtCornell')
+        user.locatedAtCCE = data.get('locatedAtCCE')
         user.save()
+
         return user

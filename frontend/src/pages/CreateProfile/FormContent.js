@@ -1,23 +1,11 @@
+import { AnswerTypes } from '../../components/QAComponents';
+
 export const ROLE_TYPE = {
     practitioner: "Practitioner",
     researcher: "Researcher"
 };
 
-export const AnswerTypes = {
-    Dropdown: "dropdown",
-    Checkbox: "checkbox",
-    Textbox: "textbox",
-    Radiobutton: "radiobutton",
-    Inputbox: "inputbox"
-};
-
 export const PractitionerInformation = {
-    PractitionerType: [
-        "4-H Educator",
-        "Other CCE Role",
-        "Practice Focused Role",
-        "Other: "
-    ],
     RoleDescriptions: [
         "Lead youth programs",
         "Design youth programs",
@@ -31,17 +19,11 @@ export const PractitionerInformation = {
         "Toddlers (1-2 years)",
         "Toddlers (2-3 years)",
         "Preschoolers (3-5 years)",
-        "Middle Childhood (6-8 years)",
-        "Middle Childhood (9-11 years)",
-        "Young Teens (12-14 years)",
-        "Teenagers (15-17 years)"
-    ],
-    YouthProgramTypes: [
-        "Animal Science",
-        "Civic Engagement",
-        "Cooking",
-        "STEM",
-        "Other: "
+        "Early childhood (6-8 years)",
+        "Middle childhood (9-11 years)",
+        "Young teens (12-14 years)",
+        "Teenagers (15-17 years)",
+        "Young adults (18-24 years)"
     ],
     ProgramDeliveryModels: [
         "Afterschool programs",
@@ -50,13 +32,24 @@ export const PractitionerInformation = {
         "Other: "
     ],
     ResearchTopics: [
-        "Positive Youth Development",
-        "Self and Identity",
-        "Diversity, Equity, and Inclusion",
-        "Education and Learning",
-        "STEM education",
-        "Health",
+        "Animal Science & Agriculture",
         "Civic Engagement",
+        "Diversity, Equity & Inclusion",
+        "Education & Learning",
+        "Environment & Sustainability",
+        "Families",
+        "Health & Wellness",
+        "Peer Relationships",
+        "Positive Youth Development",
+        "Policy Analysis",
+        "Program Evaluation",
+        "Media & Technology",
+        "Motivation",
+        "Nutrition",
+        "Risk Behavior",
+        "Self & Identity",
+        "Science, Technology, Engineering & Math (STEM)",
+        "Youth/Adult Relationships",
         "Other: "
     ]
 };
@@ -342,7 +335,8 @@ export const practitionerQAForm = [
         questionText: "Please enter your job or position title.*",
         answer: {
             type: AnswerTypes.Inputbox,
-            key: "displayRole"
+            key: "displayRole",
+            placeholder: "Ex: 4-H Educator"
         }
     },
     {
@@ -393,13 +387,24 @@ export const ResearcherInformation = {
         "Other: "
     ],
     ResearchTopics: [
-        "Positive Youth Development",
-        "Self and Identity",
-        "Diversity, Equity, and Inclusion",
-        "Education and Learning",
-        "STEM education",
-        "Health",
+        "Animal Science & Agriculture",
         "Civic Engagement",
+        "Diversity, Equity & Inclusion",
+        "Education & Learning",
+        "Environment & Sustainability",
+        "Families",
+        "Health & Wellness",
+        "Peer Relationships",
+        "Positive Youth Development",
+        "Policy Analysis",
+        "Program Evaluation",
+        "Media & Technology",
+        "Motivation",
+        "Nutrition",
+        "Risk Behavior",
+        "Self & Identity",
+        "Science, Technology, Engineering & Math (STEM)",
+        "Youth/Adult Relationships",
         "Other: "
     ]
 };
@@ -437,6 +442,14 @@ export const researcherQAForm = [
             type: AnswerTypes.Checkbox,
             options: ResearcherInformation.ResearchTopics,
             key: "researchInterests"
+        }
+    },
+    {
+        questionText: "What age youth do you typically work with in your research projects? (check all that apply)",
+        answer: {
+            type: AnswerTypes.Checkbox,
+            options: PractitionerInformation.AgeGroups,
+            key: "ageRanges"
         }
     },
     {

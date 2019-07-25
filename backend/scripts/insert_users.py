@@ -1,28 +1,30 @@
 import requests
 import json
+import random
+
+researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
+           'Diversity Equity & Inclusion', 'Education & Learning',
+           'Environment & Sustainability', 'Families',
+           'Health & Wellness', 'Peer Relationships',
+           'Positive Youth Development', 'Policy Analysis',
+           'Program Evaluation', 'Media & Technology',
+           'Motivation', 'Nutrition', 'Risk Behavior',
+           'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+           'Youth/Adult Relationships']
 
 
-class User:
+deliveryModes = ['Afterschool', 'Camps', 'Clubs']
 
-    def __init__(self, role, display_role, affiliation, location, email, phone, website,
-                 researchInterests, researchDescription, roles, ageRanges, youthProgramTypes, deliveryModes,
-                 researchNeeds, evaluationNeeds):
-        self.role = role
-        self.display_role = display_role
-        self.affiliation = affiliation
-        self.location = location
-        self.email = email
-        self.phone = phone
-        self.website = website
-        self.researchInterests = researchInterests
-        self.researchDescription = researchDescription
-        self.roles = roles
-        self.ageRanges = ageRanges
-        self.youthProgramTypes = youthProgramTypes
-        self.deliveryModes = deliveryModes
-        self.researchNeeds = researchNeeds
-        self.evaluationNeeds = evaluationNeeds
+ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
+             'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
+             'Early childhood (6-8 years)', 'Middle childhood (9-11 years)',
+             'Young teens (12-14 years)', 'Teenagers (15-17 years)',
+             'Young adults (18-24 years)']
 
+roles = ['Lead youth programs', 'Design youth programs', 'Evaluate youth programs', 'Write grants', 'Train volunteers']
+
+firstName = ['John', 'Andy', 'Samantha', 'Lauren']
+lastName = ['Smith', 'Jones', 'Johnson']
 
 def pump_into_servers():
     url = 'http://localhost:8000/api/v1/rest-auth/registration/'
@@ -32,223 +34,233 @@ def pump_into_servers():
     }
 
     user1 = {
-        "email": "test1111@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user1",
+        "email": "test1@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 1,
-        "displayRole": 3,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Practice Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     user2 = {
-        "email": "test22222@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user1",
+        "email": "test2@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 1,
-        "displayRole": 3,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Practice Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     user3 = {
-        "email": "test33333@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test3@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 1,
-        "displayRole": 2,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Other CCE Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": True
     }
 
     user4 = {
-        "email": "test44444@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
-        "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "email": "test4@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
+        "role": 1,
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user5 = {
-        "email": "test55555@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
-        "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "email": "test5@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
+        "role": 1,
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user6 = {
-        "email": "test6666@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test6@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user7 = {
-        "email": "test777@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test7@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user8 = {
-        "email": "test8888@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test8@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user9 = {
-        "email": "test9999@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test9@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Cornell University",
+        "location": "Ithaca, NY",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": True,
+        "locatedAtCCE": False
     }
 
     user10 = {
-        "email": "test101010@gmail.com",
-        "password1": "Kimber3915",
-        "password2": "Kimber3915",
-        "first_name": "test",
-        "last_name": "user",
+        "email": "test10@gmail.com",
+        "password1": "password",
+        "password2": "password",
+        "first_name": random.choice(firstName),
+        "last_name": random.choice(lastName),
         "role": 2,
-        "displayRole": 6,
-        "affiliation": "cornell university",
-        "location": "ithaca, NY",
+        "displayRole": "Research Focused Role",
+        "affiliation": "Rutgers University",
+        "location": "New Brunswick, NJ",
         "phone": "+14432232248",
         "website": "http://www.google.com",
-        "researchDescription": "i love doing research",
-        "roles": ["string1", "string2", "string3"],
-        "ageRanges": ["3-5", "7-10"],
-        "researchInterests": ["ahsdfkl", "alsdkf"],
-        "youthProgramTypes": ["string1", "string2"],
-        "deliveryModes": ["laskjfd", "aldskjf"],
-        "researchNeeds": ["asldkfjsdlkf", "alsdkjfs"],
-        "evaluationNeeds": ["alkdsjfldk", "alsdkfjlksd"]
+        "researchDescription": "I love doing research",
+        "roles": [random.choice(roles), random.choice(roles), random.choice(roles)],
+        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+        "researchInterests": [random.choice(researchTopics), random.choice(researchTopics)],
+        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+        "researchNeeds": "This is a research need!",
+        "evaluationNeeds": "This is an evaluation need!",
+        "locatedAtCornell": False,
+        "locatedAtCCE": False
     }
 
     users = [user1, user2, user3, user4, user5, user6, user7, user8, user9, user10]

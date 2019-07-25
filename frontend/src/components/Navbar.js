@@ -2,15 +2,16 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styles from '../styles/Navbar.module.css';
 import logo from '../images/pryde-symbol.png';
-import api from '../services/api/api';
+import api from '../services/api';
 
 const Navbar = props => {
-    const { loggedIn } = props;
+    const { loggedIn, location } = props;
+    const url = location.pathname;
 
     const handleLogout = () => {
         api.logout();
         props.setLoggedOut();
-        props.history.push("/login")
+        props.history.push("/");
     }
 
     return (
@@ -26,35 +27,35 @@ const Navbar = props => {
                 </Link>
             </div>
             <div className={styles.linksContainer}>
-                <Link className={styles.link} to="/browse">
+                <Link className={url === "/browse" ? styles.activeLink : styles.link} to="/browse">
                     BROWSE
                 </Link>
-                <Link className={styles.link} to="/submit">
+                <Link className={url === "/submit" ? styles.activeLink : styles.link} to="/submit">
                     SUBMIT A PROJECT
                 </Link>
                 {
                     loggedIn ?
                     <>
-                        <Link className={styles.link} to="/myprofile">
+                        <Link className={url === "/myprofile" ? styles.activeLink : styles.link} to="/myprofile">
                             MY PROFILE
                         </Link>
                         <button className={styles.link} onClick={handleLogout}>
-                            LOGOUT
+                            LOG OUT
                         </button>
                     </>
                     :
                     <>
-                        <Link className={styles.link} to="/login">
-                            LOGIN
+                        <Link className={url === "/login" ? styles.activeLink : styles.link} to="/login">
+                            LOG IN
                         </Link>
-                        <Link className={styles.link} to="/signup">
-                            SIGNUP
+                        <Link className={url === "/signup" ? styles.activeLink : styles.link} to="/signup">
+                            SIGN UP
                         </Link>
                     </>
                 }
             </div>
         </nav>
     );
-}
+};
 
 export default withRouter(Navbar);

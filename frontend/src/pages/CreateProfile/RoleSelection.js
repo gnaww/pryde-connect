@@ -25,14 +25,16 @@ class RoleSelection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roleType: "",
+            role: "",
             clicked: null
         };
+        this.errors = false;
     }
 
     componentDidUpdate(_prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.props.onSubmitData(this.state, this.state.roleType === "");
+            this.errors = this.state.role === "";
+            this.props.onSubmitData(this.state, this.state.role === "");
         }
     }
 
@@ -43,7 +45,7 @@ class RoleSelection extends Component {
     }
 
     handleSelectRole = (index, role) => {
-        this.setState({ roleType: role, clicked: index });
+        this.setState({ role: role, clicked: index });
     }
 
     handleIsValidationErrorChange = flag => {
@@ -53,6 +55,7 @@ class RoleSelection extends Component {
     render() {
         return (
             <>
+                <p className={styles.disclaimer}>Choosing either option does <b><i>not</i></b> restrict you from any of PRYDE Research Connect's features!</p>
                 <div className={styles.rolePage}>
                     {
                         roleOptions.map((role, index) => {
@@ -70,7 +73,9 @@ class RoleSelection extends Component {
                         })
                     }
                 </div>
-                <p className={styles.disclaimer}>*Choosing either option will <b><i>not</i></b> restrict you from any of PRYDE Research Connect's features!</p>
+                <div>
+                    {this.errors && (<p className={styles.errorMsg}>You must pick a role.</p>)}
+                </div>
             </>
         )
     }

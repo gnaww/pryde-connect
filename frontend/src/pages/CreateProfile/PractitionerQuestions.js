@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getPractitionerRoleQuestion } from './QAComponents';
+import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getInputboxQuestion } from '../../components/QAComponents';
 import { PractitionerInformation, practitionerQAForm } from './FormContent';
 
 class PractitionerQuestions extends Component {
@@ -19,6 +19,7 @@ class PractitionerQuestions extends Component {
             deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
             researchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
         };
+        this.errors = practitionerQAForm.map(_qa => { return false });
     }
 
     componentDidUpdate(_prevProps, _prevState) {
@@ -26,8 +27,7 @@ class PractitionerQuestions extends Component {
             let last = state[key].length - 1;
             if (key === "ageRanges") {
                 return state[key].filter(r => r.checked).length > 0;
-            }
-            else if (key === "displayRole") {
+            } else if (key === "displayRole") {
                 if (state[key].option === "Other: ") {
                     return state[key].other !== "";
                 } else {
@@ -39,16 +39,22 @@ class PractitionerQuestions extends Component {
             }
         }
 
-        function isInvalid(state) {
+        function setError(obj, i, hasError) {
+            obj.errors[i] = hasError;
+            return hasError;
+        }
+
+        function isInvalid(state, obj) {
             let locationValid = state.affiliation !== "" && state.location !== "";
+            obj.errors[0] = !locationValid;
             let keys = ["displayRole", "roles", "ageRanges", "deliveryModes", "researchInterests"];
-            let validArray = keys.map(k => keyIsValid(state, k));
+            let validArray = keys.map((k, i) => setError(obj, i + 1, !keyIsValid(state, k)));
             return !locationValid || validArray.filter(v => !v).length !== 0;
         }
 
         if (this.props.clickedNext) {
-            let error = isInvalid(this.state);
-            this.props.onSubmitData(this.state, error);
+            isInvalid(this.state, this);
+            this.props.onSubmitData(this.state, this.errors.filter(e => e).length > 0);
         }
     }
 
@@ -66,7 +72,7 @@ class PractitionerQuestions extends Component {
         });
     }
 
-    setDisplayRole = event => {
+    setDisplayRole = _key => event => {
         this.setState({
             displayRole: {
                 other: "",
@@ -120,33 +126,33 @@ class PractitionerQuestions extends Component {
 
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE) }
-                { getCheckboxQuestion(qa, this.setValues, this.state) }
-                { getPractitionerRoleQuestion(qa, this.setDisplayRole, this.state)}
+                {getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE, this.errors[index])}
+                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
+                {getInputboxQuestion(qa, this.setDisplayRole, this.state, this.errors[index])}
                 {
                     qa.id === 0 && this.state.locatedAtCCE !== null &&
                     (
                         <div className={styles.form}>
                             {
                                 this.state.locatedAtCCE ?
-                                getDropDownQuestion(qa.extra, this.setLocationDropdown, defaultCounty)
-                                :
-                                <>
-                                    <input
-                                        className={styles.longTextInput}
-                                        placeholder="What is your institution or organization?"
-                                        type="text"
-                                        value={this.state.affiliation}
-                                        onChange={this.setLocationTextbox("affiliation")}
-                                    />
-                                    <input
-                                        className={styles.longTextInput}
-                                        placeholder="Where are you located?"
-                                        type="text"
-                                        value={this.state.location}
-                                        onChange={this.setLocationTextbox("location")}
-                                    />
-                                </>
+                                    getDropDownQuestion(qa.extra, this.setLocationDropdown, defaultCounty)
+                                    :
+                                    <div className={styles.locationForm}>
+                                        <input
+                                            className={styles.longTextInput}
+                                            placeholder="What is your institution or organization?"
+                                            type="text"
+                                            value={this.state.affiliation}
+                                            onChange={this.setLocationTextbox("affiliation")}
+                                        />
+                                        <input
+                                            className={styles.longTextInput}
+                                            placeholder="Where are you located?"
+                                            type="text"
+                                            value={this.state.location}
+                                            onChange={this.setLocationTextbox("location")}
+                                        />
+                                    </div>
                             }
                         </div>
                     )
@@ -157,15 +163,20 @@ class PractitionerQuestions extends Component {
 
     render() {
         return (
-            <div className={styles.form}>
-                <ol>
-                    {
-                        practitionerQAForm.map((qa, index) => {
-                            return this.getQAComponent(qa, index)
-                        })
-                    }
-                </ol>
-            </div>
+            <>
+                <div className={styles.form}>
+                    <ol>
+                        {
+                            practitionerQAForm.map((qa, index) => {
+                                return this.getQAComponent(qa, index)
+                            })
+                        }
+                    </ol>
+                </div>
+                <div>
+                    {this.error && (<p className={styles.errorMsg}>You must pick a role.</p>)}
+                </div>
+            </>
         );
     }
 }
