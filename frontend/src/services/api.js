@@ -29,7 +29,7 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
     },
-    async updateUser(id) {
+    async updateUser(id, data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
         let config = {
@@ -38,7 +38,7 @@ export default {
             }
         };
 
-        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/${id}/update/`, config);
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/${id}/update/`, data, config);
         return response.status === 200;
     },
     async deleteUser(id) {
@@ -99,7 +99,7 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
         return response.status === 200;
     },
-    async updateProject(id) {
+    async updateProject(id, data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
         let config = {
@@ -108,7 +108,7 @@ export default {
             }
         };
 
-        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/update/`, config);
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/update/`, data, config);
         return response.status === 200;
     },
     async deleteProject(id) {
