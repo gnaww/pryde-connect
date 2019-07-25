@@ -276,7 +276,7 @@ span.qaOptionText {
 
 .roleCard {
     width: 292px;
-    margin-right: 62px;
+    margin: 31px 62px 31px 0;
     text-align: center;
     box-sizing: border-box;
 }
@@ -296,6 +296,7 @@ span.qaOptionText {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    cursor: pointer;
 }
 
 .roleLink img {
@@ -355,6 +356,7 @@ span.qaOptionText {
 .finishPage {
     padding: 40px 0;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .label {

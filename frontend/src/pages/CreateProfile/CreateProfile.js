@@ -96,7 +96,7 @@ class CreateProfile extends Component {
         this.setState({ readyToSubmit: true });
     }
 
-    // builds object from this.state.pageData to POST to the API
+    // builds user object from this.state.pageData to POST to the API
     createProfile = data => {
         let user = {};
         const formatArray = arr => {

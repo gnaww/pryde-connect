@@ -23,24 +23,8 @@ const alternateContactQA = {
     answer: {
         type: AnswerTypes.ContactInfo
     }
-}
+};
 
-const alternateLocationQA = {
-    questionText: "Specify project location (optional: if left blank uses your location)",
-    answer: {
-        type: AnswerTypes.MultipleAnswers
-    },
-    answers: [
-        {
-            questionText: "",
-            answer: {
-                type: AnswerTypes.Inputbox,
-                placeholder: "Where is your project located?",
-                key: "alternateLocation",
-            }
-        }
-    ]
-}
 const additionalQA = {
     questionText: "Is there any additional information you would like to include? (optional)",
     answer: {
@@ -78,7 +62,14 @@ export const projectQAForm = [
         }
     },
     alternateContactQA,
-    alternateLocationQA,
+    {
+        questionText: "Specify project location (optional: if left blank uses your location)",
+        answer: {
+            type: AnswerTypes.Inputbox,
+            placeholder: "Where is your project located?",
+            key: "alternateLocation"
+        }
+    },
     {
         questionText: "Add any other collaborators on your project (optional):",
         answer: {

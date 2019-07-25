@@ -78,7 +78,6 @@ export const getButtonInput = (qa, handlerFunction, state) => {
                     id={"uploadButton"}
                     type="file"
                     onChange={handlerFunction(null)}
-                    accept=".pdf,image/*"
                 />
                 {
                     state[qa.answer.key] &&
@@ -210,7 +209,6 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
                     return (
                         <>
                             { getTextboxQuestion(q, handlerFunction, state, index, false) }
-                            { getInputboxQuestion(q, handlerFunction, state, false) }
                             { getButtonInput(q, handlerFunction, state, index, false) }
                         </>
                     )

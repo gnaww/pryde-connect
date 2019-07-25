@@ -4,32 +4,36 @@ import styles from '../../styles/CreateProfile.module.css';
 import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
 import ProjectsButton from '../../images/projects.png';
-import SubmitProject from '../../images/submitproject.png';
+import SubmitProject from '../../images/submitproject.jpg';
 
 const navigationOptions = [
     {
         img: ProfileButton,
         styling: styles.profileNavImg,
         link: "/myprofile",
-        text: "VIEW YOUR PROFILE"
+        text: "VIEW YOUR PROFILE",
+        alt: "View profile"
     },
     {
         img: HomeButton,
         styling: styles.homeNavImg,
         link: "/",
-        text: "BACK TO HOME"
+        text: "BACK TO HOME",
+        alt: "Home"
     },
     {
         img: ProjectsButton,
         styling: styles.studiesNavImg,
         link: "/browse",
-        text: "BROWSE PROJECTS"
+        text: "BROWSE PROJECTS",
+        alt: "Browse projects"
     },
     {
         img: SubmitProject,
         styling: styles.submitProjImg,
         link: "/submit",
-        text: "SUBMIT A PROJECT"
+        text: "SUBMIT A PROJECT",
+        alt: "Submit a project"
     }
 ];
 
@@ -39,14 +43,26 @@ const FinishSubmit = () => (
             navigationOptions.map((nav, index) => {
                 return (
                     <div className={styles.roleCard} key={index}>
-                        <Link className={styles.roleLink} to={nav.link}>
-                            <img
-                                s className={nav.styling}
-                                src={nav.img}
-                                alt="Go to another page."
-                            />
-                            <p>{nav.text}</p>
-                        </Link>
+                        {
+                            nav.link === "/submit" ?
+                            <Link className={styles.roleLink} to={nav.link} onClick={() => window.location.reload()}>
+                                <img
+                                    s className={nav.styling}
+                                    src={nav.img}
+                                    alt={nav.alt}
+                                />
+                                <p>{nav.text}</p>
+                            </Link>
+                            :
+                            <Link className={styles.roleLink} to={nav.link}>
+                                <img
+                                    s className={nav.styling}
+                                    src={nav.img}
+                                    alt={nav.alt}
+                                />
+                                <p>{nav.text}</p>
+                            </Link>
+                        }
                     </div>
                 );
             })

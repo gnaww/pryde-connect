@@ -19,7 +19,7 @@ class SubmitProject extends Component {
             commitmentLength: "",
             incentives: "",
             additionalInformation: "",
-            additionalFiles: [],
+            additionalFiles: [], // TODO: need to implement with file hosting
             collaborators: [], // TODO: need to implement form for adding/editing collaborators
             alternateContact: {
                 first_name: "",
@@ -39,13 +39,13 @@ class SubmitProject extends Component {
         }
 
         function nonEmptyArray(key, state) {
-            return state[key].filter(answer => {
-                if (answer.value === "Other: ") {
-                    return answer.other !== ""
-                } else {
-                    return answer.checked;
-                }
-            }).length > 0;
+            let last = state[key].length - 1;
+            if (key === "ageRanges") {
+                return state[key].filter(r => r.checked).length > 0;
+            } else {
+                return state[key].filter(r => r.checked).length > 0
+                    && (!state[key][last].checked || state[key][last].other !== "");
+            }
         }
 
         function nonEmptyEnum(key, state) {
@@ -75,6 +75,7 @@ class SubmitProject extends Component {
         }
 
         function hasError(pair, state) {
+            // TODO: add validation for files?
             if (pair.type === KeyTypes.String) {
                 // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
@@ -131,6 +132,7 @@ class SubmitProject extends Component {
         });
     }
 
+    // TODO: will probably need to change when implementing file hosting
     setFileUploads = (key, event) => {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
@@ -148,7 +150,7 @@ class SubmitProject extends Component {
     }
 
     setMultiAnswerResponse = key => event => {
-        if (key === null || isFinite(key)) {
+        if (key === null || Number.isInteger(key)) {
             this.setFileUploads(key, event);
         }
         else {
@@ -171,6 +173,12 @@ class SubmitProject extends Component {
 
     getQAComponent = (qa, index) => {
         return (
+            // alternate location, 3rd question is not required
+            index === 2 ?
+            <li className={styles.numberedList} key={index}>
+                { getInputboxQuestion(qa, this.setTextbox, this, false) }
+            </li>
+            :
             <li className={styles.numberedList} key={index}>
                 { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
                 { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }

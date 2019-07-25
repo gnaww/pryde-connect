@@ -4,6 +4,7 @@ import stylesUnauthorized from '../../styles/PageNotFound.module.css';
 import styles from '../../styles/CreateProfile.module.css';
 import SubmitProject from './SubmitProject';
 import FinishSubmit from './FinishSubmit';
+import api from '../../services/api';
 
 let pages = [
     {
@@ -22,18 +23,44 @@ class CreateProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
-            pageData: pages.map(() => { return null }),
+            page: 1,
             clickedNext: false
         };
     }
 
+    // builds project object from data to POST to the API
+    createProject = data => {
+        let project = Object.assign({}, data);
+        const formatArray = arr => {
+            return (
+                arr.filter(elt => elt.checked)
+                    .map(elt => elt.other ? elt.other : elt.value)
+            );
+        };
+        project.status = parseInt(data.status);
+        project.researchTopics = formatArray(data.researchTopics);
+        project.ageRanges = formatArray(data.ageRanges);
+        project.deliveryModes = formatArray(data.deliveryModes);
+
+        // TODO: add additional files to projects
+        // project.additionalFiles = data.additionalFiles;
+        project.additionalFiles = [];
+        // TODO: add error handling for if creating project fails
+        api.createProject(project)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(err => {
+                console.log(err);
+                //console.log(err.response.data);
+            });
+    }
+
     submitData = (data, errors) => {
+        console.log(errors);
         if (!errors) {
-            let nextPage = this.state.page + 1;
-            let pageDataCopy = Array.from(this.state.pageData);
-            pageDataCopy[this.state.page] = data;
-            this.setState({ pageData: pageDataCopy, page: nextPage });
+            this.createProject(data);
+            this.setState({ page: 1 });
         }
         this.setState({ clickedNext: false });
     }

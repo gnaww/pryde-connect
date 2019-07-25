@@ -39,13 +39,8 @@ class ResearcherQuestions extends Component {
             }
 
             let typeSelected = state.displayRole.option === "Other: " ? state.displayRole.other !== "" : state.displayRole.option !== "";
-            let topicsSelected = state.researchInterests.filter(r => {
-                if (r.value === "Other: ") {
-                    return r.other !== ""
-                } else {
-                    return r.checked;
-                }
-            }).length > 0;
+            let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0
+            && (state.researchInterests[state.researchInterests.length - 1].checked || state.researchInterests[state.researchInterests.length - 1].other !== "");
             let interestsStated = state.researchDescription !== "";
             obj.errors[0] = state.locatedAtCornell === null || !locationValid;
             obj.errors[1] = !typeSelected;

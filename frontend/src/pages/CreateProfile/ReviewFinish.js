@@ -10,19 +10,22 @@ const navigationOptions = [
         img: ProfileButton,
         styling: styles.profileNavImg,
         link: "/myprofile",
-        text: "VIEW YOUR PROFILE"
+        text: "VIEW YOUR PROFILE",
+        alt: "View profile"
     },
     {
         img: HomeButton,
         styling: styles.homeNavImg,
         link: "/",
-        text: "BACK TO HOME"
+        text: "BACK TO HOME",
+        alt: "Home"
     },
     {
         img: ProjectsButton,
         styling: styles.studiesNavImg,
         link: "/browse",
-        text: "BROWSE PROJECTS"
+        text: "BROWSE PROJECTS",
+        alt: "Browse projects"
     }
 ];
 
@@ -34,9 +37,9 @@ const ReviewFinish = () => (
                     <div className={styles.roleCard} key={index}>
                         <Link className={styles.roleLink} to={nav.link}>
                             <img
-                                s className={nav.styling}
+                                className={nav.styling}
                                 src={nav.img}
-                                alt="Go to another page."
+                                alt={nav.alt}
                             />
                             <p>{nav.text}</p>
                         </Link>

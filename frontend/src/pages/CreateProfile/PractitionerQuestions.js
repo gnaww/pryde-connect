@@ -27,8 +27,7 @@ class PractitionerQuestions extends Component {
             let last = state[key].length - 1;
             if (key === "ageRanges") {
                 return state[key].filter(r => r.checked).length > 0;
-            }
-            else if (key === "displayRole") {
+            } else if (key === "displayRole") {
                 if (state[key].option === "Other: ") {
                     return state[key].other !== "";
                 } else {
