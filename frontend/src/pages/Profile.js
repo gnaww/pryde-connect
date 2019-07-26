@@ -8,6 +8,10 @@ import editButtonGreen from '../images/edit-button-green.svg';
 import editIcon from '../images/edit-icon.svg';
 import editIconGreen from '../images/edit-icon-green.svg';
 import deleteButton from '../images/delete-button-borderless.svg';
+import mailIcon from '../images/mail-icon-white.svg';
+import phoneIcon from '../images/phone-icon.svg';
+import linkIcon from '../images/link-icon.svg';
+import calendarIcon from '../images/calendar-icon-white.svg';
 import CustomDropdown from '../components/CustomDropdown';
 import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortProjectsOptions, SortableList } from '../components/SortableList';
@@ -19,6 +23,7 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: {
+                id: "",
                 first_name: "",
                 last_name: "",
                 role: "",
@@ -37,7 +42,8 @@ class Profile extends Component {
                 deliveryModes: [],
                 researchNeeds: [],
                 evaluationNeeds: [],
-                projects: []
+                projects: [],
+                date_joined: ""
             },
             statusFilter: "all",
             sortBy: "",
@@ -140,6 +146,9 @@ class Profile extends Component {
                 }
             }
         }
+        const date = new Date(this.state.user.date_joined);
+        console.log(this.state.date_joined);
+        const date_joined = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
         return (
             <div className={styles.container}>
@@ -198,20 +207,27 @@ class Profile extends Component {
                         </div>
                         <ul>
                             <li>
+                                <img className={styles.contactIcon} src={mailIcon} alt="Email icon" />
                                 <a href={`mailto:${user.email}`}>{user.email}</a>
                             </li>
                             {
                                 user.phone !== "" &&
                                 <li>
+                                    <img className={styles.contactIcon} src={phoneIcon} alt="Phone icon" />
                                     <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
                                 </li>
                             }
                             {
                                 user.website !== "" &&
                                 <li>
+                                    <img className={styles.contactIcon} src={linkIcon} alt="Link icon" />
                                     <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>
                                 </li>
                             }
+                            <li>
+                                <img className={styles.contactIcon} src={calendarIcon} alt="Calendar icon" />
+                                { date_joined }
+                            </li>
                         </ul>
                     </div>
                 </header>

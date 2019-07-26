@@ -5,6 +5,8 @@ import styles from '../../styles/CreateProfile.module.css';
 import SubmitProject from './SubmitProject';
 import FinishSubmit from './FinishSubmit';
 import api from '../../services/api';
+import normalizeUrl from 'normalize-url';
+import phone from 'phone';
 
 // TODO: change pages subtitles when in edit mode, add new last confirmation page
 let pages = [
@@ -43,7 +45,12 @@ class CreateProject extends Component {
         project.researchTopics = formatArray(data.researchTopics);
         project.ageRanges = formatArray(data.ageRanges);
         project.deliveryModes = formatArray(data.deliveryModes);
-
+        if (data.alternateContact.website) {
+            project.alternateContact.website = data[0].website ? normalizeUrl(data[0].website) : "";
+        }
+        if (data.alternateContact.phone) {
+            project.phone = data[0].phone ? phone(data[0].phone)[0] : "";
+        }
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];

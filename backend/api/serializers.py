@@ -46,7 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
     # projects_and_collabs = serializers.SerializerMethodField()
     class Meta:
         model = get_user_model()
-        exclude = ['date_joined', 'groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
 
     def get_projects(self, obj):
         # get the projects that the user owns
@@ -103,7 +103,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['isApproved', 'type']
 
     def get_collaborators(self, obj):
         collaborator_queryset = Collaborator.objects.filter(project=obj)

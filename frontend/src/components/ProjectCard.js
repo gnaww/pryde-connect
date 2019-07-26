@@ -26,10 +26,10 @@ const UserCard = props => {
     }
 
     const status = props.status.replace("-", " ");
-    const date = new Date(props.datePosted);
     const researchTopics = props.researchTopics.reduce(listFormatter, "");
     const ageRanges = props.ageRanges.reduce(listFormatter, "");
     const deliveryModes = props.deliveryModes.reduce(listFormatter, "");
+    const date = new Date(props.datePosted);
     const datePosted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
     return (
