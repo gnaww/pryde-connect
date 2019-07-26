@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer
+from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer, UserUpdateSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -43,8 +43,14 @@ class LoggedInUserView(generics.RetrieveAPIView):
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    serializer_class = UserSerializer
+    serializer_class = UserUpdateSerializer
     queryset = PUser.objects.filter(is_staff=False)
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = queryset.get(pk=self.request.user.pk)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
 
 class DeleteUser(generics.DestroyAPIView):

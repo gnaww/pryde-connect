@@ -38,6 +38,10 @@ class ProjectShortSerializer(serializers.ModelSerializer):
     def get_status(self, obj):
         return obj.get_status_display()
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
