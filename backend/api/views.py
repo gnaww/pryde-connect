@@ -43,6 +43,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    serializer_class = UserSerializer
     queryset = PUser.objects.filter(is_staff=False)
 
 
@@ -100,6 +101,7 @@ class CreateProject(generics.CreateAPIView):
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
+    serializer_class = ProjectSerializer
     queryset = Project.objects.all()
 
 

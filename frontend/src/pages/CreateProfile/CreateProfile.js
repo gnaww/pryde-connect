@@ -12,7 +12,7 @@ import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
 
-// TODO: change pages subtitles when in edit mode, add new last confirmation page
+// TODO: change pages subtitles when in edit mode, add new last confirmation page, hide password fields in BasicInfo
 let pages = [
     {
         subtitle: "Welcome! Please complete the following questions.",
@@ -139,6 +139,8 @@ class CreateProfile extends Component {
 
         // TODO: add error handling for if registering/updating user fails
         if (this.props.editing === true) {
+            delete user.password1;
+            delete user.password2;
             // TODO: get proper id to pass in here
             // api.updateUser(id, user)
             //     .then(response => {
@@ -168,7 +170,8 @@ class CreateProfile extends Component {
 
     componentDidMount() {
         if (this.props.editProfileData) {
-            this.setState({ pageData: this.props.editProfileData });
+            console.log('hi', this.props.editProfileData)
+            this.setState({ pageData: this.props.editProfileData }, console.log('hsaklfjsasfklasfjkaflasfkj'));
         }
     }
 

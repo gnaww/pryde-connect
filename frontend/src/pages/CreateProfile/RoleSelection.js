@@ -60,8 +60,8 @@ class RoleSelection extends Component {
                     {
                         roleOptions.map((role, index) => {
                             return (
-                                <div className={styles.roleCardWrapper}>
-                                    <div className={this.state.clicked === index ? role.clicked : styles.roleCard} key={index} onClick={() => this.handleSelectRole(index, role.value)}>
+                                <div key={index} className={styles.roleCardWrapper}>
+                                    <div className={this.state.clicked === index ? role.clicked : styles.roleCard} onClick={() => this.handleSelectRole(index, role.value)}>
                                         <img
                                             className={role.imgStyle}
                                             src={role.img}

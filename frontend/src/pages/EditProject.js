@@ -1,33 +1,71 @@
-import React from 'react';
+import React, { Component } from 'react';
 import CreateProject from './CreateProject/CreateProject';
+import { PractitionerInformation } from './CreateProfile/FormContent';
+import { getCheckedValuesArray } from '../components/QAComponents';
 
-const EditProject = ({ location }) => {
-    console.log(location.state.projectData);
-    let editProjectData = Object.assign({}, location.state.projectData);
-    delete editProjectData.invalidProject;
-    delete editProjectData.canEdit;
-    delete editProjectData.canDelete;
-    delete editProjectData.errorDeleting;
-    // TODO: reverse below transformation to fit into CreateProject.js
-    // let project = Object.assign({}, data);
-    // const formatArray = arr => {
-    //     return (
-    //         arr.filter(elt => elt.checked)
-    //             .map(elt => elt.other ? elt.other : elt.value)
-    //     );
-    // };
-    // project.status = parseInt(data.status);
-    // project.researchTopics = formatArray(data.researchTopics);
-    // project.ageRanges = formatArray(data.ageRanges);
-    // project.deliveryModes = formatArray(data.deliveryModes);
+const convertArray = (savedArray, options) => {
+    let convertedArray = getCheckedValuesArray(options);
+    savedArray.forEach(elt => {
+        const idx = options.indexOf(elt);
 
-    // // TODO: add additional files to projects
-    // // project.additionalFiles = data.additionalFiles;
-    // project.additionalFiles = [];
-    // // TODO: add collaborators to projects
-    // // project.collaborators = data.collaborators;
-    // project.collaborators = [];
-    return <CreateProject editProjectData={editProjectData} editing={true} />
+        // element is one of the option choices, so should be checked
+        if (idx !== -1) {
+            convertedArray[idx].checked = true;
+        } else {
+            // element is not one of the option choices, so it is the Other: checkbox
+            convertedArray[convertedArray.length - 1].checked = true;
+            convertedArray[convertedArray.length - 1].other = elt;
+        }
+    });
+    return convertedArray;
 };
 
+// const EditProject = ({ location }) => {
+//     console.log('initial', location.state.projectData);
+//     let editProjectData = Object.assign({}, location.state.projectData);
+//     delete editProjectData.invalidProject;
+//     delete editProjectData.canEdit;
+//     delete editProjectData.canDelete;
+//     delete editProjectData.errorDeleting;
+//     delete editProjectData.owner;
+//     delete editProjectData.datePosted;
+//     editProjectData.status = editProjectData.status.toString();
+//     editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+//     editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
+//     editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
+
+//     // console.log(editProjectData);
+//     // TODO: convert saved additional files to fit into CreateProject
+//     // editProjectData.additionalFiles = data.additionalFiles;
+//     // TODO: convert saved collaborators to fit into CreateProject
+//     // editProjectData.collaborators = data.collaborators;
+//     return <CreateProject editProjectData={editProjectData} editing={true} />
+// };
+class EditProject extends Component {
+    componentDidMount() {
+        console.log('edit project mount');
+    }
+
+    render() {
+        // console.log('initial', location.state.projectData);
+        let editProjectData = Object.assign({}, this.props.location.state.projectData);
+        delete editProjectData.invalidProject;
+        delete editProjectData.canEdit;
+        delete editProjectData.canDelete;
+        delete editProjectData.errorDeleting;
+        delete editProjectData.owner;
+        delete editProjectData.datePosted;
+        editProjectData.status = editProjectData.status.toString();
+        editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+        editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
+        editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
+
+        // console.log(editProjectData);
+        // TODO: convert saved additional files to fit into CreateProject
+        // editProjectData.additionalFiles = data.additionalFiles;
+        // TODO: convert saved collaborators to fit into CreateProject
+        // editProjectData.collaborators = data.collaborators;
+        return <CreateProject editProjectData={editProjectData} editing={true} />
+    }
+}
 export default EditProject;

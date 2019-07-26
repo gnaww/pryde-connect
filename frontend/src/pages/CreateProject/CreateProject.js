@@ -94,6 +94,7 @@ class CreateProject extends Component {
 
     componentDidMount() {
         if (this.props.editProjectData) {
+            console.log('asflslk', this.props.editProjectData)
             this.setState({ pageData: this.props.editProjectData });
         }
     }

@@ -186,7 +186,7 @@ class Profile extends Component {
                                 <>
                                 <Link
                                     to={{
-                                        pathname: "/editproject",
+                                        pathname: "/editprofile",
                                         state: { userData: this.state.user }
                                     }}
                                 >
