@@ -1,5 +1,6 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer, UserUpdateSerializer
+from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
+    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -107,7 +108,7 @@ class CreateProject(generics.CreateAPIView):
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectUpdateSerializer
     queryset = Project.objects.all()
 
 
