@@ -52,7 +52,6 @@ class Browse extends Component {
 
         parsedURL[event.target.name] = filter;
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-        window.location.reload();
     }
 
     setCategory = category => {
@@ -62,7 +61,6 @@ class Browse extends Component {
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         parsedURL.category = category === "projects"  ? "projects" : "partners";
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-        window.location.reload();
     }
 
     toggleFilterVisibility = filter => {
@@ -81,11 +79,10 @@ class Browse extends Component {
         parsedURL.q = this.state.query;
 
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-        window.location.reload();
     }
 
-    retrieveResults = props => {
-        const { location } = props;
+    retrieveResults = ({ location }) => {
+        console.log("retrieve results");
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         this.setState({ query: parsedURL.q ? parsedURL.q : '' });
 
@@ -96,29 +93,27 @@ class Browse extends Component {
         const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
 
         if(!parsedURL.q && noFiltersSelected) {
+            console.log("default search");
             if (parsedURL.category === "projects") {
                 api.getProjects()
                     .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => console.log(err));
-            } else if (parsedURL.category === "partners") {
+            } else {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
                     .catch(err => console.log(err));
-            } else {
-                api.getProjects()
-                    .then(projects => this.setState({ searchResults: projects }))
-                    .catch(err => console.log(err));
             }
         } else {
-            api.search(parsedURL)
-                .then(results => this.setState({ searchResults: results }))
-                .catch(err => console.log(err));
+            console.log('searching w filters and/or query')
+            // api.search(parsedURL)
+            //     .then(results => this.setState({ searchResults: results }))
+            //     .catch(err => console.log(err));
         }
     }
 
-    componentWillReceiveProps(newProps){
-        if(newProps.location.search !== this.props.location.search) {
-            this.retrieveResults(newProps);
+    componentDidUpdate(prevProps, _prevState){
+        if(prevProps.location.search !== this.props.location.search) {
+            this.retrieveResults(this.props);
         }
     }
 
