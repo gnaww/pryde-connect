@@ -31,10 +31,14 @@ class RoleSelection extends Component {
         this.errors = false;
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
             this.errors = this.state.role === "";
             this.props.onSubmitData(this.state, this.state.role === "");
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 

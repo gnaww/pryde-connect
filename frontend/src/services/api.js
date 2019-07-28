@@ -29,7 +29,7 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
     },
-    async updateUser(id, data) {
+    async updateUser(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
         let config = {
@@ -38,7 +38,7 @@ export default {
             }
         };
 
-        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/${id}/update/`, data, config);
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/update/`, data, config);
         return response.status === 200;
     },
     async deleteUser(id) {

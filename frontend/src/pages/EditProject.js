@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
@@ -20,52 +20,24 @@ const convertArray = (savedArray, options) => {
     return convertedArray;
 };
 
-// const EditProject = ({ location }) => {
-//     console.log('initial', location.state.projectData);
-//     let editProjectData = Object.assign({}, location.state.projectData);
-//     delete editProjectData.invalidProject;
-//     delete editProjectData.canEdit;
-//     delete editProjectData.canDelete;
-//     delete editProjectData.errorDeleting;
-//     delete editProjectData.owner;
-//     delete editProjectData.datePosted;
-//     editProjectData.status = editProjectData.status.toString();
-//     editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
-//     editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
-//     editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
+const EditProject = ({ location }) => {
+    let editProjectData = Object.assign({}, location.state.projectData);
+    delete editProjectData.invalidProject;
+    delete editProjectData.canEdit;
+    delete editProjectData.canDelete;
+    delete editProjectData.errorDeleting;
+    delete editProjectData.owner;
+    delete editProjectData.datePosted;
+    editProjectData.status = editProjectData.status.toString();
+    editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+    editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
+    editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
 
-//     // console.log(editProjectData);
-//     // TODO: convert saved additional files to fit into CreateProject
-//     // editProjectData.additionalFiles = data.additionalFiles;
-//     // TODO: convert saved collaborators to fit into CreateProject
-//     // editProjectData.collaborators = data.collaborators;
-//     return <CreateProject editProjectData={editProjectData} editing={true} />
-// };
-class EditProject extends Component {
-    componentDidMount() {
-        console.log('edit project mount');
-    }
+    // TODO: convert saved additional files to fit into CreateProject
+    // editProjectData.additionalFiles = data.additionalFiles;
+    // TODO: convert saved collaborators to fit into CreateProject
+    // editProjectData.collaborators = data.collaborators;
+    return <CreateProject editProjectData={editProjectData} editing={true} />
+};
 
-    render() {
-        // console.log('initial', location.state.projectData);
-        let editProjectData = Object.assign({}, this.props.location.state.projectData);
-        delete editProjectData.invalidProject;
-        delete editProjectData.canEdit;
-        delete editProjectData.canDelete;
-        delete editProjectData.errorDeleting;
-        delete editProjectData.owner;
-        delete editProjectData.datePosted;
-        editProjectData.status = editProjectData.status.toString();
-        editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
-        editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
-        editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-
-        // console.log(editProjectData);
-        // TODO: convert saved additional files to fit into CreateProject
-        // editProjectData.additionalFiles = data.additionalFiles;
-        // TODO: convert saved collaborators to fit into CreateProject
-        // editProjectData.collaborators = data.collaborators;
-        return <CreateProject editProjectData={editProjectData} editing={true} />
-    }
-}
 export default EditProject;

@@ -12,6 +12,7 @@ import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
 
+const NAVBAR_HEIGHT = 110;
 // TODO: change pages subtitles when in edit mode, add new last confirmation page, hide password fields in BasicInfo
 let pages = [
     {
@@ -39,13 +40,39 @@ let pages = [
         content: ReviewFinish
     }
 ];
+let editPages = [
+    {
+        subtitle: "Edit your contact information.",
+        content: BasicInfo
+    },
+    {
+        subtitle: "Edit your role selection.",
+        content: RoleSelection
+    },
+    {
+        subtitle: "Edit your answers to the following questions.",
+        content: PractitionerQuestions
+    },
+    {
+        subtitle: "Edit your answers to the following optional questions.",
+        content: OptionalQuestions
+    },
+    {
+        subtitle: "Change your profile picture (optional)",
+        content: UploadProPic
+    },
+    {
+        subtitle: "You can edit your answers to these questions at anytime through your profile page.",
+        content: ReviewFinish
+    }
+];
 
 class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             page: 0,
-            pageData: pages.map(() => { return null }),
+            pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
             clickedBack: false,
             readyToSubmit: false
@@ -61,15 +88,13 @@ class CreateProfile extends Component {
         } else {
             this.setState({ page: this.state.page - 1 });
         }
-        // height of navbar
-        window.scrollTo(0, 110);
+        window.scrollTo(0, NAVBAR_HEIGHT);
     }
 
     handleNext = event => {
         event.preventDefault();
         this.setState({ clickedNext: true });
-        // height of navbar
-        window.scrollTo(0, 110);
+        window.scrollTo(0, NAVBAR_HEIGHT);
     }
 
     handleOnSubmitData = (data, errors) => {
@@ -77,7 +102,11 @@ class CreateProfile extends Component {
             let nextPage = this.state.page + 1;
 
             if (this.state.page === 1) {
-                pages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                if (this.props.editing) {
+                    editPages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                } else {
+                    pages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                }
             }
 
             // skip research needs and evaluation needs question if user is researcher
@@ -141,15 +170,14 @@ class CreateProfile extends Component {
         if (this.props.editing === true) {
             delete user.password1;
             delete user.password2;
-            // TODO: get proper id to pass in here
-            // api.updateUser(id, user)
-            //     .then(response => {
-            //         console.log(response);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //         //console.log(err.response.data);
-            //     });
+            api.updateUser(user)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                    //console.log(err.response.data);
+                });
         } else {
             api.register(user)
                 .then(response => {
@@ -170,30 +198,44 @@ class CreateProfile extends Component {
 
     componentDidMount() {
         if (this.props.editProfileData) {
-            console.log('hi', this.props.editProfileData)
-            this.setState({ pageData: this.props.editProfileData }, console.log('hsaklfjsasfklasfjkaflasfkj'));
+            this.setState({ pageData: this.props.editProfileData });
         }
     }
 
     render() {
-        let PageContent = pages[this.state.page].content;
+        const { editing } = this.props;
+        const PageContent = editing ? editPages[this.state.page].content : pages[this.state.page].content;
+        let title;
+        if (editing) {
+            title = this.state.page === editPages.length - 1 ? "Your profile information was successfully updated." : "Edit your profile"
+        } else {
+            title = this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"
+        }
+        const NUM_PAGES = editing ? editPages.length : pages.length;
+        const pageContentProps = {
+            savedData: this.state.pageData[this.state.page],
+            clickedNext: this.state.clickedNext,
+            onSubmitData: this.handleOnSubmitData,
+            readyToSubmit: this.readyToSubmit,
+            editing: editing
+        };
+
         return (
             <div className={styles.root} >
-                {/* TODO: change headers when in edit mode */}
-                <h1 className={styles.createProfile}>{this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"}</h1>
-                <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
-                <PageContent savedData={this.state.pageData[this.state.page]} clickedNext={this.state.clickedNext} onSubmitData={this.handleOnSubmitData} readyToSubmit={this.readyToSubmit} />
+                <h1 className={styles.createProfile}>{title}</h1>
+                <h2 className={styles.subtitle}>{editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle}</h2>
+                <PageContent {...pageContentProps} />
                 <div className={styles.buttons}>
                     {
-                        this.state.page > 0 && this.state.page < pages.length - 1 &&
+                        (this.state.page > 0 && this.state.page < NUM_PAGES - 1) &&
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < pages.length - 2 &&
+                        this.state.page < NUM_PAGES - 2 &&
                         (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
                     {
-                        this.state.page === pages.length - 2 &&
+                        this.state.page === NUM_PAGES - 2 &&
                         (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
                     }
                 </div>

@@ -33,7 +33,7 @@ class SubmitProject extends Component {
         this.errors = projectQAForm.map(_q => { return false });
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         function nonEmptyString(key, state) {
             return state[key] !== "";
         }
@@ -101,6 +101,10 @@ class SubmitProject extends Component {
             const error = this.errors.filter(e => e === true).length;
             this.props.onSubmitData(this.state, error > 0);
             window.scrollTo(0, 0);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 

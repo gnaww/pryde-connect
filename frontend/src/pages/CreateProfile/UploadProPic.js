@@ -12,7 +12,7 @@ class UploadProPic extends Component {
         this.errors = false;
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
             this.errors = this.state.profilePicture === null;
             if (this.state.profilePicture === null) {
@@ -21,6 +21,10 @@ class UploadProPic extends Component {
                 this.props.onSubmitData(this.state, false);
                 this.props.readyToSubmit();
             }
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 

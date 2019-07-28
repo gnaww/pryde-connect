@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CreateProfile from './CreateProfile/CreateProfile';
 import { PractitionerInformation, ResearcherInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
@@ -20,131 +20,64 @@ const convertArray = (savedArray, options) => {
     return convertedArray;
 };
 
-// const EditProfile = ({ location }) => {
-//     console.log(location.state.userData);
-//     let userData = location.state.userData;
-//     let editProfileData = [];
+const EditProfile = ({ location }) => {
+    let userData = location.state.userData;
+    let editProfileData = [];
 
-//     // Basic Info
-//     let basicInfo = {};
-//     basicInfo.email = userData.email;
-//     basicInfo.first_name = userData.first_name;
-//     basicInfo.last_name = userData.last_name;
-//     basicInfo.password = userData.password;
-//     basicInfo.confirmPassword = userData.password;
-//     basicInfo.phone = userData.phone ? userData.phone.slice(2) : "";
-//     basicInfo.website = userData.website ? userData.website.replace(/(^\w+:|^)\/\//, '') : "";
+    // Basic Info
+    let basicInfo = {};
+    basicInfo.email = userData.email;
+    basicInfo.first_name = userData.first_name;
+    basicInfo.last_name = userData.last_name;
+    basicInfo.password = "";
+    basicInfo.confirmPassword = "";
+    basicInfo.phone = userData.phone ? userData.phone.slice(2) : "";
+    basicInfo.website = userData.website ? userData.website.replace(/(^\w+:|^)\/\//, '') : "";
 
-//     // Role Selection
-//     let roleSelection = {};
-//     roleSelection.role = userData.role;
+    // Role Selection
+    let roleSelection = {};
+    roleSelection.role = userData.role;
+    roleSelection.clicked = userData.role === "Researcher" ? 0 : 1;
 
-//     // Practitioner / Researcher Questions
-//     let questions = {};
-//     questions.affiliation = userData.affiliation;
-//     if (roleSelection.role === "Practitioner") {
-//         questions.displayRole = { option: userData.displayRole, other: "" };
-//     } else {
-//         if (ResearcherInformation.ResearcherType.includes(userData.displayRole)) {
-//             questions.displayRole = { option: userData.displayRole, other: "" };
-//         } else {
-//             questions.displayRole = { option: "Other: ", other: userData.displayRole };
-//         }
-//     }
-//     questions.locatedAtCCE = userData.locatedAtCCE;
-//     questions.locatedAtCornell = userData.locatedAtCornell;
-//     questions.location = userData.location;
-//     questions.researchDescription = userData.researchDescription;
-//     questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
-//     questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-//     questions.researchInterests = convertArray(userData.researchInterests, PractitionerInformation.ResearchTopics);
-//     questions.roles = convertArray(userData.roles, PractitionerInformation.RoleDescriptions);
-
-//     // Optional Questions
-//     let optional = {}
-//     optional.researchNeeds = userData.researchNeeds;
-//     optional.evaluationNeeds = userData.evaluationNeeds;
-
-//     // Upload Profile Picture
-//     // TODO: convert profile picture to fit into CreateProfile
-//     // user.profilePicture = data[4].profilePicture;
-//     let uploadProfilePicture = { filePreview: null, profilePicture: null };
-
-//     editProfileData.push(basicInfo);
-//     editProfileData.push(roleSelection);
-//     editProfileData.push(questions);
-//     editProfileData.push(optional);
-//     editProfileData.push(uploadProfilePicture);
-//     editProfileData.push(null);
-
-//     // console.log(editProfileData);
-//     return <CreateProfile editProfileData={editProfileData} editing={true} />
-// };
-class EditProfile extends Component {
-    componentDidMount() {
-        console.log('edit profile mount')
-    }
-
-    render() {
-        // console.log(this.props.location.state.userData);
-        let userData = this.props.location.state.userData;
-        let editProfileData = [];
-
-        // Basic Info
-        let basicInfo = {};
-        basicInfo.email = userData.email;
-        basicInfo.first_name = userData.first_name;
-        basicInfo.last_name = userData.last_name;
-        basicInfo.password = userData.password;
-        basicInfo.confirmPassword = userData.password;
-        basicInfo.phone = userData.phone ? userData.phone.slice(2) : "";
-        basicInfo.website = userData.website ? userData.website.replace(/(^\w+:|^)\/\//, '') : "";
-
-        // Role Selection
-        let roleSelection = {};
-        roleSelection.role = userData.role;
-
-        // Practitioner / Researcher Questions
-        let questions = {};
-        questions.affiliation = userData.affiliation;
-        if (roleSelection.role === "Practitioner") {
+    // Practitioner / Researcher Questions
+    let questions = {};
+    questions.affiliation = userData.affiliation;
+    if (roleSelection.role === "Practitioner") {
+        questions.displayRole = { option: userData.displayRole, other: "" };
+    } else {
+        if (ResearcherInformation.ResearcherType.includes(userData.displayRole)) {
             questions.displayRole = { option: userData.displayRole, other: "" };
         } else {
-            if (ResearcherInformation.ResearcherType.includes(userData.displayRole)) {
-                questions.displayRole = { option: userData.displayRole, other: "" };
-            } else {
-                questions.displayRole = { option: "Other: ", other: userData.displayRole };
-            }
+            questions.displayRole = { option: "Other: ", other: userData.displayRole };
         }
-        questions.locatedAtCCE = userData.locatedAtCCE;
-        questions.locatedAtCornell = userData.locatedAtCornell;
-        questions.location = userData.location;
-        questions.researchDescription = userData.researchDescription;
-        questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
-        questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-        questions.researchInterests = convertArray(userData.researchInterests, PractitionerInformation.ResearchTopics);
-        questions.roles = convertArray(userData.roles, PractitionerInformation.RoleDescriptions);
-
-        // Optional Questions
-        let optional = {}
-        optional.researchNeeds = userData.researchNeeds;
-        optional.evaluationNeeds = userData.evaluationNeeds;
-
-        // Upload Profile Picture
-        // TODO: convert profile picture to fit into CreateProfile
-        // user.profilePicture = data[4].profilePicture;
-        let uploadProfilePicture = { filePreview: null, profilePicture: null };
-
-        editProfileData.push(basicInfo);
-        editProfileData.push(roleSelection);
-        editProfileData.push(questions);
-        editProfileData.push(optional);
-        editProfileData.push(uploadProfilePicture);
-        editProfileData.push(null);
-
-        // console.log(editProfileData);
-        return <CreateProfile editProfileData={editProfileData} editing={true} />
     }
-}
+    questions.locatedAtCCE = userData.locatedAtCCE;
+    questions.locatedAtCornell = userData.locatedAtCornell;
+    questions.location = userData.location;
+    questions.researchDescription = userData.researchDescription;
+    questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
+    questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
+    questions.researchInterests = convertArray(userData.researchInterests, PractitionerInformation.ResearchTopics);
+    questions.roles = convertArray(userData.roles, PractitionerInformation.RoleDescriptions);
+
+    // Optional Questions
+    let optional = {}
+    optional.researchNeeds = userData.researchNeeds;
+    optional.evaluationNeeds = userData.evaluationNeeds;
+
+    // Upload Profile Picture
+    // TODO: convert profile picture to fit into CreateProfile
+    // user.profilePicture = data[4].profilePicture;
+    let uploadProfilePicture = { filePreview: null, profilePicture: null };
+
+    editProfileData.push(basicInfo);
+    editProfileData.push(roleSelection);
+    editProfileData.push(questions);
+    editProfileData.push(optional);
+    editProfileData.push(uploadProfilePicture);
+    editProfileData.push(null);
+
+    return <CreateProfile editProfileData={editProfileData} editing={true} />
+};
 
 export default EditProfile;

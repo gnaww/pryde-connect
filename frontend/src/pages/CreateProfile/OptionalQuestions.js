@@ -12,9 +12,13 @@ class OptionalQuestions extends Component {
         };
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, false);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 
