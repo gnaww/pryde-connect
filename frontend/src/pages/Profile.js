@@ -147,7 +147,6 @@ class Profile extends Component {
             }
         }
         const date = new Date(this.state.user.date_joined);
-        console.log(this.state.date_joined);
         const date_joined = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
         return (

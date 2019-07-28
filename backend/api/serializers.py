@@ -48,7 +48,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class ProjectUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['owner']
 
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
