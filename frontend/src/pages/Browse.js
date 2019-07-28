@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { withRouter } from 'react-router-dom';
 import searchIcon from '../images/magnifying-glass.svg';
 import map from '../images/ny-map.svg';
 import FilterCategory from '../components/FilterCategory';
@@ -415,4 +414,4 @@ class Browse extends Component {
     }
 }
 
-export default withRouter(Browse);
+export default Browse;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import loginGreen from '../images/login-green.png';
 import loginBlue from '../images/login-blue.png';
 import styles from '../styles/Login.module.css';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 class Login extends Component {
@@ -72,4 +72,4 @@ class Login extends Component {
     }
 }
 
-export default withRouter(Login);
+export default Login;
