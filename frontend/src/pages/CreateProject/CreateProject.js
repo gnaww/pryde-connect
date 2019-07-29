@@ -65,7 +65,7 @@ class CreateProject extends Component {
             project.alternateContact.website = data.alternateContact.website ? normalizeUrl(data.alternateContact.website) : "";
         }
         if (data.alternateContact.phone) {
-            project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone).alternateContact : "";
+            project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone)[0] : "";
         }
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;

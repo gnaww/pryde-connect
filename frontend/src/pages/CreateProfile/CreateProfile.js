@@ -13,7 +13,6 @@ import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
 
 const NAVBAR_HEIGHT = 110;
-// TODO: change pages subtitles when in edit mode, add new last confirmation page, hide password fields in BasicInfo
 let pages = [
     {
         subtitle: "Welcome! Please complete the following questions.",

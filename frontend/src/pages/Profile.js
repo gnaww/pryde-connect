@@ -68,10 +68,9 @@ class Profile extends Component {
     handleDeleteProfile = () => {
         const { history } = this.props;
 
-        // TODO: need more elegant action to take after successful delete
         if (window.confirm("Are you sure you want to delete your account?")) {
             api.deleteUser(this.state.user.id)
-                .then(res => history.push("/"))
+                .then(res => history.push("/deletesuccess", { deleteType: "profile" }))
                 .catch(err => {
                     console.log(err);
                     alert("An error occurred while deleting your account.");

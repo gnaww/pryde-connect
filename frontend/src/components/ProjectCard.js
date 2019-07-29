@@ -43,9 +43,9 @@ const UserCard = props => {
                     </div>
                     <h4>{ props.owner.affiliation }</h4>
                     {
-                        // truncate summary at a word if longer than 200 characters
-                        props.summary.length > 200 ?
-                            <p>{`${props.summary.replace(/^(.{200}[^\s]*).*/, "$1")}...`} <span className={styles.readMore}>read more</span></p>
+                        // truncate summary at a word if longer than 100 characters
+                        props.summary.length > 100 ?
+                            <p>{`${props.summary.replace(/^(.{100}[^\s]*).*/, "$1")}...`} <span className={styles.readMore}>read more</span></p>
                         :
                             <p>{ props.summary }</p>
                     }

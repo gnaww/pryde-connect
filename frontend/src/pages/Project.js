@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import isEqual from 'lodash.isequal';
 import UserCard from '../components/UserCard';
 import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
@@ -25,7 +26,13 @@ class Project extends Component {
                 phone: "",
                 website: ""
             },
-            alternateContact: {},
+            alternateContact: {
+                email: "",
+                phone: "",
+                website: "",
+                last_name: "",
+                first_name: ""
+            },
             alternateLocation: "",
             status: "",
             summary: "",
@@ -49,10 +56,9 @@ class Project extends Component {
     handleDeleteProject = () => {
         const { history } = this.props;
 
-        // TODO: need more elegant action to take after successful delete
         if (window.confirm("Are you sure you want to delete this project?")) {
             api.deleteProject(this.state.id)
-                .then(res => history.push("/myprofile"))
+                .then(res => history.push("/deletesuccess", { deleteType: "project" }))
                 .catch(err => {
                     console.log(err);
                     this.setState({ errorDeleting: true });
@@ -101,6 +107,13 @@ class Project extends Component {
         let statusFormatted = status.replace("-", " ").toUpperCase();
         const date = new Date(this.state.datePosted);
         const datePosted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        const emptyAlternateContact = {
+            email: "",
+            phone: "",
+            website: "",
+            last_name: "",
+            first_name: ""
+        };
 
         return (
             <div className={styles.container}>
@@ -175,7 +188,7 @@ class Project extends Component {
                         </div>
                     </header>
                     {
-                        Object.entries(alternateContact).length !== 0 &&
+                        !isEqual(alternateContact, emptyAlternateContact) &&
                         <section className={styles.whoToContact}>
                             <h2 className={styles.sectionHeader}>WHO TO CONTACT</h2>
                             <p>

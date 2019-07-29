@@ -68,7 +68,11 @@ class SubmitProject extends Component {
                     return true;
                 }
             } else if (allRequiredFieldsBlank) {
-                return true;
+                if (contactInfo.phone || contactInfo.website) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
                 return false;
             }
