@@ -20,6 +20,13 @@ const convertArray = (savedArray, options) => {
     return convertedArray;
 };
 
+const formatInputbox = value => ({
+    option: value,
+    other: ""
+});
+
+const STATUSES = ["Completed", "In Progress", "Not Started"];
+
 const EditProject = ({ location }) => {
     let editProjectData = Object.assign({}, location.state.projectData);
     delete editProjectData.invalidProject;
@@ -28,15 +35,33 @@ const EditProject = ({ location }) => {
     delete editProjectData.errorDeleting;
     delete editProjectData.owner;
     delete editProjectData.datePosted;
-    editProjectData.status = editProjectData.status.toString();
+    editProjectData.name = formatInputbox(editProjectData.name);
+    editProjectData.alternateLocation = formatInputbox(editProjectData.alternateLocation);
+
+    // TODO: convert saved collaborators to fit into CreateProject, placeholder for now
+    editProjectData.collaborators = {
+        option: "",
+        other: ""
+    };
+
+    editProjectData.timeline = formatInputbox(editProjectData.timeline);
+    editProjectData.commitmentLength = formatInputbox(editProjectData.commitmentLength);
+    editProjectData.incentives = formatInputbox(editProjectData.incentives);
+    if (Object.entries(editProjectData.alternateContact).length === 0) {
+        editProjectData.alternateContact = {
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+            website: ""
+        };
+    }
+    editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
     editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
     editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
     editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-
     // TODO: convert saved additional files to fit into CreateProject
     // editProjectData.additionalFiles = data.additionalFiles;
-    // TODO: convert saved collaborators to fit into CreateProject
-    // editProjectData.collaborators = data.collaborators;
     return <CreateProject editProjectData={editProjectData} editing={true} />
 };
 

@@ -53,8 +53,8 @@ const UserCard = props => {
                         <img src={categoryIcon} alt="Category icon" />
                         <span className={styles.statList}>
                             {
-                                researchTopics.length > 50 ?
-                                    `${researchTopics.replace(/^(.{50}[^\s]*).*/, "$1")}...`
+                                researchTopics.length > 42 ?
+                                    `${researchTopics.replace(/^(.{42}[^\s]*).*/, "$1")}...`
                                 :
                                     researchTopics
                             }
@@ -70,8 +70,8 @@ const UserCard = props => {
                         <img src={ageIcon} alt="Age icon" />
                         <span className={styles.statList}>
                             {
-                                ageRanges.length > 70 ?
-                                    `${ageRanges.replace(/^(.{70}[^\s]*).*/, "$1")}...`
+                                ageRanges.length > 65 ?
+                                    `${ageRanges.replace(/^(.{65}[^\s]*).*/, "$1")}...`
                                 :
                                     ageRanges
                             }

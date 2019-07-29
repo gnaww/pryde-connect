@@ -8,7 +8,6 @@ import api from '../../services/api';
 import normalizeUrl from 'normalize-url';
 import phone from 'phone';
 
-// TODO: change pages subtitles when in edit mode, add new last confirmation page
 let pages = [
     {
         title: "Submit a project",
@@ -18,6 +17,18 @@ let pages = [
     {
         title: "Thank you!",
         subtitle: "Your project has been submitted for approval.",
+        content: FinishSubmit
+    }
+];
+let editPages = [
+    {
+        title: "Edit project",
+        subtitle: "Edit your project's details and information.",
+        content: SubmitProject
+    },
+    {
+        title: "Your project was successfully updated.",
+        subtitle: "",
         content: FinishSubmit
     }
 ];
@@ -41,15 +52,20 @@ class CreateProject extends Component {
                     .map(elt => elt.other ? elt.other : elt.value)
             );
         };
+        project.name = data.name.option;
+        project.alternateLocation = data.alternateLocation.option;
+        project.timeline = data.timeline.option;
+        project.commitmentLength = data.commitmentLength.option;
+        project.incentives = data.incentives.option;
         project.status = parseInt(data.status);
         project.researchTopics = formatArray(data.researchTopics);
         project.ageRanges = formatArray(data.ageRanges);
         project.deliveryModes = formatArray(data.deliveryModes);
         if (data.alternateContact.website) {
-            project.alternateContact.website = data[0].website ? normalizeUrl(data[0].website) : "";
+            project.alternateContact.website = data.alternateContact.website ? normalizeUrl(data.alternateContact.website) : "";
         }
         if (data.alternateContact.phone) {
-            project.phone = data[0].phone ? phone(data[0].phone)[0] : "";
+            project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone).alternateContact : "";
         }
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
@@ -57,17 +73,17 @@ class CreateProject extends Component {
         // TODO: add collaborators to projects
         // project.collaborators = data.collaborators;
         project.collaborators = [];
+        console.log(project);
         // TODO: add error handling for if creating/updating project fails
         if (this.props.editing === true) {
-            // TODO: get proper id to pass in here
-            // api.updateProject(id, project)
-            //     .then(response => {
-            //         console.log(response);
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //         //console.log(err.response.data);
-            //     });
+            api.updateProject(this.props.editProjectData.id, project)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                    console.log(err.response.data);
+                });
         } else {
             api.createProject(project)
                 .then(response => {
@@ -75,7 +91,7 @@ class CreateProject extends Component {
                 })
                 .catch(err => {
                     console.log(err);
-                    //console.log(err.response.data);
+                    console.log(err.response.data);
                 });
         }
     }
@@ -94,22 +110,26 @@ class CreateProject extends Component {
 
     componentDidMount() {
         if (this.props.editProjectData) {
-            console.log('asflslk', this.props.editProjectData)
             this.setState({ pageData: this.props.editProjectData });
         }
     }
 
     render() {
-        let PageContent = pages[this.state.page].content;
+        const { editing } = this.props;
+        const PageContent = editing ? editPages[this.state.page].content : pages[this.state.page].content;
+        const title = editing ? editPages[this.state.page].title : pages[this.state.page].title;
+        const subtitle = editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle;
+        const NUM_PAGES = editing ? editPages.length : pages.length;
+
         return (
             localStorage.getItem("pryde_key") ?
                 <div className={styles.root} >
-                    <h1 className={styles.createProfile}>{pages[this.state.page].title}</h1>
-                    <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
+                    <h1 className={styles.createProfile}>{title}</h1>
+                    <h2 className={styles.subtitle}>{subtitle}</h2>
                     <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} />
                     <div className={styles.buttons}>
                         {
-                            this.state.page < pages.length - 1 &&
+                            this.state.page < NUM_PAGES - 1 &&
                             (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
                         }
                     </div>

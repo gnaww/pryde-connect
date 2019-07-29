@@ -119,7 +119,16 @@ class SubmitProject extends Component {
 
         this.setState({
             [key]: value
-        })
+        });
+    }
+
+    setInputbox = key => event => {
+        this.setState({
+            [key]: {
+                option: event.target.value,
+                other: ""
+            }
+        });
     }
 
     setValues = (key, index, text) => {
@@ -187,8 +196,8 @@ class SubmitProject extends Component {
         return (
             <li className={styles.numberedList} key={index}>
                 {getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index])}
-                {getInputboxQuestion(qa, this.setTextbox, this, this.errors[index])}
-                {getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index])}
+                {getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index])}
+                {getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index])}
                 {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
                 {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
                 {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}

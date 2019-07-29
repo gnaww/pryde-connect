@@ -84,7 +84,7 @@ class Project(models.Model):
     commitmentLength = models.CharField(max_length=100)
     incentives = models.TextField()
     additionalInformation = models.TextField()
-    additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
+    additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None, blank=True)
     type = models.CharField(max_length=100, default='project')
     datePosted = models.DateTimeField(auto_now_add=True)
     alternateContact = JSONField(default=dict)

@@ -22,15 +22,6 @@ class UserView(generics.RetrieveAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
-class UserProjectsList(generics.RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        user = PUser.objects.get(pk=pk)
-        projects = Project.objects.filter(owner=user)
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(data=serializer.data)
-
-
 class LoggedInUserView(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -78,6 +69,7 @@ class CreateProject(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
+        print(request)
         try:
             new_project = Project.objects.create(
                 name = request.data['name'],
@@ -99,6 +91,7 @@ class CreateProject(generics.CreateAPIView):
             #TODO create the collaborator thing here
             return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
         except Exception as e:
+            print('aslkfjsalkfjlksa')
             print(e)
             return Response({
                 'status': 'Something went wrong while creating the project.'

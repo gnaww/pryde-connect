@@ -176,7 +176,7 @@ class CreateProfile extends Component {
                 })
                 .catch(err => {
                     console.log(err);
-                    //console.log(err.response.data);
+                    console.log(err.response.data);
                 });
         } else {
             api.register(user)
@@ -185,7 +185,7 @@ class CreateProfile extends Component {
                 })
                 .catch(err => {
                     console.log(err);
-                    //console.log(err.response.data);
+                    console.log(err.response.data);
                 });
         }
     }
@@ -207,7 +207,7 @@ class CreateProfile extends Component {
         const PageContent = editing ? editPages[this.state.page].content : pages[this.state.page].content;
         let title;
         if (editing) {
-            title = this.state.page === editPages.length - 1 ? "Your profile information was successfully updated." : "Edit your profile"
+            title = this.state.page === editPages.length - 1 ? "Your profile was successfully updated." : "Edit your profile"
         } else {
             title = this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"
         }
