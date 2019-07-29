@@ -5,8 +5,8 @@ import locationIcon from '../images/location-icon-white.svg';
 import projectIcon from '../images/project-icon-white.svg';
 import categoryIconWhite from '../images/category-icon-white.svg';
 import mailIcon from '../images/mail-icon-white.svg';
-import CCEBadge from '../images/cce-badge.svg';
-import CornellBadge from '../images/cornell-badge.svg';
+// import CCEBadge from '../images/cce-badge.svg';
+// import CornellBadge from '../images/cornell-badge.svg';
 import styles from '../styles/Card.module.css';
 
 const listFormatter = (str, elt, idx, arr) => {
