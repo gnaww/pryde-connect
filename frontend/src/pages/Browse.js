@@ -98,14 +98,14 @@ class Browse extends Component {
                     .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => {
                         alert("There was an error getting your search results. Please refresh the page or try again later.");
-                        console.log(err)
+                        console.log(err);
                     });
             } else {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
                     .catch(err => {
                         alert("There was an error getting your search results. Please refresh the page or try again later.");
-                        console.log(err)
+                        console.log(err);
                     });
             }
         } else {
@@ -114,7 +114,7 @@ class Browse extends Component {
             //     .then(results => this.setState({ searchResults: results }))
             //     .catch(err => {
             //         alert("There was an error getting your search results. Please refresh the page or try again later.");
-            //         console.log(err)
+            //         console.log(err);
             //     });
         }
     }

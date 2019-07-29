@@ -19,7 +19,6 @@ class UploadProPic extends Component {
                 this.props.onSubmitData(this.state, this.state.profilePicture === null);
             } else {
                 this.props.onSubmitData(this.state, false);
-                this.props.readyToSubmit();
             }
         }
 

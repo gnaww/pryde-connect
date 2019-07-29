@@ -73,8 +73,7 @@ class CreateProfile extends Component {
             page: 0,
             pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
-            clickedBack: false,
-            readyToSubmit: false
+            clickedBack: false
         };
     }
 
@@ -113,18 +112,33 @@ class CreateProfile extends Component {
                 nextPage += 1;
             }
 
-            let pageDataCopy = Array.from(this.state.pageData);
-            pageDataCopy[this.state.page] = data;
-            this.setState({ pageData: pageDataCopy, page: nextPage });
+            // Going to confirmation page, so send data to API and handle any errors
+            if (nextPage === 5) {
+                if (this.createProfile(this.state.pageData)) {
+                    // successful
+                    this.setState({ page: 5 });
+                } else {
+                    // failed to create/update profile
+                    let pageDataCopy = Array.from(this.state.pageData);
+                    pageDataCopy[this.state.page] = data;
+                    this.setState({ pageData: pageDataCopy, page: 4 });
+                    if (this.props.editing) {
+                        alert("There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
+                    } else {
+                        alert("There was an error creating your profile. Please try again and make sure all questions are filled out properly.");
+                    }
+                }
+            } else {
+                let pageDataCopy = Array.from(this.state.pageData);
+                pageDataCopy[this.state.page] = data;
+                this.setState({ pageData: pageDataCopy, page: nextPage });
+            }
+
         }
         this.setState({ clickedNext: false });
     }
 
-    readyToSubmit = () => {
-        this.setState({ readyToSubmit: true });
-    }
-
-    // builds user object from this.state.pageData to POST to the API
+    // builds user object from data to POST to the API
     createProfile = data => {
         let user = {};
         const formatArray = arr => {
@@ -165,34 +179,33 @@ class CreateProfile extends Component {
         // TODO: add profile picture to users
         // user.profilePicture = data[4].profilePicture;
 
-        // TODO: add error handling for if registering/updating user fails
+        let success = true;
         if (this.props.editing === true) {
             delete user.password1;
             delete user.password2;
             api.updateUser(user)
                 .then(response => {
-                    console.log(response);
+                    success = response;
                 })
                 .catch(err => {
+                    success = false;
                     console.log(err);
                     console.log(err.response.data);
                 });
         } else {
             api.register(user)
                 .then(response => {
+                    success = response.status === 201;
                     localStorage.setItem("pryde_key", response.data.key);
                 })
                 .catch(err => {
+                    success = false;
                     console.log(err);
                     console.log(err.response.data);
                 });
         }
-    }
 
-    componentDidUpdate(_prevProps, _prevState) {
-        if (this.state.readyToSubmit) {
-            this.createProfile(this.state.pageData);
-        }
+        return success;
     }
 
     componentDidMount() {
@@ -215,7 +228,6 @@ class CreateProfile extends Component {
             savedData: this.state.pageData[this.state.page],
             clickedNext: this.state.clickedNext,
             onSubmitData: this.handleOnSubmitData,
-            readyToSubmit: this.readyToSubmit,
             editing: editing
         };
 

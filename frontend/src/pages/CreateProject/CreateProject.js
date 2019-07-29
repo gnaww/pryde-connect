@@ -73,33 +73,47 @@ class CreateProject extends Component {
         // TODO: add collaborators to projects
         // project.collaborators = data.collaborators;
         project.collaborators = [];
-        console.log(project);
-        // TODO: add error handling for if creating/updating project fails
+
+        let success = true;
         if (this.props.editing === true) {
             api.updateProject(this.props.editProjectData.id, project)
                 .then(response => {
-                    console.log(response);
+                    success = response;
                 })
                 .catch(err => {
+                    success = false;
                     console.log(err);
                     console.log(err.response.data);
                 });
         } else {
             api.createProject(project)
                 .then(response => {
-                    console.log(response);
+                    success = response;
                 })
                 .catch(err => {
+                    success = false;
                     console.log(err);
                     console.log(err.response.data);
                 });
         }
+
+        return success;
     }
 
     submitData = (data, errors) => {
         if (!errors) {
-            this.createProject(data);
-            this.setState({ page: 1 });
+            if (this.createProject(data)) {
+                // successful
+                this.setState({ page: 1 });
+            } else {
+                // failed to create/update project
+                this.setState({ pageData: data, page: 0 });
+                if (this.props.editing) {
+                    alert("There was an error updating your project. Please try again and make sure all questions are filled out properly.");
+                } else {
+                    alert("There was an error creating your project. Please try again and make sure all questions are filled out properly.");
+                }
+            }
         }
         this.setState({ clickedNext: false });
     }
