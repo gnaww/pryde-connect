@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from '../styles/PageNotFound.module.css';
 
 const SuccessfulDelete = ({ location }) => {
+    document.title = "PRYDE Research Connect | Successfully Deleted";
+
     if (location.state.deleteType === "project") {
         return (
             <div className={styles.container}>

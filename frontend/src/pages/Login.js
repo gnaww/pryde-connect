@@ -42,6 +42,10 @@ class Login extends Component {
         }
     }
 
+    componentDidMount() {
+        document.title = "PRYDE Research Connect | Log In";
+    }
+
     render() {
         return (
             <div className={styles.loginWrapper}>

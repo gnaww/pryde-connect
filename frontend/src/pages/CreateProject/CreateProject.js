@@ -123,6 +123,7 @@ class CreateProject extends Component {
     }
 
     componentDidMount() {
+        document.title = this.props.editing ? "PRYDE Research Connect | Edit Project" : "PRYDE Research Connect | Submit a Project";
         if (this.props.editProjectData) {
             this.setState({ pageData: this.props.editProjectData });
         }
