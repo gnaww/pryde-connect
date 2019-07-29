@@ -96,17 +96,26 @@ class Browse extends Component {
             if (parsedURL.category === "projects") {
                 api.getProjects()
                     .then(projects => this.setState({ searchResults: projects }))
-                    .catch(err => console.log(err));
+                    .catch(err => {
+                        alert("There was an error getting your search results. Please refresh the page or try again later.");
+                        console.log(err)
+                    });
             } else {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
-                    .catch(err => console.log(err));
+                    .catch(err => {
+                        alert("There was an error getting your search results. Please refresh the page or try again later.");
+                        console.log(err)
+                    });
             }
         } else {
             console.log('searching w filters and/or query')
             // api.search(parsedURL)
             //     .then(results => this.setState({ searchResults: results }))
-            //     .catch(err => console.log(err));
+            //     .catch(err => {
+            //         alert("There was an error getting your search results. Please refresh the page or try again later.");
+            //         console.log(err)
+            //     });
         }
     }
 
