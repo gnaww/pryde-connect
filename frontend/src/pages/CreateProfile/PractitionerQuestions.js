@@ -16,13 +16,13 @@ class PractitionerQuestions extends Component {
             },
             roles: getCheckedValuesArray(PractitionerInformation.RoleDescriptions),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
+            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
             researchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
         };
         this.errors = practitionerQAForm.map(_qa => { return false });
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         function keyIsValid(state, key) {
             let last = state[key].length - 1;
             if (key === "ageRanges") {
@@ -55,6 +55,10 @@ class PractitionerQuestions extends Component {
         if (this.props.clickedNext) {
             isInvalid(this.state, this);
             this.props.onSubmitData(this.state, this.errors.filter(e => e).length > 0);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 
@@ -121,8 +125,9 @@ class PractitionerQuestions extends Component {
     }
 
     getQAComponent = (qa, index) => {
-        const defaultLocatedAtCCE = this.state.locatedAtCCE !== null ? this.state.locatedAtCCE : "";
+        const defaultLocatedAtCCE = this.state.locatedAtCCE !== null ? this.state.locatedAtCCE.toString() : "";
         const defaultCounty = this.state.location ? this.state.location : "";
+        // console.log(defaultLocatedAtCCE, typeof defaultLocatedAtCCE);
 
         return (
             <li className={styles.numberedList} key={index}>

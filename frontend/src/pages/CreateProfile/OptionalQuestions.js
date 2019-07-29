@@ -12,9 +12,13 @@ class OptionalQuestions extends Component {
         };
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
             this.props.onSubmitData(this.state, false);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 
@@ -36,7 +40,11 @@ class OptionalQuestions extends Component {
             <div className={styles.form}>
                 {
                     optionalQAForm.map((qa, idx) => {
-                        return getTextboxQuestion(qa, this.setTextboxValue, this.state, idx)
+                        return (
+                            <div key={idx}>
+                                {getTextboxQuestion(qa, this.setTextboxValue, this.state, idx)}
+                            </div>
+                        )
                     })
                 }
             </div>

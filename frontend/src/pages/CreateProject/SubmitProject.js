@@ -14,7 +14,7 @@ class SubmitProject extends Component {
             summary: "",
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModels),
+            deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
             timeline: "",
             commitmentLength: "",
             incentives: "",
@@ -33,7 +33,7 @@ class SubmitProject extends Component {
         this.errors = projectQAForm.map(_q => { return false });
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         function nonEmptyString(key, state) {
             return state[key] !== "";
         }
@@ -54,8 +54,8 @@ class SubmitProject extends Component {
 
         function validContact(key, state) {
             const contactInfo = state[key];
-            const allRequiredFieldsFilled = contactInfo.first_name !== "" && contactInfo.last_name !== ""&& contactInfo.email !== "";
-            const allRequiredFieldsBlank = contactInfo.first_name === "" && contactInfo.last_name === ""&& contactInfo.email === "";
+            const allRequiredFieldsFilled = contactInfo.first_name !== "" && contactInfo.last_name !== "" && contactInfo.email !== "";
+            const allRequiredFieldsBlank = contactInfo.first_name === "" && contactInfo.last_name === "" && contactInfo.email === "";
 
             if (allRequiredFieldsFilled) {
                 if (!isValidEmail(contactInfo.email)) {
@@ -68,7 +68,11 @@ class SubmitProject extends Component {
                     return true;
                 }
             } else if (allRequiredFieldsBlank) {
-                return true;
+                if (contactInfo.phone || contactInfo.website) {
+                    return false;
+                } else {
+                    return true;
+                }
             } else {
                 return false;
             }
@@ -102,6 +106,16 @@ class SubmitProject extends Component {
             this.props.onSubmitData(this.state, error > 0);
             window.scrollTo(0, 0);
         }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.savedData !== null) {
+            this.setState(this.props.savedData);
+        }
     }
 
     setTextbox = key => event => {
@@ -109,7 +123,16 @@ class SubmitProject extends Component {
 
         this.setState({
             [key]: value
-        })
+        });
+    }
+
+    setInputbox = key => event => {
+        this.setState({
+            [key]: {
+                option: event.target.value,
+                other: ""
+            }
+        });
     }
 
     setValues = (key, index, text) => {
@@ -174,14 +197,16 @@ class SubmitProject extends Component {
     }
 
     getQAComponent = (qa, index) => {
+        const defaultStatus = this.state.status ? this.state.status.toString() : "";
+
         return (
             <li className={styles.numberedList} key={index}>
-                { getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index]) }
-                { getInputboxQuestion(qa, this.setTextbox, this, this.errors[index]) }
-                { getTextboxQuestion(qa, this.setTextbox, this, index, this.errors[index]) }
-                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
-                { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
-                { getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index]) }
+                {getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index])}
+                {getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index])}
+                {getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index])}
+                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
+                {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
+                {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}
             </li>
         );
     }

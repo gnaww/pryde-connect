@@ -4,15 +4,15 @@ import { PractitionerInformation } from '../CreateProfile/FormContent';
 export const ProjectInformation = {
     Status: [
         {
-            value: 1,
+            value: "1",
             text: "Completed"
         },
         {
-            value: 2,
+            value: "2",
             text: "In Progress"
         },
         {
-            value: 3,
+            value: "3",
             text: "Not Started"
         }
     ]
@@ -138,10 +138,10 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "What types of program delivery models would be good for your project?* (check all that apply)",
+        questionText: "What types of program delivery modes would be good for your project?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.ProgramDeliveryModels,
+            options: PractitionerInformation.ProgramDeliveryModes,
             key: "deliveryModes"
         }
     },

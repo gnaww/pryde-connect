@@ -61,7 +61,7 @@ class PUser(AbstractUser):
     evaluationNeeds = models.TextField(null=True, blank=True)
     # TODO: add profile picture to users
     # profilePicture = models.FileField()
-    type = models.CharField(max_length=15, default='partner')
+    type = models.CharField(max_length=15, default='user')
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -84,7 +84,7 @@ class Project(models.Model):
     commitmentLength = models.CharField(max_length=100)
     incentives = models.TextField()
     additionalInformation = models.TextField()
-    additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None)
+    additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None, blank=True)
     type = models.CharField(max_length=100, default='project')
     datePosted = models.DateTimeField(auto_now_add=True)
     alternateContact = JSONField(default=dict)
@@ -92,7 +92,7 @@ class Project(models.Model):
     isApproved = models.BooleanField(default=True)
 
 
-class Collaborators(models.Model):
+class Collaborator(models.Model):
     collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     editPermission = models.BooleanField()

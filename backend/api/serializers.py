@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborators
+from .models import PUser, Project, Collaborator
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class CollaboratorSerializer(serializers.ModelSerializer):
     collaboratorInfo = serializers.SerializerMethodField()
 
     class Meta:
-        model = Collaborators
+        model = Collaborator
         fields = ['collaboratorInfo']
 
     def get_collaboratorInfo(self, obj):
@@ -33,11 +33,22 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'alternateLocation', 'alternateContact']
+        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'alternateLocation', 'alternateContact', 'datePosted']
 
     def get_status(self, obj):
         return obj.get_status_display()
 
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
+
+
+class ProjectUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        exclude = ['owner']
 
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
@@ -46,14 +57,14 @@ class UserSerializer(serializers.ModelSerializer):
     # projects_and_collabs = serializers.SerializerMethodField()
     class Meta:
         model = get_user_model()
-        exclude = ['date_joined', 'groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
 
     def get_projects(self, obj):
         # get the projects that the user owns
         # print(obj)
         # print(obj.email)
         projects = []
-        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+        collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
             # print(collab.project)
@@ -83,7 +94,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     def num_projects(self, obj):
         projects = []
-        collabs = Collaborators.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
+        collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
             # print(collab.project)
@@ -103,10 +114,10 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['isApproved', 'type']
 
     def get_collaborators(self, obj):
-        collaborator_queryset = Collaborators.objects.filter(project=obj)
+        collaborator_queryset = Collaborator.objects.filter(project=obj)
         userInfo = []
         for collaborator in collaborator_queryset:
             if collaborator.showProjectOnProfile:

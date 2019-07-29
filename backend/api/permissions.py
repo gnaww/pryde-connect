@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import PUser, Project, Collaborators
+from .models import PUser, Project, Collaborator
 
 
 class CanAddCollaborator(permissions.BasePermission):
@@ -22,7 +22,7 @@ class CanAddCollaborator(permissions.BasePermission):
         # Instance must have an attribute named `owner`.
 
         try:
-            hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).addCollaboratorPermission
+            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).addCollaboratorPermission
 
         except Exception as e:
             hasPermission = False
@@ -36,7 +36,7 @@ class CanDeleteProject(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
 
         try:
-           hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).deletePermission
+           hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).deletePermission
 
         except Exception as e:
             hasPermission = False
@@ -51,7 +51,7 @@ class CanEditProject(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
 
         try:
-            hasPermission = Collaborators.objects.get(project=obj, collaborator=request.user).editPermission
+            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).editPermission
 
         except Exception as e:
             hasPermission = False
@@ -66,7 +66,7 @@ class IsCollaborator(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
 
         # Instance obj must have an attribute named `owner`.
-        return (obj.owner == request.user) or Collaborators.objects.filter(project=obj,
+        return (obj.owner == request.user) or Collaborator.objects.filter(project=obj,
                                                                            collaborator=request.user).exists()
 
 class CanEditDeleteUser(permissions.BasePermission):

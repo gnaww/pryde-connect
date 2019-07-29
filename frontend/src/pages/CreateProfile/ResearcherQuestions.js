@@ -25,7 +25,7 @@ class ResearcherQuestions extends Component {
         this.errors = researcherQAForm.map(_qa => { return false });
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         function isInvalid(state, obj) {
             let locationValid;
 
@@ -65,6 +65,10 @@ class ResearcherQuestions extends Component {
             }
 
             this.props.onSubmitData(data, error);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 

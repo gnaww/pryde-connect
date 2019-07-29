@@ -1,6 +1,7 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer, UserShortSerializer
-from .models import Project, PUser, Collaborators
+from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
+    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
+from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -21,15 +22,6 @@ class UserView(generics.RetrieveAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
-class UserProjectsList(generics.RetrieveAPIView):
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        user = PUser.objects.get(pk=pk)
-        projects = Project.objects.filter(owner=user)
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(data=serializer.data)
-
-
 class LoggedInUserView(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -40,10 +32,23 @@ class LoggedInUserView(generics.RetrieveAPIView):
         return Response(data=serializer.data)
 
 
+class UpdateUser(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    serializer_class = UserUpdateSerializer
+    queryset = PUser.objects.filter(is_staff=False)
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        obj = queryset.get(pk=self.request.user.pk)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
 class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    queryset = PUser.objects.all()
+    queryset = PUser.objects.filter(is_staff=False)
 
 
 class ProjectList(generics.ListAPIView):
@@ -63,9 +68,8 @@ class CreateProject(generics.CreateAPIView):
     queryset = Project.objects.all()
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
-        print(request.user.pk)
         user = PUser.objects.get(pk=request.user.pk)
+        print(request)
         try:
             new_project = Project.objects.create(
                 name = request.data['name'],
@@ -87,6 +91,7 @@ class CreateProject(generics.CreateAPIView):
             #TODO create the collaborator thing here
             return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
         except Exception as e:
+            print('aslkfjsalkfjlksa')
             print(e)
             return Response({
                 'status': 'Something went wrong while creating the project.'
@@ -96,7 +101,9 @@ class CreateProject(generics.CreateAPIView):
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
+    serializer_class = ProjectUpdateSerializer
     queryset = Project.objects.all()
+
 
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
@@ -131,11 +138,11 @@ class AddCollaborator(generics.CreateAPIView):
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
             # check to see if the user is already added as a collaborator to this project
-            if Collaborators.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
+            if Collaborator.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user'])).exists():
                 return Response({'message': 'This user is already a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
 
-            Collaborators.objects.create(project=Project.objects.get(pk=kwargs['pk']),
+            Collaborator.objects.create(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user']),
                                          editPermission=request.data['editPermission'],
                                          deletePermission=request.data['deletePermission'],
@@ -163,30 +170,28 @@ class HideProject(generics.UpdateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         self.check_object_permissions(request, obj)
 
-        collab = Collaborators.objects.get(user=request.user, project=obj)
+        collab = Collaborator.objects.get(user=request.user, project=obj)
         collab.showOnProfile = not collab.showOnProfile
         collab.save()
         return Response({'message': 'Your preference has been changed'}, status=status.HTTP_200_OK)
-
-
 
 
 class FilterProjects(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
 
-        print(request.GET)
+        print(request.data)
         filtered_set = Project.objects.all()
 
         # deal with status query
-        if 'status' in request.GET:
+        if 'status' in request.data:
             filter_status_set = Project.objects.none()
             status_dict = {
                 'Completed': 1,
                 'In Progress': 2,
                 'Not Started': 3
             }
-            status_params = request.GET['status'].split(',')
+            status_params = request.data['status'].split(',')
 
             print(status_params)
             for param in status_params:
@@ -194,27 +199,27 @@ class FilterProjects(generics.ListAPIView):
 
             filtered_set = filtered_set & filter_status_set
 
-        if 'researchtopic' in request.GET:
+        if 'researchtopic' in request.data:
             filtered_researchtopic_set = Project.objects.none()
-            research_topics = request.GET['researchtopic'].split(',')
+            research_topics = request.data['researchtopic'].split(',')
             for topic in research_topics:
                 filtered_researchtopic_set = filtered_researchtopic_set |\
                                              Project.objects.filter(researchTopics__contains=[topic])
 
             filtered_set = filtered_set & filtered_researchtopic_set
 
-        if 'deliverymodes' in request.GET:
+        if 'deliverymodes' in request.data:
             filtered_deliverymodes_set = Project.objects.none()
-            delivery_modes = request.GET['deliverymodes'].split(',')
+            delivery_modes = request.data['deliverymodes'].split(',')
             for mode in delivery_modes:
                 filtered_deliverymodes_set = filtered_deliverymodes_set |\
                                              Project.objects.filter(deliveryModes__contains=[mode])
 
             filtered_set = filtered_set & filtered_deliverymodes_set
 
-        if 'ageranges' in request.GET:
+        if 'ageranges' in request.data:
             filtered_ageranges_set = Project.objects.none()
-            ageranges = request.GET['ageranges'].split(',')
+            ageranges = request.data['ageranges'].split(',')
             for age in ageranges:
                 filtered_ageranges_set = filtered_ageranges_set | \
                                          Project.objects.filter(ageRanges__contains=[age])

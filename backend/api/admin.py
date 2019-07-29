@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PUser, Project, Collaborators
+from .models import PUser, Project, Collaborator
 
 
 # Register your models here.
@@ -8,4 +8,4 @@ class PUserAdmin(admin.ModelAdmin):
 
 admin.site.register(PUser, PUserAdmin)
 admin.site.register(Project)
-admin.site.register(Collaborators)
+admin.site.register(Collaborator)

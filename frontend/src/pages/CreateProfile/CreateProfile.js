@@ -12,6 +12,7 @@ import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
 
+const NAVBAR_HEIGHT = 110;
 let pages = [
     {
         subtitle: "Welcome! Please complete the following questions.",
@@ -32,8 +33,33 @@ let pages = [
     {
         subtitle: "Finally, upload a profile picture.*",
         content: UploadProPic
+    },
+    {
+        subtitle: "You can edit your answers to these questions at anytime through your profile page.",
+        content: ReviewFinish
     }
-    ,
+];
+let editPages = [
+    {
+        subtitle: "Edit your contact information.",
+        content: BasicInfo
+    },
+    {
+        subtitle: "Edit your role selection.",
+        content: RoleSelection
+    },
+    {
+        subtitle: "Edit your answers to the following questions.",
+        content: PractitionerQuestions
+    },
+    {
+        subtitle: "Edit your answers to the following optional questions.",
+        content: OptionalQuestions
+    },
+    {
+        subtitle: "Change your profile picture (optional)",
+        content: UploadProPic
+    },
     {
         subtitle: "You can edit your answers to these questions at anytime through your profile page.",
         content: ReviewFinish
@@ -45,10 +71,9 @@ class CreateProfile extends Component {
         super(props);
         this.state = {
             page: 0,
-            pageData: pages.map(() => { return null }),
+            pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
-            clickedBack: false,
-            readyToSubmit: false
+            clickedBack: false
         };
     }
 
@@ -61,15 +86,13 @@ class CreateProfile extends Component {
         } else {
             this.setState({ page: this.state.page - 1 });
         }
-        // height of navbar
-        window.scrollTo(0, 110);
+        window.scrollTo(0, NAVBAR_HEIGHT);
     }
 
     handleNext = event => {
         event.preventDefault();
         this.setState({ clickedNext: true });
-        // height of navbar
-        window.scrollTo(0, 110);
+        window.scrollTo(0, NAVBAR_HEIGHT);
     }
 
     handleOnSubmitData = (data, errors) => {
@@ -77,7 +100,11 @@ class CreateProfile extends Component {
             let nextPage = this.state.page + 1;
 
             if (this.state.page === 1) {
-                pages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                if (this.props.editing) {
+                    editPages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                } else {
+                    pages[nextPage].content = data.role === ROLE_TYPE.researcher ? ResearcherQuestions : PractitionerQuestions;
+                }
             }
 
             // skip research needs and evaluation needs question if user is researcher
@@ -85,18 +112,33 @@ class CreateProfile extends Component {
                 nextPage += 1;
             }
 
-            let pageDataCopy = Array.from(this.state.pageData);
-            pageDataCopy[this.state.page] = data;
-            this.setState({ pageData: pageDataCopy, page: nextPage });
+            // Going to confirmation page, so send data to API and handle any errors
+            if (nextPage === 5) {
+                if (this.createProfile(this.state.pageData)) {
+                    // successful
+                    this.setState({ page: 5 });
+                } else {
+                    // failed to create/update profile
+                    let pageDataCopy = Array.from(this.state.pageData);
+                    pageDataCopy[this.state.page] = data;
+                    this.setState({ pageData: pageDataCopy, page: 4 });
+                    if (this.props.editing) {
+                        alert("There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
+                    } else {
+                        alert("There was an error creating your profile. Please try again and make sure all questions are filled out properly.");
+                    }
+                }
+            } else {
+                let pageDataCopy = Array.from(this.state.pageData);
+                pageDataCopy[this.state.page] = data;
+                this.setState({ pageData: pageDataCopy, page: nextPage });
+            }
+
         }
         this.setState({ clickedNext: false });
     }
 
-    readyToSubmit = () => {
-        this.setState({ readyToSubmit: true });
-    }
-
-    // builds user object from this.state.pageData to POST to the API
+    // builds user object from data to POST to the API
     createProfile = data => {
         let user = {};
         const formatArray = arr => {
@@ -137,41 +179,75 @@ class CreateProfile extends Component {
         // TODO: add profile picture to users
         // user.profilePicture = data[4].profilePicture;
 
-        // TODO: add error handling for if registering user fails
-        api.register(user)
-            .then(response => {
-                localStorage.setItem("pryde_key", response.data.key);
-            })
-            .catch(err => {
-                console.log(err);
-                //console.log(err.response.data);
-            });
+        let success = true;
+        if (this.props.editing === true) {
+            delete user.password1;
+            delete user.password2;
+            api.updateUser(user)
+                .then(response => {
+                    success = response;
+                })
+                .catch(err => {
+                    success = false;
+                    console.log(err);
+                    console.log(err.response.data);
+                });
+        } else {
+            api.register(user)
+                .then(response => {
+                    success = response.status === 201;
+                    localStorage.setItem("pryde_key", response.data.key);
+                })
+                .catch(err => {
+                    success = false;
+                    console.log(err);
+                    console.log(err.response.data);
+                });
+        }
+
+        return success;
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
-        if (this.state.readyToSubmit) {
-            this.createProfile(this.state.pageData);
+    componentDidMount() {
+        document.title = this.props.editing ? "PRYDE Research Connect | Edit Profile" : "PRYDE Research Connect | Sign Up";
+        if (this.props.editProfileData) {
+            this.setState({ pageData: this.props.editProfileData });
         }
     }
 
     render() {
-        let PageContent = pages[this.state.page].content;
+        const { editing } = this.props;
+        const PageContent = editing ? editPages[this.state.page].content : pages[this.state.page].content;
+        let title;
+        if (editing) {
+            title = this.state.page === editPages.length - 1 ? "Your profile was successfully updated." : "Edit your profile"
+        } else {
+            title = this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"
+        }
+        const NUM_PAGES = editing ? editPages.length : pages.length;
+        const pageContentProps = {
+            savedData: this.state.pageData[this.state.page],
+            clickedNext: this.state.clickedNext,
+            onSubmitData: this.handleOnSubmitData,
+            editing: editing
+        };
+
         return (
             <div className={styles.root} >
-                <h1 className={styles.createProfile}>{this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"}</h1>
-                <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
-                <PageContent savedData={this.state.pageData[this.state.page]} clickedNext={this.state.clickedNext} onSubmitData={this.handleOnSubmitData} readyToSubmit={this.readyToSubmit} />
+                <h1 className={styles.createProfile}>{title}</h1>
+                <h2 className={styles.subtitle}>{editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle}</h2>
+                <PageContent {...pageContentProps} />
                 <div className={styles.buttons}>
                     {
-                        this.state.page > 0 && this.state.page < pages.length - 1 &&
+                        (this.state.page > 0 && this.state.page < NUM_PAGES - 1) &&
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < pages.length - 2 &&
+                        this.state.page < NUM_PAGES - 2 &&
                         (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
                     {
-                        this.state.page === pages.length - 2 &&
+                        this.state.page === NUM_PAGES - 2 &&
                         (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
                     }
                 </div>

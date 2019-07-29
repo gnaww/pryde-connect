@@ -22,6 +22,7 @@ class Homepage extends Component {
         const randomInt= Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
         const heroImages = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
         document.getElementById(styles.welcomeBanner).style.backgroundImage = 'url(' + heroImages[randomInt] + ')';
+        document.title = "PRYDE Research Connect";
     }
 
     render() {

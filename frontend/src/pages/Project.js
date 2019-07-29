@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import SearchResult from '../components/SearchResult';
+import { Link } from 'react-router-dom';
+import isEqual from 'lodash.isequal';
+import UserCard from '../components/UserCard';
 import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
+import mailIcon from '../images/mail-icon-black.svg';
+import phoneIcon from '../images/phone-icon-black.svg';
+import linkIcon from '../images/link-icon-black.svg';
+import calendarIcon from '../images/calendar-icon-black.svg';
 import styles from '../styles/Project.module.css';
 import api from '../services/api';
 
@@ -20,7 +26,13 @@ class Project extends Component {
                 phone: "",
                 website: ""
             },
-            alternateContact: {},
+            alternateContact: {
+                email: "",
+                phone: "",
+                website: "",
+                last_name: "",
+                first_name: ""
+            },
             alternateLocation: "",
             status: "",
             summary: "",
@@ -33,6 +45,7 @@ class Project extends Component {
             collaborators: [],
             additionalInformation: "",
             additionalFiles:[],
+            datePosted: "",
             invalidProject: false,
             canEdit: false,
             canDelete: false,
@@ -43,10 +56,9 @@ class Project extends Component {
     handleDeleteProject = () => {
         const { history } = this.props;
 
-        // TODO: need more elegant action to take after successful delete
         if (window.confirm("Are you sure you want to delete this project?")) {
             api.deleteProject(this.state.id)
-                .then(res => history.push("/myprofile"))
+                .then(res => history.push("/deletesuccess", { deleteType: "project" }))
                 .catch(err => {
                     console.log(err);
                     this.setState({ errorDeleting: true });
@@ -57,6 +69,7 @@ class Project extends Component {
     componentDidMount() {
         const { match } = this.props;
         const id = match.params.id;
+        document.title = "PRYDE Research Connect | View Project";
 
         // user is logged in
         if (localStorage.getItem("pryde_key")) {
@@ -91,9 +104,17 @@ class Project extends Component {
             collaborators, additionalInformation, additionalFiles
         } = this.state;
 
-        const contact = Object.entries(alternateContact).length !== 0 ? alternateContact : owner;
         const location = alternateLocation ? alternateLocation : owner.location;
         let statusFormatted = status.replace("-", " ").toUpperCase();
+        const date = new Date(this.state.datePosted);
+        const datePosted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        const emptyAlternateContact = {
+            email: "",
+            phone: "",
+            website: "",
+            last_name: "",
+            first_name: ""
+        };
 
         return (
             <div className={styles.container}>
@@ -110,9 +131,16 @@ class Project extends Component {
                             }
                             {
                                 this.state.canEdit &&
-                                    <button className={styles.editButton}>
-                                        <img src={editButtonOrange} alt="Edit button" />
-                                    </button>
+                                    <Link
+                                    to={{
+                                        pathname: "/editproject",
+                                        state: { projectData: this.state }
+                                    }}
+                                    >
+                                        <button className={styles.editButton}>
+                                            <img src={editButtonOrange} alt="Edit button" />
+                                        </button>
+                                    </Link>
                             }
                             {
                                 this.state.canDelete &&
@@ -127,10 +155,7 @@ class Project extends Component {
                             <h1>{name}</h1>
                             <h2>
                                 {
-                                    contact.affiliation ?
-                                    `${contact.first_name} ${contact.last_name} - ${contact.affiliation}`
-                                    :
-                                    `${contact.first_name} ${contact.last_name}`
+                                    `${owner.first_name} ${owner.last_name} - ${owner.affiliation}`
                                 }
                             </h2>
                             <h2>{location}</h2>
@@ -139,26 +164,53 @@ class Project extends Component {
                             <h3>{statusFormatted}</h3>
                             <ul>
                                 <li>
-                                    <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                                    <a href={`mailto:${owner.email}`}>{owner.email}</a>
+                                    <img className={styles.contactIcon} src={mailIcon} alt="Email icon" />
                                 </li>
                                 {
-                                    contact.phone !== "" &&
+                                    owner.phone !== "" &&
                                     <li>
-                                        <a href={`tel:${contact.phone}`}>({contact.phone.slice(2, 5)})-{contact.phone.slice(5, 8)}-{contact.phone.slice(8, 12)}</a>
+                                        <a href={`tel:${owner.phone}`}>({owner.phone.slice(2, 5)})-{owner.phone.slice(5, 8)}-{owner.phone.slice(8, 12)}</a>
+                                        <img className={styles.contactIcon} src={phoneIcon} alt="Phone icon" />
                                     </li>
                                 }
                                 {
-                                    contact.website !== "" &&
+                                    owner.website !== "" &&
                                     <li>
-                                        <a href={contact.website} target="_blank" rel="noopener noreferrer">{contact.website.replace(/(^\w+:|^)\/\//, '')}</a>
+                                        <a href={owner.website} target="_blank" rel="noopener noreferrer">{owner.website.replace(/(^\w+:|^)\/\//, '')}</a>
+                                        <img className={styles.contactIcon} src={linkIcon} alt="Website icon" />
                                     </li>
                                 }
+                                <li>
+                                    Date posted: { datePosted }
+                                    <img className={styles.contactIcon} src={calendarIcon} alt="Calendar icon" />
+                                </li>
                             </ul>
                         </div>
                     </header>
+                    {
+                        !isEqual(alternateContact, emptyAlternateContact) &&
+                        <section className={styles.whoToContact}>
+                            <h2 className={styles.sectionHeader}>WHO TO CONTACT</h2>
+                            <p>
+                                <span>
+                                    { `${alternateContact.first_name} ${alternateContact.last_name}` }
+                                </span>
+                                <a href={`mailto:${alternateContact.email}`}><img src={mailIcon} alt="Email icon" />{alternateContact.email}</a>
+                                {
+                                    alternateContact.phone !== "" &&
+                                    <a href={`tel:${alternateContact.phone}`}><img src={phoneIcon} alt="Phone icon" />({alternateContact.phone.slice(2, 5)})-{alternateContact.phone.slice(5, 8)}-{alternateContact.phone.slice(8, 12)}</a>
+                                }
+                                {
+                                    alternateContact.website !== "" &&
+                                    <a href={alternateContact.website} target="_blank" rel="noopener noreferrer"><img src={linkIcon} alt="Website icon" />{alternateContact.website.replace(/(^\w+:|^)\/\//, '')}</a>
+                                }
+                            </p>
+                        </section>
+                    }
                     <section className={styles.summary}>
                         <h2 className={styles.sectionHeader}>SUMMARY</h2>
-                        <p>{summary}</p>
+                        <p>{ summary }</p>
                     </section>
                     <div className={styles.projectInformationWrapper}>
                         <section className={styles.stats}>
@@ -194,7 +246,7 @@ class Project extends Component {
                             <h2 className={styles.sectionHeader}>COLLABORATORS</h2>
                             <div className={styles.collaboratorsWrapper}>
                                 {
-                                    collaborators.map(collaborator => <SearchResult key={collaborator.pk} {...collaborator} />)
+                                    collaborators.map(collaborator => <UserCard key={collaborator.pk} {...collaborator} />)
                                 }
                             </div>
                         </section>

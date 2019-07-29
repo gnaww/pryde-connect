@@ -226,13 +226,7 @@ span.qaOptionText {
 }
 
 .researcherImg {
-    width: 294px;
-    height: 294px;
-    background: white;
-    box-sizing: border-box;
-    cursor: pointer;
-    padding: 68px 87px 45px 87px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    width: 155px;
     user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -241,29 +235,12 @@ span.qaOptionText {
     -ms-user-select: none;
 }
 
-.researcherImgClicked {
-    composes: researcherImg;
-    border: 4px solid #99d85d;
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
-}
-
 .practitionerImg {
     composes: researcherImg;
-    width: 294px;
-    height: 294px;
-    padding: 97px 18px 45px 18px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.practitionerImgClicked {
-    composes: practitionerImg;
-    border: 4px solid #49aee9;
-    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
 }
 
 .roleText {
-    width: 338px;
-    height: 118px;
+    width: 100%;
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;
@@ -274,14 +251,39 @@ span.qaOptionText {
     letter-spacing: 0.1em;
 }
 
-.roleCard {
-    width: 292px;
-    margin: 31px 62px 31px 0;
-    text-align: center;
-    box-sizing: border-box;
+.roleCardWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 338px;
+    margin-right: 60px;
 }
 
-.roleLink {
+.roleCard {
+    width: 292px;
+    height: 292px;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.researcherClicked {
+    composes: roleCard;
+    border: 4px solid #99d85d;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+}
+
+.practitionerClicked {
+    composes: roleCard;
+    border: 4px solid #49aee9;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* .roleLink {
     width: 292px;
     height: 292px;
     background: white;
@@ -297,6 +299,22 @@ span.qaOptionText {
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
+} */
+.roleLink {
+    composes: roleCard;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+    color: black;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 50px;
+    margin-bottom: 50px;
 }
 
 .roleLink img {

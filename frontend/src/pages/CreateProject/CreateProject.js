@@ -5,6 +5,8 @@ import styles from '../../styles/CreateProfile.module.css';
 import SubmitProject from './SubmitProject';
 import FinishSubmit from './FinishSubmit';
 import api from '../../services/api';
+import normalizeUrl from 'normalize-url';
+import phone from 'phone';
 
 let pages = [
     {
@@ -18,12 +20,25 @@ let pages = [
         content: FinishSubmit
     }
 ];
+let editPages = [
+    {
+        title: "Edit project",
+        subtitle: "Edit your project's details and information.",
+        content: SubmitProject
+    },
+    {
+        title: "Your project was successfully updated.",
+        subtitle: "",
+        content: FinishSubmit
+    }
+];
 
 class CreateProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
             page: 0,
+            pageData: null,
             clickedNext: false
         };
     }
@@ -37,33 +52,68 @@ class CreateProject extends Component {
                     .map(elt => elt.other ? elt.other : elt.value)
             );
         };
+        project.name = data.name.option;
+        project.alternateLocation = data.alternateLocation.option;
+        project.timeline = data.timeline.option;
+        project.commitmentLength = data.commitmentLength.option;
+        project.incentives = data.incentives.option;
         project.status = parseInt(data.status);
         project.researchTopics = formatArray(data.researchTopics);
         project.ageRanges = formatArray(data.ageRanges);
         project.deliveryModes = formatArray(data.deliveryModes);
-
+        if (data.alternateContact.website) {
+            project.alternateContact.website = data.alternateContact.website ? normalizeUrl(data.alternateContact.website) : "";
+        }
+        if (data.alternateContact.phone) {
+            project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone)[0] : "";
+        }
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];
         // TODO: add collaborators to projects
         // project.collaborators = data.collaborators;
         project.collaborators = [];
-        // TODO: add error handling for if creating project fails
-        api.createProject(project)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => {
-                console.log(err);
-                //console.log(err.response.data);
-            });
+
+        let success = true;
+        if (this.props.editing === true) {
+            api.updateProject(this.props.editProjectData.id, project)
+                .then(response => {
+                    success = response;
+                })
+                .catch(err => {
+                    success = false;
+                    console.log(err);
+                    console.log(err.response.data);
+                });
+        } else {
+            api.createProject(project)
+                .then(response => {
+                    success = response;
+                })
+                .catch(err => {
+                    success = false;
+                    console.log(err);
+                    console.log(err.response.data);
+                });
+        }
+
+        return success;
     }
 
     submitData = (data, errors) => {
-        console.log(errors);
         if (!errors) {
-            this.createProject(data);
-            this.setState({ page: 1 });
+            if (this.createProject(data)) {
+                // successful
+                this.setState({ page: 1 });
+            } else {
+                // failed to create/update project
+                this.setState({ pageData: data, page: 0 });
+                if (this.props.editing) {
+                    alert("There was an error updating your project. Please try again and make sure all questions are filled out properly.");
+                } else {
+                    alert("There was an error creating your project. Please try again and make sure all questions are filled out properly.");
+                }
+            }
         }
         this.setState({ clickedNext: false });
     }
@@ -72,17 +122,29 @@ class CreateProject extends Component {
         this.setState({ clickedNext: true });
     }
 
+    componentDidMount() {
+        document.title = this.props.editing ? "PRYDE Research Connect | Edit Project" : "PRYDE Research Connect | Submit a Project";
+        if (this.props.editProjectData) {
+            this.setState({ pageData: this.props.editProjectData });
+        }
+    }
+
     render() {
-        let PageContent = pages[this.state.page].content;
+        const { editing } = this.props;
+        const PageContent = editing ? editPages[this.state.page].content : pages[this.state.page].content;
+        const title = editing ? editPages[this.state.page].title : pages[this.state.page].title;
+        const subtitle = editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle;
+        const NUM_PAGES = editing ? editPages.length : pages.length;
+
         return (
             localStorage.getItem("pryde_key") ?
                 <div className={styles.root} >
-                    <h1 className={styles.createProfile}>{pages[this.state.page].title}</h1>
-                    <h2 className={styles.subtitle}>{pages[this.state.page].subtitle}</h2>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} />
+                    <h1 className={styles.createProfile}>{title}</h1>
+                    <h2 className={styles.subtitle}>{subtitle}</h2>
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} />
                     <div className={styles.buttons}>
                         {
-                            this.state.page < pages.length - 1 &&
+                            this.state.page < NUM_PAGES - 1 &&
                             (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
                         }
                     </div>

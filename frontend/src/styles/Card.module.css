@@ -3,7 +3,7 @@
     color: black;
 }
 
-.searchResult {
+.card {
     display: flex;
     border: 1px solid #f2f2f2;
     box-sizing: border-box;
@@ -11,21 +11,21 @@
     border-radius: 5px;
     width: 100%;
     margin: 30px 0;
-    padding: 30px 30px;
+    padding: 20px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out
 }
 
-.searchResult:hover {
+.card:hover {
     transform: scale(1.02);
 }
 
-.projectResult {
-    /* height: 240px; */
+.projectCard {
+    height: 240px;
 }
 
-.partnerResult {
-    /* height: 160px; */
+.userCard {
+    height: 200px;
 }
 
 .practitioner {
@@ -37,15 +37,20 @@
 }
 
 .profilePicture {
-    width: 112px;
-    height: 112px;
+    width: 145px;
+    height: 145px;
     align-self: center;
     margin-right: 22px;
 }
 
-.projectDetails, .partnerDetails {
+.projectDetails, .userDetails {
     padding-right: 30px;
-    flex: 2;
+    flex: 5;
+}
+
+.projectDetails {
+    display: flex;
+    flex-direction: column;
 }
 
 .projectDetails div {
@@ -65,7 +70,7 @@
     padding-right: 60px;
 }
 
-.projectDetails h4, .searchResult p {
+.projectDetails h4, .card p {
     font-family: Lato;
     font-size: 20px;
     line-height: 24px;
@@ -74,7 +79,9 @@
 
 .projectDetails p {
     margin-top: 10px;
+    margin-bottom: 10px;
     letter-spacing: 0.1em;
+    flex: 1;
 }
 
 .readMore {
@@ -82,11 +89,11 @@
     color: #FF7F00;
 }
 
-.partnerDetails {
+.userDetails {
     display: flex;
 }
 
-.partnerDetails h3 {
+.userDetails h3 {
     font-family: Work Sans;
     font-weight: bold;
     font-size: 30px;
@@ -96,7 +103,7 @@
     margin: 0;
 }
 
-.partnerDetails h4 {
+.userDetails h4 {
     font-family: Lato;
     font-weight: normal;
     font-size: 20px;
@@ -105,15 +112,15 @@
     margin: 0;
 }
 
-.partnerDetails .researchInterests {
+.userDetails .researchInterests {
     margin-top: 7px;
 }
 
-.partnerDetails section header {
+.userDetails section header {
     display: flex;
 }
 
-.partnerDetails section header img {
+.userDetails section header img {
     margin-left: 15px;
 }
 
@@ -125,7 +132,7 @@
     width: 100px;
 }
 
-.partnerResult .stats {
+.userCard .stats {
     color: white;
     display: flex;
     flex-direction: column;
@@ -134,7 +141,7 @@
 
 .stats {
    padding-left: 30px;
-   flex: 1;
+   flex: 2;
 }
 
 .stats h4 {
@@ -161,8 +168,8 @@
     align-self: flex-start
 }
 
-.line span {
+.statList {
     font-family: Lato;
     font-size: 18px;
-    margin-top: -3px;
+    margin-top: -2px;
 }

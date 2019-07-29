@@ -84,6 +84,9 @@
 
 .projectHeader li {
     padding: 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .projectHeader a {
@@ -91,11 +94,42 @@
     color: black;
 }
 
+.contactIcon {
+    width: 20px;
+    margin-left: 15px;
+}
+
 .sectionHeader {
     font-size: 30px;
     font-weight: normal;
     letter-spacing: 0.1em;
     margin: 0 0 15px 0;
+}
+
+.whoToContact {
+    margin: 40px 0;
+}
+
+.whoToContact span {
+    margin-right: 30px;
+}
+
+.whoToContact p, .whoToContact a {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+}
+
+.whoToContact a {
+    text-decoration: none;
+    color: black;
+    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.whoToContact img {
+    margin-right: 5px;
 }
 
 .summary {

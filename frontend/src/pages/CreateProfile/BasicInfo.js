@@ -23,25 +23,30 @@ class BasicInfo extends Component {
         this.websiteError = false;
     }
 
-    componentDidUpdate(_prevProps, _prevState) {
+    componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
             this.phoneNumberIsInvalid(this.state.phone);
             this.emailIsInvalid(this.state.email);
             this.websiteIsInvalid(this.state.website);
             this.firstNameIsInvalid(this.state.first_name);
             this.lastNameIsInvalid(this.state.last_name);
-            this.passwordIsInvalid(this.state.password);
-            this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
+            if (!this.props.editing) {
+                this.passwordIsInvalid(this.state.password);
+                this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
+            }
 
             const hasErrors = this.phoneNumberError || this.emailError || this.websiteError || this.firstNameError || this.lastNameError || this.passwordError || this.confirmPasswordError;
             this.props.onSubmitData(this.state, hasErrors);
+        }
+
+        if (prevProps.savedData !== this.props.savedData) {
+            this.setState(this.props.savedData);
         }
     }
 
     componentDidMount() {
         if (this.props.savedData !== null) {
             this.setState(this.props.savedData);
-            this.errors = false;
         }
     }
 
@@ -93,6 +98,8 @@ class BasicInfo extends Component {
     }
 
     render() {
+        const { editing } = this.props;
+
         return (
             <>
             <div className={styles.form}>
@@ -120,22 +127,25 @@ class BasicInfo extends Component {
                         value={this.state.email}
                         onChange={this.handleChange('email')}
                     />
-                    <div>
-                        <input
-                            className={styles.longTextInput}
-                            placeholder="Password*"
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange('password')}
-                        />
-                        <input
-                            className={styles.longTextInput}
-                            placeholder="Confirm your password*"
-                            type="password"
-                            value={this.state.confirmPassword}
-                            onChange={this.handleChange('confirmPassword')}
-                        />
-                    </div>
+                    {
+                        !editing &&
+                        <div>
+                            <input
+                                className={styles.longTextInput}
+                                placeholder="Password*"
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange('password')}
+                            />
+                            <input
+                                className={styles.longTextInput}
+                                placeholder="Confirm your password*"
+                                type="password"
+                                value={this.state.confirmPassword}
+                                onChange={this.handleChange('confirmPassword')}
+                            />
+                        </div>
+                    }
                 </div>
                 <div className={styles.optionalFields}>
                     <input
