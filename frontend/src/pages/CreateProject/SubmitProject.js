@@ -197,9 +197,11 @@ class SubmitProject extends Component {
     }
 
     getQAComponent = (qa, index) => {
+        const defaultStatus = this.state.status ? this.state.status.toString() : "";
+
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setProjectStatus, "", this.errors[index])}
+                {getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index])}
                 {getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index])}
                 {getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index])}
                 {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}

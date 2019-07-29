@@ -125,8 +125,9 @@ class PractitionerQuestions extends Component {
     }
 
     getQAComponent = (qa, index) => {
-        const defaultLocatedAtCCE = this.state.locatedAtCCE !== null ? this.state.locatedAtCCE : "";
+        const defaultLocatedAtCCE = this.state.locatedAtCCE !== null ? this.state.locatedAtCCE.toString() : "";
         const defaultCounty = this.state.location ? this.state.location : "";
+        // console.log(defaultLocatedAtCCE, typeof defaultLocatedAtCCE);
 
         return (
             <li className={styles.numberedList} key={index}>

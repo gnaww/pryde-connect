@@ -4,15 +4,15 @@ import { PractitionerInformation } from '../CreateProfile/FormContent';
 export const ProjectInformation = {
     Status: [
         {
-            value: 1,
+            value: "1",
             text: "Completed"
         },
         {
-            value: 2,
+            value: "2",
             text: "In Progress"
         },
         {
-            value: 3,
+            value: "3",
             text: "Not Started"
         }
     ]

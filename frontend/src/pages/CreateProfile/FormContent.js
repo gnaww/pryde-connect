@@ -63,11 +63,11 @@ export const practitionerQAForm = [
             label: "SELECT",
             options: [
                 {
-                    value: true,
+                    value: "true",
                     text: "YES"
                 },
                 {
-                    value: false,
+                    value: "false",
                     text: "NO"
                 }
             ]
@@ -417,11 +417,11 @@ export const researcherQAForm = [
             label: "SELECT",
             options: [
                 {
-                    value: true,
+                    value: "true",
                     text: "YES"
                 },
                 {
-                    value: false,
+                    value: "false",
                     text: "NO"
                 }
             ]
