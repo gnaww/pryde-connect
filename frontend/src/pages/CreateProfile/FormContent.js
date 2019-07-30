@@ -34,7 +34,7 @@ export const PractitionerInformation = {
     ResearchTopics: [
         "Animal Science & Agriculture",
         "Civic Engagement",
-        "Diversity, Equity & Inclusion",
+        "Diversity Equity & Inclusion",
         "Education & Learning",
         "Environment & Sustainability",
         "Families",
@@ -48,7 +48,7 @@ export const PractitionerInformation = {
         "Nutrition",
         "Risk Behavior",
         "Self & Identity",
-        "Science, Technology, Engineering & Math (STEM)",
+        "Science Technology Engineering & Math (STEM)",
         "Youth/Adult Relationships",
         "Other: "
     ]
@@ -389,7 +389,7 @@ export const ResearcherInformation = {
     ResearchTopics: [
         "Animal Science & Agriculture",
         "Civic Engagement",
-        "Diversity, Equity & Inclusion",
+        "Diversity Equity & Inclusion",
         "Education & Learning",
         "Environment & Sustainability",
         "Families",
@@ -403,7 +403,7 @@ export const ResearcherInformation = {
         "Nutrition",
         "Risk Behavior",
         "Self & Identity",
-        "Science, Technology, Engineering & Math (STEM)",
+        "Science Technology Engineering & Math (STEM)",
         "Youth/Adult Relationships",
         "Other: "
     ]
