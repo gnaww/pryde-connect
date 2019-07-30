@@ -189,7 +189,7 @@ class Project extends Component {
                         </div>
                     </header>
                     {
-                        !isEqual(alternateContact, emptyAlternateContact) &&
+                        (!isEqual(alternateContact, emptyAlternateContact) && !Object.entries(alternateContact).length === 0) &&
                         <section className={styles.whoToContact}>
                             <h2 className={styles.sectionHeader}>WHO TO CONTACT</h2>
                             <p>

@@ -44,7 +44,7 @@ class CreateProject extends Component {
     }
 
     // builds project object from data to POST to the API
-    createProject = data => {
+    createProject = async data => {
         let project = Object.assign({}, data);
         const formatArray = arr => {
             return (
@@ -76,44 +76,43 @@ class CreateProject extends Component {
 
         let success = true;
         if (this.props.editing === true) {
-            api.updateProject(this.props.editProjectData.id, project)
-                .then(response => {
-                    success = response;
-                })
-                .catch(err => {
-                    success = false;
-                    console.log(err);
-                    console.log(err.response.data);
-                });
+            try {
+                let response = await api.updateProject(this.props.editProjectData.id, project);
+                return { success: response, message: "" };
+            } catch(err) {
+                console.log(err);
+                console.log(err.response.data);
+                return { success: false, message: Object.values(err.response.data)[0][0]  };
+            }
         } else {
-            api.createProject(project)
-                .then(response => {
-                    success = response;
-                })
-                .catch(err => {
-                    success = false;
-                    console.log(err);
-                    console.log(err.response.data);
-                });
+            try {
+                let response = await api.createProject(this.props.editProjectData.id, project);
+                return { success: response, message: "" };
+            } catch(err) {
+                console.log(err);
+                console.log(err.response.data);
+                return { success: false, message: Object.values(err.response.data)[0][0]  };
+            }
         }
-
-        return success;
     }
 
     submitData = (data, errors) => {
         if (!errors) {
-            if (this.createProject(data)) {
-                // successful
-                this.setState({ page: 1 });
-            } else {
-                // failed to create/update project
-                this.setState({ pageData: data, page: 0 });
-                if (this.props.editing) {
-                    alert("There was an error updating your project. Please try again and make sure all questions are filled out properly.");
-                } else {
-                    alert("There was an error creating your project. Please try again and make sure all questions are filled out properly.");
-                }
-            }
+            this.createProject(data)
+                .then(response => {
+                    if (response.success) {
+                        // successful
+                        this.setState({ page: 1 });
+                    } else {
+                        // failed to create/update project
+                        this.setState({ pageData: data, page: 0 });
+                        if (this.props.editing) {
+                            alert(response.message ? response.message : "There was an error updating your project. Please try again and make sure all questions are filled out properly.");
+                        } else {
+                            alert(response.message ? response.message : "There was an error creating your project. Please try again and make sure all questions are filled out properly.");
+                        }
+                    }
+                });
         }
         this.setState({ clickedNext: false });
     }
