@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator
+import ast
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
-
     role = serializers.SerializerMethodField()
+
     class Meta:
         model = PUser
-        fields = ['pk', 'first_name', 'last_name', 'affiliation',
-                  'location', 'email', 'phone', 'website', 'type', 'role']
+        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -30,6 +30,9 @@ class CollaboratorSerializer(serializers.ModelSerializer):
 class ProjectShortSerializer(serializers.ModelSerializer):
     owner = MiniUserSerializer(many=False, read_only=True)
     status = serializers.SerializerMethodField()
+    ageRanges = ast.literal_eval(ageRanges)
+    researchTopics = ast.literal_eval(researchTopics)
+    deliveryModes = ast.literal_eval(deliveryModes)
 
     class Meta:
         model = Project
@@ -46,6 +49,10 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class ProjectUpdateSerializer(serializers.ModelSerializer):
+    ageRanges = ast.literal_eval(ageRanges)
+    researchTopics = ast.literal_eval(researchTopics)
+    deliveryModes = ast.literal_eval(deliveryModes)
+
     class Meta:
         model = Project
         exclude = ['owner']
@@ -111,6 +118,9 @@ class ProjectSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
     collaborators = serializers.SerializerMethodField()
+    ageRanges = ast.literal_eval(ageRanges)
+    researchTopics = ast.literal_eval(researchTopics)
+    deliveryModes = ast.literal_eval(deliveryModes)
 
     class Meta:
         model = Project

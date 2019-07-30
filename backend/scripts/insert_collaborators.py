@@ -70,7 +70,7 @@ def add_collaborators():
                 'addCollaboratorPermission': random.choice([True, False])
             }
 
-            print(requests.request("POST", url, data=json.dumps(body), headers=headers))
+            print(requests.request("POST", url, data=json.dumps(body), headers=headers).json())
 
 
 add_collaborators()

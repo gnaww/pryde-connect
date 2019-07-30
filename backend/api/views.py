@@ -83,7 +83,7 @@ class CreateProject(generics.CreateAPIView):
                 commitmentLength = request.data['timeline'],
                 incentives = request.data['incentives'],
                 additionalInformation = request.data['additionalInformation'],
-                additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
+                # additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
                 alternateContact = request.data['alternateContact'],
                 alternateLocation = request.data['alternateLocation']
             )
@@ -91,7 +91,6 @@ class CreateProject(generics.CreateAPIView):
             #TODO create the collaborator thing here
             return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
         except Exception as e:
-            print('aslkfjsalkfjlksa')
             print(e)
             return Response({
                 'status': 'Something went wrong while creating the project.'
@@ -122,7 +121,7 @@ class AddCollaborator(generics.CreateAPIView):
             obj = Project.objects.get(pk=kwargs['pk'])
         except Exception as e:
             print(e)
-            return Response({'message': 'Project not found'},
+            return Response({'message': 'Project not found.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -133,14 +132,14 @@ class AddCollaborator(generics.CreateAPIView):
         try:
             # the owner of the project should not be able to add themselves as a collaborator
             if obj.owner == PUser.objects.get(pk=request.data['user']):
-                return Response({'message': 'You cannot add yourself as a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'You cannot add yourself as a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
             # check to see if the user is already added as a collaborator to this project
             if Collaborator.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user'])).exists():
-                return Response({'message': 'This user is already a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'This user is already a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
             Collaborator.objects.create(project=Project.objects.get(pk=kwargs['pk']),
                                          collaborator=PUser.objects.get(pk=request.data['user']),
@@ -166,14 +165,14 @@ class HideProject(generics.UpdateAPIView):
             obj = Project.objects.get(pk=kwargs['pk'])
         except Exception as e:
             print(e)
-            return Response({'message': 'Project not found'},
+            return Response({'message': 'Project not found.'},
                             status=status.HTTP_400_BAD_REQUEST)
         self.check_object_permissions(request, obj)
 
         collab = Collaborator.objects.get(user=request.user, project=obj)
         collab.showOnProfile = not collab.showOnProfile
         collab.save()
-        return Response({'message': 'Your preference has been changed'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Your preference has been changed.'}, status=status.HTTP_200_OK)
 
 
 class FilterProjects(generics.ListAPIView):

@@ -62,7 +62,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -79,7 +79,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -96,7 +96,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -113,7 +113,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -130,7 +130,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -147,7 +147,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -164,7 +164,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -181,7 +181,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -198,7 +198,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
@@ -215,7 +215,7 @@ def insert_posts():
         "incentives": "none",
         # "collaborators": [],
         "additionalInformation": "django and react",
-        "additionalFiles": [],
+        # "additionalFiles": [],
         "alternateContact": {},
         "alternateLocation": ""
     }
