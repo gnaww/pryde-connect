@@ -175,11 +175,14 @@ class HideProject(generics.UpdateAPIView):
         return Response({'message': 'Your preference has been changed.'}, status=status.HTTP_200_OK)
 
 
-class FilterProjects(generics.ListAPIView):
+class Filter(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
 
         print(request.data)
+
+
+
         filtered_set = Project.objects.all()
 
         if 'q' in request.data:
