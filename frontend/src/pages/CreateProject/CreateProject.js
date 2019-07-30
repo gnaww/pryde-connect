@@ -74,7 +74,6 @@ class CreateProject extends Component {
         // project.collaborators = data.collaborators;
         project.collaborators = [];
 
-        let success = true;
         if (this.props.editing === true) {
             try {
                 let response = await api.updateProject(this.props.editProjectData.id, project);
@@ -82,16 +81,16 @@ class CreateProject extends Component {
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0]  };
+                return { success: false, message: Object.values(err.response.data)[0][0] };
             }
         } else {
             try {
-                let response = await api.createProject(this.props.editProjectData.id, project);
+                let response = await api.createProject(project);
                 return { success: response, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0]  };
+                return { success: false, message: Object.values(err.response.data)[0] };
             }
         }
     }
