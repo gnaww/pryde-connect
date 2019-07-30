@@ -51,6 +51,7 @@ export default {
         };
 
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/user/${id}/delete/`, config);
+        localStorage.removeItem("pryde_key");
         return response.status === 204;
     },
     async login(data) {
