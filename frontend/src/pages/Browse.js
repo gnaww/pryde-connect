@@ -93,16 +93,16 @@ class Browse extends Component {
 
         if(!parsedURL.q && noFiltersSelected) {
             console.log("default search");
-            if (parsedURL.category === "projects") {
-                api.getProjects()
-                    .then(projects => this.setState({ searchResults: projects }))
+            if (parsedURL.category === "partners") {
+                api.getUsers()
+                    .then(users => this.setState({ searchResults: users }))
                     .catch(err => {
                         alert("There was an error getting your search results. Please refresh the page or try again later.");
                         console.log(err);
                     });
             } else {
-                api.getUsers()
-                    .then(users => this.setState({ searchResults: users }))
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
                     .catch(err => {
                         alert("There was an error getting your search results. Please refresh the page or try again later.");
                         console.log(err);
