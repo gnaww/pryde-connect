@@ -182,7 +182,16 @@ class FilterProjects(generics.ListAPIView):
         print(request.data)
         filtered_set = Project.objects.all()
 
-        # deal with status query
+        if 'q' in request.data:
+
+            search_filtered_set = Project.objects.filter(owner__first_name__icontains=request.data['q']) \
+                            | Project.objects.filter(owner__last_name__icontains=request.data['q']) \
+                            | Project.objects.filter(name__icontains=request.data['q']) \
+                            | Project.objects.filter(summary__icontains=request.data['q']) \
+                            | Project.objects.filter(researchTopics__icontains=request.data['q'])
+
+            filtered_set = filtered_set & search_filtered_set
+
         if 'status' in request.data:
             filter_status_set = Project.objects.none()
             status_dict = {
