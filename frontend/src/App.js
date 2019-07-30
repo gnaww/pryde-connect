@@ -49,10 +49,10 @@ class App extends Component {
                             localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Login setLoggedIn={this.setLoggedIn} {...renderProps} />
                         )} />
                         <Route path="/signup" exact render={renderProps => (
-                            localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <CreateProfile {...renderProps} />
+                            localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <CreateProfile setLoggedIn={this.setLoggedIn} {...renderProps} />
                         )} />
                         <Route path="/myprofile" exact render={renderProps => (
-                            !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile {...renderProps} />
+                            !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <Profile setLoggedOut={this.setLoggedOut} {...renderProps} />
                         )} />
                         <Route path="/submit" exact component={CreateProject} />
                         <Route path="/user/:id" component={Profile} />
