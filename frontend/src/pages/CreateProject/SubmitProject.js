@@ -9,15 +9,27 @@ class SubmitProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
+            name: {
+                option: "",
+                other: ""
+            },
             status: null,
             summary: "",
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
             deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            timeline: "",
-            commitmentLength: "",
-            incentives: "",
+            timeline: {
+                option: "",
+                other: ""
+            },
+            commitmentLength: {
+                option: "",
+                other: ""
+            },
+            incentives: {
+                option: "",
+                other: ""
+            },
             additionalInformation: "",
             additionalFiles: [], // TODO: need to implement with file hosting
             collaborators: [], // TODO: need to implement form for adding/editing collaborators
@@ -28,14 +40,17 @@ class SubmitProject extends Component {
                 phone: "",
                 website: ""
             },
-            alternateLocation: ""
+            alternateLocation: {
+                option: "",
+                other: ""
+            }
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
 
     componentDidUpdate(prevProps, _prevState) {
         function nonEmptyString(key, state) {
-            return state[key] !== "";
+            return state[key].option !== "";
         }
 
         function nonEmptyArray(key, state) {
@@ -86,6 +101,8 @@ class SubmitProject extends Component {
                     return false;
                 } else if (pair.key === "alternateLocation") {
                     return false;
+                } else if (pair.key === "summary") {
+                    return state.summary === "";
                 } else {
                     return !nonEmptyString(pair.key, state);
                 }
