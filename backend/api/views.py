@@ -69,7 +69,7 @@ class CreateProject(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
-        print(request)
+        print(request.data)
         try:
             new_project = Project.objects.create(
                 name = request.data['name'],

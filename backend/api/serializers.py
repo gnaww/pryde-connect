@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator
 import ast
@@ -30,9 +31,9 @@ class CollaboratorSerializer(serializers.ModelSerializer):
 class ProjectShortSerializer(serializers.ModelSerializer):
     owner = MiniUserSerializer(many=False, read_only=True)
     status = serializers.SerializerMethodField()
-    ageRanges = ast.literal_eval(ageRanges)
-    researchTopics = ast.literal_eval(researchTopics)
-    deliveryModes = ast.literal_eval(deliveryModes)
+    ageRanges = serializers.SerializerMethodField()
+    researchTopics = serializers.SerializerMethodField()
+    deliveryModes = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
@@ -41,25 +42,49 @@ class ProjectShortSerializer(serializers.ModelSerializer):
     def get_status(self, obj):
         return obj.get_status_display()
 
+    def get_ageRanges(self, obj):
+        return obj.ageRanges
+
+    def get_researchTopics(self, obj):
+        return obj.researchTopics
+
+    def get_deliveryModes(self, obj):
+        return obj.deliveryModes
+
+
+class StringArrayField(ListField):
+    def to_internal_value(self, data):
+        return super().to_internal_value(data)
+
 
 class UserUpdateSerializer(serializers.ModelSerializer):
+    researchInterests = StringArrayField()
+    roles = StringArrayField()
+    ageRanges = StringArrayField()
+    deliveryModes = StringArrayField()
+
     class Meta:
         model = get_user_model()
         exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
 
 
 class ProjectUpdateSerializer(serializers.ModelSerializer):
-    ageRanges = ast.literal_eval(ageRanges)
-    researchTopics = ast.literal_eval(researchTopics)
-    deliveryModes = ast.literal_eval(deliveryModes)
+    ageRanges = StringArrayField()
+    researchTopics = StringArrayField()
+    deliveryModes = StringArrayField()
 
     class Meta:
         model = Project
         exclude = ['owner']
 
+
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
+    researchInterests = serializers.SerializerMethodField()
+    roles = serializers.SerializerMethodField()
+    ageRanges = serializers.SerializerMethodField()
+    deliveryModes = serializers.SerializerMethodField()
 
     # projects_and_collabs = serializers.SerializerMethodField()
     class Meta:
@@ -86,11 +111,24 @@ class UserSerializer(serializers.ModelSerializer):
     def get_role(self, obj):
         return obj.get_role_display()
 
+    def get_researchInterests(self, obj):
+        return obj.researchInterests
+
+    def get_roles(self, obj):
+        return obj.roles
+
+    def get_ageRanges(self, obj):
+        return obj.ageRanges
+
+    def get_deliveryModes(self, obj):
+        return obj.deliveryModes
+
 
 # Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
     numProjects = serializers.SerializerMethodField('num_projects')
+    researchInterests = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -113,14 +151,17 @@ class UserShortSerializer(serializers.ModelSerializer):
 
         return len(projects)
 
+    def get_researchInterests(self, obj):
+        return obj.researchInterests
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     owner = MiniUserSerializer(many=False, read_only=True)
     collaborators = serializers.SerializerMethodField()
-    ageRanges = ast.literal_eval(ageRanges)
-    researchTopics = ast.literal_eval(researchTopics)
-    deliveryModes = ast.literal_eval(deliveryModes)
+    ageRanges = serializers.SerializerMethodField()
+    researchTopics = serializers.SerializerMethodField()
+    deliveryModes = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
@@ -137,3 +178,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_status(self, obj):
         return obj.get_status_display()
+
+    def get_ageRanges(self, obj):
+        return obj.ageRanges
+
+    def get_researchTopics(self, obj):
+        return obj.researchTopics
+
+    def get_deliveryModes(self, obj):
+        return obj.deliveryModes

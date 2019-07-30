@@ -190,14 +190,6 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'pryde',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-    #     'PORT': '5432'
-    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pryde',

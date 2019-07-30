@@ -125,7 +125,7 @@ class Project(Model):
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
     incentives = models.TextField()
-    additionalInformation = models.TextField()
+    additionalInformation = models.TextField(null=True, blank=True)
     # additionalFiles = ArrayField(models.FileField(upload_to='uploads/'), default=None, blank=True)
     type = models.CharField(max_length=100, default='project')
     datePosted = models.DateTimeField(auto_now_add=True)
