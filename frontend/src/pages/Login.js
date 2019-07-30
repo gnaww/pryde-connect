@@ -32,7 +32,6 @@ class Login extends Component {
             api.login(this.state)
                 .then(response => {
                     localStorage.setItem("pryde_key", response.data.key);
-                    this.props.setLoggedIn();
                     this.props.history.push("/myprofile");
                 })
                 .catch(error => {

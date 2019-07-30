@@ -67,10 +67,10 @@ export default {
             }
         };
 
+        localStorage.removeItem("pryde_key");
         axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/logout/`, config)
             .then(response => {
                 if (response.status === 200) {
-                    localStorage.removeItem("pryde_key");
                     return true;
                 } else {
                     return false;
