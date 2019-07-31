@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
+    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer, UserCollaboratorSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -11,12 +11,26 @@ from rest_framework.response import Response
 # custom permissions
 from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
 
-
+# gets and returns the list
 class GetCollaboratorsFromProject(generics.RetrieveAPIView):
 
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
+
+
+        print(args)
+        print(kwargs)
+        print(request)
+
+        project = Project.objects.get(pk=kwargs['pk'])
+        print(project.owner)
+
+        collaborators = Collaborator.objects.filter(project=kwargs['pk'])
+
+        serializer = UserCollaboratorSerializer(collaborators, many=True)
+
+        return Response(data=serializer.data)
 
 
 
@@ -61,7 +75,7 @@ class AddCollaborator(generics.CreateAPIView):
 
         except Exception as e:
             print(e)
-            return Response({'message': 'Something went wrong while adding a collaborator.'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Something went wrong while adding a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ToggleProjectVisibility(generics.UpdateAPIView):

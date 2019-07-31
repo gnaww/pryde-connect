@@ -187,3 +187,28 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
+
+class CollaboratorsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collaborator
+        fields = '__all__'
+
+class UserCollaboratorSerializer(serializers.ModelSerializer):
+
+    firstName = serializers.SerializerMethodField()
+    lastName = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Collaborator
+        fields = ['editPermission', 'deletePermission', 'addCollaboratorPermission', 'showProjectOnProfile',
+                  'email', 'firstName', 'lastName']
+
+    def get_firstName(self, obj):
+        return PUser.objects.get(pk=obj.collaborator.pk).first_name
+
+    def get_lastName(self, obj):
+        return PUser.objects.get(pk=obj.collaborator.pk).last_name
+
+    def get_email(self, obj):
+        return PUser.objects.get(pk=obj.collaborator.pk).email
