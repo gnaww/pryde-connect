@@ -22,6 +22,8 @@ class GetCollaboratorsFromProject(generics.RetrieveAPIView):
         print(args)
         print(kwargs)
         print(request)
+        if not Project.objects.filter(pk=kwargs['pk']).exists():
+            return Response({'message': 'Project not found'})
 
         project = Project.objects.get(pk=kwargs['pk'])
         print(project.owner)
