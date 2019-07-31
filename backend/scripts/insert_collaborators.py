@@ -12,7 +12,7 @@ def login_user():
     }
 
     login = {
-        'email': 'test1@gmail.com',
+        'email': 'barronfran@gmail.com',
         'password': 'password'
     }
     response = requests.request("POST", url, data=json.dumps(login), headers=headers)

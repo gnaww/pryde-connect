@@ -3,7 +3,7 @@ import UserCard from './UserCard';
 import ProjectCard from './ProjectCard';
 
 const stringCompareAsc = stringType => (a, b) => {
-    if (stringType === "name" && a.type === "partner")  {
+    if (stringType === "name" && a.type === "user")  {
         const nameA = `${a.first_name} ${a.last_name}`;
         const nameB = `${b.first_name} ${b.last_name}`;
         return nameA.localeCompare(nameB, "en");
@@ -11,7 +11,7 @@ const stringCompareAsc = stringType => (a, b) => {
         const nameA = `${a.owner.first_name} ${a.owner.last_name}`;
         const nameB = `${b.owner.first_name} ${b.owner.last_name}`;
         return nameA.localeCompare(nameB, "en");
-    } else if (stringType === "location" && a.type === "partner") {
+    } else if (stringType === "location" && a.type === "user") {
         return a.location.localeCompare(b.location, "en");
     } else if (stringType === "location" && a.type === "project") {
         return a.owner.location.localeCompare(b.owner.location, "en");
@@ -32,7 +32,7 @@ const numProjectsCompareDesc = (a, b) => {
 
 const dateCompareAsc = (a, b) => {
     let dateA, dateB;
-    if (a.type === "partner") {
+    if (a.type === "user") {
         dateA = new Date(a.date_joined);
         dateB = new Date(b.date_joined);
     } else if (a.type === "project") {
