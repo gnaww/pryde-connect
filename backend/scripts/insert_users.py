@@ -103,7 +103,7 @@ def pump_into_servers():
     }
 
     user4 = {
-        "email": "wow7@gmail.com",
+        "email": "test4@gmail.com",
         "password1": "password",
         "password2": "password",
         "first_name": random.choice(firstName),
