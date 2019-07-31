@@ -177,63 +177,86 @@ class HideProject(generics.UpdateAPIView):
 
 class Filter(generics.ListAPIView):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
+        print("hello world~!")
         # if 'category' not in request.GET or\
         #         ((request.GET['category'] != 'projects') and (request.GET['category'] != 'partners')):
         #
         #     return Response({'message': 'a category must be specified'})
 
-        if ('category' not in request.GET) or (request.GET['category'] == 'projects'):
+        if ('category' not in request.data) or (request.data['category'] == 'projects'):
 
+            print("hello world")
             filtered_set = Project.objects.all()
+            print(request.data)
 
-            if 'q' in request.GET:
+            if 'q' in request.data:
 
-                search_filtered_set = Project.objects.filter(owner__first_name__icontains=request.GET['q']) \
-                                | Project.objects.filter(owner__last_name__icontains=request.GET['q']) \
-                                | Project.objects.filter(name__icontains=request.GET['q']) \
-                                | Project.objects.filter(summary__icontains=request.GET['q']) \
-                                | Project.objects.filter(researchTopics__icontains=request.GET['q'])
+                search_filtered_set = Project.objects.filter(owner__first_name__icontains=request.data['q']) \
+                                | Project.objects.filter(owner__last_name__icontains=request.data['q']) \
+                                | Project.objects.filter(name__icontains=request.data['q']) \
+                                | Project.objects.filter(summary__icontains=request.data['q']) \
+                                | Project.objects.filter(researchTopics__icontains=request.data['q'])
 
                 filtered_set = filtered_set & search_filtered_set
 
-            if 'status' in request.GET:
+
+
+            if 'status' in request.data:
+                print("hello")
                 filter_status_set = Project.objects.none()
                 status_dict = {
                     'Completed': 1,
                     'In Progress': 2,
                     'Not Started': 3
                 }
-                status_params = request.GET['status'].split(',')
+
+                status_params = request.data['status']
+                if type(status_params) == str:
+                    status_params = [status_params]
 
                 print(status_params)
                 for param in status_params:
+                    # print(filter_status_set.count())
                     filter_status_set = filter_status_set | Project.objects.filter(status=status_dict[param])
+                    # print(filter_status_set.count())
+
+                print(filter_status_set.count())
+                print(filtered_set.count())
 
                 filtered_set = filtered_set & filter_status_set
 
-            if 'researchtopic' in request.GET:
+            if 'researchtopic' in request.data:
                 filtered_researchtopic_set = Project.objects.none()
-                research_topics = request.GET['researchtopic'].split(',')
+                research_topics = request.data['researchtopic']
+                if type(research_topics) == str:
+                    research_topics = [research_topics]
+
                 for topic in research_topics:
                     filtered_researchtopic_set = filtered_researchtopic_set |\
                                                  Project.objects.filter(researchTopics__contains=topic)
 
                 filtered_set = filtered_set & filtered_researchtopic_set
 
-            if 'deliverymodes' in request.GET:
+            if 'deliverymodes' in request.data:
                 filtered_deliverymodes_set = Project.objects.none()
-                delivery_modes = request.GET['deliverymodes'].split(',')
+
+                delivery_modes = request.data['deliverymodes']
+                if type(delivery_modes) == str:
+                    delivery_modes = [delivery_modes]
+
                 for mode in delivery_modes:
                     filtered_deliverymodes_set = filtered_deliverymodes_set |\
                                                  Project.objects.filter(deliveryModes__contains=mode)
 
                 filtered_set = filtered_set & filtered_deliverymodes_set
 
-            if 'ageranges' in request.GET:
+            if 'ageranges' in request.data:
                 filtered_ageranges_set = Project.objects.none()
-                ageranges = request.GET['ageranges'].split(',')
+                ageranges = request.data['ageranges']
+                if type(ageranges) == str:
+                    ageranges = [ageranges]
                 for age in ageranges:
                     filtered_ageranges_set = filtered_ageranges_set | \
                                              Project.objects.filter(ageRanges__contains=age)
@@ -247,12 +270,12 @@ class Filter(generics.ListAPIView):
             #filter through people
             filtered_set = PUser.objects.filter(is_staff=False)
 
-            if 'q' in request.GET:
-                search_filtered_set = PUser.objects.filter(first_name__icontains=request.GET['q']) \
-                                      | PUser.objects.filter(last_name__icontains=request.GET['q']) \
-                                      | PUser.objects.filter(researchInterests__icontains=request.GET['q']) \
-                                      | PUser.objects.filter(researchDescription__icontains=request.GET['q']) \
-                                      | PUser.objects.filter(researchNeeds__icontains=request.GET['q']) \
+            if 'q' in request.data:
+                search_filtered_set = PUser.objects.filter(first_name__icontains=request.data['q']) \
+                                      | PUser.objects.filter(last_name__icontains=request.data['q']) \
+                                      | PUser.objects.filter(researchInterests__icontains=request.data['q']) \
+                                      | PUser.objects.filter(researchDescription__icontains=request.data['q']) \
+                                      | PUser.objects.filter(researchNeeds__icontains=request.data['q']) \
                 #TODO: get users whose projects names contains a query
 
                 filtered_set = filtered_set & search_filtered_set
@@ -263,27 +286,33 @@ class Filter(generics.ListAPIView):
             # needs(practitioners), & Project
             # name(s)
 
-            if 'researchinterest' in request.GET:
+            if 'researchinterest' in request.data:
                 filtered_researchinterest_set = PUser.objects.none()
-                research_interests = request.GET['researchinterest'].split(',')
+                research_interests = request.data['researchinterest']
+                if type(research_interests) == str:
+                    research_interests = [research_interests]
                 for n in research_interests:
                     filtered_researchinterest_set = filtered_researchinterest_set | \
                                                  PUser.objects.filter(researchInterests__contains=n)
 
                 filtered_set = filtered_set & filtered_researchinterest_set
 
-            if 'location' in request.GET:
+            if 'location' in request.data:
                 filtered_location_set = PUser.objects.none()
-                locations = request.GET['location'].split(',')
+                locations = request.data['location']
+                if type(locations) == str:
+                    locations = [locations]
                 for location in locations:
                     filtered_location_set = filtered_location_set | \
                                             PUser.objects.filter(location=location)
 
                 filtered_set = filtered_set & filtered_location_set
 
-            if 'ageranges' in request.GET:
+            if 'ageranges' in request.data:
                 filtered_ageRanges_set = PUser.objects.non()
-                ageRanges = request.GET['ageranges'].split(',')
+                ageRanges = request.data['ageranges']
+                if type(ageRanges) == str:
+                    ageRanges = [ageRanges]
                 for agerange in ageRanges:
                     filtered_ageRanges_set = filtered_ageRanges_set | \
                                                 PUser.objects.filter(ageRanges__contains=[agerange])
