@@ -34,7 +34,7 @@ def pump_into_servers():
     }
 
     user1 = {
-        "email": "test1@gmail.com",
+        "email": "barronfran@gmail.com",
         "password1": "password",
         "password2": "password",
         "first_name": random.choice(firstName),
@@ -57,7 +57,7 @@ def pump_into_servers():
     }
 
     user2 = {
-        "email": "test2@gmail.com",
+        "email": "dubois.barron@gmail.com",
         "password1": "password",
         "password2": "password",
         "first_name": random.choice(firstName),
@@ -80,7 +80,7 @@ def pump_into_servers():
     }
 
     user3 = {
-        "email": "test3@gmail.com",
+        "email": "william.oliver.wang@gmail.com",
         "password1": "password",
         "password2": "password",
         "first_name": random.choice(firstName),
@@ -103,7 +103,7 @@ def pump_into_servers():
     }
 
     user4 = {
-        "email": "test4@gmail.com",
+        "email": "wow7@gmail.com",
         "password1": "password",
         "password2": "password",
         "first_name": random.choice(firstName),
