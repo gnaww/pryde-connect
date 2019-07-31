@@ -1,9 +1,10 @@
 from django.urls import path, include
 from django.conf.urls import url
 
-from .user_views import *
-from .project_views import *
-from .collaborator_views import *
+from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser
+from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
+from .collaborator_views import GetCollaboratorsFromProject, AddCollaborator, ToggleProjectVisibility
+from .views import Filter
 
 
 
@@ -23,12 +24,14 @@ urlpatterns = [
     path('project/<int:pk>/update/', UpdateProject.as_view()),
     path('project/<int:pk>/delete/', DeleteProject.as_view()),
     path('project/<int:pk>/collaborator/', AddCollaborator.as_view()),
-
+    path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
 
     #TODO: keep testing filter
     path('filter/', Filter.as_view()),
 
-    path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
+    path('collaborators/<int:pk>/', GetCollaboratorsFromProject.as_view()),
+
+
 
 
     #TODO: write endpoint to delete collaborators from project
