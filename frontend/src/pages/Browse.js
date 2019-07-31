@@ -109,7 +109,15 @@ class Browse extends Component {
                     });
             }
         } else {
-            console.log('searching w filters and/or query')
+            console.log('searching w filters and/or query');
+            console.log(parsedURL);
+
+            api.search(parsedURL)
+                .then(results => this.setState({ searchResults: results }))
+                .catch(err => {
+                    alert("There was an error getting your search results..")
+                    console.log(err);
+                });
             // api.search(parsedURL)
             //     .then(results => this.setState({ searchResults: results }))
             //     .catch(err => {

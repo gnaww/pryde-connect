@@ -123,5 +123,19 @@ export default {
 
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/delete/`, config);
         return response.status === 204;
+    },
+
+    async search(obj) {
+        console.log("sending request");
+        console.log(obj);
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/filter/`, {
+            params:
+                obj
+
+        });
+        console.log(response);
+        console.log(response.data);
+        return response.data;
     }
+
 }
