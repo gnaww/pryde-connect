@@ -12,6 +12,14 @@ from rest_framework.response import Response
 from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
 
 
+class GetCollaboratorsFromProject(generics.RetrieveAPIView):
+
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+
+
+
 class AddCollaborator(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
     # with addCollaboratorPermission should be allowed to do this

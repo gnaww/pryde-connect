@@ -26,7 +26,7 @@ urlpatterns = [
 
 
     #TODO: keep testing filter
-    path('filter/', FilterProjects.as_view()),
+    path('filter/', Filter.as_view()),
 
     path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
 
