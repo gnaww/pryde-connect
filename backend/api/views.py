@@ -169,8 +169,8 @@ class HideProject(generics.UpdateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         self.check_object_permissions(request, obj)
 
-        collab = Collaborator.objects.get(user=request.user, project=obj)
-        collab.showOnProfile = not collab.showOnProfile
+        collab = Collaborator.objects.get(collaborator=request.user, project=obj)
+        collab.showProjectOnProfile = not collab.showProjectOnProfile
         collab.save()
         return Response({'message': 'Your preference has been changed.'}, status=status.HTTP_200_OK)
 
