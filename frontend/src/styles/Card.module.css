@@ -154,6 +154,10 @@
     margin: 0;
 }
 
+/* .userCard .stats .line p {
+    overflow-wrap: break-word;
+} */
+
 .linkWrapper img {
     margin-right: 10px;
 }

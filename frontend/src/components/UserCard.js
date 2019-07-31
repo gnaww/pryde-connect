@@ -44,7 +44,7 @@ const ProjectCard = props => {
                             <img src={categoryIconWhite} alt="Category icon" />
                             <span>
                                 {
-                                    researchInterests.length > 100 ?
+                                    researchInterests.length > 70 ?
                                         `${researchInterests.replace(/^(.{70}[^\s]*).*/, "$1")}...`
                                     :
                                         researchInterests
@@ -55,16 +55,31 @@ const ProjectCard = props => {
                 </section>
                 <section className={styles.stats}>
                     <section className={styles.line}>
-                        <p><img src={locationIcon} alt="Location icon" />
-                        {props.location}</p>
+                        <p>
+                            <img src={locationIcon} alt="Location icon" />
+                            {
+                                // TODO: figure out way to handle long locations/emails messing up card styling
+                                // props.location.length > 15 ?
+                                    // `${props.location.replace(/^(.{15}[^\s]*).*/, "$1")}...`
+                                // :
+                                    props.location
+                            }
+                        </p>
                     </section>
                     <section className={styles.line}>
                         <p><img src={projectIcon} alt="Project icon" />
                         {props.numProjects} projects</p>
                     </section>
                     <section className={styles.line}>
-                        <p><img src={mailIcon} alt="Email icon" />
-                        {props.email}</p>
+                        <p>
+                            <img src={mailIcon} alt="Email icon" />
+                            {
+                                // props.email.length > 17 ?
+                                    // `${props.email.slice(0, 17)}...`
+                                // :
+                                    props.email
+                            }
+                        </p>
                     </section>
                 </section>
             </div>

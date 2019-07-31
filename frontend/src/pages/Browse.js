@@ -394,6 +394,7 @@ class Browse extends Component {
                                             name="sort"
                                             label="SORT BY"
                                             options={sortOptions}
+                                            defaultValue={this.state.sortBy}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>
@@ -413,6 +414,7 @@ class Browse extends Component {
                                             name="sort"
                                             label="SORT BY"
                                             options={sortOptions}
+                                            defaultValue={this.state.sortBy}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>
