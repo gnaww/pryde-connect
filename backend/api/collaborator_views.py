@@ -12,8 +12,7 @@ from rest_framework.response import Response
 from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
 
 # gets and returns the list
-class GetCollaboratorsFromProject(generics.RetrieveAPIView):
-
+class GetProjectCollaborators(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):

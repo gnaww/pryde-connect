@@ -62,7 +62,7 @@ def add_collaborators():
 
         for user in user_ids:
 
-            url = 'http://localhost:8000/api/v1/project/' + str(project) + '/collaborator/'
+            url = 'http://localhost:8000/api/v1/project/' + str(project) + '/collaborator/add/'
             body = {
                 'user': user,
                 'editPermission': random.choice([True, False]),
