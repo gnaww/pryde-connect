@@ -86,28 +86,24 @@ class UserSerializer(serializers.ModelSerializer):
     ageRanges = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
 
-    # projects_and_collabs = serializers.SerializerMethodField()
     class Meta:
         model = get_user_model()
         exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
 
     def get_projects(self, obj):
-        # get the projects that the user owns
-        # print(obj)
-        # print(obj.email)
         projects = []
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            # print(collab.project)
             projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
 
         owned_projects = Project.objects.filter(owner=obj.pk)
+
         for project in owned_projects:
             projects.append(ProjectShortSerializer(project).data)
+
         return projects
 
-        # also need to get the projects that the user is collaborating on
     def get_role(self, obj):
         return obj.get_role_display()
 
@@ -142,7 +138,6 @@ class UserShortSerializer(serializers.ModelSerializer):
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            # print(collab.project)
             projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
 
         owned_projects = Project.objects.filter(owner=obj.pk)
@@ -169,12 +164,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_collaborators(self, obj):
         collaborator_queryset = Collaborator.objects.filter(project=obj)
-        userInfo = []
+        collaborators = []
         for collaborator in collaborator_queryset:
             if collaborator.showProjectOnProfile:
-                userInfo.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
-        # return CollaboratorSerializer(collaborators, many=True).data
-        return userInfo
+                collaborators.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+        return collaborators
 
     def get_status(self, obj):
         return obj.get_status_display()
