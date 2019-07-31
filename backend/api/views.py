@@ -276,6 +276,7 @@ class Filter(generics.ListAPIView):
                                       | PUser.objects.filter(researchInterests__icontains=request.data['q']) \
                                       | PUser.objects.filter(researchDescription__icontains=request.data['q']) \
                                       | PUser.objects.filter(researchNeeds__icontains=request.data['q']) \
+                                      | PUser.objects.filter(location__icontains=request.data['q'])
                 #TODO: get users whose projects names contains a query
 
                 filtered_set = filtered_set & search_filtered_set
