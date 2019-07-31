@@ -128,11 +128,7 @@ export default {
     async search(obj) {
         console.log("sending request");
         console.log(obj);
-        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/filter/`, {
-            params:
-                obj
-
-        });
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/filter/`, obj);
         console.log(response);
         console.log(response.data);
         return response.data;
