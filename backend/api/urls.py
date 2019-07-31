@@ -1,9 +1,10 @@
 from django.urls import path, include
 from django.conf.urls import url
-from .views import ProjectList, CreateProject, ProjectView,\
-    UserView, LoggedInUserView, UserList, DeleteProject,\
-    AddCollaborator, DeleteUser, Filter, UpdateProject,\
-    HideProject, UpdateUser
+
+from .user_views import *
+from .project_views import *
+from .collaborator_views import *
+
 
 
 
@@ -24,13 +25,16 @@ urlpatterns = [
     path('project/<int:pk>/collaborator/', AddCollaborator.as_view()),
 
 
-    #TODO: finish filtering
-    path('filter/', Filter.as_view()),
+    #TODO: keep testing filter
+    path('filter/', FilterProjects.as_view()),
+
+    path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
 
 
-    #TODO: write endpoint to flip showProjectOnProfile for collaborator relationships
-    #TODO: test this endpoint!
-    path('project/<int:pk>/hide/', HideProject.as_view()),
     #TODO: write endpoint to delete collaborators from project
+
+
+
+
 
 ]
