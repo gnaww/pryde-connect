@@ -1,10 +1,10 @@
 from django.urls import path, include
 from django.conf.urls import url
 
-from .user_views import *
-from .project_views import *
-from .collaborator_views import *
-from .views import *
+from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser
+from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
+from .collaborator_views import GetCollaboratorsFromProject, AddCollaborator, ToggleProjectVisibility
+from .views import Filter
 
 
 
