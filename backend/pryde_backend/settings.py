@@ -69,7 +69,8 @@ INSTALLED_APPS = [
 
 
 # Additional Settings
-
+# to require the user's old password when they try to change
+OLD_PASSWORD_FIELD_ENABLED = True
 
 # CORS Settings
 # this should be set to false in production... allows any server to hit our backend which is not okay... only our
@@ -95,6 +96,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # make all endpoints atomic
 ATOMIC_REQUESTS = True
+
 
 
 # set site_id to 1 for allauth/rest-auth
