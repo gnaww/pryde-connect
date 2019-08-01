@@ -150,13 +150,9 @@ class UserShortSerializer(serializers.ModelSerializer):
     def num_projects(self, obj):
         total = 0
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
-
-        for collab in collabs:
-            total += 1
-
+        total += len(collabs)
         owned_projects = Project.objects.filter(owner=obj.pk)
-        for project in owned_projects:
-            total += 1
+        total += len(owned_projects)
 
         return total
 
