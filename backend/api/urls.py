@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
-from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility
+from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions
 from .views import Filter
 
 
@@ -11,7 +11,6 @@ from .views import Filter
 
 # All of these endpoints begin with 'api/v1/'
 urlpatterns = [
-
     path('users/', UserList.as_view()),
     path('user/', LoggedInUserView.as_view()),
     path('user/<int:pk>/', UserView.as_view()),
@@ -23,23 +22,14 @@ urlpatterns = [
     path('project/<int:pk>/', ProjectView.as_view()),
     path('project/<int:pk>/update/', UpdateProject.as_view()),
     path('project/<int:pk>/delete/', DeleteProject.as_view()),
+
     path('project/<int:pk>/collaborator/add/', AddCollaborator.as_view()),
     path('project/<int:pk>/collaborator/update/', UpdateCollaboratorPermissions.as_view()),
     path('project/<int:pk>/collaborator/delete/', DeleteCollaborator.as_view()),
     path('project/<int:pk>/collaborators/', GetProjectCollaborators.as_view()),
     path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
+    path('project/<int:pk>/permissions/', LoggedInUserPermissions.as_view()),
 
     #TODO: keep testing filter
-    path('filter/', Filter.as_view()),
-
-
-
-
-
-    #TODO: write endpoint to delete collaborators from project
-
-
-
-
-
+    path('filter/', Filter.as_view())
 ]

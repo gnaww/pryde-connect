@@ -76,7 +76,6 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
     permission_classes = [CanEditCollaborators & IsAuthenticated]
 
     def put(self, request, *args, **kwargs):
-        # get the object we need to check the permissions on
         try:
             obj = Project.objects.get(pk=kwargs['pk'])
         except Exception as e:
@@ -84,13 +83,12 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
             return Response({'message': 'Project not found.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        # check to see if they have proper permission to perform this request
-        # this will throw an error if they do not have permissions
         self.check_object_permissions(request, obj)
 
         try:
             requested_project = Project.objects.get(pk=kwargs['pk'])
             user = PUser.objects.get(pk=request.data['user'])
+
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
                 collaborator = Collaborator.objects.get(project=requested_project, collaborator=user)
                 collaborator.editPermission = request.data['editPermission']
@@ -112,7 +110,6 @@ class DeleteCollaborator(generics.DestroyAPIView):
     permission_classes = [CanEditCollaborators & IsAuthenticated]
 
     def delete(self, request, *args, **kwargs):
-        # get the object we need to check the permissions on
         try:
             obj = Project.objects.get(pk=kwargs['pk'])
         except Exception as e:
@@ -120,13 +117,12 @@ class DeleteCollaborator(generics.DestroyAPIView):
             return Response({'message': 'Project not found.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        # check to see if they have proper permission to perform this request
-        # this will throw an error if they do not have permissions
         self.check_object_permissions(request, obj)
 
         try:
             requested_project = Project.objects.get(pk=kwargs['pk'])
             user = PUser.objects.get(pk=request.data['user'])
+
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
                 Collaborator.objects.get(project=requested_project, collaborator=user).delete()
 
@@ -144,7 +140,6 @@ class ToggleProjectVisibility(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, IsCollaborator]
 
     def put(self, request, *args, **kwargs):
-        #check to see if the user is the owner or collaborator of the project
         try:
             obj = Project.objects.get(pk=kwargs['pk'])
         except Exception as e:
@@ -153,7 +148,51 @@ class ToggleProjectVisibility(generics.UpdateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
         self.check_object_permissions(request, obj)
 
-        collab = Collaborator.objects.get(collaborator=request.user, project=obj)
-        collab.showProjectOnProfile = not collab.showProjectOnProfile
-        collab.save()
-        return Response({'message': 'Your preference has been changed.'}, status=status.HTTP_200_OK)
+        try:
+            collaborator = Collaborator.objects.get(collaborator=request.user, project=obj)
+            collaborator.showProjectOnProfile = not collaborator.showProjectOnProfile
+            collaborator.save()
+
+            return Response({'message': 'Your preference has been changed.'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while updating preferences.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoggedInUserPermissions(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            obj = Project.objects.get(pk=kwargs['pk'])
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Project not found.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        self.check_object_permissions(request, obj)
+
+        try:
+            logged_in_user = PUser.objects.get(pk=request.user.pk)
+
+            # user is owner of project
+            if (obj.owner == logged_in_user):
+                return Response({ 'editPermission': True, 'deletePermission': True, 'editCollaboratorsPermission': True })
+            else:
+                # user is a collaborator on project, return their collaborator permissions
+                if Collaborator.objects.filter(project=obj, collaborator=logged_in_user).exists():
+                    collaborator = Collaborator.objects.get(project=obj, collaborator=logged_in_user)
+
+                    return Response({
+                        'editPermission': collaborator.editPermission,
+                        'deletePermission': collaborator.deletePermission,
+                        'editCollaboratorsPermission': collaborator.editCollaboratorsPermission
+                    })
+                # user is neither owner nor collaborator on project, has no permissions
+                else:
+                    return Response({ 'editPermission': False, 'deletePermission': False, 'editCollaboratorsPermission': False })
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)
