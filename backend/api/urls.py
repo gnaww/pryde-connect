@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
-from .collaborator_views import GetProjectCollaborators, AddCollaborator, DeleteCollaborator, ToggleProjectVisibility
+from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility
 from .views import Filter
 
 
@@ -24,6 +24,7 @@ urlpatterns = [
     path('project/<int:pk>/update/', UpdateProject.as_view()),
     path('project/<int:pk>/delete/', DeleteProject.as_view()),
     path('project/<int:pk>/collaborator/add/', AddCollaborator.as_view()),
+    path('project/<int:pk>/collaborator/update/', UpdateCollaboratorPermissions.as_view()),
     path('project/<int:pk>/collaborator/delete/', DeleteCollaborator.as_view()),
     path('project/<int:pk>/collaborators/', GetProjectCollaborators.as_view()),
     path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),

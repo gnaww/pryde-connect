@@ -71,6 +71,42 @@ class AddCollaborator(generics.CreateAPIView):
             return Response({'message': 'Something went wrong while adding a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UpdateCollaboratorPermissions(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [CanEditCollaborators & IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        # get the object we need to check the permissions on
+        try:
+            obj = Project.objects.get(pk=kwargs['pk'])
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Project not found.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # check to see if they have proper permission to perform this request
+        # this will throw an error if they do not have permissions
+        self.check_object_permissions(request, obj)
+
+        try:
+            requested_project = Project.objects.get(pk=kwargs['pk'])
+            user = PUser.objects.get(pk=request.data['user'])
+            if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
+                collaborator = Collaborator.objects.get(project=requested_project, collaborator=user)
+                collaborator.editPermission = request.data['editPermission']
+                collaborator.deletePermission = request.data['deletePermission']
+                collaborator.editCollaboratorsPermission = request.data['editCollaboratorsPermission']
+                collaborator.save()
+
+                return Response({'message': 'Collaborator permissions successfully updated.'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while updating collaborator permissions.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteCollaborator(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [CanEditCollaborators & IsAuthenticated]
@@ -100,7 +136,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
 
         except Exception as e:
             print(e)
-            return Response({'message': 'Something went wrong while deleteting the collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Something went wrong while deleting the collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ToggleProjectVisibility(generics.UpdateAPIView):
