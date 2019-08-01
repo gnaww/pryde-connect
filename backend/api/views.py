@@ -18,13 +18,20 @@ class Filter(generics.ListAPIView):
 
             if 'q' in request.data:
 
-                search_filtered_set = Project.objects.filter(owner__first_name__icontains=request.data['q']) \
-                                | Project.objects.filter(owner__last_name__icontains=request.data['q']) \
-                                | Project.objects.filter(name__icontains=request.data['q']) \
-                                | Project.objects.filter(summary__icontains=request.data['q']) \
-                                | Project.objects.filter(researchTopics__icontains=request.data['q'])
+                queries = request.data['q'].split(' ')
 
-                filtered_set = filtered_set & search_filtered_set
+                search_query_set = Project.objects.none()
+
+                for query in queries:
+
+                    search_filtered_set = Project.objects.filter(owner__first_name__icontains=query) \
+                                    | Project.objects.filter(owner__last_name__icontains=query) \
+                                    | Project.objects.filter(name__icontains=query) \
+                                    | Project.objects.filter(summary__icontains=query) \
+                                    | Project.objects.filter(researchTopics__icontains=query)
+                    search_query_set = search_filtered_set | search_query_set
+
+                filtered_set = filtered_set & search_query_set
 
             if 'status' in request.data:
                 filter_status_set = Project.objects.none()
@@ -89,14 +96,23 @@ class Filter(generics.ListAPIView):
             filtered_set = PUser.objects.filter(is_staff=False)
 
             if 'q' in request.data:
-                search_filtered_set = PUser.objects.filter(first_name__icontains=request.data['q']) \
-                                      | PUser.objects.filter(last_name__icontains=request.data['q']) \
-                                      | PUser.objects.filter(researchInterests__icontains=request.data['q']) \
-                                      | PUser.objects.filter(researchDescription__icontains=request.data['q']) \
-                                      | PUser.objects.filter(researchNeeds__icontains=request.data['q']) \
-                                      | PUser.objects.filter(location__icontains=request.data['q'])
 
-                filtered_set = filtered_set & search_filtered_set
+                queries = request.data['q'].split(' ')
+
+                search_query_set = PUser.objects.none()
+
+                for query in queries:
+
+                    search_filtered_set = PUser.objects.filter(first_name__icontains=query) \
+                                          | PUser.objects.filter(last_name__icontains=query) \
+                                          | PUser.objects.filter(researchInterests__icontains=query) \
+                                          | PUser.objects.filter(researchDescription__icontains=query) \
+                                          | PUser.objects.filter(researchNeeds__icontains=query) \
+                                          | PUser.objects.filter(location__icontains=query)
+
+                    search_query_set = search_query_set | search_filtered_set
+
+                filtered_set = filtered_set & search_query_set
 
             if 'researchinterest' in request.data:
                 filtered_researchinterest_set = PUser.objects.none()
