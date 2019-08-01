@@ -173,14 +173,18 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):
+    pk = serializers.SerializerMethodField()
     firstName = serializers.SerializerMethodField()
     lastName = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
 
     class Meta:
         model = Collaborator
-        fields = ['editPermission', 'deletePermission', 'editCollaboratorsPermission', 'showProjectOnProfile',
+        fields = ['pk', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'showProjectOnProfile',
                   'email', 'firstName', 'lastName']
+
+    def get_pk(self, obj):
+        return PUser.objects.get(pk=obj.collaborator.pk).pk
 
     def get_firstName(self, obj):
         return PUser.objects.get(pk=obj.collaborator.pk).first_name
