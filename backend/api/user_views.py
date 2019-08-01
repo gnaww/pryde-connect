@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import UserSerializer, UserShortSerializer, UserUpdateSerializer
+from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, UserUpdateSerializer
 from .models import Project, PUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -26,7 +26,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
-        serializer = UserSerializer(user)
+        serializer = LoggedInUserSerializer(user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
