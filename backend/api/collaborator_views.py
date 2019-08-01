@@ -18,7 +18,7 @@ class GetProjectCollaborators(generics.RetrieveAPIView):
             return Response({'message': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
         project = Project.objects.get(pk=kwargs['pk'])
-        collaborators = Collaborator.objects.filter(project=kwargs['pk'])
+        collaborators = Collaborator.objects.filter(project=project)
         serializer = CollaboratorSerializer(collaborators, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
