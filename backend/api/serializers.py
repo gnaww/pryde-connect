@@ -22,10 +22,11 @@ class ProjectShortSerializer(serializers.ModelSerializer):
     ageRanges = serializers.SerializerMethodField()
     researchTopics = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
+    visible = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
-        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'alternateLocation', 'alternateContact', 'datePosted']
+        fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'datePosted', 'visible']
 
     def get_status(self, obj):
         return obj.get_status_display()
@@ -38,6 +39,12 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
+
+    def get_visible(self, obj):
+        if 'visible' in self.context:
+            return self.context['visible']
+        else:
+            return True
 
 
 class StringArrayField(ListField):
@@ -108,6 +115,25 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.deliveryModes
 
 
+class LoggedInUserSerializer(UserSerializer):
+    def get_projects(self, obj):
+        projects = []
+        collabs = Collaborator.objects.filter(collaborator=obj.pk)
+
+        for collab in collabs:
+            if collab.showProjectOnProfile:
+                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), context={'visible': True}).data)
+            else:
+                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), context={'visible': False}).data)
+
+        owned_projects = Project.objects.filter(owner=obj.pk)
+
+        for project in owned_projects:
+            projects.append(ProjectShortSerializer(project).data)
+
+        return projects
+
+
 # Used for the user cards in the browse page
 class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
@@ -122,17 +148,17 @@ class UserShortSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
     def num_projects(self, obj):
-        projects = []
+        total = 0
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
+            total += 1
 
         owned_projects = Project.objects.filter(owner=obj.pk)
         for project in owned_projects:
-            projects.append(ProjectShortSerializer(project).data)
+            total += 1
 
-        return len(projects)
+        return total
 
     def get_researchInterests(self, obj):
         return obj.researchInterests
@@ -151,11 +177,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         exclude = ['isApproved', 'type']
 
     def get_collaborators(self, obj):
-        collaborator_queryset = Collaborator.objects.filter(project=obj)
+        collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
         for collaborator in collaborator_queryset:
-            if collaborator.showProjectOnProfile:
-                collaborators.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+            collaborators.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
         return collaborators
 
     def get_status(self, obj):
