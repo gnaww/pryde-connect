@@ -115,7 +115,7 @@ class Browse extends Component {
             api.search(parsedURL)
                 .then(results => this.setState({ searchResults: results }))
                 .catch(err => {
-                    alert("There was an error getting your search results..")
+                    alert("There was an error getting your search results. Please refresh the page or try again later.")
                     console.log(err);
                 });
             // api.search(parsedURL)

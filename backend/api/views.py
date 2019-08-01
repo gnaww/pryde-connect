@@ -121,13 +121,13 @@ class Filter(generics.ListAPIView):
                 filtered_set = filtered_set & filtered_location_set
 
             if 'ageranges' in request.data:
-                filtered_ageRanges_set = PUser.objects.non()
+                filtered_ageRanges_set = PUser.objects.none()
                 ageRanges = request.data['ageranges']
                 if type(ageRanges) == str:
                     ageRanges = [ageRanges]
                 for agerange in ageRanges:
                     filtered_ageRanges_set = filtered_ageRanges_set |\
-                                                PUser.objects.filter(ageRanges__contains=[agerange])
+                                                PUser.objects.filter(ageRanges__contains=agerange)
 
                 filtered_set = filtered_set & filtered_ageRanges_set
 

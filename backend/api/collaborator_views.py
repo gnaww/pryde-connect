@@ -222,13 +222,13 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
 
 class SearchCollaborators(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
-        if request.query_params['q'] == '':
-            results = PUser.objects.all()
+        if ('q' not in request.query_params) or request.query_params['q'] == '':
+            results = PUser.objects.filter(is_staff=False)
             serializer = CollaboratorSearchSerializer(results, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         else:
-            results = PUser.objects.filter(email__icontains=request.query_params['q'])
+            results = PUser.objects.filter(email__icontains=request.query_params['q'], is_staff=False)
             serializer = CollaboratorSearchSerializer(results, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)

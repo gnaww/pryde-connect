@@ -148,11 +148,8 @@ export default {
                 Authorization: `Token ${USER_KEY}`
             }
         };
-        console.log(USER_KEY)
 
         let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/togglevisibility/`, null, config)
-        console.log(response);
-        console.log(response.data);
         return response.data;
     }
 }
