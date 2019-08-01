@@ -71,7 +71,7 @@ export const projectQAForm = [
         }
     },
     {
-        questionText: "Add any other collaborators on your project (optional):",
+        questionText: "Add collaborators to your project (optional):",
         answer: {
             type: AnswerTypes.Inputbox, // TODO: need to change this
             placeholder: "Type your answer here",

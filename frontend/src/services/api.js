@@ -98,7 +98,7 @@ export default {
         };
 
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
-        return response.status === 200;
+        return response.status === 201;
     },
     async updateProject(id, data) {
         const USER_KEY = localStorage.getItem("pryde_key");
@@ -124,8 +124,8 @@ export default {
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/delete/`, config);
         return response.status === 204;
     },
-    async search(obj) {
-        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/filter/`, obj);
+    async search(queryObject) {
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/filter/`, queryObject);
         return response.data;
     },
     async getProjectPermissions(id) {
@@ -137,7 +137,7 @@ export default {
             }
         };
 
-        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/project/${id}/permissions/`, config)
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/project/${id}/permissions/`, config);
         return response.data;
     },
     async toggleProjectVisibility(id) {
@@ -149,7 +149,51 @@ export default {
             }
         };
 
-        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/togglevisibility/`, null, config)
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/togglevisibility/`, null, config);
         return response.data;
+    },
+    async getProjectCollaborators(id) {
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/project/${id}/collaborators/`)
+        return response.data;
+    },
+    async addCollaborator(id, data) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/${id}/collaborator/add/`, data, config);
+        return response.status === 201;
+    },
+    async updateCollaborator(id, data) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/collaborator/update/`, data, config);
+        return response.status === 200;
+    },
+    async deleteCollaborator(id, data) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/collaborator/delete/`, data, config);
+        return response.status === 204;
+    },
+    async collaboratorSearch(query) {
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`);
+        return response.data
     }
 }

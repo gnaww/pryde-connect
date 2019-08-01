@@ -18,8 +18,7 @@ class Filter(generics.ListAPIView):
 
             if 'q' in request.data:
 
-                queries = request.data['q'].split(' ')
-
+                queries = request.data['q'].split()
                 search_query_set = Project.objects.none()
 
                 for query in queries:
@@ -136,7 +135,7 @@ class Filter(generics.ListAPIView):
 
             if 'q' in request.data:
 
-                queries = request.data['q'].split(' ')
+                queries = request.data['q'].split()
 
                 search_query_set = PUser.objects.none()
 
