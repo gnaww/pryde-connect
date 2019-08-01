@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import isEqual from 'lodash.isequal';
 import UserCard from '../components/UserCard';
+import showButton from '../images/show-project-button.svg';
+import hideButton from '../images/hide-project-button.svg';
 import deleteButton from '../images/delete-button.svg';
 import editButtonOrange from '../images/edit-button-orange.svg';
 import mailIcon from '../images/mail-icon-black.svg';
@@ -47,10 +49,28 @@ class Project extends Component {
             additionalFiles:[],
             datePosted: "",
             invalidProject: false,
-            canEdit: false,
-            canDelete: false,
-            errorDeleting: false
+            editPermission: false,
+            deletePermission: false,
+            editCollaboratorsPermission: false,
+            isCollaborator: false,
+            showProjectOnProfile: null
         };
+    }
+
+    handleToggleProjectVisibility = () => {
+        const id = this.props.match.params.id;
+
+        api.toggleProjectVisibility(id)
+            .then(response => {
+                this.setState(prevState => ({
+                    showProjectOnProfile: !prevState.showProjectOnProfile
+                }), window.location.reload());
+            })
+            .catch(err => {
+                console.log(err);
+                console.log(err.response.data)
+                alert("An error occurred while changing your preferences.");
+            })
     }
 
     handleDeleteProject = () => {
@@ -61,7 +81,7 @@ class Project extends Component {
                 .then(res => history.push("/deletesuccess", { deleteType: "project" }))
                 .catch(err => {
                     console.log(err);
-                    this.setState({ errorDeleting: true });
+                    alert("An error occurred while deleting this project.");
                 });
         }
     }
@@ -73,18 +93,15 @@ class Project extends Component {
 
         // user is logged in
         if (localStorage.getItem("pryde_key")) {
-            Promise.all([api.getProjectByID(id), api.getLoggedInUser()])
-                .then(values => {
-                    const project = values[0];
-                    const loggedInUser = values[1];
-                    if (project.owner.pk === loggedInUser.id) {
-                        this.setState({ ...project, canEdit: true, canDelete: true });
-                    } else {
-                        this.setState({ ...project });
-                    }
-                })
+            api.getProjectByID(id)
+                .then(project => this.setState({ ...project }))
                 .catch(err => {
                     this.setState({ invalidProject: true });
+                    console.log(err);
+                });
+            api.getProjectPermissions(id)
+                .then(permissions => this.setState({ ...permissions }))
+                .catch(err => {
                     console.log(err);
                 })
         } else {
@@ -105,7 +122,6 @@ class Project extends Component {
         } = this.state;
 
         const location = alternateLocation ? alternateLocation : owner.location;
-        let statusFormatted = status.replace("-", " ").toUpperCase();
         const date = new Date(this.state.datePosted);
         const datePosted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
         const emptyAlternateContact = {
@@ -123,14 +139,24 @@ class Project extends Component {
                 <>
                 <main className={styles.projectWrapper}>
                     {
-                        (this.state.canEdit || this.state.canDelete) &&
+                        (this.state.editPermission || this.state.deletePermission || this.state.isCollaborator) &&
                         <div className={styles.buttonWrapper}>
+                            <div>
+                                {
+                                    (this.state.isCollaborator && this.state.showProjectOnProfile === true) &&
+                                        <button className={styles.hideButton} onClick={this.handleToggleProjectVisibility}>
+                                                <img src={hideButton} alt="Hide button" />
+                                        </button>
+                                }
+                                {
+                                    (this.state.isCollaborator && this.state.showProjectOnProfile === false) &&
+                                        <button className={styles.showButton} onClick={this.handleToggleProjectVisibility}>
+                                                <img src={showButton} alt="Show button" />
+                                        </button>
+                                }
+                            </div>
                             {
-                                this.state.errorDeleting &&
-                                <p className={styles.errorMessage}>An error occurred while deleting this project.</p>
-                            }
-                            {
-                                this.state.canEdit &&
+                                this.state.editPermission &&
                                     <Link
                                     to={{
                                         pathname: "/editproject",
@@ -143,7 +169,7 @@ class Project extends Component {
                                     </Link>
                             }
                             {
-                                this.state.canDelete &&
+                                this.state.deletePermission &&
                                     <button className={styles.deleteButton} onClick={this.handleDeleteProject}>
                                         <img src={deleteButton} alt="Delete button" />
                                     </button>
@@ -161,7 +187,7 @@ class Project extends Component {
                             <h2>{location}</h2>
                         </div>
                         <div className={styles.projectContact}>
-                            <h3>{statusFormatted}</h3>
+                            <h3>{ status.toUpperCase() }</h3>
                             <ul>
                                 <li>
                                     <a href={`mailto:${owner.email}`}>{owner.email}</a>

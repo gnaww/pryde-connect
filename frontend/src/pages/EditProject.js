@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash.isequal';
 import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
@@ -27,12 +28,21 @@ const formatInputbox = value => ({
 
 const STATUSES = ["Completed", "In Progress", "Not Started"];
 
+const emptyAlternateContact = {
+    email: "",
+    phone: "",
+    website: "",
+    last_name: "",
+    first_name: ""
+};
+
 const EditProject = ({ location }) => {
     let editProjectData = Object.assign({}, location.state.projectData);
     delete editProjectData.invalidProject;
-    delete editProjectData.canEdit;
-    delete editProjectData.canDelete;
-    delete editProjectData.errorDeleting;
+    delete editProjectData.editPermission;
+    delete editProjectData.deletePermission;
+    delete editProjectData.isCollaborator;
+    delete editProjectData.showProjectOnProfile;
     delete editProjectData.owner;
     delete editProjectData.datePosted;
     editProjectData.name = formatInputbox(editProjectData.name);
@@ -47,7 +57,7 @@ const EditProject = ({ location }) => {
     editProjectData.timeline = formatInputbox(editProjectData.timeline);
     editProjectData.commitmentLength = formatInputbox(editProjectData.commitmentLength);
     editProjectData.incentives = formatInputbox(editProjectData.incentives);
-    if (Object.entries(editProjectData.alternateContact).length === 0) {
+    if (isEqual(editProjectData.alternateContact, emptyAlternateContact) || Object.entries(editProjectData.alternateContact).length === 0) {
         editProjectData.alternateContact = {
             first_name: "",
             last_name: "",

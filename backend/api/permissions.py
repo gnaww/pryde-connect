@@ -45,7 +45,7 @@ class CanEditProject(permissions.BasePermission):
 
 
 class IsCollaborator(permissions.BasePermission):
-    message = "You cannot toggle project visibility for this collaborator."
+    message = "You do not have permission to toggle project visibility for this collaborator."
 
     def has_object_permission(self, request, view, obj):
         return Collaborator.objects.filter(project=obj, collaborator=request.user).exists()

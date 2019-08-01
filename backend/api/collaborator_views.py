@@ -183,7 +183,8 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
                         'editPermission': True,
                         'deletePermission': True,
                         'editCollaboratorsPermission': True,
-                        'isCollaborator': False
+                        'isCollaborator': False,
+                        'showProjectOnProfile': None
                     },
                     status=status.HTTP_200_OK
                 )
@@ -197,7 +198,8 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
                             'editPermission': collaborator.editPermission,
                             'deletePermission': collaborator.deletePermission,
                             'editCollaboratorsPermission': collaborator.editCollaboratorsPermission,
-                            'isCollaborator': True
+                            'isCollaborator': True,
+                            'showProjectOnProfile': collaborator.showProjectOnProfile
                         },
                         status=status.HTTP_200_OK
                     )
@@ -208,7 +210,8 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
                             'editPermission': False,
                             'deletePermission': False,
                             'editCollaboratorsPermission': False,
-                            'isCollaborator': False
+                            'isCollaborator': False,
+                            'showProjectOnProfile': None
                         },
                         status=status.HTTP_200_OK
                     )

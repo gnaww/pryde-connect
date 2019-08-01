@@ -9,7 +9,7 @@ export default {
     async getLoggedInUser() {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -32,7 +32,7 @@ export default {
     async updateUser(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -44,7 +44,7 @@ export default {
     async deleteUser(id) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -61,7 +61,7 @@ export default {
     logout() {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -91,7 +91,7 @@ export default {
     async createProject(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -103,7 +103,7 @@ export default {
     async updateProject(id, data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -115,7 +115,7 @@ export default {
     async deleteProject(id) {
         const USER_KEY = localStorage.getItem("pryde_key");
 
-        let config = {
+        const config = {
             headers: {
                 Authorization: `Token ${USER_KEY}`
             }
@@ -124,14 +124,35 @@ export default {
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/delete/`, config);
         return response.status === 204;
     },
-
     async search(obj) {
-        console.log("sending request");
-        console.log(obj);
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/filter/`, obj);
+        return response.data;
+    },
+    async getProjectPermissions(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/project/${id}/permissions/`, config)
+        return response.data;
+    },
+    async toggleProjectVisibility(id) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+        console.log(USER_KEY)
+
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/project/${id}/togglevisibility/`, null, config)
         console.log(response);
         console.log(response.data);
         return response.data;
     }
-
 }
