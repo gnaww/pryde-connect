@@ -178,27 +178,46 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
 
             # user is owner of project
             if (obj.owner == logged_in_user):
-                return Response({ 'editPermission': True, 'deletePermission': True, 'editCollaboratorsPermission': True }, status=status.HTTP_200_OK)
+                return Response(
+                    {
+                        'editPermission': True,
+                        'deletePermission': True,
+                        'editCollaboratorsPermission': True,
+                        'isCollaborator': False
+                    },
+                    status=status.HTTP_200_OK
+                )
             else:
                 # user is a collaborator on project, return their collaborator permissions
                 if Collaborator.objects.filter(project=obj, collaborator=logged_in_user).exists():
                     collaborator = Collaborator.objects.get(project=obj, collaborator=logged_in_user)
 
-                    return Response({
-                        'editPermission': collaborator.editPermission,
-                        'deletePermission': collaborator.deletePermission,
-                        'editCollaboratorsPermission': collaborator.editCollaboratorsPermission
-                    })
+                    return Response(
+                        {
+                            'editPermission': collaborator.editPermission,
+                            'deletePermission': collaborator.deletePermission,
+                            'editCollaboratorsPermission': collaborator.editCollaboratorsPermission,
+                            'isCollaborator': True
+                        },
+                        status=status.HTTP_200_OK
+                    )
                 # user is neither owner nor collaborator on project, has no permissions
                 else:
-                    return Response({ 'editPermission': False, 'deletePermission': False, 'editCollaboratorsPermission': False }, status=status.HTTP_200_OK)
+                    return Response(
+                        {
+                            'editPermission': False,
+                            'deletePermission': False,
+                            'editCollaboratorsPermission': False,
+                            'isCollaborator': False
+                        },
+                        status=status.HTTP_200_OK
+                    )
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SearchCollaborators(generics.RetrieveAPIView):
-
     def get(self, request, *args, **kwargs):
         if request.query_params['q'] == '':
             results = PUser.objects.all()
