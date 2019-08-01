@@ -17,7 +17,7 @@ const listFormatter = (str, elt, idx, arr) => {
     return str;
 };
 
-const UserCard = props => {
+const ProjectCard = props => {
     let link = ""
     if (props.pk) {
         link = `/project/${props.pk}`;
@@ -34,7 +34,7 @@ const UserCard = props => {
 
     return (
         <Link className={styles.linkWrapper} to={link}>
-            <div className={`${styles.card} ${styles.projectCard}`}>
+            <div className={props.visible ? `${styles.card} ${styles.projectCard}` : `${styles.card} ${styles.projectCard} ${styles.invisible}`}>
                 <section className={styles.projectDetails}>
                     <h3>{props.name}</h3>
                     <div>
@@ -102,4 +102,4 @@ const UserCard = props => {
     );
 };
 
-export default UserCard;
+export default ProjectCard;

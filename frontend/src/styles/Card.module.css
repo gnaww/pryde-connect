@@ -20,6 +20,10 @@
     transform: scale(1.02);
 }
 
+.invisible {
+    opacity: 0.5;
+}
+
 .projectCard {
     height: 240px;
 }

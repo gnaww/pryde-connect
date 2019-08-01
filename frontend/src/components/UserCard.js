@@ -18,7 +18,7 @@ const listFormatter = (str, elt, idx, arr) => {
     return str;
 };
 
-const ProjectCard = props => {
+const UserCard = props => {
     let link = ""
     if (props.pk) {
         link = `/user/${props.pk}`;
@@ -87,4 +87,4 @@ const ProjectCard = props => {
     );
 };
 
-export default ProjectCard;
+export default UserCard;

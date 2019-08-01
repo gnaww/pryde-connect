@@ -45,7 +45,7 @@ class Profile extends Component {
                 projects: [],
                 date_joined: ""
             },
-            statusFilter: "all",
+            statusFilter: "",
             sortBy: "",
             showModal: false,
             invalidProfile: false,
@@ -111,35 +111,37 @@ class Profile extends Component {
             name: "status",
             options: [
                 {
-                    value: "all",
+                    value: "",
                     text: "All"
                 },
                 {
-                    value: "not-started",
+                    value: "Not Started",
                     text: "Not Started"
                 },
                 {
-                    value: "in-progress",
+                    value: "In Progress",
                     text: "In Progress"
                 },
                 {
-                    value: "completed",
+                    value: "Completed",
                     text: "Completed"
                 }
             ],
-            handleChange: this.handleDropdownChange("statusFilter")
+            handleChange: this.handleDropdownChange("statusFilter"),
+            defaultValue: this.state.statusFilter
         };
         const sortDropdown = {
             label: "SORT BY",
             name: "sort",
             options: sortProjectsOptions,
-            handleChange: this.handleDropdownChange("sortBy")
+            handleChange: this.handleDropdownChange("sortBy"),
+            defaultValue: this.state.sortBy
         };
         let projectsDisplay;
         if (user.projects.length === 0) {
             projectsDisplay = <h2>No projects yet.</h2>
         } else {
-            if (this.state.statusFilter === "all") {
+            if (this.state.statusFilter === "") {
                 projectsDisplay = <SortableList sortBy={this.state.sortBy} list={user.projects} />
             } else {
                 if (user.projects.filter(project=> project.status === this.state.statusFilter).length === 0) {
