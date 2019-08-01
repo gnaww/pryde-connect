@@ -2,31 +2,17 @@ from rest_framework import permissions
 from .models import PUser, Project, Collaborator
 
 
-class CanAddCollaborator(permissions.BasePermission):
-    message = "You do not have permission to add collaborators to this project."
-
+class CanEditCollaborators(permissions.BasePermission):
+    message = "You do not have permission to edit collaborators on this project."
 
     def has_object_permission(self, request, view, obj):
-        # Read permissions are allowed to any request,
-        # so we'll always allow GET, HEAD or OPTIONS requests.
-        # if request.method in permissions.SAFE_METHODS:
-        #     return True
-
-        print("HELLO WORLD")
-        print("My first custom permission")
-        print(request)
-        print(view)
-        print(obj)
-        print(request.user)
-        print(obj.owner)
-        # Instance must have an attribute named `owner`.
-
         try:
-            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).addCollaboratorPermission
+            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).editCollaboratorsPermission
 
         except Exception as e:
             hasPermission = False
 
+        # Instance must have an attribute named `owner`.
         return hasPermission or (obj.owner == request.user)
 
 
@@ -34,7 +20,6 @@ class CanDeleteProject(permissions.BasePermission):
     message = "You do not have permission to delete this project."
 
     def has_object_permission(self, request, view, obj):
-
         try:
            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).deletePermission
 
@@ -49,7 +34,6 @@ class CanEditProject(permissions.BasePermission):
     message = "You do not have permission to make edits on this project."
 
     def has_object_permission(self, request, view, obj):
-
         try:
             hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).editPermission
 
@@ -64,7 +48,6 @@ class IsCollaborator(permissions.BasePermission):
     message = "You do not have permission to make edits on this project."
 
     def has_object_permission(self, request, view, obj):
-
         # Instance obj must have an attribute named `owner`.
         return Collaborator.objects.filter(project=obj, collaborator=request.user).exists()
 

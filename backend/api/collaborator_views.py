@@ -1,44 +1,34 @@
 from rest_framework import generics, status
 from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer, UserCollaboratorSerializer
+    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer, CollaboratorSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 # custom permissions
-from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
+from .permissions import CanEditCollaborators, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
 
-# gets and returns the list
+
 class GetProjectCollaborators(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-
-
-        print(args)
-        print(kwargs)
-        print(request)
         if not Project.objects.filter(pk=kwargs['pk']).exists():
             return Response({'message': 'Project not found'})
 
         project = Project.objects.get(pk=kwargs['pk'])
-        print(project.owner)
-
         collaborators = Collaborator.objects.filter(project=kwargs['pk'])
-
-        serializer = UserCollaboratorSerializer(collaborators, many=True)
+        serializer = CollaboratorSerializer(collaborators, many=True)
 
         return Response(data=serializer.data)
 
 
-
 class AddCollaborator(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
-    # with addCollaboratorPermission should be allowed to do this
-    permission_classes = [CanAddCollaborator & IsAuthenticated]
+    # with editCollaboratorsPermission should be allowed to do this
+    permission_classes = [CanEditCollaborators & IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         # get the object we need to check the permissions on
@@ -70,7 +60,7 @@ class AddCollaborator(generics.CreateAPIView):
                                          collaborator=PUser.objects.get(pk=request.data['user']),
                                          editPermission=request.data['editPermission'],
                                          deletePermission=request.data['deletePermission'],
-                                         addCollaboratorPermission=request.data['addCollaboratorPermission'])
+                                         editCollaboratorsPermission=request.data['editCollaboratorsPermission'])
 
             return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_200_OK)
 
@@ -78,10 +68,14 @@ class AddCollaborator(generics.CreateAPIView):
             print(e)
             return Response({'message': 'Something went wrong while adding a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
+class DeleteCollaborator(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    queryset = PUser.objects.filter(is_staff=False)
+
 
 class ToggleProjectVisibility(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
-    # with addCollaboratorPermission should be allowed to do this
     permission_classes = [IsAuthenticated, IsCollaborator]
 
     def put(self, request, *args, **kwargs):

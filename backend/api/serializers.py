@@ -16,17 +16,6 @@ class MiniUserSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
 
-class CollaboratorSerializer(serializers.ModelSerializer):
-    collaboratorInfo = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Collaborator
-        fields = ['collaboratorInfo']
-
-    def get_collaboratorInfo(self, obj):
-        return MiniUserSerializer(PUser.objects.get(email=obj.collaborator)).data
-
-
 # Used for the project cards in the browse page
 class ProjectShortSerializer(serializers.ModelSerializer):
     owner = MiniUserSerializer(many=False, read_only=True)
@@ -182,20 +171,15 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
 
-class CollaboratorsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Collaborator
-        fields = '__all__'
 
-class UserCollaboratorSerializer(serializers.ModelSerializer):
-
+class CollaboratorSerializer(serializers.ModelSerializer):
     firstName = serializers.SerializerMethodField()
     lastName = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
 
     class Meta:
         model = Collaborator
-        fields = ['editPermission', 'deletePermission', 'addCollaboratorPermission', 'showProjectOnProfile',
+        fields = ['editPermission', 'deletePermission', 'editCollaboratorsPermission', 'showProjectOnProfile',
                   'email', 'firstName', 'lastName']
 
     def get_firstName(self, obj):

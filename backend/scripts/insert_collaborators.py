@@ -67,7 +67,7 @@ def add_collaborators():
                 'user': user,
                 'editPermission': random.choice([True, False]),
                 'deletePermission': random.choice([True, False]),
-                'addCollaboratorPermission': random.choice([True, False])
+                'editCollaboratorsPermission': random.choice([True, False])
             }
 
             print(requests.request("POST", url, data=json.dumps(body), headers=headers).json())

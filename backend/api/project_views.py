@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 # custom permissions
-from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
+from .permissions import CanDeleteProject, CanEditProject
 
 class ProjectList(generics.ListAPIView):
     serializer_class = ProjectShortSerializer

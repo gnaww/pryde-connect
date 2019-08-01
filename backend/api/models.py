@@ -127,7 +127,7 @@ class Collaborator(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     editPermission = models.BooleanField()
     deletePermission = models.BooleanField()
-    addCollaboratorPermission = models.BooleanField()
+    editCollaboratorsPermission = models.BooleanField()
     showProjectOnProfile = models.BooleanField(default=True)
 
 
