@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import CollaboratorSerializer
+from .serializers import CollaboratorSerializer, CollaboratorSearchSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -198,5 +198,15 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
 
 
 class SearchCollaborators(generics.RetrieveAPIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        if request.query_params['q'] == '':
+            results = PUser.objects.all()
+            serializer = CollaboratorSearchSerializer(results, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        else:
+            results = PUser.objects.filter(email__icontains=request.query_params['q'])
+            serializer = CollaboratorSearchSerializer(results, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -79,7 +79,7 @@ class PUser(AbstractUser):
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     # TODO: add profile picture to users
-    # profilePicture = models.FileField()
+    # profilePicture = models.FileField(upload_to="uploads/")
     type = models.CharField(max_length=15, default='user')
     objects = UserManager()
     USERNAME_FIELD = 'email'

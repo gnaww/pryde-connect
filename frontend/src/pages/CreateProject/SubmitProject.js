@@ -94,9 +94,7 @@ class SubmitProject extends Component {
         }
 
         function hasError(pair, state) {
-            // TODO: add validation for files?
             if (pair.type === KeyTypes.String) {
-                // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
                     return false;
                 } else if (pair.key === "alternateLocation") {

@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
-from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions
+from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions, SearchCollaborators
 from .views import Filter
 
 
@@ -31,5 +31,6 @@ urlpatterns = [
     path('project/<int:pk>/permissions/', LoggedInUserPermissions.as_view()),
 
     #TODO: keep testing filter
-    path('filter/', Filter.as_view())
+    path('filter/', Filter.as_view()),
+    path('collaboratorsearch/', SearchCollaborators.as_view())
 ]
