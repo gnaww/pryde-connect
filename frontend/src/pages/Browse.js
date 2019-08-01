@@ -81,7 +81,6 @@ class Browse extends Component {
     }
 
     retrieveResults = ({ location }) => {
-        console.log("retrieve results");
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         this.setState({ query: parsedURL.q ? parsedURL.q : '' });
 
@@ -92,7 +91,6 @@ class Browse extends Component {
         const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
 
         if(!parsedURL.q && noFiltersSelected) {
-            console.log("default search");
             if (parsedURL.category === "partners") {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
@@ -109,21 +107,12 @@ class Browse extends Component {
                     });
             }
         } else {
-            console.log('searching w filters and/or query');
-            console.log(parsedURL);
-
             api.search(parsedURL)
                 .then(results => this.setState({ searchResults: results }))
                 .catch(err => {
                     alert("There was an error getting your search results. Please refresh the page or try again later.")
                     console.log(err);
                 });
-            // api.search(parsedURL)
-            //     .then(results => this.setState({ searchResults: results }))
-            //     .catch(err => {
-            //         alert("There was an error getting your search results. Please refresh the page or try again later.");
-            //         console.log(err);
-            //     });
         }
     }
 
