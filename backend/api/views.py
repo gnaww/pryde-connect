@@ -82,7 +82,7 @@ class Filter(generics.ListAPIView):
                 filtered_set = filtered_set & filtered_ageranges_set
 
             serializer = ProjectShortSerializer(filtered_set, many=True)
-            return Response(data=serializer.data)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
 
         else:
 
@@ -132,4 +132,4 @@ class Filter(generics.ListAPIView):
                 filtered_set = filtered_set & filtered_ageRanges_set
 
             serializer = UserShortSerializer(filtered_set, many=True)
-            return Response(data=serializer.data)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)

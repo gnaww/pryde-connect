@@ -49,7 +49,7 @@ class CreateProject(generics.CreateAPIView):
             )
 
             #TODO create the collaborator thing here
-            return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
+            return Response({'status': 'Project successfully created.'}, status = status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
             return Response({

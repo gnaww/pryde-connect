@@ -16,13 +16,13 @@ class GetProjectCollaborators(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         if not Project.objects.filter(pk=kwargs['pk']).exists():
-            return Response({'message': 'Project not found'})
+            return Response({'message': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
         project = Project.objects.get(pk=kwargs['pk'])
         collaborators = Collaborator.objects.filter(project=kwargs['pk'])
         serializer = CollaboratorSerializer(collaborators, many=True)
 
-        return Response(data=serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class AddCollaborator(generics.CreateAPIView):
@@ -36,7 +36,7 @@ class AddCollaborator(generics.CreateAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_404_NOT_FOUND)
 
         # check to see if they have proper permission to perform this request
         # this will throw an error if they do not have permissions
@@ -64,7 +64,7 @@ class AddCollaborator(generics.CreateAPIView):
                 editCollaboratorsPermission=request.data['editCollaboratorsPermission']
             )
 
-            return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             print(e)
@@ -81,7 +81,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_404_NOT_FOUND)
 
         self.check_object_permissions(request, obj)
 
@@ -98,7 +98,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
 
                 return Response({'message': 'Collaborator permissions successfully updated.'}, status=status.HTTP_200_OK)
             else:
-                return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             print(e)
@@ -115,7 +115,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_404_NOT_FOUND)
 
         self.check_object_permissions(request, obj)
 
@@ -126,9 +126,9 @@ class DeleteCollaborator(generics.DestroyAPIView):
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
                 Collaborator.objects.get(project=requested_project, collaborator=user).delete()
 
-                return Response({'message': 'Collaborator successfully deleted.'}, status=status.HTTP_200_OK)
+                return Response({'message': 'Collaborator successfully deleted.'}, status=status.HTTP_204_NO_CONTENT)
             else:
-                return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             print(e)
@@ -145,7 +145,7 @@ class ToggleProjectVisibility(generics.UpdateAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_404_NOT_FOUND)
         self.check_object_permissions(request, obj)
 
         try:
@@ -170,7 +170,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_404_NOT_FOUND)
 
         self.check_object_permissions(request, obj)
 
@@ -179,7 +179,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
 
             # user is owner of project
             if (obj.owner == logged_in_user):
-                return Response({ 'editPermission': True, 'deletePermission': True, 'editCollaboratorsPermission': True })
+                return Response({ 'editPermission': True, 'deletePermission': True, 'editCollaboratorsPermission': True }, status=status.HTTP_200_OK)
             else:
                 # user is a collaborator on project, return their collaborator permissions
                 if Collaborator.objects.filter(project=obj, collaborator=logged_in_user).exists():
@@ -192,7 +192,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
                     })
                 # user is neither owner nor collaborator on project, has no permissions
                 else:
-                    return Response({ 'editPermission': False, 'deletePermission': False, 'editCollaboratorsPermission': False })
+                    return Response({ 'editPermission': False, 'deletePermission': False, 'editCollaboratorsPermission': False }, status=status.HTTP_200_OK)
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)

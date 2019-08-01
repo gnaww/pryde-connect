@@ -28,7 +28,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
         serializer = UserSerializer(user)
-        return Response(data=serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class UpdateUser(generics.UpdateAPIView):
