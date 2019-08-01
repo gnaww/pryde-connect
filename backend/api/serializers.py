@@ -90,9 +90,9 @@ class UserSerializer(serializers.ModelSerializer):
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk)).data)
+            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), isApproved=True).data)
 
-        owned_projects = Project.objects.filter(owner=obj.pk)
+        owned_projects = Project.objects.filter(owner=obj.pk, isApproved=True)
 
         for project in owned_projects:
             projects.append(ProjectShortSerializer(project).data)
@@ -122,11 +122,11 @@ class LoggedInUserSerializer(UserSerializer):
 
         for collab in collabs:
             if collab.showProjectOnProfile:
-                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), context={'visible': True}).data)
+                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk, isApproved=True), context={'visible': True}).data)
             else:
-                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), context={'visible': False}).data)
+                projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk, isApproved=True), context={'visible': False}).data)
 
-        owned_projects = Project.objects.filter(owner=obj.pk)
+        owned_projects = Project.objects.filter(owner=obj.pk, isApproved=True)
 
         for project in owned_projects:
             projects.append(ProjectShortSerializer(project).data)
@@ -151,7 +151,7 @@ class UserShortSerializer(serializers.ModelSerializer):
         total = 0
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
         total += len(collabs)
-        owned_projects = Project.objects.filter(owner=obj.pk)
+        owned_projects = Project.objects.filter(owner=obj.pk, isApproved=True)
         total += len(owned_projects)
 
         return total

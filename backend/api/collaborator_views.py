@@ -14,10 +14,10 @@ class GetProjectCollaborators(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        if not Project.objects.filter(pk=kwargs['pk']).exists():
+        if not Project.objects.filter(pk=kwargs['pk'], isApproved=True).exists():
             return Response({'message': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
 
-        project = Project.objects.get(pk=kwargs['pk'])
+        project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         collaborators = Collaborator.objects.filter(project=project)
         serializer = CollaboratorSerializer(collaborators, many=True)
 
@@ -31,7 +31,7 @@ class AddCollaborator(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         # get the object we need to check the permissions on
         try:
-            obj = Project.objects.get(pk=kwargs['pk'])
+            obj = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
@@ -48,7 +48,7 @@ class AddCollaborator(generics.CreateAPIView):
 
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
-            requested_project = Project.objects.get(pk=kwargs['pk'])
+            requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
             user = PUser.objects.get(pk=request.data['user'])
 
             # check to see if the user is already added as a collaborator to this project
@@ -56,8 +56,8 @@ class AddCollaborator(generics.CreateAPIView):
                 return Response({'message': 'This user is already a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
             Collaborator.objects.create(
-                project=Project.objects.get(pk=kwargs['pk']),
-                collaborator=PUser.objects.get(pk=request.data['user']),
+                project=requested_project,
+                collaborator=user,
                 editPermission=request.data['editPermission'],
                 deletePermission=request.data['deletePermission'],
                 editCollaboratorsPermission=request.data['editCollaboratorsPermission']
@@ -76,7 +76,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         try:
-            obj = Project.objects.get(pk=kwargs['pk'])
+            obj = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
@@ -85,7 +85,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
         self.check_object_permissions(request, obj)
 
         try:
-            requested_project = Project.objects.get(pk=kwargs['pk'])
+            requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
             user = PUser.objects.get(pk=request.data['user'])
 
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
@@ -110,7 +110,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            obj = Project.objects.get(pk=kwargs['pk'])
+            obj = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
@@ -119,7 +119,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
         self.check_object_permissions(request, obj)
 
         try:
-            requested_project = Project.objects.get(pk=kwargs['pk'])
+            requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
             user = PUser.objects.get(pk=request.data['user'])
 
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
@@ -140,7 +140,7 @@ class ToggleProjectVisibility(generics.UpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         try:
-            obj = Project.objects.get(pk=kwargs['pk'])
+            obj = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},
@@ -165,7 +165,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
-            obj = Project.objects.get(pk=kwargs['pk'])
+            obj = Project.objects.get(pk=kwargs['pk'], isApproved=True)
         except Exception as e:
             print(e)
             return Response({'message': 'Project not found.'},

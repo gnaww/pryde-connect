@@ -12,19 +12,19 @@ from .permissions import CanDeleteProject, CanEditProject
 
 class ProjectList(generics.ListAPIView):
     serializer_class = ProjectShortSerializer
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(isApproved=True)
 
 
 class ProjectView(generics.RetrieveAPIView):
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(isApproved=True)
 
 
 class CreateProject(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     authentication_classes = [TokenAuthentication, ]
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(isApproved=True)
 
     def post(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
@@ -60,10 +60,10 @@ class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
     serializer_class = ProjectUpdateSerializer
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(isApproved=True)
 
 
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanDeleteProject & IsAuthenticated, ]
-    queryset = Project.objects.all()
+    queryset = Project.objects.filter(isApproved=True)

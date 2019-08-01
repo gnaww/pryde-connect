@@ -14,7 +14,7 @@ class Filter(generics.ListAPIView):
 
         if ('category' not in request.data) or (request.data['category'] == 'projects'):
 
-            filtered_set = Project.objects.all()
+            filtered_set = Project.objects.filter(isApproved=True)
 
             if 'q' in request.data:
 
