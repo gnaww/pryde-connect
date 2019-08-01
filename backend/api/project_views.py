@@ -1,7 +1,6 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
-from .models import Project, PUser, Collaborator
+from .serializers import ProjectSerializer, ProjectShortSerializer, ProjectUpdateSerializer
+from .models import Project, PUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -48,8 +47,8 @@ class CreateProject(generics.CreateAPIView):
                 alternateLocation = request.data['alternateLocation']
             )
 
-            #TODO create the collaborator thing here
             return Response({'status': 'Project successfully created.'}, status = status.HTTP_201_CREATED)
+
         except Exception as e:
             print(e)
             return Response({

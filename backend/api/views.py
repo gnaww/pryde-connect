@@ -1,7 +1,6 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
-from .models import Project, PUser, Collaborator
+from .serializers import ProjectShortSerializer, UserShortSerializer
+from .models import Project, PUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -76,12 +75,13 @@ class Filter(generics.ListAPIView):
                 if type(ageranges) == str:
                     ageranges = [ageranges]
                 for age in ageranges:
-                    filtered_ageranges_set = filtered_ageranges_set | \
+                    filtered_ageranges_set = filtered_ageranges_set |\
                                              Project.objects.filter(ageRanges__contains=age)
 
                 filtered_set = filtered_set & filtered_ageranges_set
 
             serializer = ProjectShortSerializer(filtered_set, many=True)
+
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
         else:
@@ -104,7 +104,7 @@ class Filter(generics.ListAPIView):
                 if type(research_interests) == str:
                     research_interests = [research_interests]
                 for n in research_interests:
-                    filtered_researchinterest_set = filtered_researchinterest_set | \
+                    filtered_researchinterest_set = filtered_researchinterest_set |\
                                                  PUser.objects.filter(researchInterests__contains=n)
 
                 filtered_set = filtered_set & filtered_researchinterest_set
@@ -115,7 +115,7 @@ class Filter(generics.ListAPIView):
                 if type(locations) == str:
                     locations = [locations]
                 for location in locations:
-                    filtered_location_set = filtered_location_set | \
+                    filtered_location_set = filtered_location_set |\
                                             PUser.objects.filter(location=location)
 
                 filtered_set = filtered_set & filtered_location_set
@@ -126,10 +126,11 @@ class Filter(generics.ListAPIView):
                 if type(ageRanges) == str:
                     ageRanges = [ageRanges]
                 for agerange in ageRanges:
-                    filtered_ageRanges_set = filtered_ageRanges_set | \
+                    filtered_ageRanges_set = filtered_ageRanges_set |\
                                                 PUser.objects.filter(ageRanges__contains=[agerange])
 
                 filtered_set = filtered_set & filtered_ageRanges_set
 
             serializer = UserShortSerializer(filtered_set, many=True)
+
             return Response(data=serializer.data, status=status.HTTP_200_OK)

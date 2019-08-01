@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator
-import ast
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -174,23 +173,28 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class CollaboratorSerializer(serializers.ModelSerializer):
     pk = serializers.SerializerMethodField()
-    firstName = serializers.SerializerMethodField()
-    lastName = serializers.SerializerMethodField()
+    first_name = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
 
     class Meta:
         model = Collaborator
-        fields = ['pk', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'showProjectOnProfile',
-                  'email', 'firstName', 'lastName']
+        fields = ['pk', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'email', 'first_name', 'last_name']
 
     def get_pk(self, obj):
         return PUser.objects.get(pk=obj.collaborator.pk).pk
 
-    def get_firstName(self, obj):
+    def get_first_name(self, obj):
         return PUser.objects.get(pk=obj.collaborator.pk).first_name
 
-    def get_lastName(self, obj):
+    def get_last_name(self, obj):
         return PUser.objects.get(pk=obj.collaborator.pk).last_name
 
     def get_email(self, obj):
         return PUser.objects.get(pk=obj.collaborator.pk).email
+
+
+class CollaboratorSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PUser
+        fields = ['pk', 'first_name', 'last_name', 'email']

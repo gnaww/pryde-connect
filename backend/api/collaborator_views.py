@@ -1,6 +1,5 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer, CollaboratorSerializer
+from .serializers import CollaboratorSerializer
 from .models import Project, PUser, Collaborator
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -8,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 # custom permissions
-from .permissions import CanEditCollaborators, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
+from .permissions import CanEditCollaborators, IsCollaborator
 
 
 class GetProjectCollaborators(generics.RetrieveAPIView):
@@ -196,3 +195,8 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SearchCollaborators(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
