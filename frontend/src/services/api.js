@@ -98,7 +98,7 @@ export default {
         };
 
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/create/`, data, config);
-        return response.status === 201;
+        return response.data;
     },
     async updateProject(id, data) {
         const USER_KEY = localStorage.getItem("pryde_key");
@@ -193,7 +193,15 @@ export default {
         return response.status === 204;
     },
     async collaboratorSearch(query) {
-        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`);
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`, config);
         return response.data
     }
 }

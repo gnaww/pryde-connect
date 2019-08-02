@@ -44,7 +44,7 @@ class AddCollaborator(generics.CreateAPIView):
         try:
             # the owner of the project should not be able to add themselves as a collaborator
             if obj.owner == PUser.objects.get(pk=request.data['user']):
-                return Response({'message': 'You cannot add yourself as a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'The owner of the project cannot be added as a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
@@ -220,15 +220,20 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
             return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SearchCollaborators(generics.RetrieveAPIView):
+class SearchCollaborators(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         if ('q' not in request.query_params) or request.query_params['q'] == '':
             results = PUser.objects.filter(is_staff=False)
+            results = results.exclude(pk=request.user.pk)
             serializer = CollaboratorSearchSerializer(results, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         else:
             results = PUser.objects.filter(email__icontains=request.query_params['q'], is_staff=False)
+            results = results.exclude(pk=request.user.pk)
             serializer = CollaboratorSearchSerializer(results, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import AsyncSelect from 'react-select/async';
 import styles from '../styles/CreateProfile.module.css';
 import CustomDropdown from './CustomDropdown';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -6,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import checkboxStyles from '../styles/FilterCategory.module.css';
 import DeleteIcon from '../images/delete-icon.svg';
+import api from '../services/api';
 
 export const AnswerTypes = {
     Dropdown: "dropdown",
@@ -15,7 +17,8 @@ export const AnswerTypes = {
     Inputbox: "inputbox",
     MultipleAnswers: "mutipleanswers",
     ContactInfo: "contactinfo",
-    Button: "button"
+    Button: "button",
+    Collaborator: "collaborator"
 };
 
 export const getCheckedValuesArray = values => {
@@ -216,7 +219,7 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
             }
         </>
     )
-}
+};
 
 export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => {
     return (
@@ -265,4 +268,116 @@ export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => 
             </div>
         </>
     )
+};
+
+const loadOptions = (inputValue, callback) => {
+    api.collaboratorSearch(inputValue)
+        .then(results => {
+            callback(results.map(result => {
+                return {
+                    label: `${result.first_name} ${result.last_name} - ${result.email}`,
+                    value: result
+                }
+            }))
+        })
+        .catch(err => {
+            console.log(err);
+            alert("An error occurred while searching for users to add as a collaborator.");
+        })
+};
+
+export class CollaboratorQuestion extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            collaboratorSearch: ''
+        };
+    }
+
+    handleInputChange = collaboratorSearch => {
+        this.setState({ collaboratorSearch });
+        return collaboratorSearch;
+    };
+
+    render() {
+        const { addCollaborator, qa, collaborators, updateCollaboratorPermission, deleteCollaborator } = this.props;
+        return (
+            <div className={styles.collaboratorQuestionWrapper}>
+                <p className={styles.question}>{qa.questionText}</p>
+                <AsyncSelect
+                    loadOptions={loadOptions}
+                    onInputChange={this.handleInputChange}
+                    onChange={addCollaborator}
+                    isClearable
+                    placeholder="Search for users to add by their email..."
+                />
+                <div>
+                    {
+                        collaborators.map(collaborator => {
+                            return (
+                                <div key={collaborator.pk} className={styles.collaboratorCard}>
+                                    <div className={styles.collaboratorInfo}>
+                                        <h4>{`${collaborator.first_name} ${collaborator.last_name}`}</h4>
+                                        <h4>{collaborator.email}</h4>
+                                    </div>
+                                    <div>
+                                        <div className={styles.permissionsHeader}>
+                                            <h4>Permissions</h4>
+                                            <button onClick={() => deleteCollaborator(collaborator.pk)}>
+                                                <img src={DeleteIcon} alt="Delete icon" />
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        color="default"
+                                                        className={checkboxStyles.checkbox}
+                                                        name="editPermission"
+                                                        checked={collaborator.editPermission}
+                                                        onChange={() => updateCollaboratorPermission(collaborator.pk, "editPermission")}
+                                                        disableRipple
+                                                    />
+                                                }
+                                                classes={{ label: styles.collaboratorCheckboxLabel }}
+                                                label="Edit project"
+                                            />
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        color="default"
+                                                        className={checkboxStyles.checkbox}
+                                                        name="deletePermission"
+                                                        checked={collaborator.deletePermission}
+                                                        onChange={() => updateCollaboratorPermission(collaborator.pk, "deletePermission")}
+                                                        disableRipple
+                                                    />
+                                                }
+                                                classes={{ label: styles.collaboratorCheckboxLabel }}
+                                                label="Delete project"
+                                            />
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox
+                                                        color="default"
+                                                        className={checkboxStyles.checkbox}
+                                                        name="editCollaboratorsPermission"
+                                                        checked={collaborator.editCollaboratorsPermission}
+                                                        onChange={() => updateCollaboratorPermission(collaborator.pk, "editCollaboratorsPermission")}
+                                                        disableRipple
+                                                    />
+                                                }
+                                                classes={{ label: styles.collaboratorCheckboxLabel }}
+                                                label="Edit collaborators"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+        );
+    }
 }

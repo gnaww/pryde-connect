@@ -65,7 +65,6 @@ def make_projects(n):
             "timeline": "May to August",
             "commitmentLength": "build a website",
             "incentives": "none",
-            # "collaborators": [],
             "additionalInformation": "django and react",
             # "additionalFiles": [],
             "alternateContact": {},

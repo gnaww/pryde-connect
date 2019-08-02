@@ -73,8 +73,7 @@ export const projectQAForm = [
     {
         questionText: "Add collaborators to your project (optional):",
         answer: {
-            type: AnswerTypes.Inputbox, // TODO: need to change this
-            placeholder: "Type your answer here",
+            type: AnswerTypes.Collaborator,
             key: "collaborators"
         }
     },
@@ -152,7 +151,8 @@ export const KeyTypes = {
     String: "string",
     Enum: "enum",
     Array: "array",
-    Object: "object"
+    Object: "object",
+    Collaborator: "collaborator"
 };
 
 export const pairs = [
@@ -169,8 +169,8 @@ export const pairs = [
         type: KeyTypes.String
     },
     {
-        key: "collaborators", // TODO: need to change this
-        type: KeyTypes.String
+        key: "collaborators",
+        type: KeyTypes.Collaborator
     },
     {
         key: "status",

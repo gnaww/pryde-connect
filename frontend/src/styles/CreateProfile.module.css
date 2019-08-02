@@ -425,3 +425,49 @@ span.qaOptionText {
     letter-spacing: 0;
     font-size: 20px;
 }
+
+.collaboratorQuestionWrapper {
+    width: 900px;
+    font-size: 20px;
+    letter-spacing: 0;
+}
+
+.collaboratorCard {
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    display: flex;
+    padding: 15px 25px;
+    margin: 10px 0;
+}
+
+.collaboratorInfo {
+    flex: 1;
+}
+
+.collaboratorCard h4 {
+    margin: 0;
+}
+
+span.collaboratorCheckboxLabel {
+    font-size: 18px;
+    font-family: Lato;
+}
+
+.permissionsHeader {
+    display: flex;
+    align-items: center;
+}
+
+.permissionsHeader h4 {
+    flex: 1;
+}
+
+.permissionsHeader button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.permissionsHeader button:focus {
+    outline: none;
+}

@@ -23,12 +23,10 @@ class ProjectView(generics.RetrieveAPIView):
 class CreateProject(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     authentication_classes = [TokenAuthentication, ]
-    serializer_class = ProjectSerializer
     queryset = Project.objects.filter(isApproved=True)
 
     def post(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
-        print(request.data)
         try:
             new_project = Project.objects.create(
                 name = request.data['name'],
@@ -47,7 +45,7 @@ class CreateProject(generics.CreateAPIView):
                 alternateLocation = request.data['alternateLocation']
             )
 
-            return Response({'status': 'Project successfully created.'}, status = status.HTTP_201_CREATED)
+            return Response({ 'data': ProjectSerializer(new_project).data }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             print(e)

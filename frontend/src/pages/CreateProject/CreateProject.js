@@ -70,9 +70,15 @@ class CreateProject extends Component {
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];
-        // TODO: add collaborators to projects
-        // project.collaborators = data.collaborators;
-        project.collaborators = [];
+        // TODO: figure out what collaborators were created/updated/deleted during edit project
+        // delete project.collaborators;
+        // delete project.initialCollaborators;
+        // project.addedCollaborators = [];
+        // project.updatedCollaborators = [];
+        // project.deletedCollaborators = [];
+        // data.collaborators.forEach(c => {
+        //     if ()
+        // })
 
         if (this.props.editing === true) {
             try {
@@ -85,8 +91,19 @@ class CreateProject extends Component {
             }
         } else {
             try {
-                let response = await api.createProject(project);
-                return { success: response, message: "" };
+                // TODO: may need to implement better error handling when adding collabs/project
+                let createdProject = await api.createProject(project);
+                console.log(createdProject);
+                data.collaborators.forEach(async collaborator => {
+                    const c = {
+                        user: collaborator.pk,
+                        editPermission: collaborator.editPermission,
+                        deletePermission: collaborator.deletePermission,
+                        editCollaboratorsPermission: collaborator.editCollaboratorsPermission
+                    }
+                    await api.addCollaborator(createdProject.data.id, c);
+                });
+                return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
@@ -101,7 +118,7 @@ class CreateProject extends Component {
                 .then(response => {
                     if (response.success) {
                         // successful
-                        this.setState({ page: 1 });
+                        // this.setState({ page: 1 });
                     } else {
                         // failed to create/update project
                         this.setState({ pageData: data, page: 0 });
