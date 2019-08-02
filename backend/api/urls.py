@@ -30,7 +30,6 @@ urlpatterns = [
     path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
     path('project/<int:pk>/permissions/', LoggedInUserPermissions.as_view()),
 
-    #TODO: keep testing filter
     path('filter/', Filter.as_view()),
     path('collaboratorsearch/', SearchCollaborators.as_view())
 ]

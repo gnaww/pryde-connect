@@ -170,7 +170,6 @@ class Filter(generics.ListAPIView):
                     locations = [locations]
                 for location in locations:
                     if location == 'Other':
-                        # print(Project.objects.exclude(researchTopics__in=researchTopics).count())
                         location_options = [
                             'Albany County, NY', 'Allegany County, NY', 'Bronx County, NY','Broome County, NY',
                             'Cattaraugus County, NY', 'Cayuga County, NY', 'Chautauqua County, NY',
@@ -192,7 +191,6 @@ class Filter(generics.ListAPIView):
                         ]
                         filtered_location_set = filtered_location_set |\
                                                     PUser.objects.exclude(location__in=location_options)
-                        # print(Project.objects.filter(researchTopics__in=researchTopics).count())
 
                     else:
                         location_formatted = location + ' County, NY'

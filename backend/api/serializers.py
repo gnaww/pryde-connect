@@ -90,7 +90,7 @@ class UserSerializer(serializers.ModelSerializer):
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
 
         for collab in collabs:
-            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk), isApproved=True).data)
+            projects.append(ProjectShortSerializer(Project.objects.get(pk=collab.project.pk, isApproved=True)).data)
 
         owned_projects = Project.objects.filter(owner=obj.pk, isApproved=True)
 
