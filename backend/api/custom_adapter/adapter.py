@@ -1,4 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
+from ..models import ResearchInterestUser
 
 class CustomAccountAdapter(DefaultAccountAdapter):
 
@@ -14,7 +15,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.phone = data.get('phone')
         user.website = data.get('website')
         user.researchDescription = data.get('researchDescription')
-        user.researchInterests = data.get('researchInterests')
+        # user.researchInterests = data.get('researchInterests')
         user.roles = data.get('roles')
         user.ageRanges = data.get('ageRanges')
         user.deliveryModes = data.get('deliveryModes')
@@ -22,6 +23,12 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.evaluationNeeds = data.get('evaluationNeeds')
         user.locatedAtCornell = data.get('locatedAtCornell')
         user.locatedAtCCE = data.get('locatedAtCCE')
+
+
         user.save()
+        print(data.get('researchInterests'))
+        for interest in data.get('researchInterests'):
+
+         ResearchInterestUser.objects.create(user=user, researchInterest=interest)
 
         return user
