@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import ProjectShortSerializer, UserShortSerializer
-from .models import Project, PUser
+from .models import Project, PUser, TopicsProject, DeliveryModeProject, ResearchInterestUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -14,9 +14,13 @@ class Filter(generics.ListAPIView):
 
         if ('category' not in request.data) or (request.data['category'] == 'projects'):
 
+            print("searching for projects")
+            print(request.data)
             filtered_set = Project.objects.filter(isApproved=True)
 
-            if 'q' in request.data:
+            if 'q' in request.data and request.data['q'] != '':
+
+                print("doing q")
 
                 queries = request.data['q'].split()
                 search_query_set = Project.objects.none()
@@ -26,13 +30,19 @@ class Filter(generics.ListAPIView):
                     search_filtered_set = Project.objects.filter(owner__first_name__icontains=query) \
                                     | Project.objects.filter(owner__last_name__icontains=query) \
                                     | Project.objects.filter(name__icontains=query) \
-                                    | Project.objects.filter(summary__icontains=query) \
-                                    | Project.objects.filter(researchTopics__icontains=query)
+                                    | Project.objects.filter(summary__icontains=query)
                     search_query_set = search_filtered_set | search_query_set
 
+                    topic_relationships = TopicsProject.objects.filter(researchTopic__icontains=query)
+                    for relationship in topic_relationships:
+
+                        search_filtered_set = search_filtered_set | Project.objects.filter(pk=relationship.project.pk)
+
                 filtered_set = filtered_set & search_query_set
+                print(filtered_set.count())
 
             if 'status' in request.data:
+                print("doing status")
                 filter_status_set = Project.objects.none()
                 status_dict = {
                     'Completed': 1,
@@ -45,22 +55,14 @@ class Filter(generics.ListAPIView):
                     status_params = [status_params]
 
                 for param in status_params:
-
+                    print(param)
                     filter_status_set = filter_status_set | Project.objects.filter(status=status_dict[param])
+                    print(filter_status_set.count())
 
                 filtered_set = filtered_set & filter_status_set
+                print(filtered_set.count())
 
             if 'researchtopic' in request.data:
-                researchTopics = [['Animal Science & Agriculture'], ['Civic Engagement'],
-                                  ['Diversity Equity & Inclusion'], ['Education & Learning'],
-                                  ['Environment & Sustainability'], ['Families'],
-                                  ['Health & Wellness'], ['Peer Relationships'],
-                                  ['Positive Youth Development'], ['Policy Analysis'],
-                                  ['Program Evaluation'], ['Media & Technology'],
-                                  ['Motivation'], ['Nutrition'], ['Risk Behavior'],
-                                  ['Self & Identity'], ['Science Technology Engineering & Math (STEM)'],
-                                  ['Youth/Adult Relationships']]
-
                 filtered_researchtopic_set = Project.objects.none()
                 research_topics = request.data['researchtopic']
                 if type(research_topics) == str:
@@ -68,22 +70,27 @@ class Filter(generics.ListAPIView):
 
                 for topic in research_topics:
                     if topic == 'Other':
-                        #TODO: NOT DONE YET
-                        #TODO: NOT DONE YET
-                        #TODO: NOT DONE YET
-                        #TODO: NOT DONE YET
-                        #TODO: NOT DONE YET
-                        print(Project.objects.exclude(researchTopics__in=researchTopics).count())
-                        filtered_researchtopic_set = filtered_researchtopic_set |\
-                                                    Project.objects.exclude(researchTopics__in=researchTopics)
-                        print(Project.objects.filter(researchTopics__in=researchTopics).count())
-
+                        researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
+                                          'Diversity Equity & Inclusion', 'Education & Learning',
+                                          'Environment & Sustainability', 'Families',
+                                          'Health & Wellness', 'Peer Relationships',
+                                          'Positive Youth Development', 'Policy Analysis',
+                                          'Program Evaluation', 'Media & Technology',
+                                          'Motivation', 'Nutrition', 'Risk Behavior',
+                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+                                          'Youth/Adult Relationships']
+                        topic_relationships = TopicsProject.objects.exclude(researchTopic__in=researchTopics)
+                        for topic_relationship in topic_relationships:
+                            filtered_researchtopic_set = filtered_researchtopic_set | \
+                                                         Project.objects.filter(pk=topic_relationship.project.pk)
                     else:
-                        filtered_researchtopic_set = filtered_researchtopic_set |\
-                                                 Project.objects.filter(researchTopics__contains=topic)
+                        #get the projects that have a topic there
+                        topic_relationships = TopicsProject.objects.filter(researchTopic=topic)
+                        for topic_relationship in topic_relationships:
+                            filtered_researchtopic_set = filtered_researchtopic_set |\
+                                                         Project.objects.filter(pk=topic_relationship.project.pk)
 
                 filtered_set = filtered_set & filtered_researchtopic_set
-
 
             if 'deliverymodes' in request.data:
                 filtered_deliverymodes_set = Project.objects.none()
@@ -96,24 +103,20 @@ class Filter(generics.ListAPIView):
                 for mode in delivery_modes:
 
                     if mode == 'Other':
-                        #TODO: figure out how to write this query!!
                         deliveryModes = ['Afterschool', 'Camps', 'Clubs']
-
-                        excludeSet = Project.objects.none()
-                        for nn in deliveryModes:
-                            excludeSet = excludeSet | Project.objects.filter(deliveryModes__contains=nn)
-
-                        filtered_deliverymodes_set = filtered_deliverymodes_set |\
-                                                    Project.objects.exclude(pk__in=excludeSet)
-
-
+                        delivery_relationships = DeliveryModeProject.objects.exclude(deliveryMode__in=deliveryModes)
+                        for delivery_relationship in delivery_relationships:
+                            filtered_deliverymodes_set = filtered_deliverymodes_set | \
+                                                         Project.objects.filter(pk=delivery_relationship.project.pk)
 
                     else:
-                        filtered_deliverymodes_set = filtered_deliverymodes_set |\
-                                                 Project.objects.filter(deliveryModes__contains=mode)
+                        delivery_relationships = DeliveryModeProject.objects.filter(deliveryMode=mode)
+                        for delivery_relationship in delivery_relationships:
+                            filtered_deliverymodes_set = filtered_deliverymodes_set | \
+                                                            Project.objects.filter(pk=delivery_relationship.project.pk)
+
 
                 filtered_set = filtered_set & filtered_deliverymodes_set
-
             if 'ageranges' in request.data:
                 filtered_ageranges_set = Project.objects.none()
                 ageranges = request.data['ageranges']
@@ -140,26 +143,51 @@ class Filter(generics.ListAPIView):
                 search_query_set = PUser.objects.none()
 
                 for query in queries:
-
                     search_filtered_set = PUser.objects.filter(first_name__icontains=query) \
                                           | PUser.objects.filter(last_name__icontains=query) \
-                                          | PUser.objects.filter(researchInterests__icontains=query) \
                                           | PUser.objects.filter(researchDescription__icontains=query) \
                                           | PUser.objects.filter(researchNeeds__icontains=query) \
                                           | PUser.objects.filter(location__icontains=query)
+                    interest_relationships = ResearchInterestUser.objects.filter(researchInterest__icontains=query)
+                    for relationship in interest_relationships:
+                        search_filtered_set = search_filtered_set | PUser.objects.filter(pk=relationship.user.pk)
 
                     search_query_set = search_query_set | search_filtered_set
 
                 filtered_set = filtered_set & search_query_set
 
             if 'researchinterest' in request.data:
+
+                #TODO: need to implement this filtering
                 filtered_researchinterest_set = PUser.objects.none()
                 research_interests = request.data['researchinterest']
                 if type(research_interests) == str:
                     research_interests = [research_interests]
-                for n in research_interests:
-                    filtered_researchinterest_set = filtered_researchinterest_set |\
-                                                 PUser.objects.filter(researchInterests__contains=n)
+
+                for interest in research_interests:
+
+                    if interest == 'Other':
+                        researchInterests = ['Animal Science & Agriculture', 'Civic Engagement',
+                                          'Diversity Equity & Inclusion', 'Education & Learning',
+                                          'Environment & Sustainability', 'Families',
+                                          'Health & Wellness', 'Peer Relationships',
+                                          'Positive Youth Development', 'Policy Analysis',
+                                          'Program Evaluation', 'Media & Technology',
+                                          'Motivation', 'Nutrition', 'Risk Behavior',
+                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+                                          'Youth/Adult Relationships']
+
+                        interest_relationships = ResearchInterestUser.objects.exclude(researchInterest__in=researchInterests)
+                        for relationship in interest_relationships:
+                            filtered_researchinterest_set = filtered_researchinterest_set |\
+                                                            PUser.objects.filter(pk=relationship.user.pk)
+
+                    else:
+                        interest_relationships = ResearchInterestUser.objects.filter(researchInterest=interest)
+                        for relationship in interest_relationships:
+                            filtered_researchinterest_set = filtered_researchinterest_set |\
+                                                            PUser.objects.filter(pk=relationship.user.pk)
+
 
                 filtered_set = filtered_set & filtered_researchinterest_set
 
