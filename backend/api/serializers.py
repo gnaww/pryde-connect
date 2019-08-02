@@ -47,18 +47,12 @@ class ProjectShortSerializer(serializers.ModelSerializer):
         return obj.ageRanges
 
     def get_researchTopics(self, obj):
-        array = []
         topics = TopicsProject.objects.filter(project=obj)
-        for topic in topics:
-            array.append(topic.researchTopic)
-        return array
+        return [topic.researchTopic for topic in topics]
 
     def get_deliveryModes(self, obj):
-        array = []
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
-        for mode in deliveryModes:
-            array.append(mode.deliveryMode)
-        return array
+        return [mode.deliveryMode for mode in deliveryModes]
 
     def get_visible(self, obj):
         if 'visible' in self.context:
@@ -123,11 +117,8 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
     def get_researchInterests(self, obj):
-            array = []
             interests = ResearchInterestUser.objects.filter(user=obj)
-            for interest in interests:
-                array.append(interest.researchInterest)
-            return array
+            return [interest.researchInterest for interest in interests]
 
     def get_roles(self, obj):
         return obj.roles
@@ -181,11 +172,8 @@ class UserShortSerializer(serializers.ModelSerializer):
         return total
 
     def get_researchInterests(self, obj):
-            array = []
-            interests = ResearchInterestUser.objects.filter(user=obj)
-            for interest in interests:
-                array.append(interest.researchInterest)
-            return array
+        interests = ResearchInterestUser.objects.filter(user=obj)
+        return [interest.researchInterest for interest in interests]
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -214,18 +202,12 @@ class ProjectSerializer(serializers.ModelSerializer):
         return obj.ageRanges
 
     def get_researchTopics(self, obj):
-        array = []
         topics = TopicsProject.objects.filter(project=obj)
-        for topic in topics:
-            array.append(topic.researchTopic)
-        return array
+        return [topic.researchTopic for topic in topics]
 
     def get_deliveryModes(self, obj):
-        array = []
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
-        for mode in deliveryModes:
-            array.append(mode.deliveryMode)
-        return array
+        return [mode.deliveryMode for mode in deliveryModes]
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):

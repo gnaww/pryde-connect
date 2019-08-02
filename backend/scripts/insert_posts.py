@@ -13,10 +13,10 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Program Evaluation', 'Media & Technology',
            'Motivation', 'Nutrition', 'Risk Behavior',
            'Self & Identity', 'Science Technology Engineering & Math (STEM)',
-           'Youth/Adult Relationships', 'Other']
+           'Youth/Adult Relationships', 'alsdkfjsdlf', 'asdlfkjsdlf', 'alsdkfjlkdsj', 'alskdfjsdfl']
 
 
-deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'Other']
+deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
 
 ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
@@ -89,7 +89,7 @@ def insert_posts():
         projects = make_projects(num_projects)
         for project in projects:
             response = requests.request("POST", url, data=json.dumps(project), headers=headers)
-            print(response)
+            print(response.json())
 
 
 insert_posts()
