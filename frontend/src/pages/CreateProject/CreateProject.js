@@ -170,7 +170,7 @@ class CreateProject extends Component {
                 .then(response => {
                     if (response.success) {
                         // successful
-                        // this.setState({ page: 1 });
+                        this.setState({ page: 1 });
                     } else {
                         // failed to create/update project
                         this.setState({ pageData: data, page: 0 });
@@ -196,7 +196,7 @@ class CreateProject extends Component {
     }
 
     componentDidMount() {
-        document.title = this.props.editing ? "PRYDE Research Connect | Edit Project" : "PRYDE Research Connect | Submit a Project";
+        document.title = this.props.editing ? "PRYDE Connect | Edit Project" : "PRYDE Connect | Submit a Project";
         if (this.props.editProjectData) {
             this.setState({ pageData: this.props.editProjectData });
         }
