@@ -169,8 +169,35 @@ class Filter(generics.ListAPIView):
                 if type(locations) == str:
                     locations = [locations]
                 for location in locations:
-                    filtered_location_set = filtered_location_set |\
-                                            PUser.objects.filter(location=location)
+                    if location == 'Other':
+                        # print(Project.objects.exclude(researchTopics__in=researchTopics).count())
+                        location_options = [
+                            'Albany County, NY', 'Allegany County, NY', 'Bronx County, NY','Broome County, NY',
+                            'Cattaraugus County, NY', 'Cayuga County, NY', 'Chautauqua County, NY',
+                            'Chemung County, NY', 'Chenango County, NY', 'Clinton County, NY', 'Columbia County, NY',
+                            'Cortland County, NY', 'Delaware County, NY', 'Dutchess County, NY', 'Erie County, NY',
+                            'Essex County, NY', 'Franklin County, NY', 'Fulton County, NY', 'Genesee County, NY',
+                            'Greene County, NY', 'Hamilton County, NY', 'Herkimer County, NY', 'Jefferson County, NY',
+                            'Kings (Brooklyn) County, NY', 'Lewis County, NY', 'Livingston County, NY', 'Madison County, NY',
+                            'Monroe County, NY', 'Montgomery County, NY', 'Nassau County, NY', 'New York (Manhattan) County, NY',
+                            'Niagara County, NY', 'Oneida County, NY', 'Onondaga County, NY', 'Ontario County, NY',
+                            'Orange County, NY', 'Orleans County, NY', 'Oswego County, NY', 'Otsego County, NY',
+                            'Putnam County, NY', 'Queens County, NY', 'Rensselaer County, NY',
+                            'Richmond (Staten Island) County, NY', 'Rockland County, NY', 'Saint Lawrence County, NY',
+                            'Saratoga County, NY', 'Schenectady County, NY', 'Schoharie County, NY', 'Schuyler County, NY',
+                            'Seneca County, NY', 'Steuben County, NY', 'Suffolk County, NY', 'Sullivan County, NY',
+                            'Tioga County, NY', 'Tompkins County, NY', 'Ulster County, NY', 'Warren County, NY',
+                            'Washington County, NY', 'Wayne County, NY', 'Westchester County, NY', 'Wyoming County, NY',
+                            'Yates County, NY'
+                        ]
+                        filtered_location_set = filtered_location_set |\
+                                                    PUser.objects.exclude(location__in=location_options)
+                        # print(Project.objects.filter(researchTopics__in=researchTopics).count())
+
+                    else:
+                        location_formatted = location + ' County, NY'
+                        filtered_location_set = filtered_location_set |\
+                                                PUser.objects.filter(location=location_formatted)
 
                 filtered_set = filtered_set & filtered_location_set
 
