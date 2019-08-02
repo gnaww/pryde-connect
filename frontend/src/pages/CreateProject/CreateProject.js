@@ -35,8 +35,6 @@ let editPages = [
 ];
 
 const identifyChanges = (newCollaborators, oldCollaborators) => {
-    console.log(oldCollaborators)
-    console.log(newCollaborators)
     let updatedCollabs = [];
     let addedCollabs = [];
     let deletedCollabs = [];
@@ -124,14 +122,10 @@ class CreateProject extends Component {
 
         if (this.props.editing === true) {
             try {
-                console.log(project);
                 await api.updateProject(this.props.editProjectData.id, project);
                 // TODO: may need to implement better error handling when adding collabs/project
                 if (project.editCollaboratorsPermission) {
                     const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyChanges(data.collaborators, data.initialCollaborators);
-                    console.log('added', addedCollaborators);
-                    console.log('updated', updatedCollaborators);
-                    console.log('deleted', deletedCollaborators);
                     addedCollaborators.forEach(async added => {
                         await api.addCollaborator(project.id, added);
                     });
