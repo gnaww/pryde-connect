@@ -84,7 +84,7 @@ class Profile extends Component {
         const { match } = this.props;
 
         if (match.url === "/myprofile") {
-            document.title = "PRYDE Research Connect | My Profile";
+            document.title = "PRYDE Connect | My Profile";
             api.getLoggedInUser()
                 .then(user => this.setState({ user: user, canEditDelete: true }))
                 .catch(err => {
@@ -92,7 +92,7 @@ class Profile extends Component {
                     console.log(err);
                 });
         } else {
-            document.title = "PRYDE Research Connect | View Profile";
+            document.title = "PRYDE Connect | View Profile";
             const id = match.params.id;
             api.getUserByID(id)
                 .then(userPage => this.setState({ user: userPage }))

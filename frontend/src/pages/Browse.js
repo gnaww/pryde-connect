@@ -123,7 +123,7 @@ class Browse extends Component {
     }
 
     componentDidMount() {
-        document.title = "PRYDE Research Connect | Browse";
+        document.title = "PRYDE Connect | Browse";
         this.retrieveResults(this.props);
     }
 

@@ -42,7 +42,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        document.title = "PRYDE Research Connect | Log In";
+        document.title = "PRYDE Connect | Log In";
     }
 
     render() {

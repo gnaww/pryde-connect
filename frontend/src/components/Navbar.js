@@ -56,7 +56,7 @@ class Navbar extends Component {
                         <p>
                             <span id={styles.pryde}>PRYDE</span>
                             <br/>
-                            <span id={styles.name}>Research Connect</span>
+                            <span id={styles.name}>Connect</span>
                         </p>
                     </Link>
                 </div>

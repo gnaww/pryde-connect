@@ -89,7 +89,7 @@ class Project extends Component {
     componentDidMount() {
         const { match } = this.props;
         const id = match.params.id;
-        document.title = "PRYDE Research Connect | View Project";
+        document.title = "PRYDE Connect | View Project";
 
         // user is logged in
         if (localStorage.getItem("pryde_key")) {

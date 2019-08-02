@@ -207,7 +207,7 @@ class CreateProfile extends Component {
     }
 
     componentDidMount() {
-        document.title = this.props.editing ? "PRYDE Research Connect | Edit Profile" : "PRYDE Research Connect | Sign Up";
+        document.title = this.props.editing ? "PRYDE Connect | Edit Profile" : "PRYDE Connect | Sign Up";
         if (this.props.editProfileData) {
             this.setState({ pageData: this.props.editProfileData });
         }
