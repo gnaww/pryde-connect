@@ -190,6 +190,8 @@ export default {
         };
 
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/collaborator/delete/`, data, config);
+        console.log('asdklfaj')
+        console.log(response.data);
         return response.status === 204;
     },
     async collaboratorSearch(query) {

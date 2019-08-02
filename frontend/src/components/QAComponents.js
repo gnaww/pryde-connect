@@ -300,7 +300,7 @@ export class CollaboratorQuestion extends Component {
     };
 
     render() {
-        const { addCollaborator, qa, collaborators, updateCollaboratorPermission, deleteCollaborator } = this.props;
+        const { addCollaborator, qa, userCanEditCollaborators, collaborators, updateCollaboratorPermission, deleteCollaborator } = this.props;
         return (
             <div className={styles.collaboratorQuestionWrapper}>
                 <p className={styles.question}>{qa.questionText}</p>
@@ -309,6 +309,7 @@ export class CollaboratorQuestion extends Component {
                     onInputChange={this.handleInputChange}
                     onChange={addCollaborator}
                     isClearable
+                    isDisabled={!userCanEditCollaborators}
                     placeholder="Search for users to add by their email..."
                 />
                 <div>
@@ -323,9 +324,12 @@ export class CollaboratorQuestion extends Component {
                                     <div>
                                         <div className={styles.permissionsHeader}>
                                             <h4>Permissions</h4>
-                                            <button onClick={() => deleteCollaborator(collaborator.pk)}>
-                                                <img src={DeleteIcon} alt="Delete icon" />
-                                            </button>
+                                            {
+                                                userCanEditCollaborators &&
+                                                <button onClick={() => deleteCollaborator(collaborator.pk)}>
+                                                    <img src={DeleteIcon} alt="Delete icon" />
+                                                </button>
+                                            }
                                         </div>
                                         <div>
                                             <FormControlLabel
@@ -336,6 +340,7 @@ export class CollaboratorQuestion extends Component {
                                                         name="editPermission"
                                                         checked={collaborator.editPermission}
                                                         onChange={() => updateCollaboratorPermission(collaborator.pk, "editPermission")}
+                                                        disabled={!userCanEditCollaborators}
                                                         disableRipple
                                                     />
                                                 }
@@ -350,6 +355,7 @@ export class CollaboratorQuestion extends Component {
                                                         name="deletePermission"
                                                         checked={collaborator.deletePermission}
                                                         onChange={() => updateCollaboratorPermission(collaborator.pk, "deletePermission")}
+                                                        disabled={!userCanEditCollaborators}
                                                         disableRipple
                                                     />
                                                 }
@@ -364,6 +370,7 @@ export class CollaboratorQuestion extends Component {
                                                         name="editCollaboratorsPermission"
                                                         checked={collaborator.editCollaboratorsPermission}
                                                         onChange={() => updateCollaboratorPermission(collaborator.pk, "editCollaboratorsPermission")}
+                                                        disabled={!userCanEditCollaborators}
                                                         disableRipple
                                                     />
                                                 }

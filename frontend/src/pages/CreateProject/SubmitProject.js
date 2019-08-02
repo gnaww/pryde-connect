@@ -254,6 +254,7 @@ class SubmitProject extends Component {
         const defaultStatus = this.state.status ? this.state.status.toString() : "";
         const collabQuestion = {
             qa: qa,
+            userCanEditCollaborators: this.state.editCollaboratorsPermission,
             collaborators: this.state.collaborators,
             addCollaborator: this.addCollaborator,
             updateCollaboratorPermission: this.updateCollaboratorPermission,

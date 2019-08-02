@@ -7,6 +7,7 @@ import FinishSubmit from './FinishSubmit';
 import api from '../../services/api';
 import normalizeUrl from 'normalize-url';
 import phone from 'phone';
+import isEqual from 'lodash.isequal';
 
 let pages = [
     {
@@ -32,6 +33,54 @@ let editPages = [
         content: FinishSubmit
     }
 ];
+
+const identifyChanges = (newCollaborators, oldCollaborators) => {
+    console.log(oldCollaborators)
+    console.log(newCollaborators)
+    let updatedCollabs = [];
+    let addedCollabs = [];
+    let deletedCollabs = [];
+
+    // identify collaborators that have changed permissions or are newly added
+    newCollaborators.forEach(newCollab => {
+        let preExistingCollaborator = oldCollaborators.find(c => c.pk === newCollab.pk);
+
+        // collaborator previously existed, check if permissions have changed
+        if (preExistingCollaborator) {
+            let collaboratorPermissionChanged = newCollab.editPermission !== preExistingCollaborator.editPermission || newCollab.deletePermission !== preExistingCollaborator.deletePermission || newCollab.editCollaboratorsPermission !== preExistingCollaborator.editCollaboratorsPermission;
+
+            if (collaboratorPermissionChanged) {
+                updatedCollabs.push({
+                    user: newCollab.pk,
+                    editPermission: newCollab.editPermission,
+                    deletePermission: newCollab.deletePermission,
+                    editCollaboratorsPermission: newCollab.editCollaboratorsPermission
+                });
+            }
+        }
+
+        // collaborator was not pre-existing, is a newly added collaborator
+        if (preExistingCollaborator === undefined) {
+            addedCollabs.push({
+                user: newCollab.pk,
+                editPermission: newCollab.editPermission,
+                deletePermission: newCollab.deletePermission,
+                editCollaboratorsPermission: newCollab.editCollaboratorsPermission
+            });
+        }
+    });
+
+    // identify collaborators that were deleted
+    oldCollaborators.forEach(oldCollab => {
+        let deleted = newCollaborators.find(c => c.pk === oldCollab.pk) === undefined;
+
+        if (deleted) {
+            deletedCollabs.push({ user: oldCollab.pk });
+        }
+    })
+
+    return { addedCollaborators: addedCollabs, updatedCollaborators: updatedCollabs, deletedCollaborators: deletedCollabs };
+}
 
 class CreateProject extends Component {
     constructor(props) {
@@ -70,20 +119,30 @@ class CreateProject extends Component {
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];
-        // TODO: figure out what collaborators were created/updated/deleted during edit project
-        // delete project.collaborators;
-        // delete project.initialCollaborators;
-        // project.addedCollaborators = [];
-        // project.updatedCollaborators = [];
-        // project.deletedCollaborators = [];
-        // data.collaborators.forEach(c => {
-        //     if ()
-        // })
+        delete project.collaborators;
+        delete project.initialCollaborators;
 
         if (this.props.editing === true) {
             try {
-                let response = await api.updateProject(this.props.editProjectData.id, project);
-                return { success: response, message: "" };
+                console.log(project);
+                await api.updateProject(this.props.editProjectData.id, project);
+                // TODO: may need to implement better error handling when adding collabs/project
+                if (project.editCollaboratorsPermission) {
+                    const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyChanges(data.collaborators, data.initialCollaborators);
+                    console.log('added', addedCollaborators);
+                    console.log('updated', updatedCollaborators);
+                    console.log('deleted', deletedCollaborators);
+                    addedCollaborators.forEach(async added => {
+                        await api.addCollaborator(project.id, added);
+                    });
+                    updatedCollaborators.forEach(async updated => {
+                        await api.updateCollaborator(project.id, updated);
+                    });
+                    deletedCollaborators.forEach(async deleted => {
+                        await api.deleteCollaborator(project.id, deleted);
+                    });
+                }
+                return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
@@ -93,7 +152,6 @@ class CreateProject extends Component {
             try {
                 // TODO: may need to implement better error handling when adding collabs/project
                 let createdProject = await api.createProject(project);
-                console.log(createdProject);
                 data.collaborators.forEach(async collaborator => {
                     const c = {
                         user: collaborator.pk,
@@ -135,6 +193,12 @@ class CreateProject extends Component {
 
     handleNext = () => {
         this.setState({ clickedNext: true });
+    }
+
+    componentDidUpdate(prevProps, _prevState) {
+        if (!isEqual(prevProps.editProjectData, this.props.editProjectData)) {
+            this.setState({ pageData: this.props.editProjectData });
+        }
     }
 
     componentDidMount() {
