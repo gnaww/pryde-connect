@@ -1,7 +1,19 @@
 from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborator
+from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
+
+
+
+class DeliveryModeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeliveryModeProject
+        fields = '__all__'
+
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TopicsProject
+        fields = '__all__'
 
 
 class MiniUserSerializer(serializers.ModelSerializer):
@@ -35,10 +47,18 @@ class ProjectShortSerializer(serializers.ModelSerializer):
         return obj.ageRanges
 
     def get_researchTopics(self, obj):
-        return obj.researchTopics
+        array = []
+        topics = TopicsProject.objects.filter(project=obj)
+        for topic in topics:
+            array.append(topic.researchTopic)
+        return array
 
     def get_deliveryModes(self, obj):
-        return obj.deliveryModes
+        array = []
+        deliveryModes = DeliveryModeProject.objects.filter(project=obj)
+        for mode in deliveryModes:
+            array.append(mode.deliveryMode)
+        return array
 
     def get_visible(self, obj):
         if 'visible' in self.context:
@@ -103,7 +123,11 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
     def get_researchInterests(self, obj):
-        return obj.researchInterests
+            array = []
+            interests = ResearchInterestUser.objects.filter(user=obj)
+            for interest in interests:
+                array.append(interest.researchInterest)
+            return array
 
     def get_roles(self, obj):
         return obj.roles
@@ -157,7 +181,11 @@ class UserShortSerializer(serializers.ModelSerializer):
         return total
 
     def get_researchInterests(self, obj):
-        return obj.researchInterests
+            array = []
+            interests = ResearchInterestUser.objects.filter(user=obj)
+            for interest in interests:
+                array.append(interest.researchInterest)
+            return array
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -186,10 +214,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         return obj.ageRanges
 
     def get_researchTopics(self, obj):
-        return obj.researchTopics
+        array = []
+        topics = TopicsProject.objects.filter(project=obj)
+        for topic in topics:
+            array.append(topic.researchTopic)
+        return array
 
     def get_deliveryModes(self, obj):
-        return obj.deliveryModes
+        array = []
+        deliveryModes = DeliveryModeProject.objects.filter(project=obj)
+        for mode in deliveryModes:
+            array.append(mode.deliveryMode)
+        return array
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):

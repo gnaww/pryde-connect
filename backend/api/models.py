@@ -51,12 +51,12 @@ class PUser(AbstractUser):
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(default=None, null=True, unique=False, blank=True)
     website = models.URLField(default=None, null=True, blank=True)
-    researchInterests = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=list,
-        null=True,
-        max_length=(20 * 101) # 20 * 100 character nominals, plus commas
-    )
+    # researchInterests = ListCharField(
+    #     base_field=models.CharField(max_length=100),
+    #     default=list,
+    #     null=True,
+    #     max_length=(20 * 101) # 20 * 100 character nominals, plus commas
+    # )
     researchDescription = models.TextField(null=True, blank=True)
     roles = ListCharField(
         base_field=models.CharField(max_length=100),
@@ -86,6 +86,11 @@ class PUser(AbstractUser):
     REQUIRED_FIELDS = []
 
 
+class ResearchInterestUser(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    researchInterest = models.CharField(max_length=100)
+
+
 class Project(Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
@@ -96,21 +101,21 @@ class Project(Model):
     ]
     status = EnumField(choices=STATUS)
     summary = models.TextField()
-    researchTopics = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=None,
-        max_length=(20 * 101)  # 20 * 100 character nominals, plus commas
-    )
+    # researchTopics = ListCharField(
+    #     base_field=models.CharField(max_length=100),
+    #     default=None,
+    #     max_length=(20 * 101)  # 20 * 100 character nominals, plus commas
+    # )
     ageRanges = ListCharField(
         base_field=models.CharField(max_length=100),
         default=None,
         max_length=(9 * 101) # 9 * 100 character nominals, plus commas
     )
-    deliveryModes = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=None,
-        max_length=(5 * 101) # 5 * 100 character nominals, plus commas
-    )
+    # deliveryModes = ListCharField(
+    #     base_field=models.CharField(max_length=100),
+    #     default=None,
+    #     max_length=(5 * 101) # 5 * 100 character nominals, plus commas
+    # )
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
     incentives = models.TextField()
@@ -120,6 +125,16 @@ class Project(Model):
     alternateContact = JSONField(default=dict)
     alternateLocation = models.CharField(max_length=200, null=True, blank=True, default=None)
     isApproved = models.BooleanField(default=True)
+
+
+class TopicsProject(Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    researchTopic = models.CharField(max_length=100)
+
+
+class DeliveryModeProject(Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    deliveryMode = models.CharField(max_length=100)
 
 
 class Collaborator(Model):
