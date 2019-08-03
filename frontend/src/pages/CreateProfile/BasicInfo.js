@@ -115,7 +115,8 @@ class BasicInfo extends Component {
 
         return (
             <>
-            <div className={styles.form}>
+            <p className={styles.disclaimer}>Keep in mind that the contact information you provide will be publicly viewable so that potential partners can contact you.</p>
+            <div className={styles.basicInfoForm}>
                 <div className={styles.requiredFields}>
                     <div>
                         <input
