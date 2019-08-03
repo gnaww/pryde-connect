@@ -72,6 +72,8 @@ class EditProject extends Component {
                 website: ""
             };
         }
+        editProjectData.alternateContact.phone = editProjectData.alternateContact.phone ? editProjectData.alternateContact.phone.slice(2) : "";
+        editProjectData.alternateContact.website = editProjectData.alternateContact.website ? editProjectData.alternateContact.website.replace(/(^\w+:|^)\/\//, '') : "";
         editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
         editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
         editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
