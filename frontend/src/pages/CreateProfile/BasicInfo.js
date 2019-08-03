@@ -39,7 +39,7 @@ class BasicInfo extends Component {
                 this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
             }
 
-            if (!this.state.over18) {
+            if (!this.props.editing && !this.state.over18) {
                 alert("You must be at least 18 years old to create a PRYDE Connect profile.");
                 this.props.onSubmitData(this.state, true);
             } else {
@@ -178,19 +178,22 @@ class BasicInfo extends Component {
                     />
                 </div>
             </div>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        color="default"
-                        className={checkboxStyles.checkbox}
-                        checked={this.state.over18}
-                        onChange={this.toggleOver18}
-                        disableRipple
-                    />
-                }
-                classes={{ label: styles.qaOptionText }}
-                label="Are you age 18 or older?"
-            />
+            {
+                !editing &&
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            color="default"
+                            className={checkboxStyles.checkbox}
+                            checked={this.state.over18}
+                            onChange={this.toggleOver18}
+                            disableRipple
+                        />
+                    }
+                    classes={{ label: styles.qaOptionText }}
+                    label="Are you age 18 or older?"
+                />
+            }
             <div className={styles.errorContainer}>
                 { this.firstNameError && <span className={styles.errorMsg}>First name is required.</span> }
                 { this.lastNameError && <span className={styles.errorMsg}>Last name is required.</span> }
