@@ -158,7 +158,6 @@ class Filter(generics.ListAPIView):
 
             if 'researchinterest' in request.data:
 
-                #TODO: need to implement this filtering
                 filtered_researchinterest_set = PUser.objects.none()
                 research_interests = request.data['researchinterest']
                 if type(research_interests) == str:

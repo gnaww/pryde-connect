@@ -214,7 +214,7 @@ class CreateProject extends Component {
                 <div className={styles.root} >
                     <h1 className={styles.createProfile}>{title}</h1>
                     <h2 className={styles.subtitle}>{subtitle}</h2>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} />
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} />
                     <div className={styles.buttons}>
                         {
                             this.state.page < NUM_PAGES - 1 &&
