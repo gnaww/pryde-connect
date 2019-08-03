@@ -72,8 +72,6 @@ class CreateProject(generics.CreateAPIView):
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
-    # serializer_class = ProjectUpdateSerializer
-    # queryset = Project.objects.filter(isApproved=True)
 
     def put(self, request, *args, **kwargs):
         print("updating object")
@@ -82,39 +80,25 @@ class UpdateProject(generics.UpdateAPIView):
 
             project = Project.objects.get(pk=kwargs['pk'])
 
-            if 'name' in request.data:
-                project.name = request.data['name']
-            if 'status' in request.data:
-                project.status = request.data['status']
-            if 'summary' in request.data:
-                project.summary = request.data['summary']
-            if 'ageRanges' in request.data:
-                project.ageRanges = request.data['ageRanges']
-            if 'timeline' in request.data:
-                project.timeline = request.data['timeline']
-            if 'commitmentLength' in request.data:
-                project.commitmentLength = request.data['commitmentLength']
-            if 'incentives' in request.data:
-                project.incentives = request.data['incentives']
-            if 'additionalInformation' in request.data:
-                project.additionalInformation = request.data['additionalInformation']
-            if 'type' in request.data:
-                project.type = request.data['type']
-            if 'alternateContact' in request.data:
-                project.alternateContact = request.data['alternateContact']
-            if 'alternateLocation' in request.data:
-                project.alternateLocation = request.data['alternateLocation']
-
+            project.name = request.data['name']
+            project.status = request.data['status']
+            project.summary = request.data['summary']
+            project.ageRanges = request.data['ageRanges']
+            project.timeline = request.data['timeline']
+            project.commitmentLength = request.data['commitmentLength']
+            project.incentives = request.data['incentives']
+            project.additionalInformation = request.data['additionalInformation']
+            project.type = request.data['type']
+            project.alternateContact = request.data['alternateContact']
+            project.alternateLocation = request.data['alternateLocation']
             project.save()
 
-            if 'researchTopics' in request.data:
-                TopicsProject.objects.filter(project=project.pk).delete()
-                for new_topic in request.data['researchTopic']:
-                    TopicsProject.objects.create(project=project.pk, researchTopic=new_topic)
-            if 'deliveryMode' in request.data:
-                DeliveryModeProject.objects.filter(project=project.pk).delete()
-                for new_mode in request.data['deliveryMode']:
-                    DeliveryModeProject.objects.create(project=project.pk, deliveryMode=new_mode)
+            TopicsProject.objects.filter(project=project.pk).delete()
+            for new_topic in request.data['researchTopic']:
+                TopicsProject.objects.create(project=project.pk, researchTopic=new_topic)
+            DeliveryModeProject.objects.filter(project=project.pk).delete()
+            for new_mode in request.data['deliveryMode']:
+                DeliveryModeProject.objects.create(project=project.pk, deliveryMode=new_mode)
 
             return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_201_CREATED)
 
