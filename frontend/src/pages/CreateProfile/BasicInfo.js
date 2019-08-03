@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import checkboxStyles from '../../styles/FilterCategory.module.css';
 import styles from '../../styles/CreateProfile.module.css';
 import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
 
@@ -13,6 +16,7 @@ class BasicInfo extends Component {
             phone: '',
             confirmPassword: '',
             website: '',
+            over18: false
         };
         this.firstNameError = false;
         this.lastNameError = false;
@@ -35,8 +39,13 @@ class BasicInfo extends Component {
                 this.confirmPasswordIsInvalid(this.state.password, this.state.confirmPassword);
             }
 
-            const hasErrors = this.phoneNumberError || this.emailError || this.websiteError || this.firstNameError || this.lastNameError || this.passwordError || this.confirmPasswordError;
-            this.props.onSubmitData(this.state, hasErrors);
+            if (!this.state.over18) {
+                alert("You must be at least 18 years old to create a PRYDE Connect profile.");
+                this.props.onSubmitData(this.state, true);
+            } else {
+                const hasErrors = this.phoneNumberError || this.emailError || this.websiteError || this.firstNameError || this.lastNameError || this.passwordError || this.confirmPasswordError;
+                this.props.onSubmitData(this.state, hasErrors);
+            }
         }
 
         if (prevProps.savedData !== this.props.savedData) {
@@ -95,6 +104,10 @@ class BasicInfo extends Component {
             this.confirmPasswordIsInvalid(this.state.password, event.target.value);
         }
         this.setState({ [inputField]: event.target.value });
+    }
+
+    toggleOver18 = () => {
+        this.setState(prevState => ({ over18: !prevState.over18}));
     }
 
     render() {
@@ -164,12 +177,25 @@ class BasicInfo extends Component {
                     />
                 </div>
             </div>
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        color="default"
+                        className={checkboxStyles.checkbox}
+                        checked={this.state.over18}
+                        onChange={this.toggleOver18}
+                        disableRipple
+                    />
+                }
+                classes={{ label: styles.qaOptionText }}
+                label="Are you age 18 or older?"
+            />
             <div className={styles.errorContainer}>
                 { this.firstNameError && <span className={styles.errorMsg}>First name is required.</span> }
                 { this.lastNameError && <span className={styles.errorMsg}>Last name is required.</span> }
                 { this.passwordError && <span className={styles.errorMsg}>Password is required and must be at least 8 characters.</span> }
                 { this.confirmPasswordError && <span className={styles.errorMsg}>Passwords do not match.</span> }
-                { this.emailError && <span className={styles.errorMsg}>Invalid email.</span> }
+                { this.emailError && <span className={styles.errorMsg}>Invalid email address.</span> }
                 { this.phoneNumberError && <span className={styles.errorMsg}>Invalid phone number.</span> }
                 { this.websiteError && <span className={styles.errorMsg}>Invalid website.</span> }
             </div>

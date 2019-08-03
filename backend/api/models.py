@@ -75,6 +75,7 @@ class PUser(AbstractUser):
     # TODO: add profile picture to users
     # profilePicture = models.FileField(upload_to="uploads/")
     type = models.CharField(max_length=15, default='user')
+    over18 = models.BooleanField(default=True)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

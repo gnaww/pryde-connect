@@ -74,7 +74,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
 
 class ProjectUpdateSerializer(serializers.ModelSerializer):
@@ -97,7 +97,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
     def get_projects(self, obj):
         projects = []
