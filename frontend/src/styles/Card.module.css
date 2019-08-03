@@ -20,6 +20,10 @@
     transform: scale(1.02);
 }
 
+.invisible {
+    opacity: 0.5;
+}
+
 .projectCard {
     height: 240px;
 }
@@ -153,6 +157,10 @@
     color: #FF7F00;
     margin: 0;
 }
+
+/* .userCard .stats .line p {
+    overflow-wrap: break-word;
+} */
 
 .linkWrapper img {
     margin-right: 10px;

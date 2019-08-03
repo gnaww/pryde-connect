@@ -60,14 +60,17 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
-    'corsheaders'
+    'corsheaders',
+
+    'django_mysql'
 ]
 
 
 
 
 # Additional Settings
-
+# to require the user's old password when they try to change
+OLD_PASSWORD_FIELD_ENABLED = True
 
 # CORS Settings
 # this should be set to false in production... allows any server to hit our backend which is not okay... only our
@@ -93,6 +96,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # make all endpoints atomic
 ATOMIC_REQUESTS = True
+
 
 
 # set site_id to 1 for allauth/rest-auth
@@ -189,12 +193,21 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pryde',
-        'USER': 'postgres',
+        'USER': 'pryde',
         'PASSWORD': 'password',
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '3306',
+        'OPTIONS': {
+            # Tell MySQLdb to connect with 'utf8mb4' character set
+            'charset': 'utf8mb4',
+        },
+        # Tell Django to build the test database with the 'utf8mb4' character set
+        'TEST': {
+            'CHARSET': 'utf8mb4',
+            'COLLATION': 'utf8mb4_unicode_ci',
+        }
     }
 }
 

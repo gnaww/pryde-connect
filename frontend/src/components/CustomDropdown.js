@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from '../styles/CustomDropdown.module.css';
 
-const CustomDropdown = ({ handleChange, name, label, options, defaultValue = "" }) => {
-    console.log(defaultValue, typeof defaultValue);
-    return (
+const CustomDropdown = ({ handleChange, name, label, options, defaultValue = "" }) => (
     <span className={styles.dropdown}>
         <select name={name} value={defaultValue} onChange={handleChange}>
             <option value="" disabled>{label}</option>
@@ -12,6 +10,6 @@ const CustomDropdown = ({ handleChange, name, label, options, defaultValue = "" 
             }
         </select>
     </span>
-)};
+);
 
 export default CustomDropdown;

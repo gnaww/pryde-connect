@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
+import api from '../services/api';
 
 const convertArray = (savedArray, options) => {
     let convertedArray = getCheckedValuesArray(options);
@@ -27,42 +28,68 @@ const formatInputbox = value => ({
 
 const STATUSES = ["Completed", "In Progress", "Not Started"];
 
-const EditProject = ({ location }) => {
-    let editProjectData = Object.assign({}, location.state.projectData);
-    delete editProjectData.invalidProject;
-    delete editProjectData.canEdit;
-    delete editProjectData.canDelete;
-    delete editProjectData.errorDeleting;
-    delete editProjectData.owner;
-    delete editProjectData.datePosted;
-    editProjectData.name = formatInputbox(editProjectData.name);
-    editProjectData.alternateLocation = formatInputbox(editProjectData.alternateLocation);
-
-    // TODO: convert saved collaborators to fit into CreateProject, placeholder for now
-    editProjectData.collaborators = {
-        option: "",
-        other: ""
-    };
-
-    editProjectData.timeline = formatInputbox(editProjectData.timeline);
-    editProjectData.commitmentLength = formatInputbox(editProjectData.commitmentLength);
-    editProjectData.incentives = formatInputbox(editProjectData.incentives);
-    if (Object.entries(editProjectData.alternateContact).length === 0) {
-        editProjectData.alternateContact = {
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: "",
-            website: ""
+class EditProject extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
         };
     }
-    editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
-    editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
-    editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
-    editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-    // TODO: convert saved additional files to fit into CreateProject
-    // editProjectData.additionalFiles = data.additionalFiles;
-    return <CreateProject editProjectData={editProjectData} editing={true} />
-};
+
+    async componentDidMount() {
+        const { location } = this.props;
+        let editProjectData = Object.assign({}, location.state.projectData);
+        delete editProjectData.invalidProject;
+        delete editProjectData.editPermission;
+        delete editProjectData.deletePermission;
+        delete editProjectData.isCollaborator;
+        delete editProjectData.showProjectOnProfile;
+        delete editProjectData.owner;
+        delete editProjectData.datePosted;
+        editProjectData.name = formatInputbox(editProjectData.name);
+        editProjectData.alternateLocation = formatInputbox(editProjectData.alternateLocation);
+
+        try {
+            let collaborators = await api.getProjectCollaborators(editProjectData.id)
+            editProjectData.collaborators = collaborators.map(elt => ({...elt}));
+            editProjectData.initialCollaborators = collaborators.map(elt => ({...elt}));
+        } catch(err) {
+            console.log(err);
+            console.log(err.response.data);
+            editProjectData.collaborators = [];
+            editProjectData.initialCollaborators = [];
+            alert("Something went wrong while retrieving existing project collaborators. Please refresh the page.")
+        }
+
+        editProjectData.timeline = formatInputbox(editProjectData.timeline);
+        editProjectData.commitmentLength = formatInputbox(editProjectData.commitmentLength);
+        editProjectData.incentives = formatInputbox(editProjectData.incentives);
+        if (Object.entries(editProjectData.alternateContact).length === 0) {
+            editProjectData.alternateContact = {
+                first_name: "",
+                last_name: "",
+                email: "",
+                phone: "",
+                website: ""
+            };
+        }
+        editProjectData.alternateContact.phone = editProjectData.alternateContact.phone ? editProjectData.alternateContact.phone.slice(2) : "";
+        editProjectData.alternateContact.website = editProjectData.alternateContact.website ? editProjectData.alternateContact.website.replace(/(^\w+:|^)\/\//, '') : "";
+        editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
+        editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+        editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
+        editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
+        // TODO: convert saved additional files to fit into CreateProject
+        // editProjectData.additionalFiles = data.additionalFiles;
+        this.setState({ ...editProjectData });
+    }
+
+    render() {
+        if (Object.entries(this.state).length === 0) {
+            return <CreateProject editProjectData={null} editing={true} />
+        } else {
+            return <CreateProject editProjectData={this.state} editing={true} />
+        }
+    }
+}
 
 export default EditProject;

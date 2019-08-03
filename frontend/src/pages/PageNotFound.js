@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from '../styles/PageNotFound.module.css';
 
 const PageNotFound = () => {
-    document.title = "PRYDE Research Connect | 404";
+    document.title = "PRYDE Connect | 404";
 
     return (
         <div className={styles.container}>

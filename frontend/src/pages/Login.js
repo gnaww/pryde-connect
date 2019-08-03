@@ -32,7 +32,6 @@ class Login extends Component {
             api.login(this.state)
                 .then(response => {
                     localStorage.setItem("pryde_key", response.data.key);
-                    this.props.setLoggedIn();
                     this.props.history.push("/myprofile");
                 })
                 .catch(error => {
@@ -43,7 +42,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        document.title = "PRYDE Research Connect | Log In";
+        document.title = "PRYDE Connect | Log In";
     }
 
     render() {

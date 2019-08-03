@@ -21,8 +21,8 @@ class Homepage extends Component {
         const MAX = 4;
         const randomInt= Math.floor(Math.random() * (MAX - MIN + 1)) + MIN;
         const heroImages = [heroImage1, heroImage2, heroImage3, heroImage4, heroImage5];
-        document.getElementById(styles.welcomeBanner).style.backgroundImage = 'url(' + heroImages[randomInt] + ')';
-        document.title = "PRYDE Research Connect";
+        document.getElementById(styles.welcomeBanner).style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(' + heroImages[randomInt] + ')';
+        document.title = "PRYDE Connect";
     }
 
     render() {
@@ -30,9 +30,9 @@ class Homepage extends Component {
             <div className={styles.container}>
                 <section id={styles.welcomeBanner}>
                     <div>
-                        <h1>Welcome to Research Connect!</h1>
+                        <h1>Welcome to PRYDE Connect!</h1>
                         <p>Where connections are built.</p>
-                        <Link to="/signup">CLICK TO SIGN UP</Link>
+                        <Link to="/signup">SIGN UP NOW</Link>
                     </div>
                     <button
                         onClick={
@@ -52,14 +52,14 @@ class Homepage extends Component {
                     <div className={styles.aboutUsText}>
                         <h2>About Us</h2>
                         <p>
-                            The Research Connector is the place for researchers and practitioners with a shared interest in youth development to connect to each other.
+                            PRYDE Connect is the place for researchers and practitioners with a shared interest in youth development to connect to each other.
                         </p>
                         <p>
                             Share your research interests and needs, identify potential research partners, and stay up to date on all of the PRYDE-affiliated research opportunities. Let’s build connections to support research and practice that helps youth thrive.
                         </p>
                     </div>
                     <div className={styles.connect}>
-                        <img src={connect} alt="Research connect" />
+                        <img src={connect} alt="PRYDE Connect" />
                     </div>
                 </section>
                 <section className={styles.features}>
@@ -67,19 +67,19 @@ class Homepage extends Component {
                         <div>
                             <h2>Communicate across the state</h2>
                             <p>
-                                Discover the work youth development researchers throughout New York State are doing
+                                Discover the work youth development researchers throughout New York State are doing.
                             </p>
                         </div>
                         <div>
                             <h2>Browse our archives</h2>
                             <p>
-                                View results and documentation from projects completed in the past
+                                View results and documentation from projects completed in the past.
                             </p>
                         </div>
                         <div>
                             <h2>Understand the needs of New York youth</h2>
                             <p>
-                                Get feedback from 4-H practitioners across New York State about what issues they see in their communities
+                                Get feedback from 4-H practitioners across New York State about what issues they see in their communities.
                             </p>
                         </div>
                     </div>
@@ -99,7 +99,7 @@ class Homepage extends Component {
                                     <p>VIEW PROJECTS</p>
                                 </Link>
                                 <p className={styles.actionDescription}>
-                                    View projects and profiles right now without an account.
+                                    View projects and profiles right now without an account
                                 </p>
                             </div>
                             <div className={styles.actionCard}>
@@ -108,7 +108,7 @@ class Homepage extends Component {
                                     <p>SIGN UP</p>
                                 </Link>
                                 <p className={styles.actionDescription}>
-                                    Sign up now to post about an initiative or create your own profile.
+                                    Sign up now to post about an initiative or create your own profile
                                 </p>
                             </div>
                         </div>

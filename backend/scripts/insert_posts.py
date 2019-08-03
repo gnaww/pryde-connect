@@ -2,6 +2,9 @@ import requests
 import json
 import random
 
+projectNames = ['Children', 'Technology', 'Animals', 'Science', 'Reading', 'Engagement']
+
+
 researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Diversity Equity & Inclusion', 'Education & Learning',
            'Environment & Sustainability', 'Families',
@@ -10,10 +13,10 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Program Evaluation', 'Media & Technology',
            'Motivation', 'Nutrition', 'Risk Behavior',
            'Self & Identity', 'Science Technology Engineering & Math (STEM)',
-           'Youth/Adult Relationships', 'Other']
+           'Youth/Adult Relationships', 'alsdkfjsdlf', 'asdlfkjsdlf', 'alsdkfjlkdsj', 'alskdfjsdfl']
 
 
-deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'Other']
+deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
 
 ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
@@ -22,8 +25,11 @@ ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Young adults (18-24 years)']
 
 
+def login_users():
 
-def login_user():
+    emails = ['barronfran@gmail.com', 'dubois.barron@gmail.com', 'william.oliver.wang@gmail.com',
+              'test4@gmail.com', 'test5@gmail.com', 'test6@gmail.com', 'test7@gmail.com',
+              'test8@gmail.com', 'test9@gmail.com', 'test10@gmail.com']
 
     url = 'http://localhost:8000/api/v1/rest-auth/login/'
     headers = {
@@ -31,200 +37,59 @@ def login_user():
         'cache-control': 'no-cache'
     }
 
-    login = {
-        'email': 'test1@gmail.com',
-        'password': 'password'
-    }
-    response = requests.request("POST", url, data=json.dumps(login), headers=headers)
-    return response.json()['key']
+    keys = []
+    for email in emails:
+        login = {
+            'email': email,
+            'password': 'password'
+        }
+        response = requests.request("POST", url, data=json.dumps(login), headers=headers)
+        print(response)
+        keys.append(response.json()['key'])
+
+    return keys
+
+
+def make_projects(n):
+    print(n)
+    projects = []
+    for num in range(n):
+        projects.append({
+            "name": random.choice(projectNames),
+            "status": random.choice([1, 2, 3]),
+            "summary": "summary about the project",
+            "researchTopics": [random.choice(researchTopics), random.choice(researchTopics),
+                               random.choice(researchTopics)],
+            "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
+            "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
+            "timeline": "May to August",
+            "commitmentLength": "build a website",
+            "incentives": "none",
+            "additionalInformation": "django and react",
+            # "additionalFiles": [],
+            "alternateContact": {},
+            "alternateLocation": ""
+        })
+    return projects
 
 
 def insert_posts():
-    auth_key = login_user()
 
+    auth_keys = login_users()
+    print(auth_keys)
     url = 'http://localhost:8000/api/v1/project/create/'
-    headers = {
-        'Authorization': 'Token ' + auth_key,
-        'Content-Type': 'application/json',
-        'cache-control': 'no-cache'
-    }
-
-
-    project1 = {
-        "name": "aaa",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project2 = {
-        "name": "bb",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project3 = {
-        "name": "gg",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project4 = {
-        "name": "zz",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project5 = {
-        "name": "eee",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project6 = {
-        "name": "ddd",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project7 = {
-        "name": "lll",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project8 = {
-        "name": "asdf",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project9 = {
-        "name": "foo bar",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    project10 = {
-        "name": "test study",
-        "status": random.choice([1, 2, 3]),
-        "summary": "summary about the project",
-        "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
-        "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
-        "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
-        "timeline": "May to August",
-        "commitmentLength": "build a website",
-        "incentives": "none",
-        # "collaborators": [],
-        "additionalInformation": "django and react",
-        "additionalFiles": [],
-        "alternateContact": {},
-        "alternateLocation": ""
-    }
-
-    projects = [project1, project2, project3, project4, project5, project6, project7, project8, project9, project10]
-
-    for project in projects:
-        response = requests.request("POST", url, data=json.dumps(project), headers=headers)
-        print(response)
+    for key in auth_keys:
+        # give each user between 2 and 4 projects
+        headers = {
+            'Authorization': 'Token ' + key,
+            'Content-Type': 'application/json',
+            'cache-control': 'no-cache'
+        }
+        num_projects = random.choice([2, 3, 4])
+        projects = make_projects(num_projects)
+        for project in projects:
+            response = requests.request("POST", url, data=json.dumps(project), headers=headers)
+            print(response.json())
 
 
 insert_posts()

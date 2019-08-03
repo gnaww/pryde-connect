@@ -12,7 +12,7 @@ def login_user():
     }
 
     login = {
-        'email': 'test1@gmail.com',
+        'email': 'barronfran@gmail.com',
         'password': 'password'
     }
     response = requests.request("POST", url, data=json.dumps(login), headers=headers)
@@ -28,7 +28,6 @@ def get_projects_from_user():
         'Authorization': 'Token ' + key
     }
     response = requests.request("GET", url, headers=headers)
-    # print(response.json())
     projects = response.json()['projects']
     project_ids = []
     for project in projects:
@@ -62,15 +61,15 @@ def add_collaborators():
 
         for user in user_ids:
 
-            url = 'http://localhost:8000/api/v1/project/' + str(project) + '/collaborator/'
+            url = 'http://localhost:8000/api/v1/project/' + str(project) + '/collaborator/add/'
             body = {
                 'user': user,
                 'editPermission': random.choice([True, False]),
                 'deletePermission': random.choice([True, False]),
-                'addCollaboratorPermission': random.choice([True, False])
+                'editCollaboratorsPermission': random.choice([True, False])
             }
 
-            print(requests.request("POST", url, data=json.dumps(body), headers=headers))
+            print(requests.request("POST", url, data=json.dumps(body), headers=headers).json())
 
 
 add_collaborators()

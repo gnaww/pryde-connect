@@ -59,7 +59,7 @@ class RoleSelection extends Component {
     render() {
         return (
             <>
-                <p className={styles.disclaimer}>Choosing either option does <b><i>not</i></b> restrict you from any of PRYDE Research Connect's features!</p>
+                <p className={styles.disclaimer}>Choosing either option does <b><i>not</i></b> restrict you from any of PRYDE Connect's features!</p>
                 <div className={styles.rolePage}>
                     {
                         roleOptions.map((role, index) => {

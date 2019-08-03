@@ -7,6 +7,7 @@ import FinishSubmit from './FinishSubmit';
 import api from '../../services/api';
 import normalizeUrl from 'normalize-url';
 import phone from 'phone';
+import isEqual from 'lodash.isequal';
 
 let pages = [
     {
@@ -33,6 +34,52 @@ let editPages = [
     }
 ];
 
+const identifyChanges = (newCollaborators, oldCollaborators) => {
+    let updatedCollabs = [];
+    let addedCollabs = [];
+    let deletedCollabs = [];
+
+    // identify collaborators that have changed permissions or are newly added
+    newCollaborators.forEach(newCollab => {
+        let preExistingCollaborator = oldCollaborators.find(c => c.pk === newCollab.pk);
+
+        // collaborator previously existed, check if permissions have changed
+        if (preExistingCollaborator) {
+            let collaboratorPermissionChanged = newCollab.editPermission !== preExistingCollaborator.editPermission || newCollab.deletePermission !== preExistingCollaborator.deletePermission || newCollab.editCollaboratorsPermission !== preExistingCollaborator.editCollaboratorsPermission;
+
+            if (collaboratorPermissionChanged) {
+                updatedCollabs.push({
+                    user: newCollab.pk,
+                    editPermission: newCollab.editPermission,
+                    deletePermission: newCollab.deletePermission,
+                    editCollaboratorsPermission: newCollab.editCollaboratorsPermission
+                });
+            }
+        }
+
+        // collaborator was not pre-existing, is a newly added collaborator
+        if (preExistingCollaborator === undefined) {
+            addedCollabs.push({
+                user: newCollab.pk,
+                editPermission: newCollab.editPermission,
+                deletePermission: newCollab.deletePermission,
+                editCollaboratorsPermission: newCollab.editCollaboratorsPermission
+            });
+        }
+    });
+
+    // identify collaborators that were deleted
+    oldCollaborators.forEach(oldCollab => {
+        let deleted = newCollaborators.find(c => c.pk === oldCollab.pk) === undefined;
+
+        if (deleted) {
+            deletedCollabs.push({ user: oldCollab.pk });
+        }
+    })
+
+    return { addedCollaborators: addedCollabs, updatedCollaborators: updatedCollabs, deletedCollaborators: deletedCollabs };
+}
+
 class CreateProject extends Component {
     constructor(props) {
         super(props);
@@ -44,7 +91,7 @@ class CreateProject extends Component {
     }
 
     // builds project object from data to POST to the API
-    createProject = data => {
+    createProject = async data => {
         let project = Object.assign({}, data);
         const formatArray = arr => {
             return (
@@ -70,50 +117,70 @@ class CreateProject extends Component {
         // TODO: add additional files to projects
         // project.additionalFiles = data.additionalFiles;
         project.additionalFiles = [];
-        // TODO: add collaborators to projects
-        // project.collaborators = data.collaborators;
-        project.collaborators = [];
+        delete project.collaborators;
+        delete project.initialCollaborators;
 
-        let success = true;
         if (this.props.editing === true) {
-            api.updateProject(this.props.editProjectData.id, project)
-                .then(response => {
-                    success = response;
-                })
-                .catch(err => {
-                    success = false;
-                    console.log(err);
-                    console.log(err.response.data);
-                });
+            try {
+                await api.updateProject(this.props.editProjectData.id, project);
+                // TODO: may need to implement better error handling when adding collabs/project
+                if (project.editCollaboratorsPermission) {
+                    const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyChanges(data.collaborators, data.initialCollaborators);
+                    addedCollaborators.forEach(async added => {
+                        await api.addCollaborator(project.id, added);
+                    });
+                    updatedCollaborators.forEach(async updated => {
+                        await api.updateCollaborator(project.id, updated);
+                    });
+                    deletedCollaborators.forEach(async deleted => {
+                        await api.deleteCollaborator(project.id, deleted);
+                    });
+                }
+                return { success: true, message: "" };
+            } catch(err) {
+                console.log(err);
+                console.log(err.response.data);
+                return { success: false, message: Object.values(err.response.data)[0][0] };
+            }
         } else {
-            api.createProject(project)
-                .then(response => {
-                    success = response;
-                })
-                .catch(err => {
-                    success = false;
-                    console.log(err);
-                    console.log(err.response.data);
+            try {
+                // TODO: may need to implement better error handling when adding collabs/project
+                let createdProject = await api.createProject(project);
+                data.collaborators.forEach(async collaborator => {
+                    const c = {
+                        user: collaborator.pk,
+                        editPermission: collaborator.editPermission,
+                        deletePermission: collaborator.deletePermission,
+                        editCollaboratorsPermission: collaborator.editCollaboratorsPermission
+                    }
+                    await api.addCollaborator(createdProject.data.id, c);
                 });
+                return { success: true, message: "" };
+            } catch(err) {
+                console.log(err);
+                console.log(err.response.data);
+                return { success: false, message: Object.values(err.response.data)[0] };
+            }
         }
-
-        return success;
     }
 
     submitData = (data, errors) => {
         if (!errors) {
-            if (this.createProject(data)) {
-                // successful
-                this.setState({ page: 1 });
-            } else {
-                // failed to create/update project
-                this.setState({ pageData: data, page: 0 });
-                if (this.props.editing) {
-                    alert("There was an error updating your project. Please try again and make sure all questions are filled out properly.");
-                } else {
-                    alert("There was an error creating your project. Please try again and make sure all questions are filled out properly.");
-                }
-            }
+            this.createProject(data)
+                .then(response => {
+                    if (response.success) {
+                        // successful
+                        this.setState({ page: 1 });
+                    } else {
+                        // failed to create/update project
+                        this.setState({ pageData: data, page: 0 });
+                        if (this.props.editing) {
+                            alert(response.message ? response.message : "There was an error updating your project. Please try again and make sure all questions are filled out properly.");
+                        } else {
+                            alert(response.message ? response.message : "There was an error creating your project. Please try again and make sure all questions are filled out properly.");
+                        }
+                    }
+                });
         }
         this.setState({ clickedNext: false });
     }
@@ -122,8 +189,14 @@ class CreateProject extends Component {
         this.setState({ clickedNext: true });
     }
 
+    componentDidUpdate(prevProps, _prevState) {
+        if (!isEqual(prevProps.editProjectData, this.props.editProjectData)) {
+            this.setState({ pageData: this.props.editProjectData });
+        }
+    }
+
     componentDidMount() {
-        document.title = this.props.editing ? "PRYDE Research Connect | Edit Project" : "PRYDE Research Connect | Submit a Project";
+        document.title = this.props.editing ? "PRYDE Connect | Edit Project" : "PRYDE Connect | Submit a Project";
         if (this.props.editProjectData) {
             this.setState({ pageData: this.props.editProjectData });
         }
@@ -141,7 +214,7 @@ class CreateProject extends Component {
                 <div className={styles.root} >
                     <h1 className={styles.createProfile}>{title}</h1>
                     <h2 className={styles.subtitle}>{subtitle}</h2>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} />
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} />
                     <div className={styles.buttons}>
                         {
                             this.state.page < NUM_PAGES - 1 &&
@@ -153,7 +226,7 @@ class CreateProject extends Component {
                 <div className={stylesUnauthorized.container}>
                     <section className={stylesUnauthorized.pageNotFound}>
                         <div>
-                            <h1>Unauthorized!</h1>
+                            <h1>Oops!</h1>
                             <p>You must be signed in to submit a new project.</p>
                             <p><Link to="/login">Log in</Link> to your account or <Link to="/signup">sign up</Link> for a new account.</p>
                         </div>

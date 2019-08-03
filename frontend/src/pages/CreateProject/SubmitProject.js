@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion } from '../../components/QAComponents';
+import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion, CollaboratorQuestion, AnswerTypes } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
 import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
@@ -9,18 +9,31 @@ class SubmitProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
+            name: {
+                option: "",
+                other: ""
+            },
             status: null,
             summary: "",
             researchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
             deliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            timeline: "",
-            commitmentLength: "",
-            incentives: "",
+            timeline: {
+                option: "",
+                other: ""
+            },
+            commitmentLength: {
+                option: "",
+                other: ""
+            },
+            incentives: {
+                option: "",
+                other: ""
+            },
             additionalInformation: "",
             additionalFiles: [], // TODO: need to implement with file hosting
-            collaborators: [], // TODO: need to implement form for adding/editing collaborators
+            initialCollaborators: [],
+            collaborators: [],
             alternateContact: {
                 first_name: "",
                 last_name: "",
@@ -28,14 +41,17 @@ class SubmitProject extends Component {
                 phone: "",
                 website: ""
             },
-            alternateLocation: ""
+            alternateLocation: {
+                option: "",
+                other: ""
+            }
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
 
     componentDidUpdate(prevProps, _prevState) {
         function nonEmptyString(key, state) {
-            return state[key] !== "";
+            return state[key].option !== "";
         }
 
         function nonEmptyArray(key, state) {
@@ -79,13 +95,13 @@ class SubmitProject extends Component {
         }
 
         function hasError(pair, state) {
-            // TODO: add validation for files?
             if (pair.type === KeyTypes.String) {
-                // TODO: add validation for collaborators
                 if (pair.key === "collaborators") {
                     return false;
                 } else if (pair.key === "alternateLocation") {
                     return false;
+                } else if (pair.key === "summary") {
+                    return state.summary === "";
                 } else {
                     return !nonEmptyString(pair.key, state);
                 }
@@ -196,8 +212,54 @@ class SubmitProject extends Component {
         });
     }
 
+    addCollaborator = (collaborator, actionDescription) => {
+        if (actionDescription.action === "select-option") {
+            let collab = collaborator.value;
+            const collaboratorExists = this.state.collaborators.filter(c => c.pk === collab.pk).length > 0;
+            if (collaboratorExists) {
+                alert("The same user cannot be added as a collaborator twice!");
+            } else {
+                collab.editPermission = false;
+                collab.deletePermission = false;
+                collab.editCollaboratorsPermission = false;
+                this.setState(prevState => {
+                    let newCollaborators = prevState.collaborators;
+                    newCollaborators.push(collab);
+                    return { collaborators: newCollaborators };
+                });
+            }
+        }
+    }
+
+    updateCollaboratorPermission = (pk, permission) => {
+        this.setState(prevState => {
+            let newCollaborators = prevState.collaborators.map(c => {
+                if (c.pk === pk) {
+                    c[permission] = !c[permission];
+                }
+                return c;
+            });
+            return { collaborators: newCollaborators };
+        });
+    }
+
+    deleteCollaborator = pk => {
+        this.setState(prevState => {
+            let newCollaborators = prevState.collaborators.filter(c => c.pk !== pk);
+            return { collaborators: newCollaborators };
+        });
+    }
+
     getQAComponent = (qa, index) => {
         const defaultStatus = this.state.status ? this.state.status.toString() : "";
+        const collabQuestion = {
+            qa: qa,
+            userCanEditCollaborators: this.state.editCollaboratorsPermission,
+            collaborators: this.state.collaborators,
+            addCollaborator: this.addCollaborator,
+            updateCollaboratorPermission: this.updateCollaboratorPermission,
+            deleteCollaborator: this.deleteCollaborator
+        }
 
         return (
             <li className={styles.numberedList} key={index}>
@@ -207,6 +269,7 @@ class SubmitProject extends Component {
                 {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
                 {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
                 {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}
+                {qa.answer.type === AnswerTypes.Collaborator && <CollaboratorQuestion {...collabQuestion} />}
             </li>
         );
     }

@@ -81,7 +81,6 @@ class Browse extends Component {
     }
 
     retrieveResults = ({ location }) => {
-        console.log("retrieve results");
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         this.setState({ query: parsedURL.q ? parsedURL.q : '' });
 
@@ -92,30 +91,28 @@ class Browse extends Component {
         const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
 
         if(!parsedURL.q && noFiltersSelected) {
-            console.log("default search");
-            if (parsedURL.category === "projects") {
-                api.getProjects()
-                    .then(projects => this.setState({ searchResults: projects }))
-                    .catch(err => {
-                        alert("There was an error getting your search results. Please refresh the page or try again later.");
-                        console.log(err);
-                    });
-            } else {
+            if (parsedURL.category === "partners") {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
                     .catch(err => {
                         alert("There was an error getting your search results. Please refresh the page or try again later.");
                         console.log(err);
                     });
+            } else {
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
+                    .catch(err => {
+                        alert("There was an error getting your search results. Please refresh the page or try again later.");
+                        console.log(err);
+                    });
             }
         } else {
-            console.log('searching w filters and/or query')
-            // api.search(parsedURL)
-            //     .then(results => this.setState({ searchResults: results }))
-            //     .catch(err => {
-            //         alert("There was an error getting your search results. Please refresh the page or try again later.");
-            //         console.log(err);
-            //     });
+            api.search(parsedURL)
+                .then(results => this.setState({ searchResults: results }))
+                .catch(err => {
+                    alert("There was an error getting your search results. Please refresh the page or try again later.")
+                    console.log(err);
+                });
         }
     }
 
@@ -126,7 +123,7 @@ class Browse extends Component {
     }
 
     componentDidMount() {
-        document.title = "PRYDE Research Connect | Browse";
+        document.title = "PRYDE Connect | Browse";
         this.retrieveResults(this.props);
     }
 
@@ -386,6 +383,7 @@ class Browse extends Component {
                                             name="sort"
                                             label="SORT BY"
                                             options={sortOptions}
+                                            defaultValue={this.state.sortBy}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>
@@ -405,6 +403,7 @@ class Browse extends Component {
                                             name="sort"
                                             label="SORT BY"
                                             options={sortOptions}
+                                            defaultValue={this.state.sortBy}
                                         />
                                     </header>
                                     <section className={styles.searchResults}>

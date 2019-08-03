@@ -45,7 +45,7 @@ class Profile extends Component {
                 projects: [],
                 date_joined: ""
             },
-            statusFilter: "all",
+            statusFilter: "",
             sortBy: "",
             showModal: false,
             invalidProfile: false,
@@ -70,7 +70,9 @@ class Profile extends Component {
 
         if (window.confirm("Are you sure you want to delete your account?")) {
             api.deleteUser(this.state.user.id)
-                .then(res => history.push("/deletesuccess", { deleteType: "profile" }))
+                .then(_ => {
+                    history.push("/deletesuccess", { deleteType: "profile" });
+                })
                 .catch(err => {
                     console.log(err);
                     alert("An error occurred while deleting your account.");
@@ -82,7 +84,7 @@ class Profile extends Component {
         const { match } = this.props;
 
         if (match.url === "/myprofile") {
-            document.title = "PRYDE Research Connect | My Profile";
+            document.title = "PRYDE Connect | My Profile";
             api.getLoggedInUser()
                 .then(user => this.setState({ user: user, canEditDelete: true }))
                 .catch(err => {
@@ -90,7 +92,7 @@ class Profile extends Component {
                     console.log(err);
                 });
         } else {
-            document.title = "PRYDE Research Connect | View Profile";
+            document.title = "PRYDE Connect | View Profile";
             const id = match.params.id;
             api.getUserByID(id)
                 .then(userPage => this.setState({ user: userPage }))
@@ -109,35 +111,37 @@ class Profile extends Component {
             name: "status",
             options: [
                 {
-                    value: "all",
+                    value: "",
                     text: "All"
                 },
                 {
-                    value: "not-started",
+                    value: "Not Started",
                     text: "Not Started"
                 },
                 {
-                    value: "in-progress",
+                    value: "In Progress",
                     text: "In Progress"
                 },
                 {
-                    value: "completed",
+                    value: "Completed",
                     text: "Completed"
                 }
             ],
-            handleChange: this.handleDropdownChange("statusFilter")
+            handleChange: this.handleDropdownChange("statusFilter"),
+            defaultValue: this.state.statusFilter
         };
         const sortDropdown = {
             label: "SORT BY",
             name: "sort",
             options: sortProjectsOptions,
-            handleChange: this.handleDropdownChange("sortBy")
+            handleChange: this.handleDropdownChange("sortBy"),
+            defaultValue: this.state.sortBy
         };
         let projectsDisplay;
         if (user.projects.length === 0) {
             projectsDisplay = <h2>No projects yet.</h2>
         } else {
-            if (this.state.statusFilter === "all") {
+            if (this.state.statusFilter === "") {
                 projectsDisplay = <SortableList sortBy={this.state.sortBy} list={user.projects} />
             } else {
                 if (user.projects.filter(project=> project.status === this.state.statusFilter).length === 0) {

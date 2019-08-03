@@ -10,7 +10,8 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Program Evaluation', 'Media & Technology',
            'Motivation', 'Nutrition', 'Risk Behavior',
            'Self & Identity', 'Science Technology Engineering & Math (STEM)',
-           'Youth/Adult Relationships']
+           'Youth/Adult Relationships', 'alsdkjfsdlkjfds', 'asldkfjasldkf', 'asldfkjsdlkf', 'asdlkfjsdlkj', 'alsdkfjds',
+                  'asldkjfsldjf', 'aslkdfjsdlk', 'asdlfjkds', 'asldkfjds']
 
 
 deliveryModes = ['Afterschool', 'Camps', 'Clubs']
@@ -34,11 +35,11 @@ def pump_into_servers():
     }
 
     user1 = {
-        "email": "test1@gmail.com",
+        "email": "barronfran@gmail.com",
         "password1": "password",
         "password2": "password",
-        "first_name": random.choice(firstName),
-        "last_name": random.choice(lastName),
+        "first_name": "Barron",
+        "last_name": "DuBois",
         "role": 1,
         "displayRole": "Practice Focused Role",
         "affiliation": "Cornell University",
@@ -57,11 +58,11 @@ def pump_into_servers():
     }
 
     user2 = {
-        "email": "test2@gmail.com",
+        "email": "dubois.barron@gmail.com",
         "password1": "password",
         "password2": "password",
-        "first_name": random.choice(firstName),
-        "last_name": random.choice(lastName),
+        "first_name": "Barron",
+        "last_name": "DuBois II",
         "role": 1,
         "displayRole": "Practice Focused Role",
         "affiliation": "Cornell University",
@@ -80,11 +81,11 @@ def pump_into_servers():
     }
 
     user3 = {
-        "email": "test3@gmail.com",
+        "email": "william.oliver.wang@gmail.com",
         "password1": "password",
         "password2": "password",
-        "first_name": random.choice(firstName),
-        "last_name": random.choice(lastName),
+        "first_name": "William",
+        "last_name": "Wang",
         "role": 1,
         "displayRole": "Other CCE Role",
         "affiliation": "Cornell University",

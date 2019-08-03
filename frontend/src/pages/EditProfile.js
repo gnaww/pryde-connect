@@ -41,7 +41,30 @@ const EditProfile = ({ location }) => {
 
     // Practitioner / Researcher Questions
     let questions = {};
-    questions.affiliation = userData.affiliation;
+    questions.locatedAtCCE = userData.locatedAtCCE;
+    questions.locatedAtCornell = userData.locatedAtCornell;
+    if (userData.role === "Researcher") {
+        if (userData.locatedAtCornell) {
+            questions.metaLocation = {
+                address: "",
+                college: userData.affiliation.split(" at ")[1],
+                department: userData.affiliation.split(" at ")[0],
+                organization: ""
+            }
+        } else {
+            questions.metaLocation = {
+                address: userData.location,
+                college: "",
+                department: "",
+                organization: userData.affiliation
+            }
+        }
+        questions.affiliation = userData.affiliation;
+        questions.location = userData.location;
+    } else {
+        questions.affiliation = userData.affiliation;
+        questions.location = userData.location;
+    }
     if (roleSelection.role === "Practitioner") {
         questions.displayRole = { option: userData.displayRole, other: "" };
     } else {
@@ -51,9 +74,6 @@ const EditProfile = ({ location }) => {
             questions.displayRole = { option: "Other: ", other: userData.displayRole };
         }
     }
-    questions.locatedAtCCE = userData.locatedAtCCE;
-    questions.locatedAtCornell = userData.locatedAtCornell;
-    questions.location = userData.location;
     questions.researchDescription = userData.researchDescription;
     questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
     questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);

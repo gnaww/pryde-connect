@@ -1,230 +1,233 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, UserSerializer,\
-    UserShortSerializer, UserUpdateSerializer, ProjectUpdateSerializer
-from .models import Project, PUser, Collaborator
+from .serializers import ProjectShortSerializer, UserShortSerializer
+from .models import Project, PUser, TopicsProject, DeliveryModeProject, ResearchInterestUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# custom permissions
-from .permissions import CanAddCollaborator, CanDeleteProject, CanEditDeleteUser, CanEditProject, IsCollaborator
 
-
-class UserList(generics.ListAPIView):
-    serializer_class = UserShortSerializer
-    queryset = PUser.objects.filter(is_staff=False)
-
-
-class UserView(generics.RetrieveAPIView):
-    serializer_class = UserSerializer
-    queryset = PUser.objects.filter(is_staff=False)
-
-
-class LoggedInUserView(generics.RetrieveAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
-
-    def get(self, request, *args, **kwargs):
-        user = PUser.objects.get(pk=request.user.pk)
-        serializer = UserSerializer(user)
-        return Response(data=serializer.data)
-
-
-class UpdateUser(generics.UpdateAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    serializer_class = UserUpdateSerializer
-    queryset = PUser.objects.filter(is_staff=False)
-
-    def get_object(self):
-        queryset = self.filter_queryset(self.get_queryset())
-        obj = queryset.get(pk=self.request.user.pk)
-        self.check_object_permissions(self.request, obj)
-        return obj
-
-
-class DeleteUser(generics.DestroyAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    queryset = PUser.objects.filter(is_staff=False)
-
-
-class ProjectList(generics.ListAPIView):
-    serializer_class = ProjectShortSerializer
-    queryset = Project.objects.all()
-
-
-class ProjectView(generics.RetrieveAPIView):
-    serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
-
-
-class CreateProject(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
-    authentication_classes = [TokenAuthentication, ]
-    serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
+class Filter(generics.ListAPIView):
 
     def post(self, request, *args, **kwargs):
-        user = PUser.objects.get(pk=request.user.pk)
-        print(request)
-        try:
-            new_project = Project.objects.create(
-                name = request.data['name'],
-                owner = user,
-                status = request.data['status'],
-                summary = request.data['summary'],
-                researchTopics = request.data['researchTopics'],
-                ageRanges = request.data['ageRanges'],
-                deliveryModes = request.data['deliveryModes'],
-                timeline = request.data['timeline'],
-                commitmentLength = request.data['timeline'],
-                incentives = request.data['incentives'],
-                additionalInformation = request.data['additionalInformation'],
-                additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
-                alternateContact = request.data['alternateContact'],
-                alternateLocation = request.data['alternateLocation']
-            )
 
-            #TODO create the collaborator thing here
-            return Response({'status': 'Project successfully created.'}, status = status.HTTP_200_OK)
-        except Exception as e:
-            print('aslkfjsalkfjlksa')
-            print(e)
-            return Response({
-                'status': 'Something went wrong while creating the project.'
-            }, status=status.HTTP_400_BAD_REQUEST)
+        if ('category' not in request.data) or (request.data['category'] == 'projects'):
 
+            filtered_set = Project.objects.filter(isApproved=True)
 
-class UpdateProject(generics.UpdateAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [CanEditProject & IsAuthenticated, ]
-    serializer_class = ProjectUpdateSerializer
-    queryset = Project.objects.all()
+            if 'q' in request.data and request.data['q'] != '':
 
+                queries = request.data['q'].split()
+                search_query_set = Project.objects.none()
 
-class DeleteProject(generics.DestroyAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [CanDeleteProject & IsAuthenticated, ]
-    queryset = Project.objects.all()
+                for query in queries:
 
+                    search_filtered_set = Project.objects.filter(owner__first_name__icontains=query) \
+                                    | Project.objects.filter(owner__last_name__icontains=query) \
+                                    | Project.objects.filter(name__icontains=query) \
+                                    | Project.objects.filter(summary__icontains=query)
+                    search_query_set = search_filtered_set | search_query_set
 
-class AddCollaborator(generics.CreateAPIView):
-    authentication_classes = [TokenAuthentication]
-    # with addCollaboratorPermission should be allowed to do this
-    permission_classes = [CanAddCollaborator & IsAuthenticated]
+                    topic_relationships = TopicsProject.objects.filter(researchTopic__icontains=query)
+                    for relationship in topic_relationships:
 
-    def post(self, request, *args, **kwargs):
-        # get the object we need to check the permissions on
-        try:
-            obj = Project.objects.get(pk=kwargs['pk'])
-        except Exception as e:
-            print(e)
-            return Response({'message': 'Project not found'},
-                            status=status.HTTP_400_BAD_REQUEST)
+                        search_filtered_set = search_filtered_set | Project.objects.filter(pk=relationship.project.pk)
 
+                filtered_set = filtered_set & search_query_set
 
-        # check to see if they have proper permission to perform this request
-        # this will throw an error if they do not have permissions
-        self.check_object_permissions(request, obj)
+            if 'status' in request.data:
+                filter_status_set = Project.objects.none()
+                status_dict = {
+                    'Completed': 1,
+                    'In Progress': 2,
+                    'Not Started': 3
+                }
 
-        try:
-            # the owner of the project should not be able to add themselves as a collaborator
-            if obj.owner == PUser.objects.get(pk=request.data['user']):
-                return Response({'message': 'You cannot add yourself as a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+                status_params = request.data['status']
+                if type(status_params) == str:
+                    status_params = [status_params]
 
-            # user shouldn't be able to add themselves as a collaborator to a project that they own
+                for param in status_params:
+                    filter_status_set = filter_status_set | Project.objects.filter(status=status_dict[param])
 
-            # check to see if the user is already added as a collaborator to this project
-            if Collaborator.objects.filter(project=Project.objects.get(pk=kwargs['pk']),
-                                         collaborator=PUser.objects.get(pk=request.data['user'])).exists():
-                return Response({'message': 'This user is already a collaborator'}, status=status.HTTP_400_BAD_REQUEST)
+                filtered_set = filtered_set & filter_status_set
 
-            Collaborator.objects.create(project=Project.objects.get(pk=kwargs['pk']),
-                                         collaborator=PUser.objects.get(pk=request.data['user']),
-                                         editPermission=request.data['editPermission'],
-                                         deletePermission=request.data['deletePermission'],
-                                         addCollaboratorPermission=request.data['addCollaboratorPermission'])
+            if 'researchtopic' in request.data:
+                filtered_researchtopic_set = Project.objects.none()
+                research_topics = request.data['researchtopic']
+                if type(research_topics) == str:
+                    research_topics = [research_topics]
 
-            return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_200_OK)
+                for topic in research_topics:
+                    if topic == 'Other':
+                        researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
+                                          'Diversity Equity & Inclusion', 'Education & Learning',
+                                          'Environment & Sustainability', 'Families',
+                                          'Health & Wellness', 'Peer Relationships',
+                                          'Positive Youth Development', 'Policy Analysis',
+                                          'Program Evaluation', 'Media & Technology',
+                                          'Motivation', 'Nutrition', 'Risk Behavior',
+                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+                                          'Youth/Adult Relationships']
+                        topic_relationships = TopicsProject.objects.exclude(researchTopic__in=researchTopics)
+                        for topic_relationship in topic_relationships:
+                            filtered_researchtopic_set = filtered_researchtopic_set | \
+                                                         Project.objects.filter(pk=topic_relationship.project.pk)
+                    else:
+                        #get the projects that have a topic there
+                        topic_relationships = TopicsProject.objects.filter(researchTopic=topic)
+                        for topic_relationship in topic_relationships:
+                            filtered_researchtopic_set = filtered_researchtopic_set |\
+                                                         Project.objects.filter(pk=topic_relationship.project.pk)
 
-        except Exception as e:
-            print(e)
-            return Response({'message': 'Something went wrong while adding a collaborator.'},status=status.HTTP_400_BAD_REQUEST)
+                filtered_set = filtered_set & filtered_researchtopic_set
+
+            if 'deliverymodes' in request.data:
+                filtered_deliverymodes_set = Project.objects.none()
 
 
-class HideProject(generics.UpdateAPIView):
-    authentication_classes = [TokenAuthentication]
-    # with addCollaboratorPermission should be allowed to do this
-    permission_classes = [IsAuthenticated, IsCollaborator]
+                delivery_modes = request.data['deliverymodes']
+                if type(delivery_modes) == str:
+                    delivery_modes = [delivery_modes]
 
-    def put(self, request, *args, **kwargs):
-        #check to see if the user is the owner or collaborator of the project
-        try:
-            obj = Project.objects.get(pk=kwargs['pk'])
-        except Exception as e:
-            print(e)
-            return Response({'message': 'Project not found'},
-                            status=status.HTTP_400_BAD_REQUEST)
-        self.check_object_permissions(request, obj)
+                for mode in delivery_modes:
 
-        collab = Collaborator.objects.get(user=request.user, project=obj)
-        collab.showOnProfile = not collab.showOnProfile
-        collab.save()
-        return Response({'message': 'Your preference has been changed'}, status=status.HTTP_200_OK)
+                    if mode == 'Other':
+                        deliveryModes = ['Afterschool', 'Camps', 'Clubs']
+                        delivery_relationships = DeliveryModeProject.objects.exclude(deliveryMode__in=deliveryModes)
+                        for delivery_relationship in delivery_relationships:
+                            filtered_deliverymodes_set = filtered_deliverymodes_set | \
+                                                         Project.objects.filter(pk=delivery_relationship.project.pk)
+
+                    else:
+                        delivery_relationships = DeliveryModeProject.objects.filter(deliveryMode=mode)
+                        for delivery_relationship in delivery_relationships:
+                            filtered_deliverymodes_set = filtered_deliverymodes_set | \
+                                                            Project.objects.filter(pk=delivery_relationship.project.pk)
 
 
-class FilterProjects(generics.ListAPIView):
+                filtered_set = filtered_set & filtered_deliverymodes_set
+            if 'ageranges' in request.data:
+                filtered_ageranges_set = Project.objects.none()
+                ageranges = request.data['ageranges']
+                if type(ageranges) == str:
+                    ageranges = [ageranges]
+                for age in ageranges:
+                    filtered_ageranges_set = filtered_ageranges_set |\
+                                             Project.objects.filter(ageRanges__contains=age)
 
-    def get(self, request, *args, **kwargs):
+                filtered_set = filtered_set & filtered_ageranges_set
 
-        print(request.data)
-        filtered_set = Project.objects.all()
+            serializer = ProjectShortSerializer(filtered_set, many=True)
 
-        # deal with status query
-        if 'status' in request.data:
-            filter_status_set = Project.objects.none()
-            status_dict = {
-                'Completed': 1,
-                'In Progress': 2,
-                'Not Started': 3
-            }
-            status_params = request.data['status'].split(',')
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-            print(status_params)
-            for param in status_params:
-                filter_status_set = filter_status_set | Project.objects.filter(status=status_dict[param])
+        else:
 
-            filtered_set = filtered_set & filter_status_set
+            filtered_set = PUser.objects.filter(is_staff=False)
 
-        if 'researchtopic' in request.data:
-            filtered_researchtopic_set = Project.objects.none()
-            research_topics = request.data['researchtopic'].split(',')
-            for topic in research_topics:
-                filtered_researchtopic_set = filtered_researchtopic_set |\
-                                             Project.objects.filter(researchTopics__contains=[topic])
+            if 'q' in request.data:
 
-            filtered_set = filtered_set & filtered_researchtopic_set
+                queries = request.data['q'].split()
 
-        if 'deliverymodes' in request.data:
-            filtered_deliverymodes_set = Project.objects.none()
-            delivery_modes = request.data['deliverymodes'].split(',')
-            for mode in delivery_modes:
-                filtered_deliverymodes_set = filtered_deliverymodes_set |\
-                                             Project.objects.filter(deliveryModes__contains=[mode])
+                search_query_set = PUser.objects.none()
 
-            filtered_set = filtered_set & filtered_deliverymodes_set
+                for query in queries:
+                    search_filtered_set = PUser.objects.filter(first_name__icontains=query) \
+                                          | PUser.objects.filter(last_name__icontains=query) \
+                                          | PUser.objects.filter(researchDescription__icontains=query) \
+                                          | PUser.objects.filter(researchNeeds__icontains=query) \
+                                          | PUser.objects.filter(location__icontains=query)
+                    interest_relationships = ResearchInterestUser.objects.filter(researchInterest__icontains=query)
+                    for relationship in interest_relationships:
+                        search_filtered_set = search_filtered_set | PUser.objects.filter(pk=relationship.user.pk)
 
-        if 'ageranges' in request.data:
-            filtered_ageranges_set = Project.objects.none()
-            ageranges = request.data['ageranges'].split(',')
-            for age in ageranges:
-                filtered_ageranges_set = filtered_ageranges_set | \
-                                         Project.objects.filter(ageRanges__contains=[age])
+                    search_query_set = search_query_set | search_filtered_set
 
-            filtered_set = filtered_set & filtered_ageranges_set
+                filtered_set = filtered_set & search_query_set
 
-        serializer = ProjectShortSerializer(filtered_set, many=True)
-        return Response(data=serializer.data)
+            if 'researchinterest' in request.data:
+
+                filtered_researchinterest_set = PUser.objects.none()
+                research_interests = request.data['researchinterest']
+                if type(research_interests) == str:
+                    research_interests = [research_interests]
+
+                for interest in research_interests:
+
+                    if interest == 'Other':
+                        researchInterests = ['Animal Science & Agriculture', 'Civic Engagement',
+                                          'Diversity Equity & Inclusion', 'Education & Learning',
+                                          'Environment & Sustainability', 'Families',
+                                          'Health & Wellness', 'Peer Relationships',
+                                          'Positive Youth Development', 'Policy Analysis',
+                                          'Program Evaluation', 'Media & Technology',
+                                          'Motivation', 'Nutrition', 'Risk Behavior',
+                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+                                          'Youth/Adult Relationships']
+
+                        interest_relationships = ResearchInterestUser.objects.exclude(researchInterest__in=researchInterests)
+                        for relationship in interest_relationships:
+                            filtered_researchinterest_set = filtered_researchinterest_set |\
+                                                            PUser.objects.filter(pk=relationship.user.pk)
+
+                    else:
+                        interest_relationships = ResearchInterestUser.objects.filter(researchInterest=interest)
+                        for relationship in interest_relationships:
+                            filtered_researchinterest_set = filtered_researchinterest_set |\
+                                                            PUser.objects.filter(pk=relationship.user.pk)
+
+
+                filtered_set = filtered_set & filtered_researchinterest_set
+
+            if 'location' in request.data:
+                filtered_location_set = PUser.objects.none()
+                locations = request.data['location']
+                if type(locations) == str:
+                    locations = [locations]
+                for location in locations:
+                    if location == 'Other':
+                        location_options = [
+                            'Albany County, NY', 'Allegany County, NY', 'Bronx County, NY','Broome County, NY',
+                            'Cattaraugus County, NY', 'Cayuga County, NY', 'Chautauqua County, NY',
+                            'Chemung County, NY', 'Chenango County, NY', 'Clinton County, NY', 'Columbia County, NY',
+                            'Cortland County, NY', 'Delaware County, NY', 'Dutchess County, NY', 'Erie County, NY',
+                            'Essex County, NY', 'Franklin County, NY', 'Fulton County, NY', 'Genesee County, NY',
+                            'Greene County, NY', 'Hamilton County, NY', 'Herkimer County, NY', 'Jefferson County, NY',
+                            'Kings (Brooklyn) County, NY', 'Lewis County, NY', 'Livingston County, NY', 'Madison County, NY',
+                            'Monroe County, NY', 'Montgomery County, NY', 'Nassau County, NY', 'New York (Manhattan) County, NY',
+                            'Niagara County, NY', 'Oneida County, NY', 'Onondaga County, NY', 'Ontario County, NY',
+                            'Orange County, NY', 'Orleans County, NY', 'Oswego County, NY', 'Otsego County, NY',
+                            'Putnam County, NY', 'Queens County, NY', 'Rensselaer County, NY',
+                            'Richmond (Staten Island) County, NY', 'Rockland County, NY', 'Saint Lawrence County, NY',
+                            'Saratoga County, NY', 'Schenectady County, NY', 'Schoharie County, NY', 'Schuyler County, NY',
+                            'Seneca County, NY', 'Steuben County, NY', 'Suffolk County, NY', 'Sullivan County, NY',
+                            'Tioga County, NY', 'Tompkins County, NY', 'Ulster County, NY', 'Warren County, NY',
+                            'Washington County, NY', 'Wayne County, NY', 'Westchester County, NY', 'Wyoming County, NY',
+                            'Yates County, NY'
+                        ]
+                        filtered_location_set = filtered_location_set |\
+                                                    PUser.objects.exclude(location__in=location_options)
+
+                    else:
+                        location_formatted = location + ' County, NY'
+                        filtered_location_set = filtered_location_set |\
+                                                PUser.objects.filter(location=location_formatted)
+
+                filtered_set = filtered_set & filtered_location_set
+
+            if 'ageranges' in request.data:
+                filtered_ageRanges_set = PUser.objects.none()
+                ageRanges = request.data['ageranges']
+                if type(ageRanges) == str:
+                    ageRanges = [ageRanges]
+                for agerange in ageRanges:
+                    filtered_ageRanges_set = filtered_ageRanges_set |\
+                                                PUser.objects.filter(ageRanges__contains=agerange)
+
+                filtered_set = filtered_set & filtered_ageRanges_set
+
+            serializer = UserShortSerializer(filtered_set, many=True)
+
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
