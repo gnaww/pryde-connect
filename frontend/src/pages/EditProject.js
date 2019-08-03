@@ -3,6 +3,7 @@ import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
 import api from '../services/api';
+import { popState } from '../utilites/LocalStorage';
 
 const convertArray = (savedArray, options) => {
     let convertedArray = getCheckedValuesArray(options);
@@ -37,7 +38,7 @@ class EditProject extends Component {
 
     async componentDidMount() {
         const { location } = this.props;
-        let editProjectData = Object.assign({}, location.state.projectData);
+        let editProjectData = Object.assign({}, popState("projectData"));
         delete editProjectData.invalidProject;
         delete editProjectData.editPermission;
         delete editProjectData.deletePermission;
@@ -50,9 +51,9 @@ class EditProject extends Component {
 
         try {
             let collaborators = await api.getProjectCollaborators(editProjectData.id)
-            editProjectData.collaborators = collaborators.map(elt => ({...elt}));
-            editProjectData.initialCollaborators = collaborators.map(elt => ({...elt}));
-        } catch(err) {
+            editProjectData.collaborators = collaborators.map(elt => ({ ...elt }));
+            editProjectData.initialCollaborators = collaborators.map(elt => ({ ...elt }));
+        } catch (err) {
             console.log(err);
             console.log(err.response.data);
             editProjectData.collaborators = [];

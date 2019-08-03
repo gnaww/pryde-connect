@@ -192,11 +192,6 @@ class Profile extends Component {
                                 <div className={styles.contactInformation}>
                                     <div className={styles.buttonWrapper}>
                                         {
-                                            // {
-
-                                            //     pathname: "/editprofile",
-                                            //     state: { userData: this.state.user }
-                                            // }
                                             this.state.canEditDelete &&
                                             <>
                                                 <Link
