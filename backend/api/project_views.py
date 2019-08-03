@@ -108,15 +108,11 @@ class UpdateProject(generics.UpdateAPIView):
             project.save()
 
             if 'researchTopics' in request.data:
-                current_topics = TopicsProject.objects.filter(project=project.pk)
-                for topic in current_topics:
-                    topic.delete()
+                TopicsProject.objects.filter(project=project.pk).delete()
                 for new_topic in request.data['researchTopic']:
                     TopicsProject.objects.create(project=project.pk, researchTopic=new_topic)
             if 'deliveryMode' in request.data:
-                current_deliveryModes = DeliveryModeProject.objects.filter(project=project.pk)
-                for mode in current_deliveryModes:
-                    mode.delete()
+                DeliveryModeProject.objects.filter(project=project.pk).delete()
                 for new_mode in request.data['deliveryMode']:
                     DeliveryModeProject.objects.create(project=project.pk, deliveryMode=new_mode)
 
