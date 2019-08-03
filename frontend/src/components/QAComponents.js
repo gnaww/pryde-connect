@@ -88,7 +88,9 @@ export const getButtonInput = (qa, handlerFunction, state) => {
                         return (
                             <div key={f[1]} className={styles.fileUploaded}>
                                 <p>{f[1]}</p>
-                                <img onClick={handlerFunction(i)} src={DeleteIcon} alt="Delete" />
+                                <button className={styles.deleteFile} onClick={handlerFunction(i)}>
+                                    <img src={DeleteIcon} alt="Delete"/>
+                                </button>
                             </div>
                         )
                     })

@@ -226,7 +226,7 @@ class CreateProject extends Component {
                 <div className={stylesUnauthorized.container}>
                     <section className={stylesUnauthorized.pageNotFound}>
                         <div>
-                            <h1>Unauthorized!</h1>
+                            <h1>Oops!</h1>
                             <p>You must be signed in to submit a new project.</p>
                             <p><Link to="/login">Log in</Link> to your account or <Link to="/signup">sign up</Link> for a new account.</p>
                         </div>

@@ -4,11 +4,11 @@ from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
 
 
-
 class DeliveryModeSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeliveryModeProject
         fields = '__all__'
+
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:

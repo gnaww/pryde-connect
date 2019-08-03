@@ -22,7 +22,6 @@
 }
 
 .smallTextInput {
-    /* width: 19%; */
     width: 278px;
     margin-right: 28px;
     height: 64px;
@@ -39,7 +38,6 @@
 
 .mediumTextInput {
     composes: smallTextInput;
-    /* width: 26%; */
     width: 383px;
 }
 
@@ -283,23 +281,6 @@ span.qaOptionText {
     box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
 }
 
-/* .roleLink {
-    width: 292px;
-    height: 292px;
-    background: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    color: black;
-    font-family: Lato;
-    font-weight: bold;
-    font-size: 20px;
-    text-align: center;
-    letter-spacing: 0.1em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    cursor: pointer;
-} */
 .roleLink {
     composes: roleCard;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
@@ -469,5 +450,15 @@ span.collaboratorCheckboxLabel {
 }
 
 .permissionsHeader button:focus {
+    outline: none;
+}
+
+.deleteFile {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.deleteFile:focus {
     outline: none;
 }
