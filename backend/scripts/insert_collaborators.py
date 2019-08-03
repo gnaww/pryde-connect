@@ -28,7 +28,6 @@ def get_projects_from_user():
         'Authorization': 'Token ' + key
     }
     response = requests.request("GET", url, headers=headers)
-    # print(response.json())
     projects = response.json()['projects']
     project_ids = []
     for project in projects:

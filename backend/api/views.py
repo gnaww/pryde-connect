@@ -14,13 +14,9 @@ class Filter(generics.ListAPIView):
 
         if ('category' not in request.data) or (request.data['category'] == 'projects'):
 
-            print("searching for projects")
-            print(request.data)
             filtered_set = Project.objects.filter(isApproved=True)
 
             if 'q' in request.data and request.data['q'] != '':
-
-                print("doing q")
 
                 queries = request.data['q'].split()
                 search_query_set = Project.objects.none()
@@ -39,10 +35,8 @@ class Filter(generics.ListAPIView):
                         search_filtered_set = search_filtered_set | Project.objects.filter(pk=relationship.project.pk)
 
                 filtered_set = filtered_set & search_query_set
-                print(filtered_set.count())
 
             if 'status' in request.data:
-                print("doing status")
                 filter_status_set = Project.objects.none()
                 status_dict = {
                     'Completed': 1,
@@ -55,12 +49,9 @@ class Filter(generics.ListAPIView):
                     status_params = [status_params]
 
                 for param in status_params:
-                    print(param)
                     filter_status_set = filter_status_set | Project.objects.filter(status=status_dict[param])
-                    print(filter_status_set.count())
 
                 filtered_set = filtered_set & filter_status_set
-                print(filtered_set.count())
 
             if 'researchtopic' in request.data:
                 filtered_researchtopic_set = Project.objects.none()

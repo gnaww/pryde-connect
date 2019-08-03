@@ -24,11 +24,9 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.locatedAtCornell = data.get('locatedAtCornell')
         user.locatedAtCCE = data.get('locatedAtCCE')
 
-
         user.save()
-        print(data.get('researchInterests'))
-        for interest in data.get('researchInterests'):
 
-         ResearchInterestUser.objects.create(user=user, researchInterest=interest)
+        for interest in data.get('researchInterests'):
+            ResearchInterestUser.objects.create(user=user, researchInterest=interest)
 
         return user
