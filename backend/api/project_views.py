@@ -72,8 +72,60 @@ class CreateProject(generics.CreateAPIView):
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
-    serializer_class = ProjectUpdateSerializer
-    queryset = Project.objects.filter(isApproved=True)
+    # serializer_class = ProjectUpdateSerializer
+    # queryset = Project.objects.filter(isApproved=True)
+
+    def put(self, request, *args, **kwargs):
+        print("updating object")
+
+        try:
+
+            project = Project.objects.get(pk=kwargs['pk'])
+
+            if 'name' in request.data:
+                project.name = request.data['name']
+            if 'status' in request.data:
+                project.status = request.data['status']
+            if 'summary' in request.data:
+                project.summary = request.data['summary']
+            if 'ageRanges' in request.data:
+                project.ageRanges = request.data['ageRanges']
+            if 'timeline' in request.data:
+                project.timeline = request.data['timeline']
+            if 'commitmentLength' in request.data:
+                project.commitmentLength = request.data['commitmentLength']
+            if 'incentives' in request.data:
+                project.incentives = request.data['incentives']
+            if 'additionalInformation' in request.data:
+                project.additionalInformation = request.data['additionalInformation']
+            if 'type' in request.data:
+                project.type = request.data['type']
+            if 'alternateContact' in request.data:
+                project.alternateContact = request.data['alternateContact']
+            if 'alternateLocation' in request.data:
+                project.alternateLocation = request.data['alternateLocation']
+
+            project.save()
+
+            if 'researchTopics' in request.data:
+                current_topics = TopicsProject.objects.filter(project=project.pk)
+                for topic in current_topics:
+                    topic.delete()
+                for new_topic in request.data['researchTopic']:
+                    TopicsProject.objects.create(project=project.pk, researchTopic=new_topic)
+            if 'deliveryMode' in request.data:
+                current_deliveryModes = DeliveryModeProject.objects.filter(project=project.pk)
+                for mode in current_deliveryModes:
+                    mode.delete()
+                for new_mode in request.data['deliveryMode']:
+                    DeliveryModeProject.objects.create(project=project.pk, deliveryMode=new_mode)
+
+            return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'something went wrong'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class DeleteProject(generics.DestroyAPIView):
