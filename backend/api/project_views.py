@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer, ProjectUpdateSerializer
+from .serializers import ProjectSerializer, ProjectShortSerializer
 from .models import Project, PUser, TopicsProject, DeliveryModeProject
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -88,17 +88,16 @@ class UpdateProject(generics.UpdateAPIView):
             project.commitmentLength = request.data['commitmentLength']
             project.incentives = request.data['incentives']
             project.additionalInformation = request.data['additionalInformation']
-            project.type = request.data['type']
             project.alternateContact = request.data['alternateContact']
             project.alternateLocation = request.data['alternateLocation']
             project.save()
 
             TopicsProject.objects.filter(project=project.pk).delete()
-            for new_topic in request.data['researchTopic']:
-                TopicsProject.objects.create(project=project.pk, researchTopic=new_topic)
+            for new_topic in request.data['researchTopics']:
+                TopicsProject.objects.create(project=project, researchTopic=new_topic)
             DeliveryModeProject.objects.filter(project=project.pk).delete()
-            for new_mode in request.data['deliveryMode']:
-                DeliveryModeProject.objects.create(project=project.pk, deliveryMode=new_mode)
+            for new_mode in request.data['deliveryModes']:
+                DeliveryModeProject.objects.create(project=project, deliveryMode=new_mode)
 
             return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_201_CREATED)
 

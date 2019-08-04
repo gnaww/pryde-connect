@@ -81,11 +81,6 @@ class Profile extends Component {
         }
     }
 
-    handleEditProfile = () => {
-        console.log("clicked")
-        localStorage.setItem('userData', this.state.user);
-    }
-
     componentDidMount() {
         const { match } = this.props;
 

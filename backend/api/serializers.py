@@ -77,16 +77,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
 
-class ProjectUpdateSerializer(serializers.ModelSerializer):
-    ageRanges = StringArrayField()
-    researchTopics = StringArrayField()
-    deliveryModes = StringArrayField()
-
-    class Meta:
-        model = Project
-        exclude = ['owner']
-
-
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
