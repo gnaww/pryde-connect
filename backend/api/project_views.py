@@ -74,6 +74,7 @@ class UpdateProject(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         try:
             project = Project.objects.get(pk=kwargs['pk'])
+            self.check_object_permissions(request, project)
 
             project.name = request.data['name']
             project.status = request.data['status']

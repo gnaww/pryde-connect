@@ -66,17 +66,6 @@ class StringArrayField(ListField):
         return super().to_internal_value(data)
 
 
-class UserUpdateSerializer(serializers.ModelSerializer):
-    researchInterests = StringArrayField()
-    roles = StringArrayField()
-    ageRanges = StringArrayField()
-    deliveryModes = StringArrayField()
-
-    class Meta:
-        model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
-
-
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
