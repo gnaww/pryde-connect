@@ -12,7 +12,7 @@ import linkIcon from '../images/link-icon-black.svg';
 import calendarIcon from '../images/calendar-icon-black.svg';
 import styles from '../styles/Project.module.css';
 import api from '../services/api';
-import { saveState, saveStateWithPath } from '../utilites/LocalStorage';
+import { saveStateWithPath } from '../utilites/LocalStorage';
 
 class Project extends Component {
     constructor(props) {
@@ -161,7 +161,7 @@ class Project extends Component {
                                             <Link
                                                 to={saveStateWithPath("/editproject", { projectData: this.state })}
                                             >
-                                                <button className={styles.editButton} onMouseDown={() => saveState({ projectData: this.state })}>
+                                                <button className={styles.editButton}>
                                                     <img src={editButtonOrange} alt="Edit button" />
                                                 </button>
                                             </Link>

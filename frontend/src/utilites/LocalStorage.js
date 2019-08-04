@@ -12,6 +12,6 @@ export const saveState = state => {
 
 export const popState = key => {
     var state = JSON.parse(localStorage.getItem(key));
-    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
     return state;
 }

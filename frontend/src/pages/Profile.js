@@ -17,7 +17,7 @@ import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortProjectsOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
 import api from '../services/api';
-import { saveState, saveStateWithPath } from '../utilites/LocalStorage';
+import { saveStateWithPath } from '../utilites/LocalStorage';
 
 class Profile extends Component {
     constructor(props) {
