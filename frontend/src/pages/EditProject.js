@@ -3,7 +3,7 @@ import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
 import api from '../services/api';
-import { popState } from '../utilites/LocalStorage';
+import { popState } from '../services/localStorage';
 
 const convertArray = (savedArray, options) => {
     let convertedArray = getCheckedValuesArray(options);
@@ -37,7 +37,6 @@ class EditProject extends Component {
     }
 
     async componentDidMount() {
-        const { location } = this.props;
         let editProjectData = Object.assign({}, popState("projectData"));
         delete editProjectData.invalidProject;
         delete editProjectData.editPermission;

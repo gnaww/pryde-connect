@@ -36,9 +36,7 @@ class CreateProject(generics.CreateAPIView):
                 owner=user,
                 status=request.data['status'],
                 summary=request.data['summary'],
-                # researchTopics=request.data['researchTopics'],
                 ageRanges=request.data['ageRanges'],
-                # deliveryModes=request.data['deliveryModes'],
                 timeline=request.data['timeline'],
                 commitmentLength=request.data['timeline'],
                 incentives=request.data['incentives'],
@@ -74,10 +72,7 @@ class UpdateProject(generics.UpdateAPIView):
     permission_classes = [CanEditProject & IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
-        print("updating object")
-
         try:
-
             project = Project.objects.get(pk=kwargs['pk'])
 
             project.name = request.data['name']
@@ -99,12 +94,11 @@ class UpdateProject(generics.UpdateAPIView):
             for new_mode in request.data['deliveryModes']:
                 DeliveryModeProject.objects.create(project=project, deliveryMode=new_mode)
 
-            return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_201_CREATED)
+            return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'something went wrong'}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({'message': 'Something went wrong while updating the project information.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteProject(generics.DestroyAPIView):

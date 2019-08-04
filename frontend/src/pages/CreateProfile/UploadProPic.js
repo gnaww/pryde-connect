@@ -60,6 +60,12 @@ class UploadProPic extends Component {
                     this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />
                 }
                 {this.errors && <p className={styles.errorMsg}>You must upload a profile picture.</p>}
+                {
+                    !this.props.editing &&
+                    <div>
+                        RECAPTCHA GOES HERE
+                    </div>
+                }
             </div>
         );
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import CreateProfile from './CreateProfile/CreateProfile';
 import { PractitionerInformation, ResearcherInformation } from './CreateProfile/FormContent';
 import { getCheckedValuesArray } from '../components/QAComponents';
-import { popState } from '../utilites/LocalStorage';
+import { popState } from '../services/localStorage';
 
 const convertArray = (savedArray, options) => {
     let convertedArray = getCheckedValuesArray(options);
@@ -21,9 +21,8 @@ const convertArray = (savedArray, options) => {
     return convertedArray;
 };
 
-const EditProfile = ({ location }) => {
+const EditProfile = () => {
     let userData = popState("userData");
-    console.log(userData);
     let editProfileData = [];
 
     // Basic Info

@@ -5,6 +5,7 @@ import ProfileButton from '../../images/profile.png';
 import HomeButton from '../../images/home.png';
 import ProjectsButton from '../../images/projects.png';
 import SubmitProject from '../../images/submitproject.png';
+import ViewProject from '../../images/viewproject.png';
 
 const navigationOptions = [
     {
@@ -40,8 +41,8 @@ const navigationOptions = [
 const FinishSubmit = props => {
     if (props.editing) {
         navigationOptions[0] = {
-            img: ProjectsButton, // TODO: replace with more relevant illustration
-            styling: styles.studiesNavImg,
+            img: ViewProject,
+            styling: styles.viewProjImg,
             link: `/project/${props.savedData.id}`,
             text: "VIEW PROJECT",
             alt: "View project"

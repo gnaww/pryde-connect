@@ -17,7 +17,7 @@ import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortProjectsOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
 import api from '../services/api';
-import { saveStateWithPath } from '../utilites/LocalStorage';
+import { saveStateWithPath, saveState } from '../services/localStorage';
 
 class Profile extends Component {
     constructor(props) {
@@ -192,7 +192,10 @@ class Profile extends Component {
                                                 <Link
                                                     to={saveStateWithPath("/editprofile", { userData: this.state.user })}
                                                 >
-                                                    <button className={styles.editButton} onMouseDown={() => saveState({ userData: this.state.user })}>
+                                                    <button className={styles.editButton}  onMouseDown={() => {
+                                                        console.log('clicked edit button')
+                                                        saveState({ userData: this.state.user })
+                                                    }}>
                                                         {
                                                             user.role === "Practitioner" ?
                                                                 <img src={editButton} alt="Edit button" />
