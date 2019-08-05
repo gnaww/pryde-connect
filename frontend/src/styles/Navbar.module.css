@@ -21,26 +21,26 @@
 
 .logo img {
     height: 67px;
+    display: flex;
+    align-items: center;
 }
 
 .logo p {
     padding-left: 15px;
+    font-size: 25px;
+    font-family: Work Sans;
 }
 
 #pryde {
-    font-family: Work Sans;
     font-weight: bold;
-    font-size: 25px;
-    line-height: 30px;
     letter-spacing: 0.25em;
     color: #FF7F00;
 }
 
 #name {
-    font-family: Work Sans;
     font-size: 25px;
-    line-height: 35px;
     color: black;
+    padding-left: 4px;
 }
 
 .linksContainer {
