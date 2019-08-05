@@ -70,7 +70,7 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 0,
+            page: 4,
             pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
             clickedBack: false

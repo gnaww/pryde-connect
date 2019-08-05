@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v-(ma7))q2xo4%)m^7=!90$7_087jp1!)2=j!u%)jxz+je=8p4'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_swagger',
 
     'rest_auth',
     'rest_auth.registration',
@@ -109,7 +108,6 @@ AUTH_USER_MODEL = 'api.PUser'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework_api_key.permissions.HasAPIKey',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -138,22 +136,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# SWAGGER_SETTINGS = {
-#     'LOGIN_URL': 'rest_framework:login',
-#     'LOGOUT_URL': 'rest_framework:logout',
-#     'JSON_EDITOR': 'True',
-#     'SHOW_REQUEST_HEADERS': 'True',
-#     'SECURITY_DEFINITIONS': {
-#             'api_key': {
-#                 'type': 'apiKey',
-#                 'in': 'header',
-#                 'name': 'Authorization'
-#             }
-#         },
-#
-#
-# }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -194,11 +176,11 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pryde',
-        'USER': 'pryde',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
         'OPTIONS': {
             # Tell MySQLdb to connect with 'utf8mb4' character set
             'charset': 'utf8mb4',

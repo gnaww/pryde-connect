@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 import styles from '../../styles/CreateProfile.module.css';
 
 
@@ -10,6 +11,7 @@ class UploadProPic extends Component {
             profilePicture: null
         };
         this.errors = false;
+        this.recaptchaRef = React.createRef();
     }
 
     componentDidUpdate(prevProps, _prevState) {
@@ -51,6 +53,14 @@ class UploadProPic extends Component {
         this.setState({ filePreview: proPic })
     }
 
+    onRECAPTCHAChange = token => {
+        if (token === null) {
+            alert("Your RECAPTCHA verification has expired, please check the checkbox again.")
+        } else {
+            console.log(token);
+        }
+    }
+
     render() {
         return (
             <div>
@@ -62,9 +72,15 @@ class UploadProPic extends Component {
                 {this.errors && <p className={styles.errorMsg}>You must upload a profile picture.</p>}
                 {
                     !this.props.editing &&
-                    <div>
-                        RECAPTCHA GOES HERE
-                    </div>
+                    <ReCAPTCHA
+                        ref={this.recaptchaRef}
+                        sitekey="6LeIRbEUAAAAABxKY8FWkytAMAGdW0EhcPphoT4Q"
+                        onChange={this.onRECAPTCHAChange}
+                        onErrored={() => {
+                            this.recaptchaRef.current.reset();
+                            alert("An error occurred while verifying your RECAPTCHA challenge.");
+                        }}
+                    />
                 }
             </div>
         );
