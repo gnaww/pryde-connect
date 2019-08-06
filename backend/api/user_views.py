@@ -17,6 +17,7 @@ class UserList(generics.ListAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
+
 class UserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = PUser.objects.filter(is_staff=False)

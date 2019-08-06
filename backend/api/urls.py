@@ -18,6 +18,7 @@ urlpatterns = [
     path('user/<int:pk>/delete/', DeleteUser.as_view()),
 
 
+
     path('user/picture/', ProfilePictureView.as_view()),
 
     path('projects/', ProjectList.as_view()),
