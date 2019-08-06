@@ -134,3 +134,9 @@ class Collaborator(Model):
 class File(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     file = models.FileField(upload_to='uploads/')
+
+
+class ProfilePicture(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    file = models.FileField(blank=False, null=False, upload_to='profile_pictures')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

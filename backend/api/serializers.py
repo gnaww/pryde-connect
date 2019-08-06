@@ -1,8 +1,14 @@
 from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
+from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser, \
+    ProfilePicture
 
+
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfilePicture
+        fields = ('file', 'uploaded_at', 'user')
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,10 +79,12 @@ class UserSerializer(serializers.ModelSerializer):
     roles = serializers.SerializerMethodField()
     ageRanges = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password',
+                   'user_permissions', 'username', 'type', 'over18', 'profile_picture']
 
     def get_projects(self, obj):
         projects = []
@@ -108,6 +116,9 @@ class UserSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
 
+    def get_profile_picture(self, obj):
+        return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+
 
 class LoggedInUserSerializer(UserSerializer):
     def get_projects(self, obj):
@@ -133,10 +144,12 @@ class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
     numProjects = serializers.SerializerMethodField('num_projects')
     researchInterests = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell',
+                  'profile_picture', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -153,6 +166,9 @@ class UserShortSerializer(serializers.ModelSerializer):
     def get_researchInterests(self, obj):
         interests = ResearchInterestUser.objects.filter(user=obj)
         return [interest.researchInterest for interest in interests]
+
+    def get_profile_picture(self, obj):
+        return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -216,3 +232,5 @@ class CollaboratorSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = PUser
         fields = ['pk', 'first_name', 'last_name', 'email']
+
+

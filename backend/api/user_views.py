@@ -1,6 +1,6 @@
 from rest_framework import generics, status
-from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
-from .models import Project, PUser, ResearchInterestUser
+from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, ProfilePictureSerializer
+from .models import Project, PUser, ResearchInterestUser, ProfilePicture
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -9,6 +9,8 @@ from rest_framework.response import Response
 
 from .permissions import CanEditDeleteUser
 
+
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
@@ -71,4 +73,24 @@ class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
     queryset = PUser.objects.filter(is_staff=False)
+
+
+class ProfilePictureView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        #TODO: NEED TO FIGURE OUT HOW TO DELETE THE PICTURES FROM SERVER WHEN THEY ADD A NEW ONE
+        print(request.data)
+        print(request.user)
+        print(request.user.pk)
+        file_serializer = ProfilePictureSerializer(data={'user':request.user.pk, 'file':request.data['file']})
+        if file_serializer.is_valid():
+            # THIS ONLY DELETES THE INSTANCE IN DATABASE, NOT THE ACTUAL FILE
+            ProfilePicture.objects.filter(user=request.user.pk).delete()
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
