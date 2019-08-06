@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from .models import PUser, Project, Collaborator
-
+import requests, os
 
 class CanEditCollaborators(permissions.BasePermission):
     message = "You do not have permission to edit collaborators on this project."
@@ -56,3 +56,14 @@ class CanEditDeleteUser(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj == request.user
+
+class isRealUser(permissions.BasePermission):
+    message = 'You are not a real human. Go away!!'
+    def has_permission(self, request, view):
+        data = {
+            'secret': os.getenv("RECAPTCHA_SECRET_DEV_KEY"), # TODO: use production key
+            'response': request.data['RECAPTCHAToken']
+        }
+        r = requests.post(url="https://www.google.com/recaptcha/api/siteverify", data=data)
+        responseJSON = r.json()
+        return responseJSON['success']

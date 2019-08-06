@@ -18,11 +18,17 @@ from corsheaders.defaults import default_headers
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+
+# SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = 'alksjdflkjsdfjs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -112,13 +118,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]}
+    ]
+}
+
 
 # settings to override rest-auth and allow for additional registration fields
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.custom_register.serializers.CustomRegisterSerializer',
 }
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
+
+# REST_AUTH_REGISTER_PERMISSION_CLASSES = [('rest_framework.permissions.AllowAny', ''), ('api.permissions.isRealUser', '')]
+REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
+
 
 
 # allauth stuff
@@ -174,23 +186,23 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
-        'OPTIONS': {
-            # Tell MySQLdb to connect with 'utf8mb4' character set
-            'charset': 'utf8mb4',
-        },
-        # Tell Django to build the test database with the 'utf8mb4' character set
-        'TEST': {
-            'CHARSET': 'utf8mb4',
-            'COLLATION': 'utf8mb4_unicode_ci',
-        }
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.mysql',
+       'NAME': os.getenv('DATABASE_NAME'),
+       'USER': os.getenv('DATABASE_USER'),
+       'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+       'HOST': os.getenv('DATABASE_HOST'),
+       'PORT': os.getenv('DATABASE_PORT'),
+       'OPTIONS': {
+           # Tell MySQLdb to connect with 'utf8mb4' character set
+           'charset': 'utf8mb4',
+       },
+       # Tell Django to build the test database with the 'utf8mb4' character set
+       'TEST': {
+           'CHARSET': 'utf8mb4',
+           'COLLATION': 'utf8mb4_unicode_ci',
+       }
+   }
 }
 
 

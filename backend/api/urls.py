@@ -4,7 +4,8 @@ from django.conf.urls import url
 from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser, ProfilePictureView
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, DeleteProject
 from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions, SearchCollaborators
-from .views import Filter, VerifyRealUser
+# from .views import Filter, VerifyRealUser
+from .views import Filter
 
 
 

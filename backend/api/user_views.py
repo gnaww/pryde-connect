@@ -93,3 +93,18 @@ class ProfilePictureView(APIView):
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteProfilePicture(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def delete(self, request, *args, **kwargs):
+
+        try:
+            ProfilePicture.objects.get(user=request.user.pk).delete()
+            return Response({'message': 'profile picture removed'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'failure... something went wrong'})
