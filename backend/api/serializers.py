@@ -183,6 +183,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         exclude = ['isApproved', 'type']
 
+
+
+
     def get_collaborators(self, obj):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
