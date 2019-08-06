@@ -70,10 +70,11 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 4,
+            page: 0,
             pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
-            clickedBack: false
+            clickedBack: false,
+            RECAPTCHAToken: null
         };
     }
 
@@ -118,7 +119,7 @@ class CreateProfile extends Component {
                     .then(response => {
                         if (response.success) {
                             // successful
-                            this.setState({ page: 5 });
+                            // this.setState({ page: 5 });
                         } else {
                             // failed to create/update profile
                             let pageDataCopy = Array.from(this.state.pageData);
@@ -139,6 +140,10 @@ class CreateProfile extends Component {
 
         }
         this.setState({ clickedNext: false });
+    }
+
+    setRECAPTCHAToken = token => {
+        this.setState({ RECAPTCHAToken: token });
     }
 
     // builds user object from data to POST to the API
@@ -194,6 +199,7 @@ class CreateProfile extends Component {
                 return { success: false, message: Object.values(err.response.data)[0][0]  };
             }
         } else {
+            user.RECAPTCHAToken = this.state.RECAPTCHAToken;
             try {
                 let response = await api.register(user);
                 localStorage.setItem("pryde_key", response.data.key);
@@ -227,7 +233,8 @@ class CreateProfile extends Component {
             savedData: this.state.pageData[this.state.page],
             clickedNext: this.state.clickedNext,
             onSubmitData: this.handleOnSubmitData,
-            editing: editing
+            editing: editing,
+            setRECAPTCHAToken: this.setRECAPTCHAToken
         };
 
         return (
@@ -246,7 +253,7 @@ class CreateProfile extends Component {
                     }
                     {
                         this.state.page === NUM_PAGES - 2 &&
-                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
+                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} disabled={this.state.RECAPTCHAToken === null && !this.props.editing} />)
                     }
                 </div>
             </div>

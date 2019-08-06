@@ -136,7 +136,6 @@ class File(Model):
     file = models.FileField(upload_to='uploads/')
 
 
-
 class ProfilePicture(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     file = models.FileField(blank=False, null=False, upload_to='profile_pictures')

@@ -202,6 +202,6 @@ export default {
         };
 
         let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`, config);
-        return response.data
+        return response.data;
     }
 }

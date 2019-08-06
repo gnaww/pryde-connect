@@ -17,7 +17,6 @@ class UserList(generics.ListAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
-
 class UserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = PUser.objects.filter(is_staff=False)
@@ -94,4 +93,3 @@ class ProfilePictureView(APIView):
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-

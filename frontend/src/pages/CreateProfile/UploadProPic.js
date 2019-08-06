@@ -54,11 +54,7 @@ class UploadProPic extends Component {
     }
 
     onRECAPTCHAChange = token => {
-        if (token === null) {
-            alert("Your RECAPTCHA verification has expired, please check the checkbox again.")
-        } else {
-            console.log(token);
-        }
+        this.props.setRECAPTCHAToken(token);
     }
 
     render() {

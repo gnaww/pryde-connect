@@ -9,7 +9,6 @@ from rest_framework.response import Response
 
 
 class Filter(generics.ListAPIView):
-
     def post(self, request, *args, **kwargs):
 
         if ('category' not in request.data) or (request.data['category'] == 'projects'):
