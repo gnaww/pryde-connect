@@ -6,11 +6,9 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from .permissions import CanEditDeleteUser
-
-
 from rest_framework.parsers import MultiPartParser, FormParser
+
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
