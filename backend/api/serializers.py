@@ -85,7 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password',
-                   'user_permissions', 'username', 'type', 'over18', 'profile_picture']
+                   'user_permissions', 'username', 'type', 'over18', ]
 
     def get_projects(self, obj):
         projects = []
@@ -118,7 +118,9 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.deliveryModes
 
     def get_profile_picture(self, obj):
-        return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+        if ProfilePicture.objects.filter(user=obj.pk).exists():
+            return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+        return ''
 
 
 class LoggedInUserSerializer(UserSerializer):
@@ -169,7 +171,9 @@ class UserShortSerializer(serializers.ModelSerializer):
         return [interest.researchInterest for interest in interests]
 
     def get_profile_picture(self, obj):
-        return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+        if ProfilePicture.objects.filter(user=obj.pk).exists():
+            return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+        return ''
 
 
 class ProjectSerializer(serializers.ModelSerializer):
