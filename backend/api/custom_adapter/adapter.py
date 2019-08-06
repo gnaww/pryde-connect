@@ -17,6 +17,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             responseJSON = r.json()
 
         except Exception as e:
+            # TODO: how to cancel registration / return a response when request is invalid?
             print(e)
             return Response({'message': 'Something went wrong while while verifying the RECAPTCHA challenge.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -50,4 +51,5 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             return user
         else:
             print('b')
+            # TODO: how to cancel registration / return a response when request is invalid?
             return Response({'message': 'You have not been registered as a new user because RECAPTCHA detected that you are a robot.'}, status=status.HTTP_400_BAD_REQUEST)
