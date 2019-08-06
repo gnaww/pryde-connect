@@ -72,8 +72,7 @@ class PUser(AbstractUser):
     )
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
-    # TODO: add profile picture to users
-    profilePicture = models.FileField(default=None, upload_to="uploads/")
+    profile_picture = models.FileField(default=None, upload_to="uploads/")
     type = models.CharField(max_length=15, default='user')
     over18 = models.BooleanField(default=True)
     objects = UserManager()

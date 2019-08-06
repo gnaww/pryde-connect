@@ -25,7 +25,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PUser
-        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
+        fields = ['pk', 'profile_picture', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
 
     def get_role(self, obj):
         return obj.get_role_display()

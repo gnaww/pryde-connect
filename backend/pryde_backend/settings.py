@@ -128,7 +128,7 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
 
 # REST_AUTH_REGISTER_PERMISSION_CLASSES = [('rest_framework.permissions.AllowAny', ''), ('api.permissions.isRealUser', '')]
-REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
+# REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
 
 
 

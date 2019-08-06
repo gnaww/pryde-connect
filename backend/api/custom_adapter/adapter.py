@@ -11,6 +11,12 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
         user = super().save_user(request, user, form, commit)
         data = form.cleaned_data
+
+
+        print('data is below')
+        print(data)
+
+
         user.first_name = data.get('first_name')
         user.last_name = data.get('last_name')
         user.role = data.get('role')
@@ -27,6 +33,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.evaluationNeeds = data.get('evaluationNeeds')
         user.locatedAtCornell = data.get('locatedAtCornell')
         user.locatedAtCCE = data.get('locatedAtCCE')
+        user.profile_picture = data.get('profile_picture')
 
         user.save()
 
