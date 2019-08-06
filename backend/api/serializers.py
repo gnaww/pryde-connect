@@ -1,14 +1,12 @@
 from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser, \
-    ProfilePicture
+from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
 
-
-class ProfilePictureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProfilePicture
-        fields = ('file', 'uploaded_at', 'user')
+# class ProfilePictureSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProfilePicture
+#         fields = ('file',)
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -80,7 +78,7 @@ class UserSerializer(serializers.ModelSerializer):
     roles = serializers.SerializerMethodField()
     ageRanges = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
-    profile_picture = serializers.SerializerMethodField()
+    # profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -117,10 +115,10 @@ class UserSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
 
-    def get_profile_picture(self, obj):
-        if ProfilePicture.objects.filter(user=obj.pk).exists():
-            return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
-        return ''
+    # def get_profile_picture(self, obj):
+    #     if ProfilePicture.objects.filter(user=obj.pk).exists():
+    #         return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+    #     return ''
 
 
 class LoggedInUserSerializer(UserSerializer):
@@ -147,7 +145,7 @@ class UserShortSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
     numProjects = serializers.SerializerMethodField('num_projects')
     researchInterests = serializers.SerializerMethodField()
-    profile_picture = serializers.SerializerMethodField()
+    # profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -170,10 +168,10 @@ class UserShortSerializer(serializers.ModelSerializer):
         interests = ResearchInterestUser.objects.filter(user=obj)
         return [interest.researchInterest for interest in interests]
 
-    def get_profile_picture(self, obj):
-        if ProfilePicture.objects.filter(user=obj.pk).exists():
-            return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
-        return ''
+    # def get_profile_picture(self, obj):
+    #     if ProfilePicture.objects.filter(user=obj.pk).exists():
+    #         return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
+    #     return ''
 
 
 class ProjectSerializer(serializers.ModelSerializer):

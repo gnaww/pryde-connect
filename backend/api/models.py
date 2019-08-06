@@ -73,7 +73,7 @@ class PUser(AbstractUser):
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     # TODO: add profile picture to users
-    # profilePicture = models.FileField(upload_to="uploads/")
+    profilePicture = models.FileField(default=None, upload_to="uploads/")
     type = models.CharField(max_length=15, default='user')
     over18 = models.BooleanField(default=True)
     objects = UserManager()
@@ -132,11 +132,11 @@ class Collaborator(Model):
 
 
 class File(Model):
-    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='uploads/')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='project-files/')
+    file_name = models.CharField(max_length=100)
 
 
-class ProfilePicture(Model):
-    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-    file = models.FileField(blank=False, null=False, upload_to='profile_pictures')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+# class ProfilePicture(Model):
+#     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+#     file = models.FileField(blank=False, null=False, upload_to='profile_pictures')
