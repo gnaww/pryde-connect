@@ -149,8 +149,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell',
-                  'profile_picture', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
     def get_role(self, obj):
         return obj.get_role_display()
