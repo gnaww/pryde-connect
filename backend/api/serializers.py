@@ -8,7 +8,8 @@ from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModePro
 class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProfilePicture
-        fields = ('file', 'uploaded_at', 'user')
+        fields = ['file', 'uploaded_at', 'user']
+
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,7 +68,6 @@ class ProjectShortSerializer(serializers.ModelSerializer):
             return True
 
 
-
 class StringArrayField(ListField):
     def to_internal_value(self, data):
         return super().to_internal_value(data)
@@ -84,8 +84,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password',
-                   'user_permissions', 'username', 'type', 'over18', 'profile_picture']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
     def get_projects(self, obj):
         projects = []
@@ -149,8 +148,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell',
-                  'profile_picture', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
+        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'profile_picture', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -183,9 +181,6 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         exclude = ['isApproved', 'type']
-
-
-
 
     def get_collaborators(self, obj):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
@@ -236,5 +231,3 @@ class CollaboratorSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = PUser
         fields = ['pk', 'first_name', 'last_name', 'email']
-
-
