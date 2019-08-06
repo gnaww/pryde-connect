@@ -1,6 +1,6 @@
 from rest_framework import generics, status
-from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, ProfilePictureSerializer
-from .models import Project, PUser, ResearchInterestUser, ProfilePicture
+from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
+from .models import Project, PUser, ResearchInterestUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -73,36 +73,36 @@ class DeleteUser(generics.DestroyAPIView):
     queryset = PUser.objects.filter(is_staff=False)
 
 
-class ProfilePictureView(APIView):
-    parser_classes = (MultiPartParser, FormParser)
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
+# class ProfilePictureView(APIView):
+#     parser_classes = (MultiPartParser, FormParser)
+#     authentication_classes = [TokenAuthentication, ]
+#     permission_classes = [IsAuthenticated, ]
+#
+#     def post(self, request, *args, **kwargs):
+#         #TODO: NEED TO FIGURE OUT HOW TO DELETE THE PICTURES FROM SERVER WHEN THEY ADD A NEW ONE
+#         print(request.data)
+#         print(request.user)
+#         print(request.user.pk)
+#         file_serializer = ProfilePictureSerializer(data={'user':request.user.pk, 'file':request.data['file']})
+#         if file_serializer.is_valid():
+#             # THIS ONLY DELETES THE INSTANCE IN DATABASE, NOT THE ACTUAL FILE
+#             ProfilePicture.objects.filter(user=request.user.pk).delete()
+#             file_serializer.save()
+#             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def post(self, request, *args, **kwargs):
-        #TODO: NEED TO FIGURE OUT HOW TO DELETE THE PICTURES FROM SERVER WHEN THEY ADD A NEW ONE
-        print(request.data)
-        print(request.user)
-        print(request.user.pk)
-        file_serializer = ProfilePictureSerializer(data={'user':request.user.pk, 'file':request.data['file']})
-        if file_serializer.is_valid():
-            # THIS ONLY DELETES THE INSTANCE IN DATABASE, NOT THE ACTUAL FILE
-            ProfilePicture.objects.filter(user=request.user.pk).delete()
-            file_serializer.save()
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class DeleteProfilePicture(generics.DestroyAPIView):
-    authentication_classes = [TokenAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
-
-    def delete(self, request, *args, **kwargs):
-
-        try:
-            ProfilePicture.objects.get(user=request.user.pk).delete()
-            return Response({'message': 'profile picture removed'}, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            print(e)
-            return Response({'message': 'failure... something went wrong'})
+# class DeleteProfilePicture(generics.DestroyAPIView):
+#     authentication_classes = [TokenAuthentication, ]
+#     permission_classes = [IsAuthenticated, ]
+#
+#     def delete(self, request, *args, **kwargs):
+#
+#         try:
+#             ProfilePicture.objects.get(user=request.user.pk).delete()
+#             return Response({'message': 'profile picture removed'}, status=status.HTTP_200_OK)
+#
+#         except Exception as e:
+#             print(e)
+#             return Response({'message': 'failure... something went wrong'})
