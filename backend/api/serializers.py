@@ -25,7 +25,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PUser
-        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
+        fields = ['pk', 'profile_picture', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -149,8 +149,8 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell',
-                  'profile_picture', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
+        fields = ['pk', 'profile_picture', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell',
+                   'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
     def get_role(self, obj):
         return obj.get_role_display()
