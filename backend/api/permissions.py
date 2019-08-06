@@ -57,6 +57,7 @@ class CanEditDeleteUser(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj == request.user
 
+
 class isRealUser(permissions.BasePermission):
     message = 'You are not a real human. Go away!!'
     def has_permission(self, request, view):

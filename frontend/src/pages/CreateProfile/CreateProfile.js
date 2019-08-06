@@ -200,6 +200,8 @@ class CreateProfile extends Component {
             }
         } else {
             user.RECAPTCHAToken = this.state.RECAPTCHAToken;
+            // user.RECAPTCHAToken = "lsadkfj";
+
             try {
                 let response = await api.register(user);
                 localStorage.setItem("pryde_key", response.data.key);
