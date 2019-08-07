@@ -24,7 +24,6 @@ export default {
     },
     async getUsers() {
         let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`);
-        console.log(users.data);
         return users.data;
     },
     async register(data) {

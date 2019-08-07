@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import profilePicture from '../images/profile-picture.png';
+import profilePicture from '../images/profile-picture.png';
 import CCEBadge from '../images/cce-badge.svg';
 import CornellBadge from '../images/cornell-badge.svg';
 import editButton from '../images/edit-button.svg';
@@ -155,6 +155,7 @@ class Profile extends Component {
         }
         const date = new Date(this.state.user.date_joined);
         const date_joined = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        const profilePic = this.state.user.profile_picture ? this.state.user.profile_picture : profilePicture
 
         return (
             <div className={styles.container}>
@@ -163,7 +164,7 @@ class Profile extends Component {
                         <>
                             <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                                 <div className={styles.profilePicture}>
-                                    <img src={this.state.user.profile_picture} alt="Profile pic" />
+                                    <img src={profilePic} alt="Profile pic" />
                                     {/* TODO: make editing profile picture here functional */}
                                     <button className={styles.profilePictureEdit} onClick={this.showModal}>
                                         {

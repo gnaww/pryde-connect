@@ -5,8 +5,6 @@ import locationIcon from '../images/location-icon-white.svg';
 import projectIcon from '../images/project-icon-white.svg';
 import categoryIconWhite from '../images/category-icon-white.svg';
 import mailIcon from '../images/mail-icon-white.svg';
-// import CCEBadge from '../images/cce-badge.svg';
-// import CornellBadge from '../images/cornell-badge.svg';
 import styles from '../styles/Card.module.css';
 
 const listFormatter = (str, elt, idx, arr) => {
@@ -26,17 +24,16 @@ const UserCard = props => {
         link = `/user/${props.id}`;
     }
     const researchInterests = props.researchInterests.reduce(listFormatter, "");
+    const profilePic = props.profile_picture ? props.profile_picture : profilePicture
 
     return (
         <Link className={styles.linkWrapper} to={link}>
             <div className={`${styles.card} ${styles.userCard} ${styles[props.role.toLowerCase()]}`}>
                 <section className={styles.userDetails}>
-                    <img className={styles.profilePicture} src={props.profile_picture} alt="Profile pic" />
+                    <img className={styles.profilePicture} src={profilePic} alt="Profile pic" />
                     <section>
                         <header>
                             <h3>{`${props.first_name} ${props.last_name}`}</h3>
-                            {/* { props.locatedAtCCE && <img className={styles.CCEBadge} src={CCEBadge} alt="CCE badge" /> } */}
-                            {/* { props.locatedAtCornell && <img className={styles.CornellBadge} src={CornellBadge} alt="Cornell badge" /> } */}
                         </header>
                         <h4>{props.role}</h4>
                         <h4>{props.affiliation}</h4>

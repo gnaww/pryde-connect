@@ -41,7 +41,6 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
             self.check_object_permissions(request, user)
 
             if user.profile_picture:
-
                 os.remove(user.profile_picture.path)
                 user.profile_picture = request.data['file']
                 user.save()
@@ -106,37 +105,3 @@ class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
     queryset = PUser.objects.filter(is_staff=False)
-
-
-# class ProfilePictureView(APIView):
-#     parser_classes = (MultiPartParser, FormParser)
-#     authentication_classes = [TokenAuthentication, ]
-#     permission_classes = [IsAuthenticated, ]
-#
-#     def post(self, request, *args, **kwargs):
-#         print(request.data)
-#         print(request.user)
-#         print(request.user.pk)
-#         file_serializer = ProfilePictureSerializer(data={'user':request.user.pk, 'file':request.data['file']})
-#         if file_serializer.is_valid():
-#             # THIS ONLY DELETES THE INSTANCE IN DATABASE, NOT THE ACTUAL FILE
-#             ProfilePicture.objects.filter(user=request.user.pk).delete()
-#             file_serializer.save()
-#             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# class DeleteProfilePicture(generics.DestroyAPIView):
-#     authentication_classes = [TokenAuthentication, ]
-#     permission_classes = [IsAuthenticated, ]
-#
-#     def delete(self, request, *args, **kwargs):
-#
-#         try:
-#             ProfilePicture.objects.get(user=request.user.pk).delete()
-#             return Response({'message': 'profile picture removed'}, status=status.HTTP_200_OK)
-#
-#         except Exception as e:
-#             print(e)
-#             return Response({'message': 'failure... something went wrong'})

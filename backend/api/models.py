@@ -134,8 +134,3 @@ class File(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project-files/')
     file_name = models.CharField(max_length=100)
-
-
-# class ProfilePicture(Model):
-#     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-#     file = models.FileField(blank=False, null=False, upload_to='profile_pictures')
