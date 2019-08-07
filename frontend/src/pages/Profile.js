@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import profilePicture from '../images/profile-picture.png';
+// import profilePicture from '../images/profile-picture.png';
 import CCEBadge from '../images/cce-badge.svg';
 import CornellBadge from '../images/cornell-badge.svg';
 import editButton from '../images/edit-button.svg';
@@ -44,7 +44,8 @@ class Profile extends Component {
                 researchNeeds: [],
                 evaluationNeeds: [],
                 projects: [],
-                date_joined: ""
+                date_joined: "",
+                profile_picture: ''
             },
             statusFilter: "",
             sortBy: "",
@@ -162,7 +163,7 @@ class Profile extends Component {
                         <>
                             <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                                 <div className={styles.profilePicture}>
-                                    <img src={profilePicture} alt="Profile pic" />
+                                    <img src={this.state.user.profile_picture} alt="Profile pic" />
                                     {/* TODO: make editing profile picture here functional */}
                                     <button className={styles.profilePictureEdit} onClick={this.showModal}>
                                         {

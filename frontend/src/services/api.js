@@ -19,10 +19,12 @@ export default {
     },
     async getUserByID(id) {
         let user = await axios.get(`${BASE_URL}${API_BASE_URL}/user/${id}/`);
+        console.log(user.data);
         return user.data;
     },
     async getUsers() {
-        let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`)
+        let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`);
+        console.log(users.data);
         return users.data;
     },
     async register(data) {

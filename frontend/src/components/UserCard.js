@@ -31,7 +31,7 @@ const UserCard = props => {
         <Link className={styles.linkWrapper} to={link}>
             <div className={`${styles.card} ${styles.userCard} ${styles[props.role.toLowerCase()]}`}>
                 <section className={styles.userDetails}>
-                    <img className={styles.profilePicture} src={profilePicture} alt="Profile pic" />
+                    <img className={styles.profilePicture} src={props.profile_picture} alt="Profile pic" />
                     <section>
                         <header>
                             <h3>{`${props.first_name} ${props.last_name}`}</h3>
