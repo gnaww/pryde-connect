@@ -192,10 +192,7 @@ class Profile extends Component {
                                                 <Link
                                                     to={saveStateWithPath("/editprofile", { userData: this.state.user })}
                                                 >
-                                                    <button className={styles.editButton}  onMouseDown={() => {
-                                                        console.log('clicked edit button')
-                                                        saveState({ userData: this.state.user })
-                                                    }}>
+                                                    <button className={styles.editButton}>
                                                         {
                                                             user.role === "Practitioner" ?
                                                                 <img src={editButton} alt="Edit button" />
