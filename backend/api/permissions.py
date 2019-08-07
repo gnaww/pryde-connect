@@ -59,9 +59,9 @@ class CanEditDeleteUser(permissions.BasePermission):
 
 
 class isRealUser(permissions.BasePermission):
-    message = 'You are not a real human. Go away!!'
+    message = "RECAPTCHA has detected you are a robot."
+
     def has_permission(self, request, view):
-        return True
         data = {
             'secret': os.getenv("RECAPTCHA_SECRET_DEV_KEY"), # TODO: use production key
             'response': request.data['RECAPTCHAToken']

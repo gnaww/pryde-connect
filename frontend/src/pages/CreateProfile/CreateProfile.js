@@ -200,7 +200,6 @@ class CreateProfile extends Component {
             }
         } else {
             user.RECAPTCHAToken = this.state.RECAPTCHAToken;
-            // user.RECAPTCHAToken = "lsadkfj";
 
             try {
                 let response = await api.register(user);
@@ -209,7 +208,13 @@ class CreateProfile extends Component {
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0] };
+
+                // failed isRealUser permission
+                if (err.response.data.detail === "Authentication credentials were not provided.") {
+                    return { success: false, message: "RECAPTCHA has detected you are a robot." }
+                } else {
+                    return { success: false, message: Object.values(err.response.data)[0] };
+                }
             }
         }
     }

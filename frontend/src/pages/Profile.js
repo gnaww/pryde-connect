@@ -45,7 +45,7 @@ class Profile extends Component {
                 evaluationNeeds: [],
                 projects: [],
                 date_joined: "",
-                profile_picture: ''
+                profile_picture: ""
             },
             statusFilter: "",
             sortBy: "",

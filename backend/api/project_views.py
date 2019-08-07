@@ -26,8 +26,6 @@ class CreateProject(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     queryset = Project.objects.filter(isApproved=True)
 
-    #TODO: THE PLACEMENT OF THE TRY BLOCKS MIGHT BE MESSED UP
-
     def post(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
         try:
@@ -41,7 +39,6 @@ class CreateProject(generics.CreateAPIView):
                 commitmentLength=request.data['timeline'],
                 incentives=request.data['incentives'],
                 additionalInformation=request.data['additionalInformation'],
-                # additionalFiles = request.data['additionalFiles'], # TODO: this probably needs changing
                 alternateContact=request.data['alternateContact'],
                 alternateLocation=request.data['alternateLocation']
             )
@@ -51,12 +48,18 @@ class CreateProject(generics.CreateAPIView):
                     DeliveryModeProject.objects.create(project=new_project, deliveryMode=mode)
                 except Exception as e:
                     print(e)
+                    return Response({
+                'status': 'Something went wrong while creating the project.'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
             for topic in request.data['researchTopics']:
                 try:
                     TopicsProject.objects.create(project=new_project, researchTopic=topic)
                 except Exception as e:
                     print(e)
+                    return Response({
+                'status': 'Something went wrong while creating the project.'
+            }, status=status.HTTP_400_BAD_REQUEST)
 
             return Response({'data': ProjectSerializer(new_project).data}, status=status.HTTP_201_CREATED)
 
