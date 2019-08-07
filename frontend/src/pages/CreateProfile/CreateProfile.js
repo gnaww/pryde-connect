@@ -31,7 +31,7 @@ let pages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Finally, upload a profile picture.*",
+        subtitle: "Finally, upload a profile picture. (optional)",
         content: UploadProPic
     },
     {
@@ -57,10 +57,6 @@ let editPages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Change your profile picture (optional)",
-        content: UploadProPic
-    },
-    {
         subtitle: "You can edit your answers to these questions at anytime through your profile page.",
         content: ReviewFinish
     }
@@ -70,10 +66,12 @@ class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: 4,
+            page: 0,
             pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
-            clickedBack: false
+            clickedBack: false,
+            RECAPTCHAToken: null,
+            errorSubmitting: false
         };
     }
 
@@ -113,20 +111,27 @@ class CreateProfile extends Component {
             }
 
             // Going to confirmation page, so send data to API and handle any errors
-            if (nextPage === 5) {
-                this.createProfile(this.state.pageData)
+            const confirmationPage = this.props.editing ? editPages.length - 1 : pages.length - 1;
+            if (nextPage === confirmationPage) {
+                let pageDataCopy = Array.from(this.state.pageData);
+                pageDataCopy[this.state.page] = data;
+
+                this.setState({ errorSubmitting: false });
+
+                this.createProfile(pageDataCopy)
                     .then(response => {
                         if (response.success) {
                             // successful
-                            this.setState({ page: 5 });
+                            this.setState({ page: confirmationPage });
                         } else {
                             // failed to create/update profile
                             let pageDataCopy = Array.from(this.state.pageData);
                             pageDataCopy[this.state.page] = data;
-                            this.setState({ pageData: pageDataCopy, page: 4 });
+                            this.setState({ pageData: pageDataCopy, page: confirmationPage - 1 });
                             if (this.props.editing) {
                                 alert(response.message ? response.message : "There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
                             } else {
+                                this.setState({ errorSubmitting: true, RECAPTCHAToken: null });
                                 alert(response.message ? response.message : "There was an error creating your profile. Please try again and make sure all questions are filled out properly.");
                             }
                         }
@@ -139,6 +144,10 @@ class CreateProfile extends Component {
 
         }
         this.setState({ clickedNext: false });
+    }
+
+    setRECAPTCHAToken = token => {
+        this.setState({ RECAPTCHAToken: token });
     }
 
     // builds user object from data to POST to the API
@@ -179,9 +188,6 @@ class CreateProfile extends Component {
         user.researchNeeds = data[3] === null ? "" : data[3].researchNeeds;
         user.evaluationNeeds = data[3] === null ? "" : data[3].evaluationNeeds;
 
-        // TODO: add profile picture to users
-        // user.profilePicture = data[4].profilePicture;
-
         if (this.props.editing === true) {
             delete user.password1;
             delete user.password2;
@@ -191,17 +197,30 @@ class CreateProfile extends Component {
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0]  };
+                return { success: false, message: Object.values(err.response.data)[0] };
             }
         } else {
+            user.RECAPTCHAToken = this.state.RECAPTCHAToken;
+
             try {
                 let response = await api.register(user);
                 localStorage.setItem("pryde_key", response.data.key);
-                return { success: response.status === 201, message: "" };
+                if (data[4].profilePicture) {
+                    let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
+                    return { success: profilePictureResponse, message: "" };
+                } else {
+                    return { success: response.status === 201, message: "" };
+                }
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0]  };
+
+                // failed isRealUser permission
+                if (err.response.data.detail === "Authentication credentials were not provided.") {
+                    return { success: false, message: "RECAPTCHA has detected you are a robot." }
+                } else {
+                    return { success: false, message: Object.values(err.response.data)[0] };
+                }
             }
         }
     }
@@ -227,7 +246,9 @@ class CreateProfile extends Component {
             savedData: this.state.pageData[this.state.page],
             clickedNext: this.state.clickedNext,
             onSubmitData: this.handleOnSubmitData,
-            editing: editing
+            editing: editing,
+            setRECAPTCHAToken: this.setRECAPTCHAToken,
+            errorSubmitting: this.state.errorSubmitting
         };
 
         return (
@@ -246,7 +267,7 @@ class CreateProfile extends Component {
                     }
                     {
                         this.state.page === NUM_PAGES - 2 &&
-                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} />)
+                        (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} disabled={this.state.RECAPTCHAToken === null && !this.props.editing} />)
                     }
                 </div>
             </div>

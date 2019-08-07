@@ -1,11 +1,17 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from ..models import ResearchInterestUser
+from rest_framework.response import Response
+from rest_framework import status
+import os
+import requests
 
 class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=False):
+
         user = super().save_user(request, user, form, commit)
         data = form.cleaned_data
+
         user.first_name = data.get('first_name')
         user.last_name = data.get('last_name')
         user.role = data.get('role')
@@ -15,7 +21,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.phone = data.get('phone')
         user.website = data.get('website')
         user.researchDescription = data.get('researchDescription')
-        # user.researchInterests = data.get('researchInterests')
         user.roles = data.get('roles')
         user.ageRanges = data.get('ageRanges')
         user.deliveryModes = data.get('deliveryModes')
@@ -23,6 +28,7 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.evaluationNeeds = data.get('evaluationNeeds')
         user.locatedAtCornell = data.get('locatedAtCornell')
         user.locatedAtCCE = data.get('locatedAtCCE')
+        user.profile_picture = data.get('profile_picture')
 
         user.save()
 

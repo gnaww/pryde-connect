@@ -19,15 +19,29 @@ export default {
     },
     async getUserByID(id) {
         let user = await axios.get(`${BASE_URL}${API_BASE_URL}/user/${id}/`);
+        console.log(user.data);
         return user.data;
     },
     async getUsers() {
-        let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`)
+        let users = await axios.get(`${BASE_URL}${API_BASE_URL}/users/`);
         return users.data;
     },
     async register(data) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
+    },
+    async uploadProfilePicture(file, key) {
+        const config = {
+            headers: {
+                Authorization: `Token ${key}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        let formData = new FormData();
+        formData.append("file", file);
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/user/picture/`, formData, config);
+
+        return response.status === 201;
     },
     async updateUser(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
@@ -202,6 +216,6 @@ export default {
         };
 
         let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`, config);
-        return response.data
+        return response.data;
     }
 }

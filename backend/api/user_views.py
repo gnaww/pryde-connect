@@ -6,9 +6,9 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from .permissions import CanEditDeleteUser
-
+from rest_framework.parsers import MultiPartParser, FormParser
+import os
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
@@ -26,8 +26,34 @@ class LoggedInUserView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
-        serializer = LoggedInUserSerializer(user)
+        serializer = LoggedInUserSerializer(user, context={ 'request': request })
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class UploadOrChangeProfilePicture(generics.CreateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            user = PUser.objects.get(pk=request.user.pk)
+            self.check_object_permissions(request, user)
+
+            if user.profile_picture:
+                os.remove(user.profile_picture.path)
+                user.profile_picture = request.data['file']
+                user.save()
+                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
+
+            else:
+                user.profile_picture = request.data['file']
+                user.save()
+                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateUser(generics.UpdateAPIView):
@@ -54,6 +80,7 @@ class UpdateUser(generics.UpdateAPIView):
             user.deliveryModes = request.data['deliveryModes']
             user.researchNeeds = request.data['researchNeeds']
             user.evaluationNeeds = request.data['evaluationNeeds']
+
             user.save()
 
             ResearchInterestUser.objects.filter(user=user.pk).delete()
@@ -71,4 +98,3 @@ class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
     queryset = PUser.objects.filter(is_staff=False)
-

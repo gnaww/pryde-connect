@@ -20,6 +20,10 @@ from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 API_TITLE = 'PRYDE Connect API'
 API_DESCRIPTION = 'A web API for PRYDE Connect'
 urlpatterns = [
@@ -34,3 +38,5 @@ urlpatterns = [
     url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
     path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
 ]
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

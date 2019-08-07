@@ -140,7 +140,7 @@ class CreateProject extends Component {
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0] };
+                return { success: false, message: Object.values(err.response.data)[0] };
             }
         } else {
             try {

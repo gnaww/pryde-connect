@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import styles from '../styles/ProfilePictureModal.module.css';
+import api from '../services/api';
 
 class ProfilePictureModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showPreview: false
+            showPreview: false,
+            profilePicture: null
         };
-        this.profilePicInput = React.createRef();
     }
 
     handleClick = event => {
@@ -17,18 +18,25 @@ class ProfilePictureModal extends Component {
     }
 
     handleInputChange = event => {
-        this.setState({ showPreview: true });
+        this.setState({ showPreview: true, profilePicture: event.target.files[0] });
+        console.log(event.target.files[0])
         const preview = document.getElementById('preview');
         preview.src = URL.createObjectURL(event.target.files[0]);
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        alert(
-            `Selected file - ${
-            this.profilePicInput.current.files[0].name
-            }`
-        );
+        api.uploadProfilePicture(this.state.profilePicture, localStorage.getItem("pryde_key"))
+            .then(response => {
+                if (response) {
+                    window.location.reload()
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                console.log(err.response.data);
+                alert("An error occurred while updating your profile picture.");
+            })
     }
 
     componentDidMount() {

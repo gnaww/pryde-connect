@@ -44,7 +44,8 @@ class Profile extends Component {
                 researchNeeds: [],
                 evaluationNeeds: [],
                 projects: [],
-                date_joined: ""
+                date_joined: "",
+                profile_picture: ""
             },
             statusFilter: "",
             sortBy: "",
@@ -154,6 +155,7 @@ class Profile extends Component {
         }
         const date = new Date(this.state.user.date_joined);
         const date_joined = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+        const profilePic = this.state.user.profile_picture ? this.state.user.profile_picture : profilePicture
 
         return (
             <div className={styles.container}>
@@ -162,8 +164,7 @@ class Profile extends Component {
                         <>
                             <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                                 <div className={styles.profilePicture}>
-                                    <img src={profilePicture} alt="Profile pic" />
-                                    {/* TODO: make editing profile picture here functional */}
+                                    <img src={profilePic} alt="Profile pic" />
                                     <button className={styles.profilePictureEdit} onClick={this.showModal}>
                                         {
                                             user.role === "Practitioner" ?
