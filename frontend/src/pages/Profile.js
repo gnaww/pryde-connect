@@ -165,7 +165,6 @@ class Profile extends Component {
                             <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                                 <div className={styles.profilePicture}>
                                     <img src={profilePic} alt="Profile pic" />
-                                    {/* TODO: make editing profile picture here functional */}
                                     <button className={styles.profilePictureEdit} onClick={this.showModal}>
                                         {
                                             user.role === "Practitioner" ?
