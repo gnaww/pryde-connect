@@ -9,3 +9,4 @@ django-mysql
 mysqlclient
 python-dotenv
 requests
+Pillow

@@ -19,7 +19,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     evaluationNeeds = serializers.CharField(allow_blank=True)
     locatedAtCornell = serializers.BooleanField()
     locatedAtCCE = serializers.BooleanField()
-    profile_picture = serializers.FileField(allow_empty_file=True, required=False)
+    profile_picture = serializers.ImageField(allow_empty_file=True, required=False)
 
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()

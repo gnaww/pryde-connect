@@ -204,9 +204,13 @@ class CreateProfile extends Component {
 
             try {
                 let response = await api.register(user);
-                let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
                 localStorage.setItem("pryde_key", response.data.key);
-                return { success: profilePictureResponse, message: "" };
+                if (data[4].profilePicture) {
+                    let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
+                    return { success: profilePictureResponse, message: "" };
+                } else {
+                    return { success: response.status === 201, message: "" };
+                }
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
