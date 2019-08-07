@@ -21,7 +21,7 @@ class MiniUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PUser
-        fields = ['pk', 'profile_picture', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
+        fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -76,8 +76,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password',
-                   'user_permissions', 'username', 'type', 'over18', ]
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
     def get_projects(self, obj):
         projects = []

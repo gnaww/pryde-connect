@@ -86,16 +86,10 @@ const EditProfile = () => {
     optional.researchNeeds = userData.researchNeeds;
     optional.evaluationNeeds = userData.evaluationNeeds;
 
-    // Upload Profile Picture
-    // TODO: convert profile picture to fit into CreateProfile
-    // user.profilePicture = data[4].profilePicture;
-    let uploadProfilePicture = { filePreview: null, profilePicture: null };
-
     editProfileData.push(basicInfo);
     editProfileData.push(roleSelection);
     editProfileData.push(questions);
     editProfileData.push(optional);
-    editProfileData.push(uploadProfilePicture);
     editProfileData.push(null);
 
     return <CreateProfile editProfileData={editProfileData} editing={true} />

@@ -6,9 +6,6 @@ from .project_views import CreateProject, ProjectList, ProjectView, UpdateProjec
 from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions, SearchCollaborators
 from .views import Filter
 
-
-
-
 # All of these endpoints begin with 'api/v1/'
 urlpatterns = [
     path('users/', UserList.as_view()),

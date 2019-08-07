@@ -26,7 +26,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         user = PUser.objects.get(pk=request.user.pk)
-        serializer = LoggedInUserSerializer(user)
+        serializer = LoggedInUserSerializer(user, context={ 'request': request })
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
@@ -44,33 +44,26 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
                 os.remove(user.profile_picture.path)
                 user.profile_picture = request.data['file']
                 user.save()
-                return Response(data=UserShortSerializer(user).data, status=status.HTTP_200_OK)
+                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
 
             else:
                 user.profile_picture = request.data['file']
                 user.save()
-                return Response(data=UserShortSerializer(user).data, status=status.HTTP_200_OK)
+                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'something went wrong'})
+            return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    parser_classes = [MultiPartParser, FormParser]
 
     def put(self, request, *args, **kwargs):
         try:
             user = PUser.objects.get(pk=request.user.pk)
             self.check_object_permissions(request, user)
-
-            if user.profile_picture and 'file' in request.data:
-                os.remove(user.profile_picture.path)
-                user.profile_picture = request.data['file']
-            elif not user.profile_picture and 'file' in request.data:
-                user.profile_picture = request.data['file']
 
             user.locatedAtCornell = request.data['locatedAtCornell']
             user.locatedAtCCE = request.data['locatedAtCCE']

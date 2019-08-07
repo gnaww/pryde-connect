@@ -18,6 +18,10 @@ class UploadProPic extends Component {
             this.props.onSubmitData(this.state, false);
         }
 
+        if (prevProps.errorSubmitting !== this.props.errorSubmitting && this.props.errorSubmitting) {
+            this.recaptchaRef.current.reset();
+        }
+
         if (prevProps.savedData !== this.props.savedData) {
             this.setState(this.props.savedData);
         }

@@ -30,6 +30,19 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/`, data);
         return response;
     },
+    async uploadProfilePicture(file, key) {
+        const config = {
+            headers: {
+                Authorization: `Token ${key}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        let formData = new FormData();
+        formData.append("file", file);
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/user/picture/`, formData, config);
+
+        return response.status === 201;
+    },
     async updateUser(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
 

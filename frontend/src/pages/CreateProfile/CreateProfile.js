@@ -57,10 +57,6 @@ let editPages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Change your profile picture. (optional)",
-        content: UploadProPic
-    },
-    {
         subtitle: "You can edit your answers to these questions at anytime through your profile page.",
         content: ReviewFinish
     }
@@ -74,7 +70,8 @@ class CreateProfile extends Component {
             pageData: this.props.editing ? editPages.map(() => null) : pages.map(() => null),
             clickedNext: false,
             clickedBack: false,
-            RECAPTCHAToken: null
+            RECAPTCHAToken: null,
+            errorSubmitting: false
         };
     }
 
@@ -114,20 +111,27 @@ class CreateProfile extends Component {
             }
 
             // Going to confirmation page, so send data to API and handle any errors
-            if (nextPage === 5) {
-                this.createProfile(this.state.pageData)
+            const confirmationPage = this.props.editing ? editPages.length - 1 : pages.length - 1;
+            if (nextPage === confirmationPage) {
+                let pageDataCopy = Array.from(this.state.pageData);
+                pageDataCopy[this.state.page] = data;
+
+                this.setState({ errorSubmitting: false });
+
+                this.createProfile(pageDataCopy)
                     .then(response => {
                         if (response.success) {
                             // successful
-                            // this.setState({ page: 5 });
+                            this.setState({ page: confirmationPage });
                         } else {
                             // failed to create/update profile
                             let pageDataCopy = Array.from(this.state.pageData);
                             pageDataCopy[this.state.page] = data;
-                            this.setState({ pageData: pageDataCopy, page: 4 });
+                            this.setState({ pageData: pageDataCopy, page: confirmationPage - 1 });
                             if (this.props.editing) {
                                 alert(response.message ? response.message : "There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
                             } else {
+                                this.setState({ errorSubmitting: true, RECAPTCHAToken: null });
                                 alert(response.message ? response.message : "There was an error creating your profile. Please try again and make sure all questions are filled out properly.");
                             }
                         }
@@ -184,9 +188,6 @@ class CreateProfile extends Component {
         user.researchNeeds = data[3] === null ? "" : data[3].researchNeeds;
         user.evaluationNeeds = data[3] === null ? "" : data[3].evaluationNeeds;
 
-        // TODO: add profile picture to users
-        // user.profilePicture = data[4].profilePicture;
-
         if (this.props.editing === true) {
             delete user.password1;
             delete user.password2;
@@ -203,8 +204,9 @@ class CreateProfile extends Component {
 
             try {
                 let response = await api.register(user);
+                let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
                 localStorage.setItem("pryde_key", response.data.key);
-                return { success: response.status === 201, message: "" };
+                return { success: profilePictureResponse, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
@@ -241,7 +243,8 @@ class CreateProfile extends Component {
             clickedNext: this.state.clickedNext,
             onSubmitData: this.handleOnSubmitData,
             editing: editing,
-            setRECAPTCHAToken: this.setRECAPTCHAToken
+            setRECAPTCHAToken: this.setRECAPTCHAToken,
+            errorSubmitting: this.state.errorSubmitting
         };
 
         return (
