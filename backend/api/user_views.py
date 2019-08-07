@@ -114,7 +114,6 @@ class DeleteUser(generics.DestroyAPIView):
 #     permission_classes = [IsAuthenticated, ]
 #
 #     def post(self, request, *args, **kwargs):
-#         #TODO: NEED TO FIGURE OUT HOW TO DELETE THE PICTURES FROM SERVER WHEN THEY ADD A NEW ONE
 #         print(request.data)
 #         print(request.user)
 #         print(request.user.pk)

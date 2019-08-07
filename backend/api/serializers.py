@@ -78,7 +78,6 @@ class UserSerializer(serializers.ModelSerializer):
     roles = serializers.SerializerMethodField()
     ageRanges = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
-    # profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -114,11 +113,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_deliveryModes(self, obj):
         return obj.deliveryModes
-
-    # def get_profile_picture(self, obj):
-    #     if ProfilePicture.objects.filter(user=obj.pk).exists():
-    #         return ProfilePictureSerializer(ProfilePicture.objects.get(user=obj.pk)).data
-    #     return ''
 
 
 class LoggedInUserSerializer(UserSerializer):
