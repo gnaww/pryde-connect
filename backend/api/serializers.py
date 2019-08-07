@@ -1,7 +1,19 @@
 from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
+from .models import PUser, Project, Collaborator, TopicsProject, \
+    DeliveryModeProject, ResearchInterestUser, File
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = '__all__'
+
+class FileShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = ['file', 'file_name', 'pk']
 
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
@@ -162,6 +174,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     ageRanges = serializers.SerializerMethodField()
     researchTopics = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
+    files = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
@@ -187,6 +200,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
         return [mode.deliveryMode for mode in deliveryModes]
+
+    def get_files(self, obj):
+        if File.objects.filter(project=obj.pk).exists():
+            serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True)
+            return serializer.data
+        return ''
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):

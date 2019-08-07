@@ -1,14 +1,17 @@
 from rest_framework import generics, status
-from .serializers import ProjectSerializer, ProjectShortSerializer
-from .models import Project, PUser, TopicsProject, DeliveryModeProject
+from .serializers import ProjectSerializer, ProjectShortSerializer, FileSerializer
+from .models import Project, PUser, TopicsProject, DeliveryModeProject, File
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # custom permissions
 from .permissions import CanDeleteProject, CanEditProject
+
+import os
 
 
 class ProjectList(generics.ListAPIView):
@@ -104,8 +107,75 @@ class UpdateProject(generics.UpdateAPIView):
             print(e)
             return Response({'message': 'Something went wrong while updating the project information.'}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanDeleteProject & IsAuthenticated, ]
     queryset = Project.objects.filter(isApproved=True)
+
+
+class UploadFileView(generics.CreateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditProject & IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request, *args, **kwargs):
+
+        try:
+
+            if Project.objects.filter(pk=kwargs['pk']).exists():
+                project = Project.objects.get(pk=kwargs['pk'])
+                self.check_object_permissions(request, project)
+
+                if File.objects.filter(project=project.pk).count() >= 5:
+                    return Response({'message': 'maximum number of files per project is 5'})
+
+                request.data['project'] = project.pk
+                request.data['file_name'] = str(request.data['file'])
+                file_serializer = FileSerializer(data=request.data)
+
+                if file_serializer.is_valid():
+                    file_serializer.save()
+                    return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+
+                else:
+                    return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response({'message': 'project not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'something went wrong while uploading file'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteFileView(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditProject & IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def delete(self, request, *args, **kwargs):
+
+        try:
+
+            if Project.objects.filter(pk=kwargs['pk']).exists():
+                project = Project.objects.get(pk=kwargs['pk'])
+                self.check_object_permissions(request, project)
+
+                if File.objects.filter(pk=kwargs['filepk']).exists():
+
+                    file = File.objects.get(pk=kwargs['filepk'])
+                    os.remove(file.file.path)
+                    file.delete()
+
+                    return Response({'message': 'file deleted'}, status=status.HTTP_200_OK)
+
+                else:
+                    return Response({'message': 'file not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response({'message': 'project not foung'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'something went wrong while deleting the file'}, status=status.HTTP_400_BAD_REQUEST)
