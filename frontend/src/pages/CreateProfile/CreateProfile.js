@@ -31,7 +31,7 @@ let pages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Finally, upload a profile picture.*",
+        subtitle: "Finally, upload a profile picture. (optional)",
         content: UploadProPic
     },
     {
@@ -57,7 +57,7 @@ let editPages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Change your profile picture (optional)",
+        subtitle: "Change your profile picture. (optional)",
         content: UploadProPic
     },
     {
