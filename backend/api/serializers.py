@@ -6,14 +6,26 @@ from .models import PUser, Project, Collaborator, TopicsProject, \
 
 
 class FileSerializer(serializers.ModelSerializer):
+    file_path = serializers.SerializerMethodField()
     class Meta:
         model = File
         fields = '__all__'
 
+    def get_file_path(self, obj):
+        url = str(obj.file.url)
+        return self.context.build_absolute_uri(url)
+
+
 class FileShortSerializer(serializers.ModelSerializer):
+    file_path = serializers.SerializerMethodField()
+
     class Meta:
         model = File
-        fields = ['file', 'file_name', 'pk']
+        fields = ['file_path', 'file_name', 'pk']
+
+    def get_file_path(self, obj):
+        url = str(obj.file.url)
+        return self.context.build_absolute_uri(url)
 
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
@@ -202,8 +214,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         return [mode.deliveryMode for mode in deliveryModes]
 
     def get_files(self, obj):
+        print(self.context.get('request'))
         if File.objects.filter(project=obj.pk).exists():
-            serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True)
+            serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True, context=self.context.get('request'))
             return serializer.data
         return ''
 
