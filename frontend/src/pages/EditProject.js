@@ -78,16 +78,17 @@ class EditProject extends Component {
         editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
         editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
         editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-        // TODO: convert saved additional files to fit into CreateProject
-        // editProjectData.additionalFiles = data.additionalFiles;
+        editProjectData.additionalFiles = editProjectData.additionalFiles.map(file => {
+            return [file.pk, file.file_name]
+        });
         this.setState({ ...editProjectData });
     }
 
     render() {
         if (Object.entries(this.state).length === 0) {
-            return <CreateProject editProjectData={null} editing={true} />
+            return <CreateProject editProjectData={null} editing={true} location={this.props.location} />
         } else {
-            return <CreateProject editProjectData={this.state} editing={true} />
+            return <CreateProject editProjectData={this.state} editing={true} location={this.props.location} />
         }
     }
 }
