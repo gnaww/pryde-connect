@@ -78,7 +78,30 @@ const identifyCollaboratorChanges = (newCollaborators, oldCollaborators) => {
     })
 
     return { addedCollaborators: addedCollabs, updatedCollaborators: updatedCollabs, deletedCollaborators: deletedCollabs };
-}
+};
+
+const identifyProjectFileChanges = (newFiles, oldFiles) => {
+    let addedFiles = [];
+    let deletedFiles = [];
+
+    newFiles.forEach(file => {
+        // if file was pre-existing, file[0] is an integer pk
+        if (file[0] instanceof File) {
+            addedFiles.push(file);
+        }
+    });
+
+    oldFiles.forEach(file => {
+        // file[0] is an integer pk, f[0] is either a File object or an integer pk
+        let deleted = newFiles.find(f => f[0] === file[0]) === undefined;
+
+        if (deleted) {
+            deletedFiles.push(file[0]);
+        }
+    });
+
+    return { addedFiles: addedFiles, deletedFiles: deletedFiles };
+};
 
 class CreateProject extends Component {
     constructor(props) {
@@ -117,11 +140,13 @@ class CreateProject extends Component {
 
         delete project.collaborators;
         delete project.initialCollaborators;
+        delete project.additionalFiles;
+        delete project.initialAdditionalFiles;
 
         if (this.props.editing === true) {
             try {
                 await api.updateProject(this.props.editProjectData.id, project);
-                // TODO: may need to implement better error handling when adding collabs/project
+                // TODO: may need to implement better error handling when adding collabs/project/files
                 if (project.editCollaboratorsPermission) {
                     const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyCollaboratorChanges(data.collaborators, data.initialCollaborators);
                     addedCollaborators.forEach(async added => {
@@ -134,6 +159,15 @@ class CreateProject extends Component {
                         await api.deleteCollaborator(project.id, deleted);
                     });
                 }
+                const { addedFiles, deletedFiles } = identifyProjectFileChanges(data.additionalFiles, data.initialAdditionalFiles);
+                console.log(addedFiles);
+                console.log(deletedFiles);
+                addedFiles.forEach(async added => {
+                    await api.uploadProjectFile(project.id, added[0]);
+                });
+                deletedFiles.forEach(async deleted => {
+                    await api.deleteProjectFile(project.id, deleted);
+                });
                 return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
