@@ -119,15 +119,13 @@ class UploadFile(generics.CreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, *args, **kwargs):
-
         try:
-
             if Project.objects.filter(pk=kwargs['pk']).exists():
                 project = Project.objects.get(pk=kwargs['pk'])
                 self.check_object_permissions(request, project)
 
                 if File.objects.filter(project=project.pk).count() >= 5:
-                    return Response({'message': 'maximum number of files per project is 5'})
+                    return Response({'message': 'Not allowed to upload more than 5 additional files.'})
 
                 request.data['project'] = project.pk
                 request.data['file_name'] = str(request.data['file'])
@@ -141,11 +139,11 @@ class UploadFile(generics.CreateAPIView):
                     return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
             else:
-                return Response({'message': 'project not found'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'Project not found.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'something went wrong while uploading file'},
+            return Response({'message': 'Something went wrong while uploading the file.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -155,27 +153,23 @@ class DeleteFile(generics.DestroyAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def delete(self, request, *args, **kwargs):
-
         try:
-
             if Project.objects.filter(pk=kwargs['pk']).exists():
                 project = Project.objects.get(pk=kwargs['pk'])
                 self.check_object_permissions(request, project)
 
                 if File.objects.filter(pk=kwargs['filepk']).exists():
-
                     file = File.objects.get(pk=kwargs['filepk'])
                     os.remove(file.file.path)
                     file.delete()
 
-                    return Response({'message': 'file deleted'}, status=status.HTTP_200_OK)
-
+                    return Response({ 'message': 'File successfully deleted.' }, status=status.HTTP_204_NO_CONTENT)
                 else:
-                    return Response({'message': 'file not found'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({ 'message': 'File not found.' }, status=status.HTTP_404_NOT_FOUND)
 
             else:
-                return Response({'message': 'project not foung'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({ 'message': 'Project not found.' }, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'something went wrong while deleting the file'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({ 'message': 'Something went wrong while deleting the file.' }, status=status.HTTP_400_BAD_REQUEST)

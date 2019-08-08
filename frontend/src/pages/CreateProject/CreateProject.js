@@ -114,9 +114,7 @@ class CreateProject extends Component {
         if (data.alternateContact.phone) {
             project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone)[0] : "";
         }
-        // TODO: add additional files to projects
-        // project.additionalFiles = data.additionalFiles;
-        project.additionalFiles = [];
+
         delete project.collaborators;
         delete project.initialCollaborators;
 
@@ -155,6 +153,7 @@ class CreateProject extends Component {
                     }
                     await api.addCollaborator(createdProject.data.id, c);
                 });
+                // TODO: add additional files to projects
                 return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
@@ -170,7 +169,7 @@ class CreateProject extends Component {
                 .then(response => {
                     if (response.success) {
                         // successful
-                        this.setState({ page: 1 });
+                        // this.setState({ page: 1 });
                     } else {
                         // failed to create/update project
                         this.setState({ pageData: data, page: 0 });
@@ -215,7 +214,7 @@ class CreateProject extends Component {
                     <h1 className={styles.createProfile}>{title}</h1>
                     <h2 className={styles.subtitle}>{subtitle}</h2>
                     <p className={styles.disclaimer}>Keep in mind that the contact information you provide will be publicly viewable so that potential partners can contact you.</p>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} />
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} location={this.props.location} />
                     <div className={styles.buttons}>
                         {
                             this.state.page < NUM_PAGES - 1 &&

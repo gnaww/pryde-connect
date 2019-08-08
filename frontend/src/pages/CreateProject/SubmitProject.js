@@ -44,7 +44,8 @@ class SubmitProject extends Component {
             alternateLocation: {
                 option: "",
                 other: ""
-            }
+            },
+            editCollaboratorsPermission: false
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
@@ -132,6 +133,10 @@ class SubmitProject extends Component {
         if (this.props.savedData !== null) {
             this.setState(this.props.savedData);
         }
+
+        if (this.props.location.pathname === "/submit") {
+            this.setState({ editCollaboratorsPermission: true })
+        }
     }
 
     setTextbox = key => event => {
@@ -178,9 +183,9 @@ class SubmitProject extends Component {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
             let file = event.target.files[0];
-            let url = URL.createObjectURL(file);
+            // let url = URL.createObjectURL(file);
             let name = file.name;
-            changed.push([url, name]);
+            changed.push([file, name]);
         }
         else {
             changed.splice(key, 1);
