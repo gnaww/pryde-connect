@@ -31,7 +31,8 @@ class SubmitProject extends Component {
                 other: ""
             },
             additionalInformation: "",
-            additionalFiles: [], // TODO: need to implement with file hosting
+            initialAdditionalFiles: [],
+            additionalFiles: [],
             initialCollaborators: [],
             collaborators: [],
             alternateContact: {
@@ -183,7 +184,6 @@ class SubmitProject extends Component {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
             let file = event.target.files[0];
-            // let url = URL.createObjectURL(file);
             let name = file.name;
             changed.push([file, name]);
         }

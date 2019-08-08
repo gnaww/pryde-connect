@@ -135,9 +135,12 @@ class UploadFile(generics.CreateAPIView):
                 if File.objects.filter(project=project.pk).count() >= 5:
                     return Response({'message': 'Not allowed to upload more than 5 additional files.'})
 
-                request.data['project'] = project.pk
-                request.data['file_name'] = str(request.data['file'])
-                file_serializer = FileSerializer(data=request.data)
+                print(request.data)
+                data = {}
+                data['project'] = project.pk
+                data['file_name'] = str(request.data['file'])
+                data['file'] = request.data['file']
+                file_serializer = FileSerializer(data=data)
 
                 if file_serializer.is_valid():
                     file_serializer.save()
@@ -158,7 +161,6 @@ class UploadFile(generics.CreateAPIView):
 class DeleteFile(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
 
     def delete(self, request, *args, **kwargs):
         try:

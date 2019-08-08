@@ -209,7 +209,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         return [mode.deliveryMode for mode in deliveryModes]
 
     def get_files(self, obj):
-        print(self.context.get('request'))
         if File.objects.filter(project=obj.pk).exists():
             serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True, context=self.context.get('request'))
             return serializer.data

@@ -141,8 +141,9 @@ class CreateProject extends Component {
                 return { success: false, message: Object.values(err.response.data)[0] };
             }
         } else {
+            console.log(project)
             try {
-                // TODO: may need to implement better error handling when adding collabs/project
+                // TODO: may need to implement better error handling when adding collabs/project/files
                 let createdProject = await api.createProject(project);
                 data.collaborators.forEach(async collaborator => {
                     const c = {
@@ -153,7 +154,9 @@ class CreateProject extends Component {
                     }
                     await api.addCollaborator(createdProject.data.id, c);
                 });
-                // TODO: add additional files to projects
+                project.additionalFiles.forEach(async file => {
+                    await api.uploadProjectFile(createdProject.data.id, file[0]);
+                })
                 return { success: true, message: "" };
             } catch(err) {
                 console.log(err);

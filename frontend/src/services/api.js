@@ -138,6 +138,33 @@ export default {
         let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${id}/delete/`, config);
         return response.status === 204;
     },
+    async uploadProjectFile(id, file) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        let formData = new FormData();
+        formData.append("file", file);
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/project/${id}/file/`, formData, config);
+
+        return response.status === 201;
+    },
+    async deleteProjectFile(projectId, fileId) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.delete(`${BASE_URL}${API_BASE_URL}/project/${projectId}/file/${fileId}/delete/`, config);
+        return response.status === 204;
+    },
     async search(queryObject) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/filter/`, queryObject);
         return response.data;

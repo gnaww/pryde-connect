@@ -81,6 +81,7 @@ class EditProject extends Component {
         editProjectData.additionalFiles = editProjectData.additionalFiles.map(file => {
             return [file.pk, file.file_name]
         });
+        editProjectData.initialAdditionalFiles = editProjectData.additionalFiles.map(elt => elt);
         this.setState({ ...editProjectData });
     }
 
