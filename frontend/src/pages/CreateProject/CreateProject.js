@@ -171,7 +171,7 @@ class CreateProject extends Component {
                 .then(response => {
                     if (response.success) {
                         // successful
-                        // this.setState({ page: 1 });
+                        this.setState({ page: 1 });
                     } else {
                         // failed to create/update project
                         this.setState({ pageData: data, page: 0 });

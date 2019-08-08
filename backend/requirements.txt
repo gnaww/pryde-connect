@@ -10,3 +10,4 @@ mysqlclient
 python-dotenv
 requests
 Pillow
+django-cleanup

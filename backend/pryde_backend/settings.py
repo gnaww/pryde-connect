@@ -66,7 +66,8 @@ INSTALLED_APPS = [
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
     'corsheaders',
 
-    'django_mysql'
+    'django_mysql',
+    'django_cleanup.apps.CleanupConfig'
 ]
 
 

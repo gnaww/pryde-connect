@@ -371,7 +371,7 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchProjects && <Map />}
+                            {/* {!this.state.searchProjects && <Map />} */}
                             {
                                 !parsedURL.q && noFiltersSelected ?
                                     <>
