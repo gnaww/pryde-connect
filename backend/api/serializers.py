@@ -10,10 +10,17 @@ class FileSerializer(serializers.ModelSerializer):
         model = File
         fields = '__all__'
 
+
 class FileShortSerializer(serializers.ModelSerializer):
+    file = serializers.SerializerMethodField()
+
     class Meta:
         model = File
         fields = ['file', 'file_name', 'pk']
+
+    def get_file(self, obj):
+        # TODO: update URL to live backend server's URL
+        return "http://localhost:8000" + obj.file.url
 
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
@@ -174,7 +181,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     ageRanges = serializers.SerializerMethodField()
     researchTopics = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
-    files = serializers.SerializerMethodField()
+    additionalFiles = serializers.SerializerMethodField('get_files')
 
     class Meta:
         model = Project
@@ -205,7 +212,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         if File.objects.filter(project=obj.pk).exists():
             serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True)
             return serializer.data
-        return ''
+        return []
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):
