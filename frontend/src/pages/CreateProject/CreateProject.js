@@ -160,8 +160,6 @@ class CreateProject extends Component {
                     });
                 }
                 const { addedFiles, deletedFiles } = identifyProjectFileChanges(data.additionalFiles, data.initialAdditionalFiles);
-                console.log(addedFiles);
-                console.log(deletedFiles);
                 addedFiles.forEach(async added => {
                     await api.uploadProjectFile(project.id, added[0]);
                 });
