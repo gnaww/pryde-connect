@@ -29,7 +29,7 @@ API_DESCRIPTION = 'A web API for PRYDE Connect'
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-
+    url(r'^', include('django.contrib.auth.urls')),
     # include the urls defined in the app's (api) url file
     path('api/v1/', include('api.urls')),
 
