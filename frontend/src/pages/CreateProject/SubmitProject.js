@@ -183,9 +183,13 @@ class SubmitProject extends Component {
     setFileUploads = (key, event) => {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
-            let file = event.target.files[0];
-            let name = file.name;
-            changed.push([file, name]);
+            if (changed.length === 5) {
+                alert("Maximum of 5 additional files permitted per project.");
+            } else {
+                let file = event.target.files[0];
+                let name = file.name;
+                changed.push([file, name]);
+            }
         }
         else {
             changed.splice(key, 1);

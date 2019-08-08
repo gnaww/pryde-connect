@@ -141,7 +141,6 @@ class CreateProject extends Component {
                 return { success: false, message: Object.values(err.response.data)[0] };
             }
         } else {
-            console.log(project)
             try {
                 // TODO: may need to implement better error handling when adding collabs/project/files
                 let createdProject = await api.createProject(project);

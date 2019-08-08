@@ -46,7 +46,7 @@ const additionalQA = {
                 type: AnswerTypes.Button,
                 value: "UPLOAD FILE",
                 key: "additionalFiles",
-                label: "Images, PDF, or other file attachments"
+                label: "Images, PDF, or other file attachments (maximum 5)"
             }
         }
     ]
