@@ -79,7 +79,7 @@ class Project extends Component {
 
         if (window.confirm("Are you sure you want to delete this project?")) {
             api.deleteProject(this.state.id)
-                .then(res => history.push("/deletesuccess", { deleteType: "project" }))
+                .then(res => history.push("/success", { deleteType: "project" }))
                 .catch(err => {
                     console.log(err);
                     alert("An error occurred while deleting this project.");

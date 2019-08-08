@@ -68,6 +68,14 @@ export default {
         localStorage.removeItem("pryde_key");
         return response.status === 204;
     },
+    async requestPasswordReset(email) {
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/reset/`, { email: email });
+        return response.data
+    },
+    async resetPassword(data) {
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/reset/confirm/`, data);
+        return response.data
+    },
     async login(data) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/login/`, data);
         return response;
@@ -244,10 +252,5 @@ export default {
 
         let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`, config);
         return response.data;
-    },
-
-    async resetPassword(data) {
-        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/reset/confirm/`, data);
-        return response.data
     }
 }

@@ -65,7 +65,7 @@ class Login extends Component {
                 </form>
                 <div className={styles.links}>
                     <Link className={styles.link} to="/signup">Create an account</Link>
-                    <Link className={styles.link} to="/forgotpassword">Forgot password?</Link>
+                    <Link className={styles.link} to="/forgot">Forgot password?</Link>
                 </div>
                 <div className={styles.loginGraphic} id={styles.loginGreen}>
                     <img src={loginGreen} alt="Login graphic" />

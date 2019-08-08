@@ -135,7 +135,6 @@ class UploadFile(generics.CreateAPIView):
                 if File.objects.filter(project=project.pk).count() >= 5:
                     return Response({'message': 'Not allowed to upload more than 5 additional files.'})
 
-                print(request.data)
                 data = {}
                 data['project'] = project.pk
                 data['file_name'] = str(request.data['file'])

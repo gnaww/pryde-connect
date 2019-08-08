@@ -73,7 +73,7 @@ class Profile extends Component {
         if (window.confirm("Are you sure you want to delete your account?")) {
             api.deleteUser(this.state.user.id)
                 .then(_ => {
-                    history.push("/deletesuccess", { deleteType: "profile" });
+                    history.push("/success", { deleteType: "profile" });
                 })
                 .catch(err => {
                     console.log(err);

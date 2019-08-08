@@ -88,11 +88,11 @@
     letter-spacing: 0.19em;
     color: white;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
 }
 
 .loginButton:hover{
     background: none;
-    transition: 0.25s ease-in-out;
     color: #49AEE9;
     box-shadow: inset #49AEE9 0px 0px 0px 2px;
 }
