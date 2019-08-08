@@ -217,5 +217,10 @@ export default {
 
         let response = await axios.get(`${BASE_URL}${API_BASE_URL}/collaboratorsearch/?q=${query}`, config);
         return response.data;
+    },
+
+    async resetPassword(data) {
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/reset/confirm/`, data);
+        return response.data
     }
 }
