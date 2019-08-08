@@ -281,7 +281,7 @@ class Project extends Component {
                                         <p>{additionalInformation}</p>
                                         {
                                             additionalFiles.map((file, idx) =>
-                                                <a key={idx} href={file.file} target="_blank" rel="noopener noreferrer">
+                                                <a key={idx} href={file.file_path} target="_blank" rel="noopener noreferrer">
                                                     {file.file_name}
                                                 </a>
                                             )

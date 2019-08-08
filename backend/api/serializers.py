@@ -6,14 +6,9 @@ from .models import PUser, Project, Collaborator, TopicsProject, \
 
 
 class FileSerializer(serializers.ModelSerializer):
-    file_path = serializers.SerializerMethodField()
     class Meta:
         model = File
         fields = '__all__'
-
-    def get_file_path(self, obj):
-        url = str(obj.file.url)
-        return self.context.build_absolute_uri(url)
 
 
 class FileShortSerializer(serializers.ModelSerializer):
@@ -26,10 +21,6 @@ class FileShortSerializer(serializers.ModelSerializer):
     def get_file_path(self, obj):
         url = str(obj.file.url)
         return self.context.build_absolute_uri(url)
-
-    def get_file(self, obj):
-        # TODO: update URL to live backend server's URL
-        return "http://localhost:8000" + obj.file.url
 
 
 class DeliveryModeSerializer(serializers.ModelSerializer):

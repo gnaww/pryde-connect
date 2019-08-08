@@ -23,13 +23,12 @@ class ProjectView(generics.RetrieveAPIView):
     queryset = Project.objects.filter(isApproved=True)
 
     def get(self, request, *args, **kwargs):
-        # try:
-        print(kwargs)
-        project = Project.objects.get(pk=kwargs['pk'])
-        return Response(data=ProjectSerializer(project, context={"request": request}).data)
-        # except Exception as e:
-        #     print(e)
-        #     return Response({'message': 'project not found'})
+        try:
+            project = Project.objects.get(pk=kwargs['pk'])
+            return Response(data=ProjectSerializer(project, context={"request": request}).data)
+        except Exception as e:
+            print(e)
+            return Response({ 'message': 'Project not found.' }, status=status.HTTP_404_NOT_FOUND)
 
 
 class CreateProject(generics.CreateAPIView):
