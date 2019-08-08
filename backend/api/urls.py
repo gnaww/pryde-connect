@@ -3,7 +3,7 @@ from django.conf.urls import url
 
 from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser, UploadOrChangeProfilePicture
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, \
-    DeleteProject, UploadFileView, DeleteFileView
+    DeleteProject, UploadFile, DeleteFile
 from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions, SearchCollaborators
 from .views import Filter
 
@@ -29,8 +29,8 @@ urlpatterns = [
     path('project/<int:pk>/togglevisibility/', ToggleProjectVisibility.as_view()),
     path('project/<int:pk>/permissions/', LoggedInUserPermissions.as_view()),
 
-    path('project/<int:pk>/file/', UploadFileView.as_view()),
-    path('project/<int:pk>/file/<int:filepk>/delete/', DeleteFileView.as_view()),
+    path('project/<int:pk>/file/', UploadFile.as_view()),
+    path('project/<int:pk>/file/<int:filepk>/delete/', DeleteFile.as_view()),
 
     path('filter/', Filter.as_view()),
     path('collaboratorsearch/', SearchCollaborators.as_view())

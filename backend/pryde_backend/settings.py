@@ -75,6 +75,8 @@ INSTALLED_APPS = [
 # Additional Settings
 # to require the user's old password when they try to change
 OLD_PASSWORD_FIELD_ENABLED = True
+# to keep user logged in after password change
+LOGOUT_ON_PASSWORD_CHANGE = False
 
 # CORS Settings
 # this should be set to false in production... allows any server to hit our backend which is not okay... only our

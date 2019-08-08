@@ -10,7 +10,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 # custom permissions
 from .permissions import CanDeleteProject, CanEditProject
-
 import os
 
 
@@ -116,13 +115,14 @@ class UpdateProject(generics.UpdateAPIView):
             print(e)
             return Response({'message': 'Something went wrong while updating the project information.'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanDeleteProject & IsAuthenticated, ]
     queryset = Project.objects.filter(isApproved=True)
 
 
-class UploadFileView(generics.CreateAPIView):
+class UploadFile(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -158,7 +158,7 @@ class UploadFileView(generics.CreateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteFileView(generics.DestroyAPIView):
+class DeleteFile(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]

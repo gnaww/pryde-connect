@@ -230,7 +230,6 @@
     background: #49AEE9;
     border-radius: 5px;
     border: none;
-    width: 167px;
     height: 56px;
     letter-spacing: 0.1em;
     color: #FFFFFF;
@@ -239,6 +238,7 @@
     line-height: 56px;
     text-align: center;
     margin-right: 20px;
+    padding: 0 15px;
 }
 
 .projectNotFound {
