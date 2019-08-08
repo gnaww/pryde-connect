@@ -27,7 +27,7 @@ class ResetPassword extends Component {
             this.setState({ errorMessage: "Both password fields are required." });
         } else if (this.state.new_password1.trim().length < 8) {
             this.setState({ errorMessage: "Password must be at least 8 characters long." });
-        } else if (this.state.new_password1 != this.state.new_password2) {
+        } else if (this.state.new_password1 !== this.state.new_password2) {
             this.setState({ errorMessage: "Passwords do not match." });
         } else {
             this.setState({ errorMessage: "" });
