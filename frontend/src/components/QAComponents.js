@@ -190,16 +190,25 @@ export const getResearchTopicsQuestion = (qa, handlerFunction, state, hasError) 
                                 >
                                     <img src={option.image} alt="Research topic icon" />
                                 </div>
-                                <p>{ option.label }</p>
                                 {
-                                    option.label === "Other" &&
-                                    <input
-                                        disabled={!state[qa.answer.key][index].checked}
-                                        className={styles.researchTopicTextbox}
-                                        type="text"
-                                        value={state[qa.answer.key][index].other}
-                                        onChange={e => handlerFunction(qa.answer.key, index, e.target.value)}
-                                    />
+                                    option.label !== "Other" ?
+                                        <p>{ option.label }</p>
+                                    :
+                                        <>
+                                            {
+                                                !state[qa.answer.key][index].checked && <p>{ option.label }</p>
+                                            }
+                                            {
+                                                state[qa.answer.key][index].checked &&
+                                                <input
+                                                    disabled={!state[qa.answer.key][index].checked}
+                                                    className={styles.researchTopicTextbox}
+                                                    type="text"
+                                                    value={state[qa.answer.key][index].other}
+                                                    onChange={e => handlerFunction(qa.answer.key, index, e.target.value)}
+                                                />
+                                            }
+                                        </>
                                 }
                             </div>
                         )

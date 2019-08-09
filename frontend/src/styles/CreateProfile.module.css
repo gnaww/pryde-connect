@@ -530,4 +530,5 @@ span.collaboratorCheckboxLabel {
 .researchTopicTextbox {
     composes: otherTextbox;
     width: 160px;
+    margin-top: 20px;
 }
