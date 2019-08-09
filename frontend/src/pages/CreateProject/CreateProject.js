@@ -139,7 +139,6 @@ class CreateProject extends Component {
         delete project.additionalFiles;
         delete project.initialAdditionalFiles;
 
-        console.log(project);
         if (this.props.editing === true) {
             try {
                 await api.updateProject(this.props.editProjectData.id, project);

@@ -38,15 +38,8 @@ const UserCard = props => {
                         <h4>{props.role}</h4>
                         <h4>{props.affiliation}</h4>
                         <h4 className={styles.researchInterests}>
-                            <img src={categoryIconWhite} alt="Category icon" />
-                            <span>
-                                {
-                                    researchInterests.length > 70 ?
-                                        `${researchInterests.replace(/^(.{70}[^\s]*).*/, "$1")}...`
-                                    :
-                                        researchInterests
-                                }
-                            </span>
+                            <img src={mailIcon} alt="Email icon" />
+                            <span>{ props.email }</span>
                         </h4>
                     </section>
                 </section>
@@ -54,13 +47,7 @@ const UserCard = props => {
                     <section className={styles.line}>
                         <p>
                             <img src={locationIcon} alt="Location icon" />
-                            {
-                                // TODO: figure out way to handle long locations/emails messing up card styling
-                                // props.location.length > 15 ?
-                                    // `${props.location.replace(/^(.{15}[^\s]*).*/, "$1")}...`
-                                // :
-                                    props.location
-                            }
+                            { props.location }
                         </p>
                     </section>
                     <section className={styles.line}>
@@ -69,12 +56,12 @@ const UserCard = props => {
                     </section>
                     <section className={styles.line}>
                         <p>
-                            <img src={mailIcon} alt="Email icon" />
+                            <img src={categoryIconWhite} alt="Category icon" />
                             {
-                                // props.email.length > 17 ?
-                                    // `${props.email.slice(0, 17)}...`
-                                // :
-                                    props.email
+                                researchInterests.length > 70 ?
+                                    `${researchInterests.replace(/^(.{70}[^\s]*).*/, "$1")}...`
+                                :
+                                    researchInterests
                             }
                         </p>
                     </section>
