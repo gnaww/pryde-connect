@@ -11,6 +11,9 @@ import EditProfile from './pages/EditProfile';
 import EditProject from './pages/EditProject';
 import PageNotFound from './pages/PageNotFound';
 import SuccessfulDelete from './pages/SuccessfulDelete';
+import ChangePassword from './pages/ChangePassword';
+import ResetPassword from './pages/ResetPassword';
+import ForgotPassword from './pages/ForgotPassword';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import styles from './App.module.css';
@@ -36,7 +39,16 @@ const App = () => (
                 <Route path="/project/:id" component={Project} />
                 <Route path="/editprofile" exact component={EditProfile} />
                 <Route path="/editproject" exact component={EditProject} />
-                <Route path="/deletesuccess" exact component={SuccessfulDelete} />
+                <Route path="/success" exact component={SuccessfulDelete} />
+                <Route path="/password" render={renderProps => (
+                    !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ChangePassword {...renderProps} />
+                )} />
+                <Route path="/forgot" render={renderProps => (
+                    localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ForgotPassword {...renderProps} />
+                )} />
+                <Route path="/reset/:uid/:token" render={renderProps => (
+                    localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ResetPassword {...renderProps} />
+                )} />
                 <Route component={PageNotFound} />
             </Switch>
             <Footer />

@@ -7,6 +7,7 @@ import CustomDropdown from '../components/CustomDropdown';
 import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
+import Map from './Map';
 
 class Browse extends Component {
     constructor(props) {
@@ -58,7 +59,7 @@ class Browse extends Component {
 
         const { location, history } = this.props;
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        parsedURL.category = category === "projects"  ? "projects" : "partners";
+        parsedURL.category = category === "projects" ? "projects" : "partners";
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
     }
 
@@ -90,7 +91,7 @@ class Browse extends Component {
 
         const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
 
-        if(!parsedURL.q && noFiltersSelected) {
+        if (!parsedURL.q && noFiltersSelected) {
             if (parsedURL.category === "partners") {
                 api.getUsers()
                     .then(users => this.setState({ searchResults: users }))
@@ -116,8 +117,8 @@ class Browse extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, _prevState){
-        if(prevProps.location.search !== this.props.location.search) {
+    componentDidUpdate(prevProps, _prevState) {
+        if (prevProps.location.search !== this.props.location.search) {
             this.retrieveResults(this.props);
         }
     }
@@ -314,37 +315,37 @@ class Browse extends Component {
                         <aside className={styles.filtersContainer}>
                             <h2>FILTER</h2>
                             <div className={styles.box}>
-                            <section>
-                                <h3>BROWSE</h3>
-                                <ul>
-                                    <li>
-                                        <button
-                                            className={this.state.searchProjects ? styles.activeCategory : ''}
-                                            onClick={() => this.setCategory("projects")}
-                                        >
-                                            Research Projects
+                                <section>
+                                    <h3>BROWSE</h3>
+                                    <ul>
+                                        <li>
+                                            <button
+                                                className={this.state.searchProjects ? styles.activeCategory : ''}
+                                                onClick={() => this.setCategory("projects")}
+                                            >
+                                                Research Projects
                                         </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            className={!this.state.searchProjects ? styles.activeCategory : ''}
-                                            onClick={() => this.setCategory("partners")}
-                                        >
-                                            Research Partners
+                                        </li>
+                                        <li>
+                                            <button
+                                                className={!this.state.searchProjects ? styles.activeCategory : ''}
+                                                onClick={() => this.setCategory("partners")}
+                                            >
+                                                Research Partners
                                         </button>
-                                    </li>
-                                </ul>
-                            </section>
-                            {
-                                filterCategories.map((filterCategory, idx) =>
-                                    <FilterCategory
-                                        key={idx}
-                                        {...filterCategory}
-                                        toggleVisibility={this.toggleFilterVisibility}
-                                        handleClick={this.handleFilterSelect}
-                                    />
-                                )
-                            }
+                                        </li>
+                                    </ul>
+                                </section>
+                                {
+                                    filterCategories.map((filterCategory, idx) =>
+                                        <FilterCategory
+                                            key={idx}
+                                            {...filterCategory}
+                                            toggleVisibility={this.toggleFilterVisibility}
+                                            handleClick={this.handleFilterSelect}
+                                        />
+                                    )
+                                }
                             </div>
                         </aside>
                         <section className={styles.searchResultsContainer}>
@@ -370,48 +371,48 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchProjects && <img className={styles.map} src={map} alt="New York map" />}
+                            {/* {!this.state.searchProjects && <Map />} */}
                             {
                                 !parsedURL.q && noFiltersSelected ?
-                                <>
-                                    <header>
-                                        <div>
-                                            <h2>Browsing all { this.state.searchProjects ? "projects" : "partners" }{` (${this.state.searchResults.length} results)`}</h2>
-                                        </div>
-                                        <CustomDropdown
-                                            handleChange={this.setSort}
-                                            name="sort"
-                                            label="SORT BY"
-                                            options={sortOptions}
-                                            defaultValue={this.state.sortBy}
-                                        />
-                                    </header>
-                                    <section className={styles.searchResults}>
-                                        {
-                                            <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
-                                        }
-                                    </section>
-                                </>
-                                :
-                                <>
-                                    <header>
-                                        <div>
-                                            <h2>{`${this.state.searchResults.length} results`}</h2>
-                                        </div>
-                                        <CustomDropdown
-                                            handleChange={this.setSort}
-                                            name="sort"
-                                            label="SORT BY"
-                                            options={sortOptions}
-                                            defaultValue={this.state.sortBy}
-                                        />
-                                    </header>
-                                    <section className={styles.searchResults}>
-                                        {
-                                            <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
-                                        }
-                                    </section>
-                                </>
+                                    <>
+                                        <header>
+                                            <div>
+                                                <h2>Browsing all {this.state.searchProjects ? "projects" : "partners"}{` (${this.state.searchResults.length} results)`}</h2>
+                                            </div>
+                                            <CustomDropdown
+                                                handleChange={this.setSort}
+                                                name="sort"
+                                                label="SORT BY"
+                                                options={sortOptions}
+                                                defaultValue={this.state.sortBy}
+                                            />
+                                        </header>
+                                        <section className={styles.searchResults}>
+                                            {
+                                                <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
+                                            }
+                                        </section>
+                                    </>
+                                    :
+                                    <>
+                                        <header>
+                                            <div>
+                                                <h2>{`${this.state.searchResults.length} results`}</h2>
+                                            </div>
+                                            <CustomDropdown
+                                                handleChange={this.setSort}
+                                                name="sort"
+                                                label="SORT BY"
+                                                options={sortOptions}
+                                                defaultValue={this.state.sortBy}
+                                            />
+                                        </header>
+                                        <section className={styles.searchResults}>
+                                            {
+                                                <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
+                                            }
+                                        </section>
+                                    </>
 
 
                             }

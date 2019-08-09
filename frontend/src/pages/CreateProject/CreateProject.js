@@ -8,6 +8,7 @@ import api from '../../services/api';
 import normalizeUrl from 'normalize-url';
 import phone from 'phone';
 import isEqual from 'lodash.isequal';
+import { formatArray } from '../../services/util';
 
 let pages = [
     {
@@ -34,7 +35,7 @@ let editPages = [
     }
 ];
 
-const identifyChanges = (newCollaborators, oldCollaborators) => {
+const identifyCollaboratorChanges = (newCollaborators, oldCollaborators) => {
     let updatedCollabs = [];
     let addedCollabs = [];
     let deletedCollabs = [];
@@ -78,7 +79,30 @@ const identifyChanges = (newCollaborators, oldCollaborators) => {
     })
 
     return { addedCollaborators: addedCollabs, updatedCollaborators: updatedCollabs, deletedCollaborators: deletedCollabs };
-}
+};
+
+const identifyProjectFileChanges = (newFiles, oldFiles) => {
+    let addedFiles = [];
+    let deletedFiles = [];
+
+    newFiles.forEach(file => {
+        // if file was pre-existing, file[0] is an integer pk
+        if (file[0] instanceof File) {
+            addedFiles.push(file);
+        }
+    });
+
+    oldFiles.forEach(file => {
+        // file[0] is an integer pk, f[0] is either a File object or an integer pk
+        let deleted = newFiles.find(f => f[0] === file[0]) === undefined;
+
+        if (deleted) {
+            deletedFiles.push(file[0]);
+        }
+    });
+
+    return { addedFiles: addedFiles, deletedFiles: deletedFiles };
+};
 
 class CreateProject extends Component {
     constructor(props) {
@@ -93,12 +117,7 @@ class CreateProject extends Component {
     // builds project object from data to POST to the API
     createProject = async data => {
         let project = Object.assign({}, data);
-        const formatArray = arr => {
-            return (
-                arr.filter(elt => elt.checked)
-                    .map(elt => elt.other ? elt.other : elt.value)
-            );
-        };
+
         project.name = data.name.option;
         project.alternateLocation = data.alternateLocation.option;
         project.timeline = data.timeline.option;
@@ -114,18 +133,18 @@ class CreateProject extends Component {
         if (data.alternateContact.phone) {
             project.alternateContact.phone = data.alternateContact.phone ? phone(data.alternateContact.phone)[0] : "";
         }
-        // TODO: add additional files to projects
-        // project.additionalFiles = data.additionalFiles;
-        project.additionalFiles = [];
+
         delete project.collaborators;
         delete project.initialCollaborators;
+        delete project.additionalFiles;
+        delete project.initialAdditionalFiles;
 
         if (this.props.editing === true) {
             try {
                 await api.updateProject(this.props.editProjectData.id, project);
-                // TODO: may need to implement better error handling when adding collabs/project
+                // TODO: may need to implement better error handling when adding collabs/project/files
                 if (project.editCollaboratorsPermission) {
-                    const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyChanges(data.collaborators, data.initialCollaborators);
+                    const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyCollaboratorChanges(data.collaborators, data.initialCollaborators);
                     addedCollaborators.forEach(async added => {
                         await api.addCollaborator(project.id, added);
                     });
@@ -136,15 +155,22 @@ class CreateProject extends Component {
                         await api.deleteCollaborator(project.id, deleted);
                     });
                 }
+                const { addedFiles, deletedFiles } = identifyProjectFileChanges(data.additionalFiles, data.initialAdditionalFiles);
+                addedFiles.forEach(async added => {
+                    await api.uploadProjectFile(project.id, added[0]);
+                });
+                deletedFiles.forEach(async deleted => {
+                    await api.deleteProjectFile(project.id, deleted);
+                });
                 return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
-                return { success: false, message: Object.values(err.response.data)[0][0] };
+                return { success: false, message: Object.values(err.response.data)[0] };
             }
         } else {
             try {
-                // TODO: may need to implement better error handling when adding collabs/project
+                // TODO: may need to implement better error handling when adding collabs/project/files
                 let createdProject = await api.createProject(project);
                 data.collaborators.forEach(async collaborator => {
                     const c = {
@@ -155,6 +181,9 @@ class CreateProject extends Component {
                     }
                     await api.addCollaborator(createdProject.data.id, c);
                 });
+                data.additionalFiles.forEach(async file => {
+                    await api.uploadProjectFile(createdProject.data.id, file[0]);
+                })
                 return { success: true, message: "" };
             } catch(err) {
                 console.log(err);
@@ -214,7 +243,8 @@ class CreateProject extends Component {
                 <div className={styles.root} >
                     <h1 className={styles.createProfile}>{title}</h1>
                     <h2 className={styles.subtitle}>{subtitle}</h2>
-                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} />
+                    <p className={styles.disclaimer}>Keep in mind that the contact information you provide will be publicly viewable so that potential partners can contact you.</p>
+                    <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} location={this.props.location} />
                     <div className={styles.buttons}>
                         {
                             this.state.page < NUM_PAGES - 1 &&

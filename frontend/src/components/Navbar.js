@@ -55,7 +55,7 @@ class Navbar extends Component {
                         <img src={logo} alt="PRYDE logo" />
                         <p>
                             <span id={styles.pryde}>PRYDE</span>
-                            <br/>
+                            {/* <br/> */}
                             <span id={styles.name}>Connect</span>
                         </p>
                     </Link>

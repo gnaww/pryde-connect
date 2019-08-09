@@ -5,6 +5,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager
 from django.utils import timezone
 
+from django.core.validators import validate_image_file_extension
+from .validators import validate_file_size
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -72,9 +74,10 @@ class PUser(AbstractUser):
     )
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
-    # TODO: add profile picture to users
-    # profilePicture = models.FileField(upload_to="uploads/")
+    profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True,
+                                        validators=[validate_image_file_extension, validate_file_size])
     type = models.CharField(max_length=15, default='user')
+    over18 = models.BooleanField(default=True)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -131,5 +134,6 @@ class Collaborator(Model):
 
 
 class File(Model):
-    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='uploads/')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])
+    file_name = models.CharField(max_length=100)

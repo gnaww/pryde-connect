@@ -18,11 +18,16 @@ from corsheaders.defaults import default_headers
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v-(ma7))q2xo4%)m^7=!90$7_087jp1!)2=j!u%)jxz+je=8p4'
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,7 +54,6 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_swagger',
 
     'rest_auth',
     'rest_auth.registration',
@@ -62,7 +66,8 @@ INSTALLED_APPS = [
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
     'corsheaders',
 
-    'django_mysql'
+    'django_mysql',
+    'django_cleanup.apps.CleanupConfig'
 ]
 
 
@@ -71,6 +76,8 @@ INSTALLED_APPS = [
 # Additional Settings
 # to require the user's old password when they try to change
 OLD_PASSWORD_FIELD_ENABLED = True
+# to keep user logged in after password change
+LOGOUT_ON_PASSWORD_CHANGE = False
 
 # CORS Settings
 # this should be set to false in production... allows any server to hit our backend which is not okay... only our
@@ -109,18 +116,22 @@ AUTH_USER_MODEL = 'api.PUser'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework_api_key.permissions.HasAPIKey',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]}
+    ]
+}
+
 
 # settings to override rest-auth and allow for additional registration fields
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.custom_register.serializers.CustomRegisterSerializer',
 }
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
+
+REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
+
 
 
 # allauth stuff
@@ -138,22 +149,6 @@ AUTHENTICATION_BACKENDS = (
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# SWAGGER_SETTINGS = {
-#     'LOGIN_URL': 'rest_framework:login',
-#     'LOGOUT_URL': 'rest_framework:logout',
-#     'JSON_EDITOR': 'True',
-#     'SHOW_REQUEST_HEADERS': 'True',
-#     'SECURITY_DEFINITIONS': {
-#             'api_key': {
-#                 'type': 'apiKey',
-#                 'in': 'header',
-#                 'name': 'Authorization'
-#             }
-#         },
-#
-#
-# }
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -173,7 +168,7 @@ ROOT_URLCONF = 'pryde_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'pryde_backend/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -194,11 +189,11 @@ WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pryde',
-        'USER': 'pryde',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
         'OPTIONS': {
             # Tell MySQLdb to connect with 'utf8mb4' character set
             'charset': 'utf8mb4',

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion, CollaboratorQuestion, AnswerTypes } from '../../components/QAComponents';
+import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion, CollaboratorQuestion, getResearchTopicsQuestion, AnswerTypes } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
 import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
@@ -31,7 +31,8 @@ class SubmitProject extends Component {
                 other: ""
             },
             additionalInformation: "",
-            additionalFiles: [], // TODO: need to implement with file hosting
+            initialAdditionalFiles: [],
+            additionalFiles: [],
             initialCollaborators: [],
             collaborators: [],
             alternateContact: {
@@ -44,7 +45,8 @@ class SubmitProject extends Component {
             alternateLocation: {
                 option: "",
                 other: ""
-            }
+            },
+            editCollaboratorsPermission: false
         };
         this.errors = projectQAForm.map(_q => { return false });
     }
@@ -132,6 +134,10 @@ class SubmitProject extends Component {
         if (this.props.savedData !== null) {
             this.setState(this.props.savedData);
         }
+
+        if (this.props.location.pathname === "/submit") {
+            this.setState({ editCollaboratorsPermission: true })
+        }
     }
 
     setTextbox = key => event => {
@@ -173,14 +179,16 @@ class SubmitProject extends Component {
         });
     }
 
-    // TODO: will probably need to change when implementing file hosting
     setFileUploads = (key, event) => {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
-            let file = event.target.files[0];
-            let url = URL.createObjectURL(file);
-            let name = file.name;
-            changed.push([url, name]);
+            if (changed.length === 5) {
+                alert("Maximum of 5 additional files permitted per project.");
+            } else {
+                let file = event.target.files[0];
+                let name = file.name;
+                changed.push([file, name]);
+            }
         }
         else {
             changed.splice(key, 1);
@@ -263,13 +271,14 @@ class SubmitProject extends Component {
 
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index])}
-                {getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index])}
-                {getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index])}
-                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
-                {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
-                {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}
-                {qa.answer.type === AnswerTypes.Collaborator && <CollaboratorQuestion {...collabQuestion} />}
+                { getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index]) }
+                { getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index]) }
+                { getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index]) }
+                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getResearchTopicsQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
+                { getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index]) }
+                { qa.answer.type === AnswerTypes.Collaborator && <CollaboratorQuestion {...collabQuestion} /> }
             </li>
         );
     }

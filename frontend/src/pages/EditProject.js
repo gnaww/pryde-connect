@@ -1,25 +1,9 @@
 import React, { Component } from 'react';
 import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
-import { getCheckedValuesArray } from '../components/QAComponents';
 import api from '../services/api';
-
-const convertArray = (savedArray, options) => {
-    let convertedArray = getCheckedValuesArray(options);
-    savedArray.forEach(elt => {
-        const idx = options.indexOf(elt);
-
-        // element is one of the option choices, so should be checked
-        if (idx !== -1) {
-            convertedArray[idx].checked = true;
-        } else {
-            // element is not one of the option choices, so it is the Other: checkbox
-            convertedArray[convertedArray.length - 1].checked = true;
-            convertedArray[convertedArray.length - 1].other = elt;
-        }
-    });
-    return convertedArray;
-};
+import { popState } from '../services/localStorage';
+import { convertArray, convertResearchTopics } from '../services/util';
 
 const formatInputbox = value => ({
     option: value,
@@ -36,8 +20,7 @@ class EditProject extends Component {
     }
 
     async componentDidMount() {
-        const { location } = this.props;
-        let editProjectData = Object.assign({}, location.state.projectData);
+        let editProjectData = Object.assign({}, popState("projectData"));
         delete editProjectData.invalidProject;
         delete editProjectData.editPermission;
         delete editProjectData.deletePermission;
@@ -50,9 +33,9 @@ class EditProject extends Component {
 
         try {
             let collaborators = await api.getProjectCollaborators(editProjectData.id)
-            editProjectData.collaborators = collaborators.map(elt => ({...elt}));
-            editProjectData.initialCollaborators = collaborators.map(elt => ({...elt}));
-        } catch(err) {
+            editProjectData.collaborators = collaborators.map(elt => ({ ...elt }));
+            editProjectData.initialCollaborators = collaborators.map(elt => ({ ...elt }));
+        } catch (err) {
             console.log(err);
             console.log(err.response.data);
             editProjectData.collaborators = [];
@@ -75,19 +58,21 @@ class EditProject extends Component {
         editProjectData.alternateContact.phone = editProjectData.alternateContact.phone ? editProjectData.alternateContact.phone.slice(2) : "";
         editProjectData.alternateContact.website = editProjectData.alternateContact.website ? editProjectData.alternateContact.website.replace(/(^\w+:|^)\/\//, '') : "";
         editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
-        editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+        editProjectData.researchTopics = convertResearchTopics(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
         editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
         editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-        // TODO: convert saved additional files to fit into CreateProject
-        // editProjectData.additionalFiles = data.additionalFiles;
+        editProjectData.additionalFiles = editProjectData.additionalFiles.map(file => {
+            return [file.pk, file.file_name]
+        });
+        editProjectData.initialAdditionalFiles = editProjectData.additionalFiles.map(elt => elt);
         this.setState({ ...editProjectData });
     }
 
     render() {
         if (Object.entries(this.state).length === 0) {
-            return <CreateProject editProjectData={null} editing={true} />
+            return <CreateProject editProjectData={null} editing={true} location={this.props.location} />
         } else {
-            return <CreateProject editProjectData={this.state} editing={true} />
+            return <CreateProject editProjectData={this.state} editing={true} location={this.props.location} />
         }
     }
 }

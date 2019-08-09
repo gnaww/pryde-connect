@@ -46,7 +46,7 @@ const additionalQA = {
                 type: AnswerTypes.Button,
                 value: "UPLOAD FILE",
                 key: "additionalFiles",
-                label: "Images, PDF, or other file attachments"
+                label: "Images, PDF, or other file attachments (maximum 5)"
             }
         }
     ]
@@ -90,7 +90,7 @@ export const projectQAForm = [
         questionText:
             "What research topics does your project cover?* (check all that apply)",
         answer: {
-            type: AnswerTypes.Checkbox,
+            type: AnswerTypes.ResearchTopics,
             options: PractitionerInformation.ResearchTopics,
             key: "researchTopics"
         }

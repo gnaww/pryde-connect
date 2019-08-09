@@ -1,27 +1,11 @@
 import React from 'react';
 import CreateProfile from './CreateProfile/CreateProfile';
 import { PractitionerInformation, ResearcherInformation } from './CreateProfile/FormContent';
-import { getCheckedValuesArray } from '../components/QAComponents';
+import { popState } from '../services/localStorage';
+import { convertArray, convertResearchTopics } from '../services/util';
 
-const convertArray = (savedArray, options) => {
-    let convertedArray = getCheckedValuesArray(options);
-    savedArray.forEach(elt => {
-        const idx = options.indexOf(elt);
-
-        // element is one of the option choices, so should be checked
-        if (idx !== -1) {
-            convertedArray[idx].checked = true;
-        } else {
-            // element is not one of the option choices, so it is the Other: checkbox
-            convertedArray[convertedArray.length - 1].checked = true;
-            convertedArray[convertedArray.length - 1].other = elt;
-        }
-    });
-    return convertedArray;
-};
-
-const EditProfile = ({ location }) => {
-    let userData = location.state.userData;
+const EditProfile = () => {
+    let userData = popState("userData");
     let editProfileData = [];
 
     // Basic Info
@@ -77,7 +61,7 @@ const EditProfile = ({ location }) => {
     questions.researchDescription = userData.researchDescription;
     questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
     questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-    questions.researchInterests = convertArray(userData.researchInterests, PractitionerInformation.ResearchTopics);
+    questions.researchInterests = convertResearchTopics(userData.researchInterests, PractitionerInformation.ResearchTopics);
     questions.roles = convertArray(userData.roles, PractitionerInformation.RoleDescriptions);
 
     // Optional Questions
@@ -85,16 +69,10 @@ const EditProfile = ({ location }) => {
     optional.researchNeeds = userData.researchNeeds;
     optional.evaluationNeeds = userData.evaluationNeeds;
 
-    // Upload Profile Picture
-    // TODO: convert profile picture to fit into CreateProfile
-    // user.profilePicture = data[4].profilePicture;
-    let uploadProfilePicture = { filePreview: null, profilePicture: null };
-
     editProfileData.push(basicInfo);
     editProfileData.push(roleSelection);
     editProfileData.push(questions);
     editProfileData.push(optional);
-    editProfileData.push(uploadProfilePicture);
     editProfileData.push(null);
 
     return <CreateProfile editProfileData={editProfileData} editing={true} />

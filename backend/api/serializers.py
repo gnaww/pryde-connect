@@ -1,7 +1,26 @@
 from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
-from .models import PUser, Project, Collaborator, TopicsProject, DeliveryModeProject, ResearchInterestUser
+from .models import PUser, Project, Collaborator, TopicsProject, \
+    DeliveryModeProject, ResearchInterestUser, File
+
+
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = '__all__'
+
+
+class FileShortSerializer(serializers.ModelSerializer):
+    file_path = serializers.SerializerMethodField()
+
+    class Meta:
+        model = File
+        fields = ['file_path', 'file_name', 'pk']
+
+    def get_file_path(self, obj):
+        url = str(obj.file.url)
+        return self.context.build_absolute_uri(url)
 
 
 class DeliveryModeSerializer(serializers.ModelSerializer):
@@ -66,27 +85,6 @@ class StringArrayField(ListField):
         return super().to_internal_value(data)
 
 
-class UserUpdateSerializer(serializers.ModelSerializer):
-    researchInterests = StringArrayField()
-    roles = StringArrayField()
-    ageRanges = StringArrayField()
-    deliveryModes = StringArrayField()
-
-    class Meta:
-        model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
-
-
-class ProjectUpdateSerializer(serializers.ModelSerializer):
-    ageRanges = StringArrayField()
-    researchTopics = StringArrayField()
-    deliveryModes = StringArrayField()
-
-    class Meta:
-        model = Project
-        exclude = ['owner']
-
-
 class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
@@ -97,7 +95,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type']
+        exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
     def get_projects(self, obj):
         projects = []
@@ -157,7 +155,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['pk', 'type', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
+        fields = ['pk', 'type', 'profile_picture', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
     def get_role(self, obj):
         return obj.get_role_display()
@@ -183,6 +181,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     ageRanges = serializers.SerializerMethodField()
     researchTopics = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
+    additionalFiles = serializers.SerializerMethodField('get_files')
 
     class Meta:
         model = Project
@@ -208,6 +207,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
         return [mode.deliveryMode for mode in deliveryModes]
+
+    def get_files(self, obj):
+        if File.objects.filter(project=obj.pk).exists():
+            serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True, context=self.context.get('request'))
+            return serializer.data
+        return []
 
 
 class CollaboratorSerializer(serializers.ModelSerializer):

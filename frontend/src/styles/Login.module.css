@@ -60,7 +60,7 @@
 }
 
 .textInput {
-    width: 24%;
+    width: 440px;
     height: 64px;
     background: #E9E9E9;
     border: none;
@@ -74,7 +74,7 @@
 }
 
 .loginButton {
-    width: 11%;
+    width: 200px;
     height: 56px;
     background: #49AEE9;
     border: none;
@@ -88,11 +88,11 @@
     letter-spacing: 0.19em;
     color: white;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
 }
 
 .loginButton:hover{
     background: none;
-    transition: 0.25s ease-in-out;
     color: #49AEE9;
     box-shadow: inset #49AEE9 0px 0px 0px 2px;
 }
@@ -114,12 +114,12 @@
     align-content: center;
     letter-spacing: 0.1em;
     text-decoration-line: underline;
+    transition: 0.2s;
     color: #808080;
 }
 
 .link:hover{
     opacity: 0.5;
-    transition: 0.25s;
 }
 
 .links {

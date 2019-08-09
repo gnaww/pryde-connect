@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { PractitionerInformation, ResearcherInformation, researcherQAForm } from './FormContent';
-import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion } from '../../components/QAComponents';
+import { PractitionerInformation, researcherQAForm } from './FormContent';
+import { getDropDownQuestion, getCheckboxQuestion, getTextboxQuestion, getCheckedValuesArray, getRadiobuttonQuestion, getResearchTopicsQuestion } from '../../components/QAComponents';
 
 class ResearcherQuestions extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class ResearcherQuestions extends Component {
             },
             ageRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
             researchDescription: "",
-            researchInterests: getCheckedValuesArray(ResearcherInformation.ResearchTopics),
+            researchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
             displayRole: {
                 option: "",
                 other: ""
@@ -42,14 +42,11 @@ class ResearcherQuestions extends Component {
             let topicsSelected = state.researchInterests.filter(r => r.checked).length > 0
             && (!state.researchInterests[state.researchInterests.length - 1].checked || state.researchInterests[state.researchInterests.length - 1].other !== "");
             let ageRangesSelected = state.ageRanges.filter(r => r.checked).length > 0;
-            let interestsStated = state.researchDescription !== "";
             obj.errors[0] = state.locatedAtCornell === null || !locationValid;
             obj.errors[1] = !typeSelected;
             obj.errors[2] = !topicsSelected;
             obj.errors[3] = !ageRangesSelected;
-            obj.errors[4] = !interestsStated;
-            return state.locatedAtCornell === null || !locationValid
-                || !interestsStated || !topicsSelected || !typeSelected;
+            return state.locatedAtCornell === null || !locationValid || !topicsSelected || !typeSelected;
         }
 
         if (this.props.clickedNext) {
@@ -190,6 +187,7 @@ class ResearcherQuestions extends Component {
                 }
                 { getRadiobuttonQuestion(qa, this.setValuesRadio, this.state, this.errors[index]) }
                 { getCheckboxQuestion(qa, this.setValuesCheckbox, this.state, this.errors[index]) }
+                { getResearchTopicsQuestion(qa, this.setValuesCheckbox, this.state, this.errors[index]) }
                 { getTextboxQuestion(qa, this.setTextboxValue, this.state, index, this.errors[index]) }
             </li>
         );

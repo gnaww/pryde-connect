@@ -116,10 +116,6 @@
     margin: 0;
 }
 
-.userDetails .researchInterests {
-    margin-top: 7px;
-}
-
 .userDetails section header {
     display: flex;
 }
@@ -157,10 +153,6 @@
     color: #FF7F00;
     margin: 0;
 }
-
-/* .userCard .stats .line p {
-    overflow-wrap: break-word;
-} */
 
 .linkWrapper img {
     margin-right: 10px;

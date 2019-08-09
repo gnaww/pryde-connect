@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 import styles from '../../styles/CreateProfile.module.css';
 
 
@@ -9,17 +10,16 @@ class UploadProPic extends Component {
             filePreview: null,
             profilePicture: null
         };
-        this.errors = false;
+        this.recaptchaRef = React.createRef();
     }
 
     componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.errors = this.state.profilePicture === null;
-            if (this.state.profilePicture === null) {
-                this.props.onSubmitData(this.state, this.state.profilePicture === null);
-            } else {
-                this.props.onSubmitData(this.state, false);
-            }
+            this.props.onSubmitData(this.state, false);
+        }
+
+        if (prevProps.errorSubmitting !== this.props.errorSubmitting && this.props.errorSubmitting) {
+            this.recaptchaRef.current.reset();
         }
 
         if (prevProps.savedData !== this.props.savedData) {
@@ -51,6 +51,10 @@ class UploadProPic extends Component {
         this.setState({ filePreview: proPic })
     }
 
+    onRECAPTCHAChange = token => {
+        this.props.setRECAPTCHAToken(token);
+    }
+
     render() {
         return (
             <div>
@@ -59,7 +63,18 @@ class UploadProPic extends Component {
                 {
                     this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />
                 }
-                {this.errors && <p className={styles.errorMsg}>You must upload a profile picture.</p>}
+                {
+                    !this.props.editing &&
+                    <ReCAPTCHA
+                        ref={this.recaptchaRef}
+                        sitekey="6LeIRbEUAAAAABxKY8FWkytAMAGdW0EhcPphoT4Q"
+                        onChange={this.onRECAPTCHAChange}
+                        onErrored={() => {
+                            this.recaptchaRef.current.reset();
+                            alert("An error occurred while verifying your RECAPTCHA challenge.");
+                        }}
+                    />
+                }
             </div>
         );
     }
