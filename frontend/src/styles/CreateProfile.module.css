@@ -532,3 +532,17 @@ span.collaboratorCheckboxLabel {
     width: 160px;
     margin-top: 20px;
 }
+
+.link {
+    font-family: Lato;
+    font-size: 22px;
+    align-self: center;
+    align-content: center;
+    letter-spacing: 0.1em;
+    transition: 0.2s;
+    color: #808080;
+}
+
+.link:hover{
+    opacity: 0.5;
+}

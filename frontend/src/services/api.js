@@ -68,6 +68,18 @@ export default {
         localStorage.removeItem("pryde_key");
         return response.status === 204;
     },
+    async changePassword(data) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/change/`, data, config);
+        return response.data
+    },
     async requestPasswordReset(email) {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/password/reset/`, { email: email });
         return response.data

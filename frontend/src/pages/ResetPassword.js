@@ -34,10 +34,10 @@ class ResetPassword extends Component {
             const { uid } = this.props.match.params;
             const { token } = this.props.match.params;
             let data = {
-                'uid': uid,
-                'token': token,
-                'new_password1': this.state.new_password1,
-                'new_password2': this.state.new_password2
+                uid: uid,
+                token: token,
+                new_password1: this.state.new_password1,
+                new_password2: this.state.new_password2
             }
             api.resetPassword(data)
                 .then(response => {

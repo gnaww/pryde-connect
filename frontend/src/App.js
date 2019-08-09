@@ -11,6 +11,7 @@ import EditProfile from './pages/EditProfile';
 import EditProject from './pages/EditProject';
 import PageNotFound from './pages/PageNotFound';
 import SuccessfulDelete from './pages/SuccessfulDelete';
+import ChangePassword from './pages/ChangePassword';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
 import Navbar from './components/Navbar';
@@ -39,6 +40,9 @@ const App = () => (
                 <Route path="/editprofile" exact component={EditProfile} />
                 <Route path="/editproject" exact component={EditProject} />
                 <Route path="/success" exact component={SuccessfulDelete} />
+                <Route path="/password" render={renderProps => (
+                    !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ChangePassword {...renderProps} />
+                )} />
                 <Route path="/forgot" render={renderProps => (
                     localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ForgotPassword {...renderProps} />
                 )} />

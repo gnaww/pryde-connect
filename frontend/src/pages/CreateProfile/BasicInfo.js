@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import checkboxStyles from '../../styles/FilterCategory.module.css';
@@ -178,6 +179,10 @@ class BasicInfo extends Component {
                     />
                 </div>
             </div>
+            {
+                editing &&
+                <Link className={styles.link} to="/password">Change your password</Link>
+            }
             {
                 !editing &&
                 <FormControlLabel
