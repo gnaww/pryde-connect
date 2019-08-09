@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion, CollaboratorQuestion, AnswerTypes } from '../../components/QAComponents';
+import { getInputboxQuestion, getCheckboxQuestion, getCheckedValuesArray, getDropDownQuestion, getMultipleAnswerQuestion, getContactInfoQuestion, getTextboxQuestion, CollaboratorQuestion, getResearchTopicsQuestion, AnswerTypes } from '../../components/QAComponents';
 import { PractitionerInformation } from '../CreateProfile/FormContent';
 import { projectQAForm, KeyTypes, pairs } from './FormContent';
 import { isValidEmail, isValidURL, isValidPhoneNumber } from '../../services/validators';
@@ -179,7 +179,6 @@ class SubmitProject extends Component {
         });
     }
 
-    // TODO: will probably need to change when implementing file hosting
     setFileUploads = (key, event) => {
         let changed = Array.from(this.state.additionalFiles);
         if (key === null) {
@@ -272,13 +271,14 @@ class SubmitProject extends Component {
 
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index])}
-                {getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index])}
-                {getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index])}
-                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
-                {getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state)}
-                {getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index])}
-                {qa.answer.type === AnswerTypes.Collaborator && <CollaboratorQuestion {...collabQuestion} />}
+                { getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index]) }
+                { getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index]) }
+                { getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index]) }
+                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getResearchTopicsQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getMultipleAnswerQuestion(qa, this.setMultiAnswerResponse, this.state) }
+                { getContactInfoQuestion(qa, this.setContactInfo, this.state, this.errors[index]) }
+                { qa.answer.type === AnswerTypes.Collaborator && <CollaboratorQuestion {...collabQuestion} /> }
             </li>
         );
     }

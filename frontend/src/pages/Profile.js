@@ -267,9 +267,9 @@ class Profile extends Component {
                                                     </ul>
                                                     <hr />
                                                     <h2>Research Needs</h2>
-                                                    <p>{user.researchNeeds ? user.researchNeeds : "None."}</p>
+                                                    <p>{user.researchNeeds ? user.researchNeeds : "N/A"}</p>
                                                     <h2>Evaluation Needs</h2>
-                                                    <p>{user.evaluationNeeds ? user.evaluationNeeds : "None."}</p>
+                                                    <p>{user.evaluationNeeds ? user.evaluationNeeds : "N/A"}</p>
                                                 </>
                                                 :
                                                 <>
@@ -281,7 +281,7 @@ class Profile extends Component {
                                                     </ul>
                                                     <hr />
                                                     <h2>Research Description</h2>
-                                                    <p>{user.researchDescription}</p>
+                                                    <p>{user.researchDescription ? user.researchDescription : "N/A"}</p>
                                                 </>
                                         }
 

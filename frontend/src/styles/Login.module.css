@@ -114,12 +114,12 @@
     align-content: center;
     letter-spacing: 0.1em;
     text-decoration-line: underline;
+    transition: 0.2s;
     color: #808080;
 }
 
 .link:hover{
     opacity: 0.5;
-    transition: 0.25s;
 }
 
 .links {

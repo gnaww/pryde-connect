@@ -8,6 +8,7 @@ import api from '../../services/api';
 import normalizeUrl from 'normalize-url';
 import phone from 'phone';
 import isEqual from 'lodash.isequal';
+import { formatArray } from '../../services/util';
 
 let pages = [
     {
@@ -116,12 +117,7 @@ class CreateProject extends Component {
     // builds project object from data to POST to the API
     createProject = async data => {
         let project = Object.assign({}, data);
-        const formatArray = arr => {
-            return (
-                arr.filter(elt => elt.checked)
-                    .map(elt => elt.other ? elt.other : elt.value)
-            );
-        };
+
         project.name = data.name.option;
         project.alternateLocation = data.alternateLocation.option;
         project.timeline = data.timeline.option;
@@ -143,6 +139,7 @@ class CreateProject extends Component {
         delete project.additionalFiles;
         delete project.initialAdditionalFiles;
 
+        console.log(project);
         if (this.props.editing === true) {
             try {
                 await api.updateProject(this.props.editProjectData.id, project);
@@ -185,7 +182,7 @@ class CreateProject extends Component {
                     }
                     await api.addCollaborator(createdProject.data.id, c);
                 });
-                project.additionalFiles.forEach(async file => {
+                data.additionalFiles.forEach(async file => {
                     await api.uploadProjectFile(createdProject.data.id, file[0]);
                 })
                 return { success: true, message: "" };

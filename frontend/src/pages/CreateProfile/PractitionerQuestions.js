@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from '../../styles/CreateProfile.module.css';
-import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getInputboxQuestion } from '../../components/QAComponents';
+import { getCheckboxQuestion, getDropDownQuestion, getCheckedValuesArray, getInputboxQuestion, getResearchTopicsQuestion } from '../../components/QAComponents';
 import { PractitionerInformation, practitionerQAForm } from './FormContent';
 
 class PractitionerQuestions extends Component {
@@ -131,9 +131,10 @@ class PractitionerQuestions extends Component {
 
         return (
             <li className={styles.numberedList} key={index}>
-                {getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE, this.errors[index])}
-                {getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index])}
-                {getInputboxQuestion(qa, this.setDisplayRole, this.state, this.errors[index])}
+                { getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE, this.errors[index]) }
+                { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getResearchTopicsQuestion(qa, this.setValues, this.state, this.errors[index]) }
+                { getInputboxQuestion(qa, this.setDisplayRole, this.state, this.errors[index]) }
                 {
                     qa.id === 0 && this.state.locatedAtCCE !== null &&
                     (

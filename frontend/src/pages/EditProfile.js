@@ -1,25 +1,8 @@
 import React from 'react';
 import CreateProfile from './CreateProfile/CreateProfile';
 import { PractitionerInformation, ResearcherInformation } from './CreateProfile/FormContent';
-import { getCheckedValuesArray } from '../components/QAComponents';
 import { popState } from '../services/localStorage';
-
-const convertArray = (savedArray, options) => {
-    let convertedArray = getCheckedValuesArray(options);
-    savedArray.forEach(elt => {
-        const idx = options.indexOf(elt);
-
-        // element is one of the option choices, so should be checked
-        if (idx !== -1) {
-            convertedArray[idx].checked = true;
-        } else {
-            // element is not one of the option choices, so it is the Other: checkbox
-            convertedArray[convertedArray.length - 1].checked = true;
-            convertedArray[convertedArray.length - 1].other = elt;
-        }
-    });
-    return convertedArray;
-};
+import { convertArray, convertResearchTopics } from '../services/util';
 
 const EditProfile = () => {
     let userData = popState("userData");
@@ -78,7 +61,7 @@ const EditProfile = () => {
     questions.researchDescription = userData.researchDescription;
     questions.ageRanges = convertArray(userData.ageRanges, PractitionerInformation.AgeGroups);
     questions.deliveryModes = convertArray(userData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
-    questions.researchInterests = convertArray(userData.researchInterests, PractitionerInformation.ResearchTopics);
+    questions.researchInterests = convertResearchTopics(userData.researchInterests, PractitionerInformation.ResearchTopics);
     questions.roles = convertArray(userData.roles, PractitionerInformation.RoleDescriptions);
 
     // Optional Questions

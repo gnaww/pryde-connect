@@ -1,26 +1,9 @@
 import React, { Component } from 'react';
 import CreateProject from './CreateProject/CreateProject';
 import { PractitionerInformation } from './CreateProfile/FormContent';
-import { getCheckedValuesArray } from '../components/QAComponents';
 import api from '../services/api';
 import { popState } from '../services/localStorage';
-
-const convertArray = (savedArray, options) => {
-    let convertedArray = getCheckedValuesArray(options);
-    savedArray.forEach(elt => {
-        const idx = options.indexOf(elt);
-
-        // element is one of the option choices, so should be checked
-        if (idx !== -1) {
-            convertedArray[idx].checked = true;
-        } else {
-            // element is not one of the option choices, so it is the Other: checkbox
-            convertedArray[convertedArray.length - 1].checked = true;
-            convertedArray[convertedArray.length - 1].other = elt;
-        }
-    });
-    return convertedArray;
-};
+import { convertArray, convertResearchTopics } from '../services/util';
 
 const formatInputbox = value => ({
     option: value,
@@ -75,7 +58,7 @@ class EditProject extends Component {
         editProjectData.alternateContact.phone = editProjectData.alternateContact.phone ? editProjectData.alternateContact.phone.slice(2) : "";
         editProjectData.alternateContact.website = editProjectData.alternateContact.website ? editProjectData.alternateContact.website.replace(/(^\w+:|^)\/\//, '') : "";
         editProjectData.status = STATUSES.indexOf(editProjectData.status) + 1;
-        editProjectData.researchTopics = convertArray(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
+        editProjectData.researchTopics = convertResearchTopics(editProjectData.researchTopics, PractitionerInformation.ResearchTopics);
         editProjectData.ageRanges = convertArray(editProjectData.ageRanges, PractitionerInformation.AgeGroups);
         editProjectData.deliveryModes = convertArray(editProjectData.deliveryModes, PractitionerInformation.ProgramDeliveryModes);
         editProjectData.additionalFiles = editProjectData.additionalFiles.map(file => {

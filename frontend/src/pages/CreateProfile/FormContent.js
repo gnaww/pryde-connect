@@ -1,4 +1,23 @@
 import { AnswerTypes } from '../../components/QAComponents';
+import Animal from '../../images/research_icons/animal.png';
+import Civic from '../../images/research_icons/civic.png';
+import Diversity from '../../images/research_icons/diversity.png';
+import Education from '../../images/research_icons/education.png';
+import Environment from '../../images/research_icons/environment.png';
+import Family from '../../images/research_icons/family.png';
+import Health from '../../images/research_icons/health.png';
+import Media from '../../images/research_icons/media.png';
+import Motivation from '../../images/research_icons/motivation.png';
+import Nutrition from '../../images/research_icons/nutrition.png';
+import Peer from '../../images/research_icons/peer.png';
+import Policy from '../../images/research_icons/policy.png';
+import Positive from '../../images/research_icons/positive.png';
+import Program from '../../images/research_icons/program.png';
+import Risk from '../../images/research_icons/risk.png';
+import Self from '../../images/research_icons/self.png';
+import Stem from '../../images/research_icons/stem.png';
+import Youth from '../../images/research_icons/youth.png';
+import Other from '../../images/research_icons/other.png';
 
 export const ROLE_TYPE = {
     practitioner: "Practitioner",
@@ -32,25 +51,82 @@ export const PractitionerInformation = {
         "Other: "
     ],
     ResearchTopics: [
-        "Animal Science & Agriculture",
-        "Civic Engagement",
-        "Diversity Equity & Inclusion",
-        "Education & Learning",
-        "Environment & Sustainability",
-        "Families",
-        "Health & Wellness",
-        "Peer Relationships",
-        "Positive Youth Development",
-        "Policy Analysis",
-        "Program Evaluation",
-        "Media & Technology",
-        "Motivation",
-        "Nutrition",
-        "Risk Behavior",
-        "Self & Identity",
-        "Science Technology Engineering & Math (STEM)",
-        "Youth/Adult Relationships",
-        "Other: "
+        {
+            image: Animal,
+            label: "Animal Science & Agriculture"
+        },
+        {
+            image: Civic,
+            label: "Civic Engagement"
+        },
+        {
+            image: Diversity,
+            label: "Diversity Equity & Inclusion"
+        },
+        {
+            image: Education,
+            label: "Education & Learning"
+        },
+        {
+            image: Environment,
+            label: "Environment & Sustainability"
+        },
+        {
+            image: Family,
+            label: "Families"
+        },
+        {
+            image: Health,
+            label: "Health & Wellness"
+        },
+        {
+            image: Peer,
+            label: "Peer Relationships"
+        },
+        {
+            image: Positive,
+            label: "Positive Youth Development"
+        },
+        {
+            image: Policy,
+            label: "Policy Analysis"
+        },
+        {
+            image: Program,
+            label: "Program Evaluation"
+        },
+        {
+            image: Media,
+            label: "Media & Technology"
+        },
+        {
+            image: Motivation,
+            label: "Motivation"
+        },
+        {
+            image: Nutrition,
+            label: "Nutrition"
+        },
+        {
+            image: Risk,
+            label: "Risk Behavior"
+        },
+        {
+            image: Self,
+            label: "Self & Identity"
+        },
+        {
+            image: Stem,
+            label: "Science Technology Engineering & Math (STEM)"
+        },
+        {
+            image: Youth,
+            label: "Youth/Adult Relationships"
+        },
+        {
+            image: Other,
+            label: "Other"
+        }
     ]
 };
 
@@ -370,7 +446,7 @@ export const practitionerQAForm = [
         questionText:
             "What research topics are you interested in?* (check all that apply)",
         answer: {
-            type: AnswerTypes.Checkbox,
+            type: AnswerTypes.ResearchTopics,
             options: PractitionerInformation.ResearchTopics,
             key: "researchInterests"
         }
@@ -384,27 +460,6 @@ export const ResearcherInformation = {
         "Postdoctoral Fellow",
         "Graduate Student",
         "Undergraduate Student",
-        "Other: "
-    ],
-    ResearchTopics: [
-        "Animal Science & Agriculture",
-        "Civic Engagement",
-        "Diversity Equity & Inclusion",
-        "Education & Learning",
-        "Environment & Sustainability",
-        "Families",
-        "Health & Wellness",
-        "Peer Relationships",
-        "Positive Youth Development",
-        "Policy Analysis",
-        "Program Evaluation",
-        "Media & Technology",
-        "Motivation",
-        "Nutrition",
-        "Risk Behavior",
-        "Self & Identity",
-        "Science Technology Engineering & Math (STEM)",
-        "Youth/Adult Relationships",
         "Other: "
     ]
 };
@@ -439,13 +494,13 @@ export const researcherQAForm = [
     {
         questionText: "What research topics do you study?* (check all that apply)",
         answer: {
-            type: AnswerTypes.Checkbox,
-            options: ResearcherInformation.ResearchTopics,
+            type: AnswerTypes.ResearchTopics,
+            options: PractitionerInformation.ResearchTopics,
             key: "researchInterests"
         }
     },
     {
-        questionText: "What age youth do you typically work with in your research projects? (check all that apply)",
+        questionText: "What age youth do you typically work with in your research projects?* (check all that apply)",
         answer: {
             type: AnswerTypes.Checkbox,
             options: PractitionerInformation.AgeGroups,
@@ -453,7 +508,7 @@ export const researcherQAForm = [
         }
     },
     {
-        questionText: "In 1-2 sentences, please describe your research interests.*",
+        questionText: "In 1-2 sentences, please describe your research interests. (optional)",
         answer: {
             type: AnswerTypes.Textbox,
             key: "researchDescription"

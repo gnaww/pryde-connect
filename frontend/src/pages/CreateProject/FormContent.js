@@ -90,7 +90,7 @@ export const projectQAForm = [
         questionText:
             "What research topics does your project cover?* (check all that apply)",
         answer: {
-            type: AnswerTypes.Checkbox,
+            type: AnswerTypes.ResearchTopics,
             options: PractitionerInformation.ResearchTopics,
             key: "researchTopics"
         }

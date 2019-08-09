@@ -18,11 +18,18 @@ export const AnswerTypes = {
     MultipleAnswers: "mutipleanswers",
     ContactInfo: "contactinfo",
     Button: "button",
-    Collaborator: "collaborator"
+    Collaborator: "collaborator",
+    ResearchTopics: "researchtopics"
 };
 
 export const getCheckedValuesArray = values => {
-    return values.map(v => { return { value: v, checked: false, other: "" } })
+    return values.map(v => {
+        if(typeof v === "object") {
+            return { value: v.label, checked: false, other: "" }
+        } else {
+            return { value: v, checked: false, other: "" }
+        }
+    });
 };
 
 export const getDropDownQuestion = (qa, handlerFunction, defaultValue, hasError) => {
@@ -45,7 +52,7 @@ export const getDropDownQuestion = (qa, handlerFunction, defaultValue, hasError)
             </div>
             {hasError && <p className={styles.errorMsg}>This question is required.</p>}
         </>
-    )
+    );
 };
 
 export const getInputboxQuestion = (qa, handlerFunction, state, hasError) => {
@@ -65,7 +72,7 @@ export const getInputboxQuestion = (qa, handlerFunction, state, hasError) => {
                 />
             </>
         )
-    )
+    );
 };
 
 export const getButtonInput = (qa, handlerFunction, state) => {
@@ -97,7 +104,7 @@ export const getButtonInput = (qa, handlerFunction, state) => {
                 }
             </>
         )
-    )
+    );
 };
 
 export const getTextboxQuestion = (qa, handlerFunction, state, index, hasError) => {
@@ -117,7 +124,7 @@ export const getTextboxQuestion = (qa, handlerFunction, state, index, hasError) 
                 </textarea>
             </>
         )
-    )
+    );
 };
 
 export const getCheckboxQuestion = (qa, handlerFunction, state, hasError) => {
@@ -159,7 +166,48 @@ export const getCheckboxQuestion = (qa, handlerFunction, state, hasError) => {
                 })
             }
         </>
-    )
+    );
+};
+
+export const getResearchTopicsQuestion = (qa, handlerFunction, state, hasError) => {
+    return (
+        qa.answer.type === AnswerTypes.ResearchTopics &&
+        <>
+            <p className={styles.question}>{qa.questionText}</p>
+            {hasError && <p className={styles.errorMsg}>This question is required.</p>}
+            <div className={styles.researchTopicsWrapper}>
+                {
+                    qa.answer.options.map((option, index) => {
+                        return (
+                            <div key={index} className={styles.researchTopicCard}>
+                                <div
+                                    className={
+                                        state[qa.answer.key][index].checked ? styles.researchTopicClicked
+                                        :
+                                        styles.researchTopicImage
+                                    }
+                                    onClick={_e => handlerFunction(qa.answer.key, index, null)}
+                                >
+                                    <img src={option.image} alt="Research topic icon" />
+                                </div>
+                                <p>{ option.label }</p>
+                                {
+                                    option.label === "Other" &&
+                                    <input
+                                        disabled={!state[qa.answer.key][index].checked}
+                                        className={styles.researchTopicTextbox}
+                                        type="text"
+                                        value={state[qa.answer.key][index].other}
+                                        onChange={e => handlerFunction(qa.answer.key, index, e.target.value)}
+                                    />
+                                }
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        </>
+    );
 };
 
 export const getRadiobuttonQuestion = (qa, handlerFunction, state, hasError) => {
@@ -201,7 +249,7 @@ export const getRadiobuttonQuestion = (qa, handlerFunction, state, hasError) => 
                 })
             }
         </>
-    )
+    );
 };
 
 export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
@@ -220,7 +268,7 @@ export const getMultipleAnswerQuestion = (qa, handlerFunction, state) => {
                 })
             }
         </>
-    )
+    );
 };
 
 export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => {
@@ -269,7 +317,7 @@ export const getContactInfoQuestion = (qa, handlerFunction, state, hasError) => 
                 />
             </div>
         </>
-    )
+    );
 };
 
 const loadOptions = (inputValue, callback) => {
@@ -285,7 +333,7 @@ const loadOptions = (inputValue, callback) => {
         .catch(err => {
             console.log(err);
             alert("An error occurred while searching for users to add as a collaborator.");
-        })
+        });
 };
 
 export class CollaboratorQuestion extends Component {

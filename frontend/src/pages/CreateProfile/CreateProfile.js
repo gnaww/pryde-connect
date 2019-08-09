@@ -11,6 +11,7 @@ import UploadProPic from './UploadProPic';
 import ReviewFinish from './ReviewFinish';
 import { ROLE_TYPE } from './FormContent';
 import api from '../../services/api';
+import { formatArray } from '../../services/util';
 
 const NAVBAR_HEIGHT = 110;
 let pages = [
@@ -153,12 +154,6 @@ class CreateProfile extends Component {
     // builds user object from data to POST to the API
     createProfile = async data => {
         let user = {};
-        const formatArray = arr => {
-            return (
-                arr.filter(elt => elt.checked)
-                    .map(elt => elt.other ? elt.other : elt.value)
-            );
-        };
 
         // Basic Info
         user.email = data[0].email;

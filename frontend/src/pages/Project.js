@@ -278,7 +278,7 @@ class Project extends Component {
                                 <section className={styles.additionalInformation}>
                                     <h2 className={styles.sectionHeader}>ADDITIONAL INFORMATION</h2>
                                     <div>
-                                        <p>{additionalInformation}</p>
+                                        <p>{ additionalInformation ? additionalInformation : "N/A" }</p>
                                         {
                                             additionalFiles.map((file, idx) =>
                                                 <a key={idx} href={file.file_path} target="_blank" rel="noopener noreferrer">
