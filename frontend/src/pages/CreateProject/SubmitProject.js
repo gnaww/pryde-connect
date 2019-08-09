@@ -184,10 +184,17 @@ class SubmitProject extends Component {
         if (key === null) {
             if (changed.length === 5) {
                 alert("Maximum of 5 additional files permitted per project.");
+                event.target.value = null;
             } else {
                 let file = event.target.files[0];
-                let name = file.name;
-                changed.push([file, name]);
+                if (file.size > 10485760) {
+                    alert("The maximum file size that can be uploaded is 10 MB.")
+                    event.target.value = null;
+                } else {
+                    let name = file.name;
+                    changed.push([file, name]);
+                    event.target.value = null;
+                }
             }
         }
         else {
