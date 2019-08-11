@@ -1,9 +1,14 @@
-from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 
 
 def send_email():
-    msg = EmailMessage('Request Callback',
-                       'Here is the message.', to=['charl@byteorbit.com'])
-    msg.send()
+    send_mail(
+        'Subject here',
+        'Here is the message.',
+        'from@example.com',
+        ['barronfran@gmail.com'],
+        fail_silently=False,
+    )
+
 
 send_email()
