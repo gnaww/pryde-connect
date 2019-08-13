@@ -137,7 +137,8 @@ class Filter(generics.ListAPIView):
                                           | PUser.objects.filter(last_name__icontains=query) \
                                           | PUser.objects.filter(researchDescription__icontains=query) \
                                           | PUser.objects.filter(researchNeeds__icontains=query) \
-                                          | PUser.objects.filter(location__icontains=query)
+                                          | PUser.objects.filter(location__icontains=query) \
+                                          | PUser.objects.filter(email__icontains=query)
                     interest_relationships = ResearchInterestUser.objects.filter(researchInterest__icontains=query)
                     for relationship in interest_relationships:
                         search_filtered_set = search_filtered_set | PUser.objects.filter(pk=relationship.user.pk)
