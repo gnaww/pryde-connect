@@ -58,8 +58,8 @@ const UserCard = props => {
                         <p>
                             <img src={categoryIconWhite} alt="Category icon" />
                             {
-                                researchInterests.length > 70 ?
-                                    `${researchInterests.replace(/^(.{70}[^\s]*).*/, "$1")}...`
+                                researchInterests.length > 40 ?
+                                    `${researchInterests.replace(/^(.{40}[^\s]*).*/, "$1")}...`
                                 :
                                     researchInterests
                             }
