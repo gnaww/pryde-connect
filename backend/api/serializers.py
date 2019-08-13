@@ -191,7 +191,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
         for collaborator in collaborator_queryset:
-            collaborators.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+            collaborators.append(UserShortSerializer(PUser.objects.get(pk=collaborator.collaborator.pk)).data)
         return collaborators
 
     def get_status(self, obj):
