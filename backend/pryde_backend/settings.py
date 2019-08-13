@@ -68,20 +68,14 @@ INSTALLED_APPS = [
 
     'django_mysql',
     'django_cleanup.apps.CleanupConfig',
-
     'django_cron',
     'django_crontab',
-
-
 ]
 
 CRONJOBS = [
-('*/1 * * * *', 'django.core.management.call_command', ['python manage.py runcrons --force']),
-# ('*/2 * * * *', 'api.crons.my_scheduled_job'),
-# ('*/1 * * * *', 'api.crons.my_scheduled_job', '>> /Users/barrondubois/desktop/TEST.txt'),
-
-
-
+    ('*/1 * * * *', 'django.core.management.call_command', ['python manage.py runcrons --force']),
+    # ('*/2 * * * *', 'api.crons.my_scheduled_job'),
+    # ('*/1 * * * *', 'api.crons.my_scheduled_job', '>> /Users/barrondubois/desktop/TEST.txt'),
 ]
 CRON_CLASSES = [
     'api.crons.TestCronJob',
