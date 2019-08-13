@@ -8,9 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .permissions import CanEditDeleteUser
 from rest_framework.parsers import MultiPartParser, FormParser
-
 import os
-
 
 
 class UserList(generics.ListAPIView):
@@ -40,23 +38,19 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            print('posting pic')
             user = PUser.objects.get(pk=request.user.pk)
             self.check_object_permissions(request, user)
 
             if user.profile_picture:
-                print('user has profile pic')
-                # os.remove(user.profile_picture.path)
+                os.remove(user.profile_picture.path)
                 user.profile_picture = request.data['file']
-                print('running valide in there')
-                user.full_clean()
+                # user.full_clean()
                 user.save()
                 return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
 
             else:
                 user.profile_picture = request.data['file']
-                print('running validate')
-                user.profile_picture.validate()
+                # user.profile_picture.validate()
                 user.save()
                 return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
 
