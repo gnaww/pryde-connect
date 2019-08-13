@@ -27,7 +27,7 @@ roles = ['Lead youth programs', 'Design youth programs', 'Evaluate youth program
 firstName = ['John', 'Andy', 'Samantha', 'Lauren']
 lastName = ['Smith', 'Jones', 'Johnson']
 
-def pump_into_servers():
+def insert_users():
     url = 'http://localhost:8000/api/v1/rest-auth/registration/'
     headers = {
         'Content-Type': 'application/json',
@@ -270,5 +270,4 @@ def pump_into_servers():
         response = requests.request("POST", url, data=json.dumps(user), headers=headers)
         print(response)
 
-pump_into_servers()
-
+insert_users()
