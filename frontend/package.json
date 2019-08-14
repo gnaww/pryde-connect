@@ -15,7 +15,8 @@
     "react-google-recaptcha": "^2.0.0-rc.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "react-select": "^3.0.4"
+    "react-select": "^3.0.4",
+    "react-svgmt": "^1.1.8"
   },
   "scripts": {
     "start": "react-scripts start",

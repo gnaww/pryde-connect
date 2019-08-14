@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
 import searchIcon from '../images/magnifying-glass.svg';
-import map from '../images/ny-map.svg';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
 import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
-import Map from './Map';
+import Map from './Map/Map';
 
 class Browse extends Component {
     constructor(props) {
@@ -371,7 +370,7 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {/* {!this.state.searchProjects && <Map />} */}
+                            {!this.state.searchProjects && <Map />}
                             {
                                 !parsedURL.q && noFiltersSelected ?
                                     <>
