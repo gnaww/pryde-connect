@@ -67,7 +67,18 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'django_mysql',
-    'django_cleanup.apps.CleanupConfig'
+    'django_cleanup.apps.CleanupConfig',
+    'django_cron',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'django.core.management.call_command', ['python manage.py runcrons --force']),
+    # ('*/2 * * * *', 'api.crons.my_scheduled_job'),
+    # ('*/1 * * * *', 'api.crons.my_scheduled_job', '>> /Users/barrondubois/desktop/TEST.txt'),
+]
+CRON_CLASSES = [
+    'api.crons.TestCronJob',
 ]
 
 
@@ -135,7 +146,7 @@ REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_fra
 
 
 # allauth stuff
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -148,7 +159,15 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Barron SendGrid Account
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

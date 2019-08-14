@@ -82,6 +82,31 @@ class Profile extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, _prevState) {
+        const { match } = this.props;
+
+        if (prevProps.match.url !== match.url) {
+            if (match.url === "/myprofile") {
+                document.title = "PRYDE Connect | My Profile";
+                api.getLoggedInUser()
+                    .then(user => this.setState({ user: user, canEditDelete: true }))
+                    .catch(err => {
+                        this.setState({ invalidProfile: true });
+                        console.log(err);
+                    });
+            } else {
+                document.title = "PRYDE Connect | View Profile";
+                const id = match.params.id;
+                api.getUserByID(id)
+                    .then(userPage => this.setState({ user: userPage }))
+                    .catch(err => {
+                        this.setState({ invalidProfile: true });
+                        console.log(err);
+                    });
+            }
+        }
+    }
+
     componentDidMount() {
         const { match } = this.props;
 

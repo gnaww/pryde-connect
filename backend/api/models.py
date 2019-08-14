@@ -74,19 +74,30 @@ class PUser(AbstractUser):
     )
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
-    profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True,
-                                        validators=[validate_image_file_extension, validate_file_size])
+    profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
     type = models.CharField(max_length=15, default='user')
     over18 = models.BooleanField(default=True)
+    receiveEmails = models.BooleanField(default=False)
+
+
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return "%s %s (%s)" % (self.first_name, self.last_name, self.email)
 
 
 class ResearchInterestUser(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     researchInterest = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name = 'User Research Interest'
+        verbose_name_plural = 'User Research Interests'
+
+    def __str__(self):
+        return "%s: %s" % (self.researchInterest, self.user)
 
 class Project(Model):
     name = models.CharField(max_length=100)
@@ -113,15 +124,32 @@ class Project(Model):
     alternateLocation = models.CharField(max_length=200, null=True, blank=True, default=None)
     isApproved = models.BooleanField(default=True)
 
+    def __str__(self):
+        return "%s by %s" % (self.name, self.owner)
+
 
 class TopicsProject(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     researchTopic = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name = 'Project Research Topic'
+        verbose_name_plural = 'Project Research Topics'
+
+    def __str__(self):
+        return "%s: %s" % (self.researchTopic, self.project)
+
 
 class DeliveryModeProject(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Project Delivery Mode'
+        verbose_name_plural = 'Project Delivery Modes'
+
+    def __str__(self):
+        return "%s: %s" % (self.deliveryMode, self.project)
 
 
 class Collaborator(Model):
@@ -137,3 +165,10 @@ class File(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])
     file_name = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Additional Project File'
+        verbose_name_plural = 'Additional Project File'
+
+    def __str__(self):
+        return "%s: %s" % (self.file_name, self.project)

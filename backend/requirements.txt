@@ -6,8 +6,11 @@ django-phonenumber-field
 phonenumbers
 django-cors-headers
 django-mysql
-mysqlclient
+mysqlclient==1.4.0
 python-dotenv
 requests
 Pillow
 django-cleanup
+django-cron
+django-crontab
+coreapi

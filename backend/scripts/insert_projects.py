@@ -66,14 +66,19 @@ def make_projects(n):
             "commitmentLength": "build a website",
             "incentives": "none",
             "additionalInformation": "django and react",
-            # "additionalFiles": [],
-            "alternateContact": {},
+            "alternateContact": {
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "phone": "",
+                "website": ""
+            },
             "alternateLocation": ""
         })
     return projects
 
 
-def insert_posts():
+def insert_projects():
 
     auth_keys = login_users()
     print(auth_keys)
@@ -92,5 +97,4 @@ def insert_posts():
             print(response.json())
 
 
-insert_posts()
-
+insert_projects()
