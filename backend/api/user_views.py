@@ -38,21 +38,23 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user = PUser.objects.get(pk=request.user.pk)
-            self.check_object_permissions(request, user)
+            # 3 MB file size upload limit
+            if request.data['file'].size <= 3145728:
+                user = PUser.objects.get(pk=request.user.pk)
+                self.check_object_permissions(request, user)
 
-            if user.profile_picture:
-                os.remove(user.profile_picture.path)
-                user.profile_picture = request.data['file']
-                # user.full_clean()
-                user.save()
-                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
+                if user.profile_picture:
+                    os.remove(user.profile_picture.path)
+                    user.profile_picture = request.data['file']
+                    user.save()
+                    return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
 
+                else:
+                    user.profile_picture = request.data['file']
+                    user.save()
+                    return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
             else:
-                user.profile_picture = request.data['file']
-                # user.profile_picture.validate()
-                user.save()
-                return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
+                return Response({'message': 'Profile picture file size must be less than 3 MB.'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
             print(e)
