@@ -128,7 +128,7 @@ class CreateProfile extends Component {
                             // failed to create/update profile
                             let pageDataCopy = Array.from(this.state.pageData);
                             pageDataCopy[this.state.page] = data;
-                            this.setState({ pageData: pageDataCopy, page: confirmationPage - 1 });
+                            this.setState({ pageData: pageDataCopy });
                             if (this.props.editing) {
                                 alert(response.message ? response.message : "There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
                             } else {
@@ -236,6 +236,7 @@ class CreateProfile extends Component {
         } else {
             title = this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"
         }
+        const confirmationPage = editing ? editPages.length - 1 : pages.length - 1;
         const NUM_PAGES = editing ? editPages.length : pages.length;
         const pageContentProps = {
             savedData: this.state.pageData[this.state.page],
@@ -257,11 +258,11 @@ class CreateProfile extends Component {
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < NUM_PAGES - 2 &&
+                        this.state.page < confirmationPage - 2 &&
                         (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
                     {
-                        this.state.page === NUM_PAGES - 2 &&
+                        this.state.page === confirmationPage - 2 &&
                         (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} disabled={this.state.RECAPTCHAToken === null && !this.props.editing} />)
                     }
                 </div>
