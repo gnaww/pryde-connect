@@ -19,7 +19,6 @@ export default {
     },
     async getUserByID(id) {
         let user = await axios.get(`${BASE_URL}${API_BASE_URL}/user/${id}/`);
-        console.log(user.data);
         return user.data;
     },
     async getUsers() {
@@ -42,6 +41,18 @@ export default {
         let response = await axios.post(`${BASE_URL}${API_BASE_URL}/user/picture/`, formData, config);
 
         return response.status === 201;
+    },
+    async updateEmail(email) {
+        const USER_KEY = localStorage.getItem("pryde_key");
+
+        const config = {
+            headers: {
+                Authorization: `Token ${USER_KEY}`
+            }
+        };
+
+        let response = await axios.put(`${BASE_URL}${API_BASE_URL}/user/email/`, { email: email }, config);
+        return response.status === 200;
     },
     async updateUser(data) {
         const USER_KEY = localStorage.getItem("pryde_key");
@@ -114,6 +125,10 @@ export default {
                 alert("An error occurred while logging out.");
                 console.log(err);
             });
+    },
+    async verifyEmail(key) {
+        let response = await axios.post(`${BASE_URL}${API_BASE_URL}/rest-auth/registration/verify-email/`, { key: key });
+        return response.data
     },
     async getProjects() {
         let projects = await axios.get(`${BASE_URL}${API_BASE_URL}/projects/`);

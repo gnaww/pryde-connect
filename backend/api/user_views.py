@@ -66,6 +66,28 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
             return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UpdateEmail(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def put(self, request, *args, **kwargs):
+        try:
+            user = PUser.public_objects.get(pk=request.user.pk)
+            self.check_object_permissions(request, user)
+
+            user_email = EmailAddress.objects.get(user=request.user.pk)
+            user_email.change(request, request.data['email'], True)
+
+            user.email = request.data['email']
+            user.save()
+
+            return Response({'message': 'Successfully updated email address.'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while updating your email address.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -81,7 +103,6 @@ class UpdateUser(generics.UpdateAPIView):
             user.displayRole = request.data['displayRole']
             user.affiliation = request.data['affiliation']
             user.location = request.data['location']
-            user.email = request.data['email']
             user.phone = request.data['phone']
             user.website = request.data['website']
             user.researchDescription = request.data['researchDescription']

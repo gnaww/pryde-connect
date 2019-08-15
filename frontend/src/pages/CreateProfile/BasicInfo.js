@@ -135,31 +135,33 @@ class BasicInfo extends Component {
                             onChange={this.handleChange('last_name')}
                         />
                     </div>
-                    <input
-                        className={styles.longTextInput}
-                        placeholder="Email address*"
-                        type="text"
-                        value={this.state.email}
-                        onChange={this.handleChange('email')}
-                    />
                     {
                         !editing &&
-                        <div>
+                        <>
                             <input
                                 className={styles.longTextInput}
-                                placeholder="Password*"
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handleChange('password')}
+                                placeholder="Email address*"
+                                type="text"
+                                value={this.state.email}
+                                onChange={this.handleChange('email')}
                             />
-                            <input
-                                className={styles.longTextInput}
-                                placeholder="Confirm your password*"
-                                type="password"
-                                value={this.state.confirmPassword}
-                                onChange={this.handleChange('confirmPassword')}
-                            />
-                        </div>
+                            <div>
+                                <input
+                                    className={styles.longTextInput}
+                                    placeholder="Password*"
+                                    type="password"
+                                    value={this.state.password}
+                                    onChange={this.handleChange('password')}
+                                />
+                                <input
+                                    className={styles.longTextInput}
+                                    placeholder="Confirm your password*"
+                                    type="password"
+                                    value={this.state.confirmPassword}
+                                    onChange={this.handleChange('confirmPassword')}
+                                />
+                            </div>
+                        </>
                     }
                 </div>
                 <div className={styles.optionalFields}>
@@ -181,7 +183,11 @@ class BasicInfo extends Component {
             </div>
             {
                 editing &&
-                <Link className={styles.link} to="/password">Change your password</Link>
+                <>
+                    <Link className={styles.link} to="/update">Update your email address</Link>
+                    <br />
+                    <Link className={styles.link} to="/password">Change your password</Link>
+                </>
             }
             {
                 !editing &&

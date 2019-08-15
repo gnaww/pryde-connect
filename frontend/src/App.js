@@ -14,6 +14,8 @@ import SuccessfulDelete from './pages/SuccessfulDelete';
 import ChangePassword from './pages/ChangePassword';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
+import UpdateEmail from './pages/UpdateEmail';
+import VerifyEmail from './pages/VerifyEmail';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import styles from './App.module.css';
@@ -48,6 +50,12 @@ const App = () => (
                 )} />
                 <Route path="/reset/:uid/:token" render={renderProps => (
                     localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <ResetPassword {...renderProps} />
+                )} />
+                <Route path="/update" render={renderProps => (
+                    !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <UpdateEmail {...renderProps} />
+                )} />
+                <Route path="/confirm/:key" render={renderProps => (
+                    localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <VerifyEmail {...renderProps} />
                 )} />
                 <Route component={PageNotFound} />
             </Switch>
