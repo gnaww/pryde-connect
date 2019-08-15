@@ -28,7 +28,6 @@ class ForgotPassword extends Component {
             this.setState({ errorMessage: "" });
             api.requestPasswordReset(this.state.email)
                 .then(response => {
-                    console.log(response);
                     this.setState({ submitted: true });
                 })
                 .catch(error => {
