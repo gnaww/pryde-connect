@@ -11,6 +11,5 @@ python-dotenv
 requests
 Pillow
 django-cleanup
-django-cron
 django-crontab
 coreapi
