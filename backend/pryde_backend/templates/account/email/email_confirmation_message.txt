@@ -1,0 +1,8 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktrans %}
+You're receiving this e-mail because you recently changed the email for your account at PRYDE Connect.
+
+To confirm this new email is correct, go to http://localhost:3000/confirm/{{ key }}
+{% endblocktrans %}{% endautoescape %}
+{% blocktrans %}Thank you from the PRYDE Connect team!{% endblocktrans %}

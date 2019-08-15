@@ -19,10 +19,11 @@ from django.urls import path, include
 from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
-
+from .views import null_view
 
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 API_TITLE = 'PRYDE Connect API'
 API_DESCRIPTION = 'A web API for PRYDE Connect'
@@ -33,7 +34,8 @@ urlpatterns = [
     # include the urls defined in the app's (api) url file
     path('api/v1/', include('api.urls')),
 
-
+    url(r'^rest-auth/registration/account-email-verification-sent/', null_view, name='account_email_verification_sent'),
+    url(r'^rest-auth/registration/account-confirm-email/', null_view, name='account_confirm_email'),
     url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
     url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
     path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
