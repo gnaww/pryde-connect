@@ -31,8 +31,7 @@ class ResetPassword extends Component {
             this.setState({ errorMessage: "Passwords do not match." });
         } else {
             this.setState({ errorMessage: "" });
-            const { uid } = this.props.match.params;
-            const { token } = this.props.match.params;
+            const { uid, token } = this.props.match.params;
             let data = {
                 uid: uid,
                 token: token,

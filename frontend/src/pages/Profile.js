@@ -216,9 +216,10 @@ class Profile extends Component {
                                             this.state.canEditDelete &&
                                             <>
                                                 <Link
+                                                    className={styles.editButton}
                                                     to={saveStateWithPath("/editprofile", { userData: this.state.user })}
                                                 >
-                                                    <button className={styles.editButton} onClick={() => saveState({ userData: this.state.user })
+                                                    <button onClick={() => saveState({ userData: this.state.user })
                                                     }>
                                                         {
                                                             user.role === "Practitioner" ?

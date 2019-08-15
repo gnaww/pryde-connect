@@ -137,3 +137,8 @@
     text-align: center;
     font-size: 22px;
 }
+
+.successMessage {
+    composes: errorMessage;
+    color: #1fbf37;
+}
