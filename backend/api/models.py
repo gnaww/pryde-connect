@@ -60,18 +60,6 @@ class PUser(AbstractUser):
         null=True,
         max_length=(7 * 101) # 7 * 100 character nominals, plus commas
     )
-    ageRanges = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=list,
-        null=True,
-        max_length=(9 * 101) # 9 * 100 character nominals, plus commas
-    )
-    deliveryModes = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=list,
-        null=True,
-        max_length=(5 * 101) # 5 * 100 character nominals, plus commas
-    )
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
@@ -99,6 +87,31 @@ class ResearchInterestUser(Model):
     def __str__(self):
         return "%s: %s" % (self.researchInterest, self.user)
 
+
+class DeliveryModeUser(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    deliveryMode = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'User Delivery Mode'
+        verbose_name_plural = 'User Delivery Modes'
+
+    def __str__(self):
+        return "%s: %s" % (self.deliveryMode, self.user)
+
+
+class AgeRangeUser(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    ageRange = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'User Age Range'
+        verbose_name_plural = 'User Age Ranges'
+
+    def __str__(self):
+        return "%s: %s" % (self.ageRange, self.user)
+
+
 class Project(Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
@@ -109,11 +122,6 @@ class Project(Model):
     ]
     status = EnumField(choices=STATUS)
     summary = models.TextField()
-    ageRanges = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=None,
-        max_length=(9 * 101) # 9 * 100 character nominals, plus commas
-    )
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
     incentives = models.TextField()
@@ -150,6 +158,19 @@ class DeliveryModeProject(Model):
 
     def __str__(self):
         return "%s: %s" % (self.deliveryMode, self.project)
+
+
+class AgeRangeProject(Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    ageRange = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Project Age Range'
+        verbose_name_plural = 'Project Age Ranges'
+
+    def __str__(self):
+        return "%s: %s" % (self.ageRange, self.project)
+
 
 
 class Collaborator(Model):

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator, TopicsProject, \
-    DeliveryModeProject, ResearchInterestUser, File
+    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -63,7 +63,8 @@ class ProjectShortSerializer(serializers.ModelSerializer):
         return obj.get_status_display()
 
     def get_ageRanges(self, obj):
-        return obj.ageRanges
+        ages = AgeRangeProject.objects.filter(project=obj)
+        return [age.ageRange for age in ages]
 
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)
@@ -115,17 +116,19 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
     def get_researchInterests(self, obj):
-            interests = ResearchInterestUser.objects.filter(user=obj)
-            return [interest.researchInterest for interest in interests]
+        interests = ResearchInterestUser.objects.filter(user=obj)
+        return [interest.researchInterest for interest in interests]
+
+    def get_ageRanges(self, obj):
+        ages = AgeRangeUser.objects.filter(user=obj)
+        return [age.ageRange for age in ages]
+
+    def get_deliveryModes(self, obj):
+        modes = DeliveryModeUser.objects.filter(user=obj)
+        return [mode.deliveryMode for mode in modes]
 
     def get_roles(self, obj):
         return obj.roles
-
-    def get_ageRanges(self, obj):
-        return obj.ageRanges
-
-    def get_deliveryModes(self, obj):
-        return obj.deliveryModes
 
 
 class LoggedInUserSerializer(UserSerializer):
@@ -198,7 +201,8 @@ class ProjectSerializer(serializers.ModelSerializer):
         return obj.get_status_display()
 
     def get_ageRanges(self, obj):
-        return obj.ageRanges
+        ages = AgeRangeProject.objects.filter(project=obj)
+        return [age.ageRange for age in ages]
 
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)

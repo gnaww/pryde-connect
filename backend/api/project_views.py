@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import ProjectSerializer, ProjectShortSerializer, FileSerializer
-from .models import Project, PUser, TopicsProject, DeliveryModeProject, File
+from .models import Project, PUser, TopicsProject, DeliveryModeProject, File, AgeRangeProject
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -44,7 +44,6 @@ class CreateProject(generics.CreateAPIView):
                 owner=user,
                 status=request.data['status'],
                 summary=request.data['summary'],
-                ageRanges=request.data['ageRanges'],
                 timeline=request.data['timeline'],
                 commitmentLength=request.data['timeline'],
                 incentives=request.data['incentives'],
@@ -53,14 +52,23 @@ class CreateProject(generics.CreateAPIView):
                 alternateLocation=request.data['alternateLocation']
             )
 
+            for age in request.data['ageRanges']:
+                try:
+                    AgeRangeProject.objects.create(project=new_project, ageRange=age)
+                except Exception as e:
+                    print(e)
+                    return Response({
+                        'status': 'Something went wrong while creating the project.'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
             for mode in request.data['deliveryModes']:
                 try:
                     DeliveryModeProject.objects.create(project=new_project, deliveryMode=mode)
                 except Exception as e:
                     print(e)
                     return Response({
-                'status': 'Something went wrong while creating the project.'
-            }, status=status.HTTP_400_BAD_REQUEST)
+                        'status': 'Something went wrong while creating the project.'
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
             for topic in request.data['researchTopics']:
                 try:
@@ -68,8 +76,8 @@ class CreateProject(generics.CreateAPIView):
                 except Exception as e:
                     print(e)
                     return Response({
-                'status': 'Something went wrong while creating the project.'
-            }, status=status.HTTP_400_BAD_REQUEST)
+                        'status': 'Something went wrong while creating the project.'
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
             return Response({'data': ProjectSerializer(new_project).data}, status=status.HTTP_201_CREATED)
 
@@ -92,7 +100,6 @@ class UpdateProject(generics.UpdateAPIView):
             project.name = request.data['name']
             project.status = request.data['status']
             project.summary = request.data['summary']
-            project.ageRanges = request.data['ageRanges']
             project.timeline = request.data['timeline']
             project.commitmentLength = request.data['commitmentLength']
             project.incentives = request.data['incentives']
@@ -107,6 +114,9 @@ class UpdateProject(generics.UpdateAPIView):
             DeliveryModeProject.objects.filter(project=project.pk).delete()
             for new_mode in request.data['deliveryModes']:
                 DeliveryModeProject.objects.create(project=project, deliveryMode=new_mode)
+            AgeRangeProject.objects.filter(project=project.pk).delete()
+            for new_age in request.data['ageRanges']:
+                AgeRangeProject.objects.create(project=project, ageRange=new_age)
 
             return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_200_OK)
 

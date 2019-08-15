@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
-from .models import Project, PUser, ResearchInterestUser
+from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -81,8 +81,6 @@ class UpdateUser(generics.UpdateAPIView):
             user.website = request.data['website']
             user.researchDescription = request.data['researchDescription']
             user.roles = request.data['roles']
-            user.ageRanges = request.data['ageRanges']
-            user.deliveryModes = request.data['deliveryModes']
             user.researchNeeds = request.data['researchNeeds']
             user.evaluationNeeds = request.data['evaluationNeeds']
 
@@ -91,6 +89,12 @@ class UpdateUser(generics.UpdateAPIView):
             ResearchInterestUser.objects.filter(user=user.pk).delete()
             for new_interest in request.data['researchInterests']:
                 ResearchInterestUser.objects.create(user=user, researchInterest=new_interest)
+            AgeRangeUser.objects.filter(user=user.pk).delete()
+            for new_age in request.data['ageRanges']:
+                AgeRangeUser.objects.create(user=user, ageRange=new_age)
+            DeliveryModeUser.objects.filter(user=user.pk).delete()
+            for new_mode in request.data['deliveryModes']:
+                DeliveryModeUser.objects.create(user=user, deliveryMode=new_mode)
 
             return Response(data=UserShortSerializer(user).data, status=status.HTTP_200_OK)
 

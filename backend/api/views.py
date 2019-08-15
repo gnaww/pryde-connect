@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import ProjectShortSerializer, UserShortSerializer
-from .models import Project, PUser, TopicsProject, DeliveryModeProject, ResearchInterestUser
+from .models import Project, PUser, TopicsProject, DeliveryModeProject, ResearchInterestUser, AgeRangeUser, AgeRangeProject, DeliveryModeUser
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -113,8 +113,10 @@ class Filter(generics.ListAPIView):
                 if type(ageranges) == str:
                     ageranges = [ageranges]
                 for age in ageranges:
-                    filtered_ageranges_set = filtered_ageranges_set |\
-                                             Project.objects.filter(ageRanges__contains=age)
+                    age_relationships = AgeRangeProject.objects.filter(ageRange=age)
+                    for age_relationship in age_relationships:
+                        filtered_ageranges_set = filtered_ageranges_set |\
+                                                Project.objects.filter(pk=age_relationship.project.pk)
 
                 filtered_set = filtered_set & filtered_ageranges_set
 
@@ -223,8 +225,10 @@ class Filter(generics.ListAPIView):
                 if type(ageRanges) == str:
                     ageRanges = [ageRanges]
                 for agerange in ageRanges:
-                    filtered_ageRanges_set = filtered_ageRanges_set |\
-                                                PUser.objects.filter(ageRanges__contains=agerange)
+                    age_relationships = AgeRangeUser.objects.filter(ageRange=agerange)
+                    for age_relationship in age_relationships:
+                        filtered_ageRanges_set = filtered_ageRanges_set |\
+                                                    PUser.objects.filter(pk=age_relationship.user.pk)
 
                 filtered_set = filtered_set & filtered_ageRanges_set
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PUser, Project, Collaborator, ResearchInterestUser, TopicsProject, DeliveryModeProject, File
+from .models import PUser, Project, Collaborator, ResearchInterestUser, TopicsProject, DeliveryModeProject, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject
 
 
 # Register your models here.
@@ -24,10 +24,22 @@ class CollaboratorAdmin(admin.ModelAdmin):
     list_display = ['collaborator', 'project', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'showProjectOnProfile']
 
 
-class ResearchInterestAdmin(admin.ModelAdmin):
+class ResearchInterestUserAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'user__last_name', 'user__email', 'researchInterest']
     list_display = ['researchInterest', 'user']
     list_filter = ['researchInterest']
+
+
+class AgeRangeUserAdmin(admin.ModelAdmin):
+    search_fields = ['user__first_name', 'user__last_name', 'user__email', 'ageRange']
+    list_display = ['ageRange', 'user']
+    list_filter = ['ageRange']
+
+
+class DeliveryModeUserAdmin(admin.ModelAdmin):
+    search_fields = ['user__first_name', 'user__last_name', 'user__email', 'deliveryMode']
+    list_display = ['deliveryMode', 'user']
+    list_filter = ['deliveryMode']
 
 
 class TopicsProjectAdmin(admin.ModelAdmin):
@@ -35,10 +47,17 @@ class TopicsProjectAdmin(admin.ModelAdmin):
     list_display = ['researchTopic', 'project']
     list_filter = ['researchTopic']
 
+
 class DeliveryModeProjectAdmin(admin.ModelAdmin):
     search_fields = ['project__name', 'project__owner__first_name', 'project__owner__last_name', 'project__owner__email', 'deliveryMode']
     list_display = ['deliveryMode', 'project']
     list_filter = ['deliveryMode']
+
+
+class AgeRangeProjectAdmin(admin.ModelAdmin):
+    search_fields = ['project__name', 'project__owner__first_name', 'project__owner__last_name', 'project__owner__email', 'ageRange']
+    list_display = ['ageRange', 'project']
+    list_filter = ['ageRange']
 
 
 class FileAdmin(admin.ModelAdmin):
@@ -49,8 +68,11 @@ class FileAdmin(admin.ModelAdmin):
 admin.site.register(PUser, PUserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Collaborator, CollaboratorAdmin)
-admin.site.register(ResearchInterestUser, ResearchInterestAdmin)
+admin.site.register(ResearchInterestUser, ResearchInterestUserAdmin)
+admin.site.register(AgeRangeUser, AgeRangeUserAdmin)
+admin.site.register(DeliveryModeUser, DeliveryModeUserAdmin)
 admin.site.register(TopicsProject, TopicsProjectAdmin)
+admin.site.register(AgeRangeProject, AgeRangeProjectAdmin)
 admin.site.register(DeliveryModeProject, DeliveryModeProjectAdmin)
 admin.site.register(File,  FileAdmin)
 admin.site.site_header = "PRYDE Connect Admin Dashboard";
