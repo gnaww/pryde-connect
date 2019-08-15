@@ -1,5 +1,6 @@
 from django.db import models
 from django_mysql.models import EnumField, ListCharField, JSONField, Model
+from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager
@@ -39,6 +40,12 @@ class UserManager(BaseUserManager):
         return user
 
 
+# Include only non-staff users with verified emails
+class PublicUserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(emailaddress__verified=True, is_staff=False)
+
+
 class PUser(AbstractUser):
     ROLE = [
         ("1", 'Practitioner'),
@@ -65,10 +72,9 @@ class PUser(AbstractUser):
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
     type = models.CharField(max_length=15, default='user')
     over18 = models.BooleanField(default=True)
-    receiveEmails = models.BooleanField(default=False)
-
 
     objects = UserManager()
+    public_objects = PublicUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

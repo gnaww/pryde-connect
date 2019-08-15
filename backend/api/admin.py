@@ -9,7 +9,7 @@ class PUserAdmin(admin.ModelAdmin):
     name.short_description = 'Name'
 
     search_fields = ['email', 'first_name', 'last_name', 'phone', 'role', 'displayRole', 'affiliation', 'date_joined', 'location']
-    list_display = ['name', 'email', 'phone', 'role', 'displayRole', 'location', 'affiliation', 'receiveEmails', 'date_joined']
+    list_display = ['name', 'email', 'phone', 'role', 'displayRole', 'location', 'affiliation', 'date_joined']
     list_filter = ['role']
 
 
