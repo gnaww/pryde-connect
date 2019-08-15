@@ -111,6 +111,7 @@ export default {
                 }
             })
             .catch(err => {
+                alert("An error occurred while logging out.");
                 console.log(err);
             });
     },
