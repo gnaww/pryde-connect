@@ -235,3 +235,64 @@ class Filter(generics.ListAPIView):
             serializer = UserShortSerializer(filtered_set, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+
+# TODO: filter out projects and users that a given user has not seen
+class TestEmailStuff(generics.RetrieveAPIView):
+
+
+    # IF project.datePosted is > user.last_login... the user has not seen that project
+    def get(self, request, *args, **kwargs):
+
+        #
+        # project = Project.objects.get(pk=88)
+        # print(project.datePosted)
+        #
+        # user = PUser.objects.get(pk=52)
+        # print(user.last_login)
+        # print(user.date_joined)
+        response = {}
+        #TODO: do we need to add a field to the user called receiveEmails indicating
+        # whether they want to receive any.. this filter will change
+        for user in PUser.objects.all():
+            # Limit the results to 3 of each so that emails arent crazy long
+            projects_user_not_seen = Project.objects.filter(datePosted__gt=user.last_login)[:3]
+            users_not_seen = PUser.objects.filter(date_joined__gt=user.last_login)[:3]
+
+
+            #TODO: continue filtering the sets down... need to only have projects_user_not_seen / users_not_seen
+            # contain only content that the user would be interested in
+            project_ids = [project.pk for project in projects_user_not_seen]
+            user_ids = [user.pk for user in users_not_seen]
+            response[user.first_name + ' ' + user.last_name + ' has not seen projects: '] = project_ids
+            response[user.first_name + ' ' + user.last_name + ' has not seen users: '] = user_ids
+
+
+        return Response(response)
+
+
+        # projects_user_not_seen = Project.objects.filter(datePosted__gt=user.last_login)
+        # users_not_seen = PUser.objects.filter(date_joined__gt=user.last_login)
+        # print(users_not_seen.count())
+        # print(projects_user_not_seen.count())
+        # print(project.datePosted > user.last_login)
+        # print("hello there")
+        #
+        # users = PUser.objects.exclude(last_login=None)
+        # print(users.count())
+        #
+        # users_logged_in = users.exclude(last_login=None)
+        # print(users_logged_in.count())
+        # for user in users:
+        #     print(user.last_login)
+        #
+        #
+        # print('done with user stuff')
+        #
+        # projects = Project.objects.all()
+        #
+        # for project in projects:
+        #     print(project.datePosted)
+
+        # return Response({'message': 'hello'})
