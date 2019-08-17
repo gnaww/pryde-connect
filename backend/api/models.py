@@ -178,7 +178,6 @@ class AgeRangeProject(Model):
         return "%s: %s" % (self.ageRange, self.project)
 
 
-
 class Collaborator(Model):
     collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -186,6 +185,13 @@ class Collaborator(Model):
     deletePermission = models.BooleanField()
     editCollaboratorsPermission = models.BooleanField()
     showProjectOnProfile = models.BooleanField(default=True)
+
+
+class UserEmailPreferences(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    type = EnumField(choices=[("1", "project"), ("2", "user")])
+    preferenceName = models.CharField(max_length=100)
+    preferenceValue = models.CharField(max_length=100)
 
 
 class File(Model):
