@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
-from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser
+from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser, UserEmailPreferences
 from allauth.account.models import EmailAddress
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -133,3 +133,44 @@ class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
     queryset = PUser.public_objects.all()
+
+
+class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            if UserEmailPreferences.objects.filter(user=request.user.pk).exists():
+                UserEmailPreferences.objects.filter(user=request.user.pk).delete()
+
+            user = PUser.public_objects.get(pk=request.user.pk)
+            for preference in request.data['preferences']:
+                print(preference)
+                UserEmailPreferences.objects.create(
+                    user = user,
+                    type = preference['type'],
+                    preferenceName = preference['name'],
+                    preferenceValue = preference['value']
+                )
+
+            return Response({'message': 'Email preferences successfully saved.'}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while saving your email preferences.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteEmailPreferences(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            UserEmailPreferences.objects.filter(user=request.user.pk).delete()
+
+            return Response({'message': 'Successfully unsubscribed from monthly emails.'}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'You are already unsubscribed from monthly emails.'}, status=status.HTTP_404_NOT_FOUND)
