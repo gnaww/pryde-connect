@@ -16,7 +16,7 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Youth/Adult Relationships', 'alsdkfjsdlf', 'asdlfkjsdlf', 'alsdkfjlkdsj', 'alskdfjsdfl']
 
 
-deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
+deliveryModes = ['Afterschool programs', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
 
 ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
