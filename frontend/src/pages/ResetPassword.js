@@ -44,9 +44,8 @@ class ResetPassword extends Component {
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log(error.response.data);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
-                })
+                });
         }
     }
 
@@ -57,7 +56,7 @@ class ResetPassword extends Component {
     render() {
         return (
             <div className={styles.loginWrapper}>
-                <h1 className={styles.joinOurCommunity}>
+                <h1 className={styles.title}>
                     Reset your password
                 </h1>
                 <form className={styles.loginForm} onSubmit={this.handleSubmit}>

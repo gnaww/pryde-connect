@@ -32,7 +32,7 @@ class VerifyEmail extends Component {
             <div className={styles.loginWrapper}>
                 {
                     !this.state.submitted ?
-                        <h1 className={styles.joinOurCommunity}>{this.state.message}</h1>
+                        <h1 className={styles.title}>{this.state.message}</h1>
                     :
                         <Redirect to="/login?confirm=true" />
                 }

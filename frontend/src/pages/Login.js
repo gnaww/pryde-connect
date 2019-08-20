@@ -26,6 +26,7 @@ class Login extends Component {
     handleLogin = event => {
         event.preventDefault();
 
+        this.setState({ errorMessage: ""});
         if (!this.state.email || !this.state.password) {
             this.setState({ errorMessage: "Both fields must be filled in."});
         } else {
@@ -37,7 +38,7 @@ class Login extends Component {
                 .catch(error => {
                     console.log(error);
                     this.setState({ errorMessage: Object.values(error.response.data)[0][0] });
-                })
+                });
         }
     }
 
@@ -51,10 +52,10 @@ class Login extends Component {
                 <div className={styles.loginGraphic} id={styles.loginBlue}>
                     <img  src={loginBlue} alt="Login graphic" />
                 </div>
-                <h1 className={styles.joinOurCommunity}>
+                <h1 className={styles.title}>
                     Join our community
                 </h1>
-                <h2 className={styles.loginToCreate}>
+                <h2 className={styles.subtitle}>
                     Log in to create a profile or post a study
                 </h2>
                 {

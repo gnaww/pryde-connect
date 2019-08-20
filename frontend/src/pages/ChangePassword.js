@@ -48,9 +48,8 @@ class ChangePassword extends Component {
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log(error.response.data);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
-                })
+                });
         }
     }
 
@@ -64,7 +63,7 @@ class ChangePassword extends Component {
                 {
                     !this.state.changed ?
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Change your password
                             </h1>
                             <form className={styles.loginForm} onSubmit={this.handleSubmit}>
@@ -77,10 +76,10 @@ class ChangePassword extends Component {
                         </>
                     :
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Success!
                             </h1>
-                            <h2 className={styles.loginToCreate}>
+                            <h2 className={styles.subtitle}>
                                 Your password was succesfully changed.
                             </h2>
                         </>

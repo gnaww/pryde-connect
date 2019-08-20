@@ -35,7 +35,6 @@ class UpdateEmail extends Component {
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log(error.response.data);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
                 })
         }
@@ -51,7 +50,7 @@ class UpdateEmail extends Component {
                 {
                     !this.state.submitted ?
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Update email address
                             </h1>
                             <form className={styles.loginForm} onSubmit={this.handleSubmit}>
@@ -62,10 +61,10 @@ class UpdateEmail extends Component {
                         </>
                     :
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Success!
                             </h1>
-                            <h2 className={styles.loginToCreate}>
+                            <h2 className={styles.subtitle}>
                                 A confirmation email has been sent to <b>{this.state.email}</b>. Click on the confirmation link in the email to re-activate your account.
                             </h2>
                         </>

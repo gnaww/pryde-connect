@@ -229,10 +229,6 @@ span.qaOptionText {
     padding-left: 10px;
 }
 
-.numberedList {
-    composes: question;
-}
-
 .researcherImg {
     width: 155px;
     user-drag: none;

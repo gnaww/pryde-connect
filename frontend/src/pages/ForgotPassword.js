@@ -32,9 +32,8 @@ class ForgotPassword extends Component {
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log(error.response.data);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
-                })
+                });
         }
     }
 
@@ -48,10 +47,10 @@ class ForgotPassword extends Component {
                 {
                     !this.state.submitted ?
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Forgot your password?
                             </h1>
-                            <h2 className={styles.loginToCreate}>
+                            <h2 className={styles.subtitle}>
                                 Enter your account's email address, and we'll send you instructions for resetting your password.
                             </h2>
                             <form className={styles.loginForm} onSubmit={this.handleSubmit}>
@@ -62,10 +61,10 @@ class ForgotPassword extends Component {
                         </>
                     :
                         <>
-                            <h1 className={styles.joinOurCommunity}>
+                            <h1 className={styles.title}>
                                 Success!
                             </h1>
-                            <h2 className={styles.loginToCreate}>
+                            <h2 className={styles.subtitle}>
                                 You will receive an email at <b>{this.state.email}</b> with further instructions to reset your password.
                             </h2>
                         </>

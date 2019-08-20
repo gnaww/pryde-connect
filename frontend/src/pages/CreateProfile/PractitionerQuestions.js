@@ -129,7 +129,7 @@ class PractitionerQuestions extends Component {
         const defaultCounty = this.state.location ? this.state.location : "";
 
         return (
-            <li className={styles.numberedList} key={index}>
+            <li className={styles.question} key={index}>
                 { getDropDownQuestion(qa, this.setLocatedAtCCE, defaultLocatedAtCCE, this.errors[index]) }
                 { getCheckboxQuestion(qa, this.setValues, this.state, this.errors[index]) }
                 { getResearchTopicsQuestion(qa, this.setValues, this.state, this.errors[index]) }
