@@ -116,11 +116,12 @@ class EmailPreferences extends Component {
         this.setState({ successMessage: "", errorMessage: "" });
 
         const { userAgeRanges, userDeliveryModes, userResearchInterests, projectAgeRanges, projectDeliveryModes, projectResearchTopics } = this.state;
-        let preferences = [];
 
-        preferences = preferences.concat(formatPreferencesArray(userAgeRanges, projectAgeRanges, "ageRange", "ageRange"));
-        preferences = preferences.concat(formatPreferencesArray(userDeliveryModes, projectDeliveryModes, "deliveryMode", "deliveryMode"));
-        preferences = preferences.concat(formatPreferencesArray(userResearchInterests, projectResearchTopics, "researchInterest", "researchTopic"));
+        let preferences = [].concat(
+            formatPreferencesArray(userAgeRanges, projectAgeRanges, "ageRange", "ageRange"),
+            formatPreferencesArray(userDeliveryModes, projectDeliveryModes, "deliveryMode", "deliveryMode"),
+            formatPreferencesArray(userResearchInterests, projectResearchTopics, "researchInterest", "researchTopic")
+        );
 
         api.updateEmailPreferences(preferences)
             .then(response => {
