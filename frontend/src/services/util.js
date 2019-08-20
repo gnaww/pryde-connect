@@ -15,14 +15,14 @@ export const formatPreferencesArray = (userPreferences, projectPreferences, user
             preferences.push({
                 type: "2",
                 name: userPreferenceName,
-                value: userPreferences[i].other ? userPreferences[i].other.replace(/,/g, "") : userPreferences[i].value
+                value: userPreferences[i].other.replace(/,/g, "") ? userPreferences[i].other.replace(/,/g, "") : userPreferences[i].value
             })
         }
         if (projectPreferences[i].checked) {
             preferences.push({
                 type: "1",
                 name: projectPreferenceName,
-                value: projectPreferences[i].other ? projectPreferences[i].other.replace(/,/g, "") : projectPreferences[i].value
+                value: projectPreferences[i].other.replace(/,/g, "") ? projectPreferences[i].other.replace(/,/g, "") : projectPreferences[i].value
             })
         }
     }
