@@ -3,7 +3,7 @@ import { getCheckedValuesArray } from '../components/QAComponents';
 export const formatArray = arr => {
     return (
         arr.filter(elt => elt.checked)
-            .map(elt => elt.other ? elt.other.replace(/,/g, "") : elt.value)
+            .map(elt => elt.other.replace(/,/g, "") ? elt.other.replace(/,/g, "") : elt.value)
     );
 };
 
