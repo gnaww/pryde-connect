@@ -2,7 +2,13 @@ from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator, TopicsProject, \
-    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject
+    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject, UserEmailPreferences
+
+
+class EmailPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEmailPreferences
+        exclude = ['id', 'user']
 
 
 class FileSerializer(serializers.ModelSerializer):
