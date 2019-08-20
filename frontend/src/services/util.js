@@ -3,8 +3,31 @@ import { getCheckedValuesArray } from '../components/QAComponents';
 export const formatArray = arr => {
     return (
         arr.filter(elt => elt.checked)
-            .map(elt => elt.other.replace(/,/g, "") ? elt.other : elt.value)
+            .map(elt => elt.other ? elt.other.replace(/,/g, "") : elt.value)
     );
+};
+
+export const formatPreferencesArray = (userPreferences, projectPreferences, userPreferenceName, projectPreferenceName) => {
+    let preferences = [];
+
+    for (let i = 0; i < userPreferences.length; i++) {
+        if (userPreferences[i].checked) {
+            preferences.push({
+                type: "2",
+                name: userPreferenceName,
+                value: userPreferences[i].other ? userPreferences[i].other.replace(/,/g, "") : userPreferences[i].value
+            })
+        }
+        if (projectPreferences[i].checked) {
+            preferences.push({
+                type: "1",
+                name: projectPreferenceName,
+                value: projectPreferences[i].other ? projectPreferences[i].other.replace(/,/g, "") : projectPreferences[i].value
+            })
+        }
+    }
+
+    return preferences;
 };
 
 export const convertArray = (savedArray, options) => {
