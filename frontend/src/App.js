@@ -14,6 +14,7 @@ import SuccessfulDelete from './pages/SuccessfulDelete';
 import ChangePassword from './pages/ChangePassword';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
+import EmailPreferences from './pages/EmailPreferences';
 import UpdateEmail from './pages/UpdateEmail';
 import VerifyEmail from './pages/VerifyEmail';
 import Navbar from './components/Navbar';
@@ -53,6 +54,9 @@ const App = () => (
                 )} />
                 <Route path="/update" render={renderProps => (
                     !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <UpdateEmail {...renderProps} />
+                )} />
+                <Route path="/preferences" render={renderProps => (
+                    !localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <EmailPreferences {...renderProps} />
                 )} />
                 <Route path="/confirm/:key" render={renderProps => (
                     localStorage.getItem("pryde_key") ? <Redirect to="/" /> : <VerifyEmail {...renderProps} />
