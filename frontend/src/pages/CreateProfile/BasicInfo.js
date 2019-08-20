@@ -182,14 +182,6 @@ class BasicInfo extends Component {
                 </div>
             </div>
             {
-                editing &&
-                <>
-                    <Link className={styles.link} to="/update">Update your email address</Link>
-                    <br />
-                    <Link className={styles.link} to="/password">Change your password</Link>
-                </>
-            }
-            {
                 !editing &&
                 <FormControlLabel
                     control={
