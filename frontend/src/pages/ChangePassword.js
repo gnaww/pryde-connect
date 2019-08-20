@@ -44,7 +44,6 @@ class ChangePassword extends Component {
             }
             api.changePassword(data)
                 .then(response => {
-                    console.log(response);
                     this.setState({ changed: true })
                 })
                 .catch(error => {

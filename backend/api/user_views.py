@@ -145,6 +145,7 @@ class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
                 UserEmailPreferences.objects.filter(user=request.user.pk).delete()
 
             user = PUser.public_objects.get(pk=request.user.pk)
+
             for preference in request.data['preferences']:
                 print(preference)
                 UserEmailPreferences.objects.create(
