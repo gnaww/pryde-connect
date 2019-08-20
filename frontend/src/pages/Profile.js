@@ -113,7 +113,7 @@ class Profile extends Component {
         }
     }
 
-    handleClick = event => {
+    openMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
     }
 
@@ -220,18 +220,17 @@ class Profile extends Component {
                                     {
                                         this.state.canEditDelete &&
                                         <>
-                                            <button className={user.role === "Researcher" ? styles.manageProfile : styles.manageProfileBlue} onClick={this.handleClick}>
+                                            <button className={user.role === "Researcher" ? styles.manageProfile : styles.manageProfileBlue} onClick={this.openMenu}>
                                                 <DropdownArrow />
                                                 MANAGE PROFILE
                                             </button>
                                             <Menu
-                                                id="simple-menu"
                                                 anchorEl={this.state.anchorEl}
                                                 keepMounted
                                                 open={Boolean(this.state.anchorEl)}
                                                 onClose={this.handleClose}
                                             >
-                                                <MenuItem onClick={this.handleClose}>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
                                                     <Link
                                                         className={user.role === "Researcher" ? styles.editButton : styles.editButtonBlue}
                                                         to={saveStateWithPath("/editprofile", { userData: this.state.user })}
@@ -248,25 +247,25 @@ class Profile extends Component {
                                                         EDIT PROFILE
                                                     </Link>
                                                 </MenuItem>
-                                                <MenuItem onClick={this.handleClose}>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
                                                     <Link className={styles.preferences} to="/preferences">
                                                         <img className={styles.buttonIcon} src={settingsIcon} alt="Settings icon" />
                                                         EMAIL PREFERENCES
                                                     </Link>
                                                 </MenuItem>
-                                                <MenuItem onClick={this.handleClose}>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
                                                     <Link className={styles.preferences} to="/password">
                                                         <img className={styles.buttonIcon} src={lockIcon} alt="Lock icon" />
                                                         CHANGE PASSWORD
                                                     </Link>
                                                 </MenuItem>
-                                                <MenuItem onClick={this.handleClose}>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
                                                     <Link className={styles.preferences} to="/update">
                                                         <img className={styles.buttonIcon} src={editMailIcon} alt="Lock icon" />
                                                         UPDATE EMAIL ADDRESS
                                                     </Link>
                                                 </MenuItem>
-                                                <MenuItem onClick={this.handleDeleteProfile}>
+                                                <MenuItem disableRipple onClick={this.handleDeleteProfile}>
                                                     <img className={styles.buttonIcon} src={deleteIcon} alt="Delete icon" />
                                                     <span className={styles.deleteProfile}>DELETE PROFILE</span>
                                                 </MenuItem>
