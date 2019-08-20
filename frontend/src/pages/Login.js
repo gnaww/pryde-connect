@@ -26,7 +26,7 @@ class Login extends Component {
     handleLogin = event => {
         event.preventDefault();
 
-        this.setState({ errorMessage: ""});
+        this.setState({ errorMessage: "" });
         if (!this.state.email || !this.state.password) {
             this.setState({ errorMessage: "Both fields must be filled in."});
         } else {

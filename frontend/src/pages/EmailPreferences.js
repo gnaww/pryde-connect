@@ -151,7 +151,7 @@ class EmailPreferences extends Component {
             })
             .catch(error => {
                 console.log(error);
-                this.setState({ errorMessage: Object.values(error.response.data)[0] })
+                this.setState({ errorMessage: Object.values(error.response.data)[0] });
             });
     }
 
@@ -224,7 +224,7 @@ class EmailPreferences extends Component {
                 if (preferences.length !== 0) {
                     this.initializePreferences(preferences);
                 }
-            })
+            });
     }
 
     render() {
