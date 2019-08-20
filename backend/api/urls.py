@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.conf.urls import url
 
-from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser, UploadOrChangeProfilePicture, UpdateEmail, CreateOrUpdateEmailPreferences, DeleteEmailPreferences
+from .user_views import UserList, UserView, LoggedInUserView, DeleteUser, UpdateUser, UploadOrChangeProfilePicture, UpdateEmail, GetEmailPreferences, CreateOrUpdateEmailPreferences, DeleteEmailPreferences
 from .project_views import CreateProject, ProjectList, ProjectView, UpdateProject, \
     DeleteProject, UploadFile, DeleteFile
 from .collaborator_views import GetProjectCollaborators, AddCollaborator, UpdateCollaboratorPermissions, DeleteCollaborator, ToggleProjectVisibility, LoggedInUserPermissions, SearchCollaborators
@@ -16,7 +16,8 @@ urlpatterns = [
     path('user/<int:pk>/delete/', DeleteUser.as_view()),
     path('user/picture/', UploadOrChangeProfilePicture.as_view()),
     path('user/email/', UpdateEmail.as_view()),
-    path('user/preferences/', CreateOrUpdateEmailPreferences.as_view()),
+    path('user/preferences/', GetEmailPreferences.as_view()),
+    path('user/preferences/update/', CreateOrUpdateEmailPreferences.as_view()),
     path('user/preferences/delete/', DeleteEmailPreferences.as_view()),
 
     path('projects/', ProjectList.as_view()),

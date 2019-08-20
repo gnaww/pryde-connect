@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
+from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, EmailPreferenceSerializer
 from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser, UserEmailPreferences
 from allauth.account.models import EmailAddress
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
@@ -135,6 +135,18 @@ class DeleteUser(generics.DestroyAPIView):
     queryset = PUser.public_objects.all()
 
 
+class GetEmailPreferences(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        user = PUser.public_objects.get(pk=request.user.pk)
+        preferences = UserEmailPreferences.objects.filter(user=user)
+        serializer = EmailPreferenceSerializer(preferences, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -168,10 +180,12 @@ class DeleteEmailPreferences(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            UserEmailPreferences.objects.filter(user=request.user.pk).delete()
-
-            return Response({'message': 'Successfully unsubscribed from monthly emails.'}, status=status.HTTP_201_CREATED)
+            if UserEmailPreferences.objects.filter(user=request.user.pk).exists():
+                UserEmailPreferences.objects.filter(user=request.user.pk).delete()
+                return Response({'message': 'Successfully unsubscribed from all emails.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'message': 'You are already unsubscribed from all emails.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             print(e)
-            return Response({'message': 'You are already unsubscribed from monthly emails.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'Something went wrong while unsubscribing you from all emails.'}, status=status.HTTP_400_BAD_REQUEST)
