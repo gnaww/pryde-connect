@@ -4,13 +4,13 @@ import django
 django.setup()
 
 from django.core.mail import send_mail
-from api.models import UserEmailPreferences
+from api.models import PUser, UserEmailPreference
 from django.template.loader import get_template
 from django.core.mail import EmailMultiAlternatives
 from datetime import datetime
 import calendar
 
-# subtract or add [delta] months to [date]
+# Subtracts or adds [delta] months to [date]
 # ex: monthdelta(date, -1) to subtract a month
 #     monthdelta(date, 1) to add a month
 def monthdelta(date, delta):
@@ -19,187 +19,272 @@ def monthdelta(date, delta):
     d = min(date.day, calendar.monthrange(y, m)[1])
     return date.replace(day=d,month=m, year=y)
 
-# TODO: implement preference setting for user role types
+# Returns a dictionary of emails to be sent to users in this format:
+# {
+#     [ID of user to be emailed]: {
+#         "users": [
+#             user1,
+#             user2,
+#             ...
+#         ],
+#         "projects": [
+#             project1,
+#             project2,
+#             ...
+#         ]
+#     },
+#     [ID of user to be emailed]: {
+#         ...
+#     },
+#     ...
+# }
+def build_emails(projects_matching_preferences, users_matching_preferences):
+    user_emails = {}
+    if (len(projects_matching_preferences) != 0):
+        user_id_to_be_emailed = projects_matching_preferences[0].user_id
+        email = {
+            "users": [],
+            "projects":  []
+        }
+
+        for project in projects_matching_preferences:
+            if project.user_id == user_id_to_be_emailed:
+                email['projects'].append({
+                    "id": project.project_id,
+                    "name": project.name,
+                    "owner_id": project.owner_id,
+                    "owner_name": "%s %s" % (project.first_name, project.last_name),
+                    "date_posted":  project.datePosted.strftime("%m/%d/%Y")
+                })
+            else:
+                user_emails[user_id_to_be_emailed] = email
+                email = {
+                    "users": [],
+                    "projects": [{
+                        "id": project.project_id,
+                        "name": project.name,
+                        "owner_id": project.owner_id,
+                        "owner_name": "%s %s" % (project.first_name, project.last_name),
+                        "date_posted":  project.datePosted.strftime("%m/%d/%Y")
+                    }]
+                }
+                user_id_to_be_emailed = project.user_id
+
+        user_emails[user_id_to_be_emailed] = email
+
+    if (len(users_matching_preferences) != 0):
+        user_id_to_be_emailed = users_matching_preferences[0].user_id
+        email = user_emails.get(user_id_to_be_emailed, {
+            "users": [],
+            "projects":  []
+        })
+
+        for user in users_matching_preferences:
+            if user.user_id == user_id_to_be_emailed:
+                email['users'].append({
+                    "id": user.matched_user_id,
+                    "name": "%s %s" % (user.first_name, user.last_name),
+                    "role": "practitioner" if user.role == '1' else "researcher",
+                    "location": user.location,
+                    "date_joined": user.date_joined.strftime("%m/%d/%Y")
+                })
+            else:
+                user_emails[user_id_to_be_emailed] = email
+                user_id_to_be_emailed = user.user_id
+                email = user_emails.get(user_id_to_be_emailed, {
+                    "users": [],
+                    "projects":  []
+                })
+                email['users'].append({
+                    "id": user.matched_user_id,
+                    "name": "%s %s" % (user.first_name, user.last_name),
+                    "role": "practitioner" if user.role == '1' else "researcher",
+                    "location": user.location,
+                    "date_joined": user.date_joined.strftime("%m/%d/%Y")
+                })
+
+        user_emails[user_id_to_be_emailed] = email
+
+    return user_emails
+
 def send_emails():
-    one_month_ago = monthdelta(datetime.now(), -1)
+    current_date = datetime.now()
+    one_month_ago = monthdelta(current_date, -1)
 
-    projects_matching_preferences = UserEmailPreferences.objects.raw(
+    projects_matching_preferences = UserEmailPreference.objects.raw(
         """
-        SELECT 	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                preferenceName,
-                preferenceValue,
+        SELECT  MAX(id) as id,
                 user_id,
                 project_id,
-                api_project.name,
-                api_project.owner_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_project.datePosted
-        FROM api_useremailpreferences
-        JOIN api_agerangeproject
-        ON api_agerangeproject.ageRange = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'ageRange' AND
-        api_useremailpreferences.type = '1'
-        JOIN api_project
-        ON api_project.id = api_agerangeproject.project_id
-        JOIN api_puser
-        ON api_puser.id = api_project.owner_id
-        WHERE
-        api_project.owner_id != api_useremailpreferences.user_id AND
-        api_project.datePosted >= %s
-        UNION
-        SELECT 	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                preferenceName,
-                preferenceValue,
-                user_id,
-                project_id,
-                api_project.name,
-                api_project.owner_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_project.datePosted
-        FROM api_useremailpreferences
-        JOIN api_deliverymodeproject
-        ON api_deliverymodeproject.deliveryMode = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'deliveryMode' AND
-        api_useremailpreferences.type = '1'
-        JOIN api_project
-        ON api_project.id = api_deliverymodeproject.project_id
-        JOIN api_puser
-        ON api_puser.id = api_project.owner_id
-        WHERE
-        api_project.owner_id != api_useremailpreferences.user_id AND
-        api_project.datePosted >= %s
-        UNION
-        SELECT 	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                preferenceName,
-                preferenceValue,
-                user_id,
-                project_id,
-                api_project.name,
-                api_project.owner_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_project.datePosted
-        FROM api_useremailpreferences
-        JOIN api_topicsproject
-        ON api_topicsproject.researchTopic = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'researchTopic' AND
-        api_useremailpreferences.type = '1'
-        JOIN api_project
-        ON api_project.id = api_topicsproject.project_id
-        JOIN api_puser
-        ON api_puser.id = api_project.owner_id
-        WHERE
-        api_project.owner_id != api_useremailpreferences.user_id AND
-        api_project.datePosted >= %s
-        ORDER BY user_id;
+                MAX(name) AS name,
+                MAX(owner_id) AS owner_id,
+                MAX(first_name) AS first_name,
+                MAX(last_name) AS last_name,
+                MAX(datePosted) AS datePosted
+        FROM (
+            SELECT 	api_useremailpreference.id,
+                    user_id,
+                    project_id,
+                    api_project.name,
+                    api_project.owner_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_project.datePosted
+            FROM api_useremailpreference
+            JOIN api_agerangeproject
+            ON api_agerangeproject.ageRange = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'ageRange' AND
+            api_useremailpreference.type = '1'
+            JOIN api_project
+            ON api_project.id = api_agerangeproject.project_id
+            JOIN api_puser
+            ON api_puser.id = api_project.owner_id
+            WHERE
+            api_project.owner_id != api_useremailpreference.user_id AND
+            api_project.datePosted >= %s
+            UNION
+            SELECT 	api_useremailpreference.id,
+                    user_id,
+                    project_id,
+                    api_project.name,
+                    api_project.owner_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_project.datePosted
+            FROM api_useremailpreference
+            JOIN api_deliverymodeproject
+            ON api_deliverymodeproject.deliveryMode = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference.type = '1'
+            JOIN api_project
+            ON api_project.id = api_deliverymodeproject.project_id
+            JOIN api_puser
+            ON api_puser.id = api_project.owner_id
+            WHERE
+            api_project.owner_id != api_useremailpreference.user_id AND
+            api_project.datePosted >= %s
+            UNION
+            SELECT 	api_useremailpreference.id,
+                    user_id,
+                    project_id,
+                    api_project.name,
+                    api_project.owner_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_project.datePosted
+            FROM api_useremailpreference
+            JOIN api_topicsproject
+            ON api_topicsproject.researchTopic = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'researchTopic' AND
+            api_useremailpreference.type = '1'
+            JOIN api_project
+            ON api_project.id = api_topicsproject.project_id
+            JOIN api_puser
+            ON api_puser.id = api_project.owner_id
+            WHERE
+            api_project.owner_id != api_useremailpreference.user_id AND
+            api_project.datePosted >= %s
+        ) as temp
+        GROUP BY user_id, project_id
+        ORDER BY user_id, name;
         """,
         [one_month_ago, one_month_ago, one_month_ago]
     )
 
-    users_matching_preferences = UserEmailPreferences.objects.raw(
+    users_matching_preferences = UserEmailPreference.objects.raw(
         """
-        SELECT	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                api_useremailpreferences.preferenceName,
-                api_useremailpreferences.preferenceValue,
-                api_useremailpreferences.user_id,
-                api_puser.id AS matched_user_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_puser.role,
-                api_puser.location,
-                api_puser.date_joined
-        FROM api_useremailpreferences
-        JOIN api_agerangeuser
-        ON api_agerangeuser.ageRange = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'ageRange' AND
-        api_useremailpreferences.type = '2'
-        JOIN api_puser
-        ON api_puser.id = api_agerangeuser.user_id
-        WHERE
-        api_puser.id != api_useremailpreferences.user_id AND
-        api_puser.date_joined >= %s
-        UNION
-        SELECT	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                api_useremailpreferences.preferenceName,
-                api_useremailpreferences.preferenceValue,
-                api_useremailpreferences.user_id,
-                api_puser.id AS matched_user_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_puser.role,
-                api_puser.location,
-                api_puser.date_joined
-        FROM api_useremailpreferences
-        JOIN api_researchinterestuser
-        ON api_researchinterestuser.researchInterest = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'researchInterest' AND
-        api_useremailpreferences.type = '2'
-        JOIN api_puser
-        ON api_puser.id = api_researchinterestuser.user_id
-        WHERE
-        api_puser.id != api_useremailpreferences.user_id AND
-        api_puser.date_joined >= %s
-        UNION
-        SELECT	api_useremailpreferences.id,
-                api_useremailpreferences.type,
-                api_useremailpreferences.preferenceName,
-                api_useremailpreferences.preferenceValue,
-                api_useremailpreferences.user_id,
-                api_puser.id AS matched_user_id,
-                api_puser.first_name,
-                api_puser.last_name,
-                api_puser.role,
-                api_puser.location,
-                api_puser.date_joined
-        FROM api_useremailpreferences
-        JOIN api_deliverymodeuser
-        ON api_deliverymodeuser.deliveryMode = api_useremailpreferences.preferenceValue AND
-        api_useremailpreferences.preferenceName = 'deliveryMode' AND
-        api_useremailpreferences.type = '2'
-        JOIN api_puser
-        ON api_puser.id = api_deliverymodeuser.user_id
-        WHERE
-        api_puser.id != api_useremailpreferences.user_id AND
-        api_puser.date_joined >= %s
-        ORDER BY user_id;
+        SELECT	MAX(id) as id,
+                user_id,
+                matched_user_id,
+                MAX(first_name) as first_name,
+                MAX(last_name) as last_name,
+                MAX(role) as role,
+                MAX(location) as location,
+                MAX(date_joined) as date_joined
+        FROM (
+            SELECT	api_useremailpreference.id,
+                    api_useremailpreference.user_id,
+                    api_puser.id AS matched_user_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_puser.role,
+                    api_puser.location,
+                    api_puser.date_joined
+            FROM api_useremailpreference
+            JOIN api_agerangeuser
+            ON api_agerangeuser.ageRange = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'ageRange' AND
+            api_useremailpreference.type = '2'
+            JOIN api_puser
+            ON api_puser.id = api_agerangeuser.user_id
+            WHERE
+            api_puser.id != api_useremailpreference.user_id AND
+            api_puser.date_joined >= %s
+            UNION
+            SELECT	api_useremailpreference.id,
+                    api_useremailpreference.user_id,
+                    api_puser.id AS matched_user_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_puser.role,
+                    api_puser.location,
+                    api_puser.date_joined
+            FROM api_useremailpreference
+            JOIN api_researchinterestuser
+            ON api_researchinterestuser.researchInterest = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'researchInterest' AND
+            api_useremailpreference.type = '2'
+            JOIN api_puser
+            ON api_puser.id = api_researchinterestuser.user_id
+            WHERE
+            api_puser.id != api_useremailpreference.user_id AND
+            api_puser.date_joined >= %s
+            UNION
+            SELECT	api_useremailpreference.id,
+                    api_useremailpreference.user_id,
+                    api_puser.id AS matched_user_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_puser.role,
+                    api_puser.location,
+                    api_puser.date_joined
+            FROM api_useremailpreference
+            JOIN api_deliverymodeuser
+            ON api_deliverymodeuser.deliveryMode = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference.type = '2'
+            JOIN api_puser
+            ON api_puser.id = api_deliverymodeuser.user_id
+            WHERE
+            api_puser.id != api_useremailpreference.user_id AND
+            api_puser.date_joined >= %s
+        ) as temp
+        GROUP BY user_id, matched_user_id
+        ORDER BY user_id, first_name, last_name;
         """,
         [one_month_ago, one_month_ago, one_month_ago]
     )
 
-    print(len(projects_matching_preferences))
-    for project in projects_matching_preferences:
-        row = "%s %s %s %s %s %s %s %s %s %s %s" % (project.id, project.type, project.preferenceName, project.preferenceValue, project.user_id, project.project_id, project.name, project.owner_id, project.first_name, project.last_name, project.datePosted)
-        print(row)
+    user_emails = build_emails(projects_matching_preferences, users_matching_preferences)
 
-    print("##############################")
+    # Get the email addresses of each user
+    user_ids = list(user_emails.keys())
+    users = PUser.public_objects.filter(pk__in=user_ids)
 
-    print(len(users_matching_preferences))
-    for user in users_matching_preferences:
-        row = "%s %s %s %s %s %s %s %s %s %s %s" % (user.id, user.type, user.preferenceName, user.preferenceValue, user.user_id, user.matched_user_id, user.first_name, user.last_name, user.role, user.location, user.date_joined)
-        print(row)
-
-
-def send_monthly_emails():
-    plaintext = get_template('email.txt')
-    htmly = get_template('email.html')
-    subject = 'PRYDE Connect Monthly Digest'
-    from_email = 'prydeconnect@cornell.edu'
-
-    for user in PUser.public_objects.filter(receiveEmails=True):
-        print(user.email)
+    for user in users:
+        plaintext = get_template("newsletter.txt")
+        htmly = get_template("newsletter.html")
+        month = current_date.strftime('%B')
+        subject = "PRYDE Connect %s Newsletter" % month
+        from_email = "prydeconnect@cornell.edu"
         to = user.email
 
         data = {
-            'first_name': user.first_name,
-            'last_name': user.last_name,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "content": user_emails[user.id]
         }
+
         text_content = plaintext.render(data)
         html_content = htmly.render(data)
 
