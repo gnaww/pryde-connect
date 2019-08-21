@@ -72,9 +72,8 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'django.core.management.call_command', ['python manage.py runcrons --force']),
-    # ('*/2 * * * *', 'api.crons.my_scheduled_job'),
-    # ('*/1 * * * *', 'api.crons.my_scheduled_job', '>> /Users/barrondubois/desktop/TEST.txt'),
+    # send monthly news letters at 9 AM on the first of every month
+    ('0 9 1 * *', 'api.cron_wrapper.send_emails_wrapper')
 ]
 
 
@@ -139,7 +138,6 @@ REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_fra
 # allauth stuff
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
 AUTH_USER_MODEL = 'api.PUser' # set AUTH_USER_MODEL to our user model
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -164,6 +162,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
+    # middleware for django-cors-headers
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
@@ -173,7 +172,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # middleware for django-cors-headers
 ]
 
 ROOT_URLCONF = 'pryde_backend.urls'
