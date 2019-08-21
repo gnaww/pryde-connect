@@ -78,6 +78,10 @@
     letter-spacing: 0.1em;
 }
 
+.textInput:focus {
+    outline: none;
+}
+
 .loginButton {
     width: 200px;
     height: 56px;
@@ -100,6 +104,10 @@
     background: none;
     color: #49AEE9;
     box-shadow: inset #49AEE9 0px 0px 0px 2px;
+}
+
+.loginButton:focus {
+    outline: none;
 }
 
 .loginForm {
