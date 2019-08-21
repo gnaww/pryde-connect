@@ -1,6 +1,6 @@
 from rest_framework import generics, status
 from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, EmailPreferenceSerializer
-from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser, UserEmailPreferences
+from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser, UserEmailPreference
 from allauth.account.models import EmailAddress
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
@@ -141,7 +141,7 @@ class GetEmailPreferences(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         user = PUser.public_objects.get(pk=request.user.pk)
-        preferences = UserEmailPreferences.objects.filter(user=user)
+        preferences = UserEmailPreference.objects.filter(user=user)
         serializer = EmailPreferenceSerializer(preferences, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -153,14 +153,14 @@ class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            if UserEmailPreferences.objects.filter(user=request.user.pk).exists():
-                UserEmailPreferences.objects.filter(user=request.user.pk).delete()
+            if UserEmailPreference.objects.filter(user=request.user.pk).exists():
+                UserEmailPreference.objects.filter(user=request.user.pk).delete()
 
             user = PUser.public_objects.get(pk=request.user.pk)
 
             for preference in request.data['preferences']:
                 print(preference)
-                UserEmailPreferences.objects.create(
+                UserEmailPreference.objects.create(
                     user = user,
                     type = preference['type'],
                     preferenceName = preference['name'],
@@ -180,8 +180,8 @@ class DeleteEmailPreferences(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            if UserEmailPreferences.objects.filter(user=request.user.pk).exists():
-                UserEmailPreferences.objects.filter(user=request.user.pk).delete()
+            if UserEmailPreference.objects.filter(user=request.user.pk).exists():
+                UserEmailPreference.objects.filter(user=request.user.pk).delete()
                 return Response({'message': 'Successfully unsubscribed from all emails.'}, status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response({'message': 'You are already unsubscribed from all emails.'}, status=status.HTTP_404_NOT_FOUND)

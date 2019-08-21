@@ -87,7 +87,7 @@ class ResearchInterestUser(Model):
     researchInterest = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Research Interest'
+        verbose_name = 'user research interest'
         verbose_name_plural = 'User Research Interests'
 
     def __str__(self):
@@ -99,7 +99,7 @@ class DeliveryModeUser(Model):
     deliveryMode = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Delivery Mode'
+        verbose_name = 'user delivery mode'
         verbose_name_plural = 'User Delivery Modes'
 
     def __str__(self):
@@ -111,7 +111,7 @@ class AgeRangeUser(Model):
     ageRange = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Age Range'
+        verbose_name = 'user age range'
         verbose_name_plural = 'User Age Ranges'
 
     def __str__(self):
@@ -147,7 +147,7 @@ class TopicsProject(Model):
     researchTopic = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Research Topic'
+        verbose_name = 'project research topic'
         verbose_name_plural = 'Project Research Topics'
 
     def __str__(self):
@@ -159,7 +159,7 @@ class DeliveryModeProject(Model):
     deliveryMode = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Delivery Mode'
+        verbose_name = 'project delivery mode'
         verbose_name_plural = 'Project Delivery Modes'
 
     def __str__(self):
@@ -171,7 +171,7 @@ class AgeRangeProject(Model):
     ageRange = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Age Range'
+        verbose_name = 'project age range'
         verbose_name_plural = 'Project Age Ranges'
 
     def __str__(self):
@@ -187,11 +187,14 @@ class Collaborator(Model):
     showProjectOnProfile = models.BooleanField(default=True)
 
 
-class UserEmailPreferences(Model):
+class UserEmailPreference(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     type = EnumField(choices=[("1", "project"), ("2", "user")])
     preferenceName = models.CharField(max_length=100)
     preferenceValue = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = 'User Email Preferences'
 
 
 class File(Model):
@@ -200,8 +203,8 @@ class File(Model):
     file_name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Additional Project File'
-        verbose_name_plural = 'Additional Project File'
+        verbose_name = 'additional project file'
+        verbose_name_plural = 'Additional Project Files'
 
     def __str__(self):
         return "%s: %s" % (self.file_name, self.project)
