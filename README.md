@@ -1,1 +1,1 @@
-# pryde-website
+# PRYDE Connect

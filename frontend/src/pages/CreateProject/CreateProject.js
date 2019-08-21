@@ -142,7 +142,6 @@ class CreateProject extends Component {
         if (this.props.editing === true) {
             try {
                 await api.updateProject(this.props.editProjectData.id, project);
-                // TODO: may need to implement better error handling when adding collabs/project/files
                 if (project.editCollaboratorsPermission) {
                     const { addedCollaborators, updatedCollaborators, deletedCollaborators } = identifyCollaboratorChanges(data.collaborators, data.initialCollaborators);
                     addedCollaborators.forEach(async added => {
@@ -170,7 +169,6 @@ class CreateProject extends Component {
             }
         } else {
             try {
-                // TODO: may need to implement better error handling when adding collabs/project/files
                 let createdProject = await api.createProject(project);
                 data.collaborators.forEach(async collaborator => {
                     const c = {

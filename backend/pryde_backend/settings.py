@@ -68,31 +68,25 @@ INSTALLED_APPS = [
 
     'django_mysql',
     'django_cleanup.apps.CleanupConfig',
-    'django_cron',
     'django_crontab',
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'django.core.management.call_command', ['python manage.py runcrons --force']),
-    # ('*/2 * * * *', 'api.crons.my_scheduled_job'),
-    # ('*/1 * * * *', 'api.crons.my_scheduled_job', '>> /Users/barrondubois/desktop/TEST.txt'),
+    # send monthly news letters at 9 AM on the first of every month
+    ('0 9 1 * *', 'api.cron_wrapper.send_emails_wrapper')
 ]
-CRON_CLASSES = [
-    'api.crons.TestCronJob',
-]
-
-
 
 
 # Additional Settings
+
 # to require the user's old password when they try to change
 OLD_PASSWORD_FIELD_ENABLED = True
 # to keep user logged in after password change
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 # CORS Settings
-# this should be set to false in production... allows any server to hit our backend which is not okay... only our
-# frontend server should be allowed to send requests to our backend
+# TODO: this should be set to false in production... allows any server to hit our backend which is not okay... only our
+# TODO: frontend server should be allowed to send requests to our backend
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
@@ -100,6 +94,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8081',
     'http://localhost:3000',
 )
+
 # whenever we create additional headers for our requests
 # they need to go here!!!!
 CORS_ALLOW_HEADERS = default_headers + (
@@ -116,12 +111,9 @@ CORS_ALLOW_CREDENTIALS = True
 ATOMIC_REQUESTS = True
 
 
-
 # set site_id to 1 for allauth/rest-auth
 SITE_ID = 1
 
-# set AUTH_USER_MODEL to our user model
-AUTH_USER_MODEL = 'api.PUser'
 
 # settings for rest framework
 REST_FRAMEWORK = {
@@ -139,14 +131,14 @@ REST_FRAMEWORK = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.custom_register.serializers.CustomRegisterSerializer',
 }
-ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
 
 REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
 
 
-
 # allauth stuff
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
+AUTH_USER_MODEL = 'api.PUser' # set AUTH_USER_MODEL to our user model
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -170,6 +162,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 MIDDLEWARE = [
+    # middleware for django-cors-headers
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
@@ -179,7 +172,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # middleware for django-cors-headers
 ]
 
 ROOT_URLCONF = 'pryde_backend.urls'

@@ -37,23 +37,34 @@ const navigationOptions = [
     }
 ];
 
-const ReviewFinish = () => (
-    <div className={styles.finishPage}>
-        {
-            navigationOptions.map((nav, index) => {
-                return (
-                    <Link className={styles.roleLink} key={index} to={nav.link}>
-                        <img
-                            className={nav.styling}
-                            src={nav.img}
-                            alt={nav.alt}
-                        />
-                        <p>{nav.text}</p>
-                    </Link>
-                );
-            })
-        }
-    </div>
-);
+const ReviewFinish = props => {
+    if (!props.editing) {
+        return (
+            <div className={styles.finishPage}>
+                <h1 className={styles.createProfile}>Confirm your email address</h1>
+                <h2 className={styles.subtitle}>A confirmation email has been sent to <b>{props.email}</b>. Click on the confirmation link in the email to activate your account.</h2>
+            </div>
+        );
+    } else {
+        return (
+            <div className={styles.finishPage}>
+                {
+                    navigationOptions.map((nav, index) => {
+                        return (
+                            <Link className={styles.roleLink} key={index} to={nav.link}>
+                                <img
+                                    className={nav.styling}
+                                    src={nav.img}
+                                    alt={nav.alt}
+                                />
+                                <p>{nav.text}</p>
+                            </Link>
+                        );
+                    })
+                }
+            </div>
+        );
+    }
+};
 
 export default ReviewFinish;

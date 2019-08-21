@@ -126,24 +126,24 @@ class Filter(generics.ListAPIView):
 
         else:
 
-            filtered_set = PUser.objects.filter(is_staff=False)
+            filtered_set = PUser.public_objects.all()
 
             if 'q' in request.data:
 
                 queries = request.data['q'].split()
 
-                search_query_set = PUser.objects.none()
+                search_query_set = PUser.public_objects.none()
 
                 for query in queries:
-                    search_filtered_set = PUser.objects.filter(first_name__icontains=query) \
-                                          | PUser.objects.filter(last_name__icontains=query) \
-                                          | PUser.objects.filter(researchDescription__icontains=query) \
-                                          | PUser.objects.filter(researchNeeds__icontains=query) \
-                                          | PUser.objects.filter(location__icontains=query) \
-                                          | PUser.objects.filter(email__icontains=query)
+                    search_filtered_set = PUser.public_objects.filter(first_name__icontains=query) \
+                                          | PUser.public_objects.filter(last_name__icontains=query) \
+                                          | PUser.public_objects.filter(researchDescription__icontains=query) \
+                                          | PUser.public_objects.filter(researchNeeds__icontains=query) \
+                                          | PUser.public_objects.filter(location__icontains=query) \
+                                          | PUser.public_objects.filter(email__icontains=query)
                     interest_relationships = ResearchInterestUser.objects.filter(researchInterest__icontains=query)
                     for relationship in interest_relationships:
-                        search_filtered_set = search_filtered_set | PUser.objects.filter(pk=relationship.user.pk)
+                        search_filtered_set = search_filtered_set | PUser.public_objects.filter(pk=relationship.user.pk)
 
                     search_query_set = search_query_set | search_filtered_set
 
@@ -151,7 +151,7 @@ class Filter(generics.ListAPIView):
 
             if 'researchinterest' in request.data:
 
-                filtered_researchinterest_set = PUser.objects.none()
+                filtered_researchinterest_set = PUser.public_objects.none()
                 research_interests = request.data['researchinterest']
                 if type(research_interests) == str:
                     research_interests = [research_interests]
@@ -172,19 +172,19 @@ class Filter(generics.ListAPIView):
                         interest_relationships = ResearchInterestUser.objects.exclude(researchInterest__in=researchInterests)
                         for relationship in interest_relationships:
                             filtered_researchinterest_set = filtered_researchinterest_set |\
-                                                            PUser.objects.filter(pk=relationship.user.pk)
+                                                            PUser.public_objects.filter(pk=relationship.user.pk)
 
                     else:
                         interest_relationships = ResearchInterestUser.objects.filter(researchInterest=interest)
                         for relationship in interest_relationships:
                             filtered_researchinterest_set = filtered_researchinterest_set |\
-                                                            PUser.objects.filter(pk=relationship.user.pk)
+                                                            PUser.public_objects.filter(pk=relationship.user.pk)
 
 
                 filtered_set = filtered_set & filtered_researchinterest_set
 
             if 'location' in request.data:
-                filtered_location_set = PUser.objects.none()
+                filtered_location_set = PUser.public_objects.none()
                 locations = request.data['location']
                 if type(locations) == str:
                     locations = [locations]
@@ -210,17 +210,17 @@ class Filter(generics.ListAPIView):
                             'Yates County, NY'
                         ]
                         filtered_location_set = filtered_location_set |\
-                                                    PUser.objects.exclude(location__in=location_options)
+                                                    PUser.public_objects.exclude(location__in=location_options)
 
                     else:
                         location_formatted = location + ' County, NY'
                         filtered_location_set = filtered_location_set |\
-                                                PUser.objects.filter(location=location_formatted)
+                                                PUser.public_objects.filter(location=location_formatted)
 
                 filtered_set = filtered_set & filtered_location_set
 
             if 'ageranges' in request.data:
-                filtered_ageRanges_set = PUser.objects.none()
+                filtered_ageRanges_set = PUser.public_objects.none()
                 ageRanges = request.data['ageranges']
                 if type(ageRanges) == str:
                     ageRanges = [ageRanges]
@@ -228,7 +228,7 @@ class Filter(generics.ListAPIView):
                     age_relationships = AgeRangeUser.objects.filter(ageRange=agerange)
                     for age_relationship in age_relationships:
                         filtered_ageRanges_set = filtered_ageRanges_set |\
-                                                    PUser.objects.filter(pk=age_relationship.user.pk)
+                                                    PUser.public_objects.filter(pk=age_relationship.user.pk)
 
                 filtered_set = filtered_set & filtered_ageRanges_set
 

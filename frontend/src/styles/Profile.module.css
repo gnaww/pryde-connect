@@ -4,7 +4,7 @@
 
 .profileHeaderPractitioner {
     width: 100%;
-    padding: 60px 0;
+    padding: 40px 0;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -16,38 +16,80 @@
     background: linear-gradient(180deg, #99D85D 0%, #78C130 100%);
 }
 
-.buttonWrapper {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: -44px;
+.manageProfile {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    background: white;
+    border: none;
+    margin-left: 30px;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #99D85D;
+}
+
+.manageProfileBlue {
+    composes: manageProfile;
+    color: #49AEE9;
+}
+
+.manageProfile:focus, .manageProfileBlue:focus {
+    outline: none;
+}
+
+.manageProfile path {
+    stroke: #99D85D;
+}
+
+.manageProfileBlue path {
+    stroke: #49AEE9;
+}
+
+.manageProfile svg {
+    margin-right: 10px;
+}
+
+.buttonIcon {
+    margin-right: 10px;
+    width: 25px;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 .editButton {
-    border: none;
-    background: none;
-    padding: 0;
-    margin-left: 30px;
-    cursor: pointer;
     height: 100%;
-    width: 110px;
+    display: flex;
+    align-items: center;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #99D85D;
+    text-decoration: none;
 }
 
-.editButton:focus {
-    outline: none;
-}
-
-.deleteButton {
+.editButtonBlue {
     composes: editButton;
-    width: 145px;
+    color: #49AEE9;
 }
 
-.deleteButton:focus {
-    outline: none;
+.preferences {
+    composes: editButton;
+    color: black;
 }
 
-.buttonWrapper {
-    height: 44px;
+.deleteProfile {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #F62B2B;
 }
 
 .profilePicture {

@@ -19,7 +19,6 @@ class ProfilePictureModal extends Component {
 
     handleInputChange = event => {
         this.setState({ showPreview: true, profilePicture: event.target.files[0] });
-        console.log(event.target.files[0])
         const preview = document.getElementById('preview');
         preview.src = URL.createObjectURL(event.target.files[0]);
     }
