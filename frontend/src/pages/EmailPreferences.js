@@ -123,14 +123,18 @@ class EmailPreferences extends Component {
             formatPreferencesArray(userResearchInterests, projectResearchTopics, "researchInterest", "researchTopic")
         );
 
-        api.updateEmailPreferences(preferences)
-            .then(response => {
-                this.setState({ successMessage: "Email preferences successfully saved." });
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ errorMessage: Object.values(error.response.data)[0] });
-            });
+        if (preferences.length !== 0) {
+            api.updateEmailPreferences(preferences)
+                .then(response => {
+                    this.setState({ successMessage: "Email preferences successfully saved." });
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({ errorMessage: Object.values(error.response.data)[0] });
+                });
+        } else {
+            this.setState({ errorMessage: "At least one preference must be selected." });
+        }
     }
 
     unsubscribe = () => {
@@ -233,6 +237,9 @@ class EmailPreferences extends Component {
                 <h1 className={styles.title}>
                     Update email preferences
                 </h1>
+                <h2 className={styles.description}>
+                    Selecting a preference means you will be opting into monthly emails notifying you of new users and/or projects that match your selected preferences. You may unsubscribe at any time.
+                </h2>
                 {
                     this.state.successMessage &&
                     <p className={styles.successMessage}>{this.state.successMessage}</p>
@@ -270,7 +277,7 @@ class EmailPreferences extends Component {
                             }
                         }}
                     >
-                        CLEAR SELECTIONS
+                        CLEAR { this.state.tabValue === 0 ? "USER" : "PROJECT" } PREFERENCES
                     </button>
                 </div>
                 {
