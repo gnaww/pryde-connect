@@ -13,22 +13,18 @@ class MapContainer extends Component {
             position: 'relative'
         }
         const parsedURL = queryString.parse(this.props.values, { arrayFormat: "comma" });
-        console.log(this.props.values);
         let counties = parsedURL.location;
         if (counties === undefined) {
             counties = [];
         } else if (typeof counties === "string") {
             counties = [counties];
         }
-        console.log(counties);
         return (
             <div style={style}>
                 {
                     Counties.map((c, index) => {
                         {
                             let clicked = counties.includes(c.countyName);
-                            console.log(clicked);
-                            console.log(c.countyName);
                             return (<County
                                 key={index}
                                 StateSvg={c.countyImg}
@@ -42,11 +38,6 @@ class MapContainer extends Component {
                                 handleCountyClicked={this.props.handleChange}
                             />)
                         }
-                    })
-                }
-                {
-                    counties.map((c, index) => {
-                        return <p>{c}</p>
                     })
                 }
             </div>
