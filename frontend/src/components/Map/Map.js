@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import County from './CountyButton';
 import { Counties } from './Counties';
+import queryString from 'query-string';
 
 
 class MapContainer extends Component {
@@ -11,14 +12,23 @@ class MapContainer extends Component {
             marginBottom: '15px',
             position: 'relative'
         }
-        let counties = Array.from(this.props.values === undefined ? [] : this.props.values);
+        const parsedURL = queryString.parse(this.props.values, { arrayFormat: "comma" });
+        console.log(this.props.values);
+        let counties = parsedURL.location;
+        if (counties === undefined) {
+            counties = [];
+        } else if (typeof counties === "string") {
+            counties = [counties];
+        }
+        console.log(counties);
         return (
             <div style={style}>
                 {
                     Counties.map((c, index) => {
                         {
-                            let clicked = counties.includes(c.altText);
-                            let color = clicked ? "orange" : "white";
+                            let clicked = counties.includes(c.countyName);
+                            console.log(clicked);
+                            console.log(c.countyName);
                             return (<County
                                 key={index}
                                 StateSvg={c.countyImg}
@@ -28,9 +38,15 @@ class MapContainer extends Component {
                                 top={c.top}
                                 left={c.left}
                                 clicked={clicked}
-                                onClick={this.props.onClick}
+                                color={clicked ? "white" : "orange"}
+                                handleCountyClicked={this.props.handleChange}
                             />)
                         }
+                    })
+                }
+                {
+                    counties.map((c, index) => {
+                        return <p>{c}</p>
                     })
                 }
             </div>

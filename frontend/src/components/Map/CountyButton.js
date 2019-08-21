@@ -1,13 +1,14 @@
 import React from 'react';
+import styles from './color.module.css';
 
 export default class County extends React.Component {
     handleOnClick = () => {
-        let { clicked, altText, onClick } = this.props;
-        onClick({
+        let { clicked, altText, handleCountyClicked } = this.props;
+        handleCountyClicked({
             target: {
                 name: "location",
                 value: altText,
-                checked: clicked
+                checked: !clicked
             }
         });
     }
@@ -23,7 +24,7 @@ export default class County extends React.Component {
                     left: `${left}px`,
                 }}
             >
-                <StateSvg onClick={this.handleOnClick} color={clicked ? "orange" : "white"} />
+                <StateSvg onClick={this.handleOnClick} className={clicked ? styles.c12 : null} color={"white"} />
             </div >
         );
     }
