@@ -1,0 +1,29 @@
+<h3>Hello {{ first_name }} {{ last_name }}! Welcome to your PRYDE Connect monthly newsletter.</h3>
+
+{% if content.users %}
+    <p>In the past month, <b>{{ content.users|length }}</b> users matching your preferences have joined PRYDE Connect:</p>
+    <ul>
+        {% for user in content.users %}
+        <li>
+            <a href="http://localhost:3000/user/{{ user.id }}">{{ user.name }}</a>, a {{ user.role }} located at {{ user.location }} - joined {{ user.date_joined }}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>In the past month no users matching your preferences have joined PRYDE Connect.</p>
+{% endif %}
+
+{% if content.projects %}
+    <p>In the past month, <b>{{ content.projects|length }}</b> projects matching your preferences have been posted:</p>
+    <ul>
+        {% for project in content.projects %}
+        <li>
+            <a href="http://localhost:3000/project/{{ project.id }}">{{ project.name }}</a> by <a href="http://localhost:3000/user/{{ project.owner_id }}">{{ project.owner_name }}</a> - posted on {{ project.date_posted }}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>In the past month no projects matching your preferences have been posted.</p>
+{% endif %}
+
+<p><i>If you no longer want to receive emails from us, you can unsubscribe <a href="http://localhost:3000/preferences">here</a> (must be logged in).</i></p>

@@ -5,6 +5,11 @@
     height: 100%;
 }
 
+.emailPreferenceWrapper {
+    composes: loginWrapper;
+    padding: 30px 100px;
+}
+
 .loginGraphic {
     position: absolute;
     height: 500px;
@@ -36,7 +41,7 @@
     right: -250px;
 }
 
-.joinOurCommunity {
+.title {
     font-family: Work Sans;
     font-weight: bold;
     font-size: 40px;
@@ -48,7 +53,7 @@
     color: black;
 }
 
-.loginToCreate {
+.subtitle {
     font-family: Work Sans;
     font-weight: normal;
     font-size: 25px;
@@ -73,6 +78,10 @@
     letter-spacing: 0.1em;
 }
 
+.textInput:focus {
+    outline: none;
+}
+
 .loginButton {
     width: 200px;
     height: 56px;
@@ -95,6 +104,10 @@
     background: none;
     color: #49AEE9;
     box-shadow: inset #49AEE9 0px 0px 0px 2px;
+}
+
+.loginButton:focus {
+    outline: none;
 }
 
 .loginForm {
@@ -136,4 +149,71 @@
     color: red;
     text-align: center;
     font-size: 22px;
+}
+
+.successMessage {
+    composes: errorMessage;
+    color: #1fbf37;
+}
+
+.tabMenu {
+    margin-bottom: 15px;
+}
+
+.tabMenu button span {
+    font-size: 26px;
+    font-family: Lato;
+    letter-spacing: 0.1em;
+}
+
+.questionsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.question {
+    flex: 1;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.unsubscribe {
+    background: white;
+    border: none;
+    border-radius: 5px;
+    border: 2px solid #F62B2B;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    padding: 12px;
+    cursor: pointer;
+    color: #F62B2B;
+}
+
+.unsubscribe:focus, .update:focus {
+    outline: none;
+}
+
+.update {
+    composes: unsubscribe;
+    color: white;
+    background: #49AEE9;
+    border: 2px solid #49AEE9;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.description {
+    composes: subtitle;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }

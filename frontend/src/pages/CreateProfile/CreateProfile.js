@@ -36,7 +36,7 @@ let pages = [
         content: UploadProPic
     },
     {
-        subtitle: "You can edit your answers to these questions at anytime through your profile page.",
+        subtitle: "",
         content: ReviewFinish
     }
 ];
@@ -58,7 +58,7 @@ let editPages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "You can edit your answers to these questions at anytime through your profile page.",
+        subtitle: "You can edit your answers to these questions again at anytime through your profile page.",
         content: ReviewFinish
     }
 ];
@@ -128,7 +128,7 @@ class CreateProfile extends Component {
                             // failed to create/update profile
                             let pageDataCopy = Array.from(this.state.pageData);
                             pageDataCopy[this.state.page] = data;
-                            this.setState({ pageData: pageDataCopy, page: confirmationPage - 1 });
+                            this.setState({ pageData: pageDataCopy });
                             if (this.props.editing) {
                                 alert(response.message ? response.message : "There was an error updating your profile. Please try again and make sure all questions are filled out properly.");
                             } else {
@@ -199,7 +199,6 @@ class CreateProfile extends Component {
 
             try {
                 let response = await api.register(user);
-                localStorage.setItem("pryde_key", response.data.key);
                 if (data[4].profilePicture) {
                     let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
                     return { success: profilePictureResponse, message: "" };
@@ -234,8 +233,18 @@ class CreateProfile extends Component {
         if (editing) {
             title = this.state.page === editPages.length - 1 ? "Your profile was successfully updated." : "Edit your profile"
         } else {
-            title = this.state.page === pages.length - 1 ? "Thank you! Your profile was successfully created." : "Create a profile"
+            title = "Create a profile"
         }
+
+        let lastQuestionPage = editing ? editPages.length - 2 : pages.length - 2;
+        if (editing === true) {
+            if (this.state.pageData[1] && this.state.pageData[1].role === "Researcher") {
+                lastQuestionPage = editPages.length - 3;
+            } else if (this.state.pageData[1] && this.state.pageData[1].role === "Practitioner") {
+                lastQuestionPage = editPages.length - 2;
+            }
+        }
+
         const NUM_PAGES = editing ? editPages.length : pages.length;
         const pageContentProps = {
             savedData: this.state.pageData[this.state.page],
@@ -243,13 +252,20 @@ class CreateProfile extends Component {
             onSubmitData: this.handleOnSubmitData,
             editing: editing,
             setRECAPTCHAToken: this.setRECAPTCHAToken,
-            errorSubmitting: this.state.errorSubmitting
+            errorSubmitting: this.state.errorSubmitting,
+            email: this.state.pageData[0] ? this.state.pageData[0].email : ""
         };
 
         return (
             <div className={styles.root} >
-                <h1 className={styles.createProfile}>{title}</h1>
-                <h2 className={styles.subtitle}>{editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle}</h2>
+                {
+                    // don't show title/subtitle on confirmation page for sign up
+                    !(!editing && this.state.page === pages.length - 1) &&
+                    <>
+                        <h1 className={styles.createProfile}>{title}</h1>
+                        <h2 className={styles.subtitle}>{editing ? editPages[this.state.page].subtitle : pages[this.state.page].subtitle}</h2>
+                    </>
+                }
                 <PageContent {...pageContentProps} />
                 <div className={styles.buttons}>
                     {
@@ -257,11 +273,11 @@ class CreateProfile extends Component {
                         (<input className={styles.backButton} type="submit" value="BACK" onClick={this.handleBack} />)
                     }
                     {
-                        this.state.page < NUM_PAGES - 2 &&
+                        this.state.page < lastQuestionPage &&
                         (<input className={styles.nextButton} type="submit" value="NEXT" onClick={this.handleNext} />)
                     }
                     {
-                        this.state.page === NUM_PAGES - 2 &&
+                        this.state.page === lastQuestionPage &&
                         (<input className={styles.nextButton} type="submit" value="FINISH" onClick={this.handleNext} disabled={this.state.RECAPTCHAToken === null && !this.props.editing} />)
                     }
                 </div>

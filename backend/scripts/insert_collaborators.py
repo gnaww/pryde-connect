@@ -36,7 +36,7 @@ def get_projects_from_user():
     return project_ids, key
 
 
-def get_list_users():
+def get_user_ids():
     url = 'http://localhost:8000/api/v1/users/'
     users = requests.request("GET", url).json()
 
@@ -45,8 +45,8 @@ def get_list_users():
     return user_ids
 
 
-def add_collaborators():
-    user_ids = get_list_users()
+def insert_collaborators():
+    user_ids = get_user_ids()
     tuple = get_projects_from_user()
     project_ids = tuple[0]
     key = tuple[1]
@@ -72,4 +72,4 @@ def add_collaborators():
             print(requests.request("POST", url, data=json.dumps(body), headers=headers).json())
 
 
-add_collaborators()
+insert_collaborators()

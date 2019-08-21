@@ -5,7 +5,6 @@
   "dependencies": {
     "@material-ui/core": "^4.1.0",
     "axios": "^0.19.0",
-    "google-map-react": "^1.1.4",
     "lodash.isequal": "^4.5.0",
     "normalize-url": "^4.3.0",
     "phone": "^2.3.17",
@@ -15,7 +14,8 @@
     "react-google-recaptcha": "^2.0.0-rc.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "react-select": "^3.0.4"
+    "react-select": "^3.0.4",
+    "react-svgmt": "^1.1.8"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -2,7 +2,13 @@ from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator, TopicsProject, \
-    DeliveryModeProject, ResearchInterestUser, File
+    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject, UserEmailPreference
+
+
+class EmailPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEmailPreference
+        exclude = ['id', 'user']
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -63,7 +69,8 @@ class ProjectShortSerializer(serializers.ModelSerializer):
         return obj.get_status_display()
 
     def get_ageRanges(self, obj):
-        return obj.ageRanges
+        ages = AgeRangeProject.objects.filter(project=obj)
+        return [age.ageRange for age in ages]
 
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)
@@ -115,17 +122,19 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_role_display()
 
     def get_researchInterests(self, obj):
-            interests = ResearchInterestUser.objects.filter(user=obj)
-            return [interest.researchInterest for interest in interests]
+        interests = ResearchInterestUser.objects.filter(user=obj)
+        return [interest.researchInterest for interest in interests]
+
+    def get_ageRanges(self, obj):
+        ages = AgeRangeUser.objects.filter(user=obj)
+        return [age.ageRange for age in ages]
+
+    def get_deliveryModes(self, obj):
+        modes = DeliveryModeUser.objects.filter(user=obj)
+        return [mode.deliveryMode for mode in modes]
 
     def get_roles(self, obj):
         return obj.roles
-
-    def get_ageRanges(self, obj):
-        return obj.ageRanges
-
-    def get_deliveryModes(self, obj):
-        return obj.deliveryModes
 
 
 class LoggedInUserSerializer(UserSerializer):
@@ -191,14 +200,15 @@ class ProjectSerializer(serializers.ModelSerializer):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
         for collaborator in collaborator_queryset:
-            collaborators.append(UserShortSerializer(PUser.objects.get(email=collaborator.collaborator)).data)
+            collaborators.append(UserShortSerializer(PUser.public_objects.get(pk=collaborator.collaborator.pk)).data)
         return collaborators
 
     def get_status(self, obj):
         return obj.get_status_display()
 
     def get_ageRanges(self, obj):
-        return obj.ageRanges
+        ages = AgeRangeProject.objects.filter(project=obj)
+        return [age.ageRange for age in ages]
 
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)
@@ -226,16 +236,16 @@ class CollaboratorSerializer(serializers.ModelSerializer):
         fields = ['pk', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'email', 'first_name', 'last_name']
 
     def get_pk(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).pk
+        return PUser.public_objects.get(pk=obj.collaborator.pk).pk
 
     def get_first_name(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).first_name
+        return PUser.public_objects.get(pk=obj.collaborator.pk).first_name
 
     def get_last_name(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).last_name
+        return PUser.public_objects.get(pk=obj.collaborator.pk).last_name
 
     def get_email(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).email
+        return PUser.public_objects.get(pk=obj.collaborator.pk).email
 
 
 class CollaboratorSearchSerializer(serializers.ModelSerializer):

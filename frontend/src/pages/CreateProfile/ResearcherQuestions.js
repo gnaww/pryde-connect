@@ -140,7 +140,7 @@ class ResearcherQuestions extends Component {
     getQAComponent = (qa, index) => {
         const defaultLocatedAtCornell = this.state.locatedAtCornell !== null ? this.state.locatedAtCornell : "";
         return (
-            <li className={styles.numberedList} key={index}>
+            <li className={styles.question} key={index}>
                 { getDropDownQuestion(qa, this.setLocatedAtCornell, defaultLocatedAtCornell, this.errors[index]) }
                 {
                     qa.id === 0 && this.state.locatedAtCornell !== null &&

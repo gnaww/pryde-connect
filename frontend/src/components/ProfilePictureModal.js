@@ -19,24 +19,29 @@ class ProfilePictureModal extends Component {
 
     handleInputChange = event => {
         this.setState({ showPreview: true, profilePicture: event.target.files[0] });
-        console.log(event.target.files[0])
         const preview = document.getElementById('preview');
         preview.src = URL.createObjectURL(event.target.files[0]);
     }
 
     handleSubmit = event => {
         event.preventDefault();
-        api.uploadProfilePicture(this.state.profilePicture, localStorage.getItem("pryde_key"))
-            .then(response => {
-                if (response) {
-                    window.location.reload()
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                console.log(err.response.data);
-                alert("An error occurred while updating your profile picture.");
-            })
+
+        // 3 MB file size upload limit
+        if (this.state.profilePicture.size <= 3145728) {
+            api.uploadProfilePicture(this.state.profilePicture, localStorage.getItem("pryde_key"))
+                .then(response => {
+                    if (response) {
+                        window.location.reload()
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    console.log(err.response.data);
+                    alert("An error occurred while updating your profile picture.");
+                });
+        } else {
+            alert("Profile picture uploads must be less than 3 MB.");
+        }
     }
 
     componentDidMount() {

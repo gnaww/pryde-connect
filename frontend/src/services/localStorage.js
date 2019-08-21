@@ -1,5 +1,4 @@
 export function saveStateWithPath(path, state) {
-    console.log('save state with path called')
     saveState(state);
     return path;
 };

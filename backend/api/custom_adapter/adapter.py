@@ -1,5 +1,5 @@
 from allauth.account.adapter import DefaultAccountAdapter
-from ..models import ResearchInterestUser
+from ..models import ResearchInterestUser, AgeRangeUser, DeliveryModeUser
 from rest_framework.response import Response
 from rest_framework import status
 import os
@@ -22,8 +22,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.website = data.get('website')
         user.researchDescription = data.get('researchDescription')
         user.roles = data.get('roles')
-        user.ageRanges = data.get('ageRanges')
-        user.deliveryModes = data.get('deliveryModes')
         user.researchNeeds = data.get('researchNeeds')
         user.evaluationNeeds = data.get('evaluationNeeds')
         user.locatedAtCornell = data.get('locatedAtCornell')
@@ -34,5 +32,11 @@ class CustomAccountAdapter(DefaultAccountAdapter):
 
         for interest in data.get('researchInterests'):
             ResearchInterestUser.objects.create(user=user, researchInterest=interest)
+
+        for age in data.get('ageRanges'):
+            AgeRangeUser.objects.create(user=user, ageRange=age)
+
+        for mode in data.get('deliveryModes'):
+            DeliveryModeUser.objects.create(user=user, deliveryMode=mode)
 
         return user

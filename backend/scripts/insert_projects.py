@@ -16,7 +16,7 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Youth/Adult Relationships', 'alsdkfjsdlf', 'asdlfkjsdlf', 'alsdkfjlkdsj', 'alskdfjsdfl']
 
 
-deliveryModes = ['Afterschool', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
+deliveryModes = ['Afterschool programs', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
 
 ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Toddlers (2-3 years)', 'Preschoolers (3-5 years)',
@@ -58,22 +58,26 @@ def make_projects(n):
             "name": random.choice(projectNames),
             "status": random.choice([1, 2, 3]),
             "summary": "summary about the project",
-            "researchTopics": [random.choice(researchTopics), random.choice(researchTopics),
-                               random.choice(researchTopics)],
+            "researchTopics": [random.choice(researchTopics), random.choice(researchTopics), random.choice(researchTopics)],
             "ageRanges": [random.choice(ageRanges), random.choice(ageRanges)],
             "deliveryModes": [random.choice(deliveryModes), random.choice(deliveryModes)],
             "timeline": "May to August",
             "commitmentLength": "build a website",
             "incentives": "none",
             "additionalInformation": "django and react",
-            # "additionalFiles": [],
-            "alternateContact": {},
+            "alternateContact": {
+                "first_name": "",
+                "last_name": "",
+                "email": "",
+                "phone": "",
+                "website": ""
+            },
             "alternateLocation": ""
         })
     return projects
 
 
-def insert_posts():
+def insert_projects():
 
     auth_keys = login_users()
     print(auth_keys)
@@ -92,5 +96,4 @@ def insert_posts():
             print(response.json())
 
 
-insert_posts()
-
+insert_projects()

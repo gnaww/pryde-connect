@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom';
 import profilePicture from '../images/profile-picture.png';
 import CCEBadge from '../images/cce-badge.svg';
 import CornellBadge from '../images/cornell-badge.svg';
-import editButton from '../images/edit-button.svg';
-import editButtonGreen from '../images/edit-button-green.svg';
+import deleteIcon from '../images/delete-icon.svg';
 import editIcon from '../images/edit-icon.svg';
 import editIconGreen from '../images/edit-icon-green.svg';
-import deleteButton from '../images/delete-button-borderless.svg';
+import editPencil from '../images/edit-pencil-blue.svg';
+import editPencilGreen from '../images/edit-pencil-green.svg';
+import settingsIcon from '../images/settings.svg';
+import lockIcon from '../images/lock.svg';
+import editMailIcon from '../images/mail.svg';
+import { ReactComponent as DropdownArrow } from '../images/dropdown-arrow-large.svg';
 import mailIcon from '../images/mail-icon-white.svg';
 import phoneIcon from '../images/phone-icon.svg';
 import linkIcon from '../images/link-icon.svg';
@@ -17,6 +21,8 @@ import ProfilePictureModal from '../components/ProfilePictureModal';
 import { sortProjectsOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Profile.module.css';
 import api from '../services/api';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { saveStateWithPath, saveState } from '../services/localStorage';
 
 class Profile extends Component {
@@ -51,7 +57,8 @@ class Profile extends Component {
             sortBy: "",
             showModal: false,
             invalidProfile: false,
-            canEditDelete: false
+            canEditDelete: false,
+            anchorEl: null
         };
     }
 
@@ -73,6 +80,7 @@ class Profile extends Component {
         if (window.confirm("Are you sure you want to delete your account?")) {
             api.deleteUser(this.state.user.id)
                 .then(_ => {
+                    this.setState({ anchorEl: null });
                     history.push("/success", { deleteType: "profile" });
                 })
                 .catch(err => {
@@ -82,7 +90,7 @@ class Profile extends Component {
         }
     }
 
-    componentDidMount() {
+    initializeProfilePage = () => {
         const { match } = this.props;
 
         if (match.url === "/myprofile") {
@@ -103,6 +111,24 @@ class Profile extends Component {
                     console.log(err);
                 });
         }
+    }
+
+    openMenu = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    }
+
+    componentDidUpdate(prevProps, _prevState) {
+        if (prevProps.match.url !== this.props.match.url) {
+            this.initializeProfilePage();
+        }
+    }
+
+    componentDidMount() {
+        this.initializeProfilePage();
     }
 
     render() {
@@ -165,15 +191,20 @@ class Profile extends Component {
                             <header className={user.role === "Practitioner" ? styles.profileHeaderPractitioner : styles.profileHeaderResearcher}>
                                 <div className={styles.profilePicture}>
                                     <img src={profilePic} alt="Profile pic" />
-                                    <button className={styles.profilePictureEdit} onClick={this.showModal}>
-                                        {
-                                            user.role === "Practitioner" ?
-                                                <img src={editIcon} alt="Edit button" />
-                                                :
-                                                <img src={editIconGreen} alt="Edit button" />
-                                        }
-                                    </button>
-                                    <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
+                                    {
+                                        this.state.canEditDelete &&
+                                        <>
+                                            <button className={styles.profilePictureEdit} onClick={this.showModal}>
+                                                {
+                                                    user.role === "Practitioner" ?
+                                                        <img src={editIcon} alt="Edit button" />
+                                                        :
+                                                        <img src={editIconGreen} alt="Edit button" />
+                                                }
+                                            </button>
+                                            <ProfilePictureModal visible={this.state.showModal} handleClose={this.hideModal} />
+                                        </>
+                                    }
                                 </div>
                                 <div className={styles.personalInformation}>
                                     <h1>
@@ -186,28 +217,61 @@ class Profile extends Component {
                                     <h2>{user.location}</h2>
                                 </div>
                                 <div className={styles.contactInformation}>
-                                    <div className={styles.buttonWrapper}>
-                                        {
-                                            this.state.canEditDelete &&
-                                            <>
-                                                <Link
-                                                    to={saveStateWithPath("/editprofile", { userData: this.state.user })}
-                                                >
-                                                    <button className={styles.editButton}>
+                                    {
+                                        this.state.canEditDelete &&
+                                        <>
+                                            <button className={user.role === "Researcher" ? styles.manageProfile : styles.manageProfileBlue} onClick={this.openMenu}>
+                                                <DropdownArrow />
+                                                MANAGE PROFILE
+                                            </button>
+                                            <Menu
+                                                anchorEl={this.state.anchorEl}
+                                                keepMounted
+                                                open={Boolean(this.state.anchorEl)}
+                                                onClose={this.handleClose}
+                                            >
+                                                <MenuItem disableRipple onClick={this.handleClose}>
+                                                    <Link
+                                                        className={user.role === "Researcher" ? styles.editButton : styles.editButtonBlue}
+                                                        to={saveStateWithPath("/editprofile", { userData: this.state.user })}
+                                                        onClick={
+                                                            () => saveState({ userData: this.state.user })
+                                                        }
+                                                    >
                                                         {
                                                             user.role === "Practitioner" ?
-                                                                <img src={editButton} alt="Edit button" />
+                                                                <img className={styles.buttonIcon} src={editPencil} alt="Edit icon blue" />
                                                                 :
-                                                                <img src={editButtonGreen} alt="Edit button" />
+                                                                <img className={styles.buttonIcon} src={editPencilGreen} alt="Edit icon green" />
                                                         }
-                                                    </button>
-                                                </Link>
-                                                <button className={styles.deleteButton} onClick={this.handleDeleteProfile}>
-                                                    <img src={deleteButton} alt="Edit button" />
-                                                </button>
-                                            </>
-                                        }
-                                    </div>
+                                                        EDIT PROFILE
+                                                    </Link>
+                                                </MenuItem>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
+                                                    <Link className={styles.preferences} to="/preferences">
+                                                        <img className={styles.buttonIcon} src={settingsIcon} alt="Settings icon" />
+                                                        EMAIL PREFERENCES
+                                                    </Link>
+                                                </MenuItem>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
+                                                    <Link className={styles.preferences} to="/password">
+                                                        <img className={styles.buttonIcon} src={lockIcon} alt="Lock icon" />
+                                                        CHANGE PASSWORD
+                                                    </Link>
+                                                </MenuItem>
+                                                <MenuItem disableRipple onClick={this.handleClose}>
+                                                    <Link className={styles.preferences} to="/update">
+                                                        <img className={styles.buttonIcon} src={editMailIcon} alt="Lock icon" />
+                                                        UPDATE EMAIL ADDRESS
+                                                    </Link>
+                                                </MenuItem>
+                                                <MenuItem disableRipple onClick={this.handleDeleteProfile}>
+                                                    <img className={styles.buttonIcon} src={deleteIcon} alt="Delete icon" />
+                                                    <span className={styles.deleteProfile}>DELETE PROFILE</span>
+                                                </MenuItem>
+                                            </Menu>
+                                        </>
+                                    }
                                     <ul>
                                         <li>
                                             <img className={styles.contactIcon} src={mailIcon} alt="Email icon" />
