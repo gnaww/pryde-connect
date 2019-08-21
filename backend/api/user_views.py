@@ -1,6 +1,7 @@
 from rest_framework import generics, status
-from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer
-from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser
+from .serializers import UserSerializer, LoggedInUserSerializer, UserShortSerializer, EmailPreferenceSerializer
+from .models import Project, PUser, ResearchInterestUser, AgeRangeUser, DeliveryModeUser, UserEmailPreference
+from allauth.account.models import EmailAddress
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -13,12 +14,12 @@ import os
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
-    queryset = PUser.objects.filter(is_staff=False)
+    queryset = PUser.public_objects.all()
 
 
 class UserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
-    queryset = PUser.objects.filter(is_staff=False)
+    queryset = PUser.public_objects.all()
 
 
 class LoggedInUserView(generics.RetrieveAPIView):
@@ -26,9 +27,13 @@ class LoggedInUserView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ]
 
     def get(self, request, *args, **kwargs):
-        user = PUser.objects.get(pk=request.user.pk)
-        serializer = LoggedInUserSerializer(user, context={ 'request': request })
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        try:
+            user = PUser.public_objects.get(pk=request.user.pk)
+            serializer = LoggedInUserSerializer(user, context={ 'request': request })
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while retrieving your profile.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UploadOrChangeProfilePicture(generics.CreateAPIView):
@@ -40,7 +45,7 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
         try:
             # 3 MB file size upload limit
             if request.data['file'].size <= 3145728:
-                user = PUser.objects.get(pk=request.user.pk)
+                user = PUser.public_objects.get(pk=request.user.pk)
                 self.check_object_permissions(request, user)
 
                 if user.profile_picture:
@@ -61,13 +66,35 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
             return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UpdateEmail(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def put(self, request, *args, **kwargs):
+        try:
+            user = PUser.public_objects.get(pk=request.user.pk)
+            self.check_object_permissions(request, user)
+
+            user_email = EmailAddress.objects.get(user=request.user.pk)
+            user_email.change(request, request.data['email'], True)
+
+            user.email = request.data['email']
+            user.save()
+
+            return Response({'message': 'Successfully updated email address.'}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while updating your email address.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
 
     def put(self, request, *args, **kwargs):
         try:
-            user = PUser.objects.get(pk=request.user.pk)
+            user = PUser.public_objects.get(pk=request.user.pk)
             self.check_object_permissions(request, user)
 
             user.locatedAtCornell = request.data['locatedAtCornell']
@@ -76,7 +103,6 @@ class UpdateUser(generics.UpdateAPIView):
             user.displayRole = request.data['displayRole']
             user.affiliation = request.data['affiliation']
             user.location = request.data['location']
-            user.email = request.data['email']
             user.phone = request.data['phone']
             user.website = request.data['website']
             user.researchDescription = request.data['researchDescription']
@@ -106,4 +132,60 @@ class UpdateUser(generics.UpdateAPIView):
 class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
-    queryset = PUser.objects.filter(is_staff=False)
+    queryset = PUser.public_objects.all()
+
+
+class GetEmailPreferences(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def get(self, request, *args, **kwargs):
+        user = PUser.public_objects.get(pk=request.user.pk)
+        preferences = UserEmailPreference.objects.filter(user=user)
+        serializer = EmailPreferenceSerializer(preferences, many=True)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            if UserEmailPreference.objects.filter(user=request.user.pk).exists():
+                UserEmailPreference.objects.filter(user=request.user.pk).delete()
+
+            user = PUser.public_objects.get(pk=request.user.pk)
+
+            for preference in request.data['preferences']:
+                print(preference)
+                UserEmailPreference.objects.create(
+                    user = user,
+                    type = preference['type'],
+                    preferenceName = preference['name'],
+                    preferenceValue = preference['value']
+                )
+
+            return Response({'message': 'Email preferences successfully saved.'}, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while saving your email preferences.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteEmailPreferences(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication, ]
+    permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            if UserEmailPreference.objects.filter(user=request.user.pk).exists():
+                UserEmailPreference.objects.filter(user=request.user.pk).delete()
+                return Response({'message': 'Successfully unsubscribed from all emails.'}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'message': 'You are already unsubscribed from all emails.'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            print(e)
+            return Response({'message': 'Something went wrong while unsubscribing you from all emails.'}, status=status.HTTP_400_BAD_REQUEST)

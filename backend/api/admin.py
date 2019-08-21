@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PUser, Project, Collaborator, ResearchInterestUser, TopicsProject, DeliveryModeProject, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject
+from .models import PUser, Project, Collaborator, ResearchInterestUser, TopicsProject, DeliveryModeProject, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject, UserEmailPreference
 
 
 # Register your models here.
@@ -9,7 +9,7 @@ class PUserAdmin(admin.ModelAdmin):
     name.short_description = 'Name'
 
     search_fields = ['email', 'first_name', 'last_name', 'phone', 'role', 'displayRole', 'affiliation', 'date_joined', 'location']
-    list_display = ['name', 'email', 'phone', 'role', 'displayRole', 'location', 'affiliation', 'receiveEmails', 'date_joined']
+    list_display = ['name', 'email', 'phone', 'role', 'displayRole', 'location', 'affiliation', 'date_joined']
     list_filter = ['role']
 
 
@@ -65,6 +65,11 @@ class FileAdmin(admin.ModelAdmin):
     list_display = ['file_name', 'project']
 
 
+class UserEmailPreferenceAdmin(admin.ModelAdmin):
+    search_fields = ['user__first_name', 'user__last_name', 'user__email', 'type', 'preferenceName', 'preferenceValue']
+    list_display = ['user', 'type', 'preferenceName', 'preferenceValue']
+    list_filter = ['preferenceName', 'preferenceValue', 'type']
+
 admin.site.register(PUser, PUserAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Collaborator, CollaboratorAdmin)
@@ -74,6 +79,7 @@ admin.site.register(DeliveryModeUser, DeliveryModeUserAdmin)
 admin.site.register(TopicsProject, TopicsProjectAdmin)
 admin.site.register(AgeRangeProject, AgeRangeProjectAdmin)
 admin.site.register(DeliveryModeProject, DeliveryModeProjectAdmin)
-admin.site.register(File,  FileAdmin)
+admin.site.register(File, FileAdmin)
+admin.site.register(UserEmailPreference, UserEmailPreferenceAdmin)
 admin.site.site_header = "PRYDE Connect Admin Dashboard";
 admin.site.site_title = "PRYDE Connect";

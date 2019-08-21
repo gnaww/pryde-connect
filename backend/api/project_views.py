@@ -37,7 +37,7 @@ class CreateProject(generics.CreateAPIView):
     queryset = Project.objects.filter(isApproved=True)
 
     def post(self, request, *args, **kwargs):
-        user = PUser.objects.get(pk=request.user.pk)
+        user = PUser.public_objects.get(pk=request.user.pk)
         try:
             new_project = Project.objects.create(
                 name=request.data['name'],

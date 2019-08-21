@@ -2,7 +2,13 @@ from rest_framework import serializers
 from rest_framework.fields import ListField
 from django.contrib.auth import get_user_model
 from .models import PUser, Project, Collaborator, TopicsProject, \
-    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject
+    DeliveryModeProject, ResearchInterestUser, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject, UserEmailPreference
+
+
+class EmailPreferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEmailPreference
+        exclude = ['id', 'user']
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -194,7 +200,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
         for collaborator in collaborator_queryset:
-            collaborators.append(UserShortSerializer(PUser.objects.get(pk=collaborator.collaborator.pk)).data)
+            collaborators.append(UserShortSerializer(PUser.public_objects.get(pk=collaborator.collaborator.pk)).data)
         return collaborators
 
     def get_status(self, obj):
@@ -230,16 +236,16 @@ class CollaboratorSerializer(serializers.ModelSerializer):
         fields = ['pk', 'editPermission', 'deletePermission', 'editCollaboratorsPermission', 'email', 'first_name', 'last_name']
 
     def get_pk(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).pk
+        return PUser.public_objects.get(pk=obj.collaborator.pk).pk
 
     def get_first_name(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).first_name
+        return PUser.public_objects.get(pk=obj.collaborator.pk).first_name
 
     def get_last_name(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).last_name
+        return PUser.public_objects.get(pk=obj.collaborator.pk).last_name
 
     def get_email(self, obj):
-        return PUser.objects.get(pk=obj.collaborator.pk).email
+        return PUser.public_objects.get(pk=obj.collaborator.pk).email
 
 
 class CollaboratorSearchSerializer(serializers.ModelSerializer):

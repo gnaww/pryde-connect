@@ -31,8 +31,7 @@ class ResetPassword extends Component {
             this.setState({ errorMessage: "Passwords do not match." });
         } else {
             this.setState({ errorMessage: "" });
-            const { uid } = this.props.match.params;
-            const { token } = this.props.match.params;
+            const { uid, token } = this.props.match.params;
             let data = {
                 uid: uid,
                 token: token,
@@ -41,14 +40,12 @@ class ResetPassword extends Component {
             }
             api.resetPassword(data)
                 .then(response => {
-                    console.log(response);
                     this.props.history.push("/login")
                 })
                 .catch(error => {
                     console.log(error);
-                    console.log(error.response.data);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
-                })
+                });
         }
     }
 
@@ -59,7 +56,7 @@ class ResetPassword extends Component {
     render() {
         return (
             <div className={styles.loginWrapper}>
-                <h1 className={styles.joinOurCommunity}>
+                <h1 className={styles.title}>
                     Reset your password
                 </h1>
                 <form className={styles.loginForm} onSubmit={this.handleSubmit}>

@@ -43,13 +43,13 @@ class AddCollaborator(generics.CreateAPIView):
 
         try:
             # the owner of the project should not be able to add themselves as a collaborator
-            if obj.owner == PUser.objects.get(pk=request.data['user']):
+            if obj.owner == PUser.public_objects.get(pk=request.data['user']):
                 return Response({'message': 'The owner of the project cannot be added as a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
             # user shouldn't be able to add themselves as a collaborator to a project that they own
 
             requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
-            user = PUser.objects.get(pk=request.data['user'])
+            user = PUser.public_objects.get(pk=request.data['user'])
 
             # check to see if the user is already added as a collaborator to this project
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
@@ -86,7 +86,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
 
         try:
             requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
-            user = PUser.objects.get(pk=request.data['user'])
+            user = PUser.public_objects.get(pk=request.data['user'])
 
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
                 collaborator = Collaborator.objects.get(project=requested_project, collaborator=user)
@@ -120,7 +120,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
 
         try:
             requested_project = Project.objects.get(pk=kwargs['pk'], isApproved=True)
-            user = PUser.objects.get(pk=request.data['user'])
+            user = PUser.public_objects.get(pk=request.data['user'])
 
             if Collaborator.objects.filter(project=requested_project, collaborator=user).exists():
                 Collaborator.objects.get(project=requested_project, collaborator=user).delete()
@@ -174,7 +174,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
         self.check_object_permissions(request, obj)
 
         try:
-            logged_in_user = PUser.objects.get(pk=request.user.pk)
+            logged_in_user = PUser.public_objects.get(pk=request.user.pk)
 
             # user is owner of project
             if (obj.owner == logged_in_user):
@@ -226,13 +226,13 @@ class SearchCollaborators(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         if ('q' not in request.query_params) or request.query_params['q'] == '':
-            results = PUser.objects.filter(is_staff=False)
+            results = PUser.public_objects.all()
             results = results.exclude(pk=request.user.pk)
             serializer = CollaboratorSearchSerializer(results, many=True)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         else:
-            results = PUser.objects.filter(email__icontains=request.query_params['q'], is_staff=False)
+            results = PUser.public_objects.filter(email__icontains=request.query_params['q'])
             results = results.exclude(pk=request.user.pk)
             serializer = CollaboratorSearchSerializer(results, many=True)
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django_mysql.models import EnumField, ListCharField, JSONField, Model
+from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import BaseUserManager
@@ -39,6 +40,12 @@ class UserManager(BaseUserManager):
         return user
 
 
+# Include only non-staff users with verified emails
+class PublicUserManager(BaseUserManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(emailaddress__verified=True, is_staff=False)
+
+
 class PUser(AbstractUser):
     ROLE = [
         ("1", 'Practitioner'),
@@ -65,10 +72,9 @@ class PUser(AbstractUser):
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
     type = models.CharField(max_length=15, default='user')
     over18 = models.BooleanField(default=True)
-    receiveEmails = models.BooleanField(default=False)
-
 
     objects = UserManager()
+    public_objects = PublicUserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -81,7 +87,7 @@ class ResearchInterestUser(Model):
     researchInterest = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Research Interest'
+        verbose_name = 'user research interest'
         verbose_name_plural = 'User Research Interests'
 
     def __str__(self):
@@ -93,7 +99,7 @@ class DeliveryModeUser(Model):
     deliveryMode = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Delivery Mode'
+        verbose_name = 'user delivery mode'
         verbose_name_plural = 'User Delivery Modes'
 
     def __str__(self):
@@ -105,7 +111,7 @@ class AgeRangeUser(Model):
     ageRange = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'User Age Range'
+        verbose_name = 'user age range'
         verbose_name_plural = 'User Age Ranges'
 
     def __str__(self):
@@ -141,7 +147,7 @@ class TopicsProject(Model):
     researchTopic = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Research Topic'
+        verbose_name = 'project research topic'
         verbose_name_plural = 'Project Research Topics'
 
     def __str__(self):
@@ -153,7 +159,7 @@ class DeliveryModeProject(Model):
     deliveryMode = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Delivery Mode'
+        verbose_name = 'project delivery mode'
         verbose_name_plural = 'Project Delivery Modes'
 
     def __str__(self):
@@ -165,12 +171,11 @@ class AgeRangeProject(Model):
     ageRange = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Project Age Range'
+        verbose_name = 'project age range'
         verbose_name_plural = 'Project Age Ranges'
 
     def __str__(self):
         return "%s: %s" % (self.ageRange, self.project)
-
 
 
 class Collaborator(Model):
@@ -182,14 +187,24 @@ class Collaborator(Model):
     showProjectOnProfile = models.BooleanField(default=True)
 
 
+class UserEmailPreference(Model):
+    user = models.ForeignKey(PUser, on_delete=models.CASCADE)
+    type = EnumField(choices=[("1", "project"), ("2", "user")])
+    preferenceName = models.CharField(max_length=100)
+    preferenceValue = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = 'User Email Preferences'
+
+
 class File(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])
     file_name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Additional Project File'
-        verbose_name_plural = 'Additional Project File'
+        verbose_name = 'additional project file'
+        verbose_name_plural = 'Additional Project Files'
 
     def __str__(self):
         return "%s: %s" % (self.file_name, self.project)

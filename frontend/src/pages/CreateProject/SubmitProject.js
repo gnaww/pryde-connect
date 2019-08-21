@@ -277,7 +277,7 @@ class SubmitProject extends Component {
         }
 
         return (
-            <li className={styles.numberedList} key={index}>
+            <li className={styles.question} key={index}>
                 { getDropDownQuestion(qa, this.setProjectStatus, defaultStatus, this.errors[index]) }
                 { getInputboxQuestion(qa, this.setInputbox, this.state, this.errors[index]) }
                 { getTextboxQuestion(qa, this.setTextbox, this.state, index, this.errors[index]) }

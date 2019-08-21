@@ -3,7 +3,7 @@ import styles from '../styles/Login.module.css';
 import { isValidEmail } from '../services/validators';
 import api from '../services/api';
 
-class ForgotPassword extends Component {
+class UpdateEmail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,19 +26,22 @@ class ForgotPassword extends Component {
             this.setState({ errorMessage: "Invalid email address." });
         } else {
             this.setState({ errorMessage: "" });
-            api.requestPasswordReset(this.state.email)
+            api.updateEmail(this.state.email)
                 .then(response => {
-                    this.setState({ submitted: true });
+                    if (response) {
+                        api.logout()
+                        this.setState({ submitted: true });
+                    }
                 })
                 .catch(error => {
                     console.log(error);
                     this.setState({ errorMessage: Object.values(error.response.data)[0] });
-                });
+                })
         }
     }
 
     componentDidMount() {
-        document.title = "PRYDE Connect | Forgot Password";
+        document.title = "PRYDE Connect | Update Email";
     }
 
     render() {
@@ -48,15 +51,12 @@ class ForgotPassword extends Component {
                     !this.state.submitted ?
                         <>
                             <h1 className={styles.title}>
-                                Forgot your password?
+                                Update email address
                             </h1>
-                            <h2 className={styles.subtitle}>
-                                Enter your account's email address, and we'll send you instructions for resetting your password.
-                            </h2>
                             <form className={styles.loginForm} onSubmit={this.handleSubmit}>
-                                <input className={styles.textInput} placeholder="Your email address" type="text" value={this.state.email} onChange={this.handleEmailChange} />
+                                <input className={styles.textInput} placeholder="New email address" type="text" value={this.state.email} onChange={this.handleEmailChange} />
                                 <p className={styles.errorMessage}>{this.state.errorMessage}</p>
-                                <input className={styles.loginButton} type="submit" value="EMAIL ME" />
+                                <input className={styles.loginButton} type="submit" value="UPDATE" />
                             </form>
                         </>
                     :
@@ -65,7 +65,7 @@ class ForgotPassword extends Component {
                                 Success!
                             </h1>
                             <h2 className={styles.subtitle}>
-                                You will receive an email at <b>{this.state.email}</b> with further instructions to reset your password.
+                                A confirmation email has been sent to <b>{this.state.email}</b>. Click on the confirmation link in the email to re-activate your account.
                             </h2>
                         </>
                 }
@@ -74,4 +74,4 @@ class ForgotPassword extends Component {
     }
 }
 
-export default ForgotPassword;
+export default UpdateEmail;
