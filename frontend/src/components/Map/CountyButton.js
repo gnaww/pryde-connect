@@ -18,9 +18,9 @@ export default class County extends React.Component {
             <div
                 style={{
                     position: 'absolute',
-                    width: `${widthInPx}px`,
-                    top: `${top}px`,
-                    left: `${left}px`,
+                    width: widthInPx,
+                    top: top,
+                    left: left,
                 }}
             >
                 <StateSvg onClick={this.handleOnClick} color={clicked ? "orange" : "white"} />

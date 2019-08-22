@@ -1,27 +1,16 @@
 import React from 'react';
+import styles from '../../../styles/Map.module.css';
 
 export default class Clinton extends React.Component {
     render() {
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 91 86">
-                <a onClick={this.props.onClick}>
-                    <defs>
-                        <style>{`\
-                            .cls-1{\
-                                fill: ${this.props.color} ;\
-                                stroke:#000;\
-                                stroke-linejoin:round;\
-                                stroke-width:2px;\
-                            }\
-                        `}</style>
-                    </defs>
-                    <title>Tompkins</title>
-                    <g id="Layer_2" data-name="Layer 2">
-                        <g id="Layer_2-2" data-name="Layer 2">
-                            <polygon class="cls-1" points="1 19 22 19 6 1 84 1 86 48 79 51 75 54 90 61 83 77 79 74 69 74 67 70 55 70 54 85 45 85 44 81 32 81 1 80 1 19" />
-                        </g>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 91 86" onClick={this.props.onClick}>
+                <title>Tompkins</title>
+                <g id="Layer_2" data-name="Layer 2">
+                    <g id="Layer_2-2" data-name="Layer 2">
+                        <polygon points="1 19 22 19 6 1 84 1 86 48 79 51 75 54 90 61 83 77 79 74 69 74 67 70 55 70 54 85 45 85 44 81 32 81 1 80 1 19" style={{ fill: `${this.props.color}` }} className={styles.county} />
                     </g>
-                </a>
+                </g>
             </svg>
         )
     }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import County from './CountyButton';
 import { Counties } from './Counties';
-import queryString from 'query-string';
 
 
 class MapContainer extends Component {
@@ -12,8 +11,7 @@ class MapContainer extends Component {
             marginBottom: '15px',
             position: 'relative'
         }
-        const parsedURL = queryString.parse(this.props.values, { arrayFormat: "comma" });
-        let counties = parsedURL.location;
+        let counties = this.props.values;
         if (counties === undefined) {
             counties = [];
         } else if (typeof counties === "string") {
@@ -23,21 +21,17 @@ class MapContainer extends Component {
             <div style={style}>
                 {
                     Counties.map((c, index) => {
-                        {
-                            let clicked = counties.includes(c.countyName);
-                            return (<County
-                                key={index}
-                                StateSvg={c.countyImg}
-                                altText={c.countyName}
-                                widthInPx={c.width}
-                                heightInPx={c.height}
-                                top={c.top}
-                                left={c.left}
-                                clicked={clicked}
-                                color={counties.includes(c.countyName) ? "white" : "orange"}
-                                handleCountyClicked={this.props.handleChange}
-                            />)
-                        }
+                        return <County
+                            key={index}
+                            StateSvg={c.countyImg}
+                            altText={c.countyName}
+                            widthInPx={c.width}
+                            heightInPx={c.height}
+                            top={c.top}
+                            left={c.left}
+                            clicked={counties.includes(c.countyName)}
+                            handleCountyClicked={this.props.handleChange}
+                        />
                     })
                 }
             </div>

@@ -1,24 +1,5 @@
-.map {
-    position: relative;
-}
-
-.state {
-    width: 40px;
-    height: auto;
-}
-
-.stlaw {
-    composes: state;
-    z-index: 1;
-}
-
-.frank {
-    composes: state;
-    z-index: 2;
-}
-
-.clinton {
-    composes: state;
-    z-index: 3;
-    left: 0;
+.county {
+    stroke:#000;
+    stroke-linejoin:round;
+    stroke-width:2px;
 }
