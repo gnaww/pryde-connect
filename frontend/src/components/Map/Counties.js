@@ -43,7 +43,7 @@ import Greene from './counties/Greene';
 import Schoharie from './counties/Schoharie';
 import Otsego from './counties/Otsego';
 import Chenango from './counties/Chenango';
-import Onodonga from './counties/Onondaga';
+import Onondaga from './counties/Onondaga';
 import Cortland from './counties/Cortland';
 import Tompkins from './counties/Tompkins';
 import Schuyler from './counties/Schuyler';
@@ -56,7 +56,7 @@ import Genesee from './counties/Genesee';
 import Suffolk from './counties/Suffolk';
 import Nassau from './counties/Nassau';
 import Queens from './counties/Queens';
-import Madison from './counties/Medison';
+import Madison from './counties/Madison';
 import Richmond from './counties/Staten Island';
 import Kings from './counties/Brooklyn';
 import NewYork from './counties/Manhattan';
@@ -393,8 +393,8 @@ export const Counties = [
         left: 398,
     },
     {
-        countyName: "Onodonga",
-        countyImg: Onodonga,
+        countyName: "Onondaga",
+        countyImg: Onondaga,
         width: 64,
         top: 215,
         left: 334,
