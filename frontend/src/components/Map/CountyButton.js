@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './color.module.css';
 
 export default class County extends React.Component {
     handleOnClick = () => {
@@ -24,7 +23,7 @@ export default class County extends React.Component {
                     left: `${left}px`,
                 }}
             >
-                <StateSvg onClick={this.handleOnClick} className={clicked ? styles.c12 : null} color={"white"} />
+                <StateSvg onClick={this.handleOnClick} color={clicked ? "orange" : "white"} />
             </div >
         );
     }

@@ -34,7 +34,7 @@ class MapContainer extends Component {
                                 top={c.top}
                                 left={c.left}
                                 clicked={clicked}
-                                color={clicked ? "white" : "orange"}
+                                color={counties.includes(c.countyName) ? "white" : "orange"}
                                 handleCountyClicked={this.props.handleChange}
                             />)
                         }
