@@ -1,6 +1,13 @@
 import React from 'react';
 
-export default class County extends React.Component {
+export default class CountyButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            color: "white"
+        };
+    }
+
     handleOnClick = () => {
         let { clicked, altText, handleCountyClicked } = this.props;
 
@@ -13,8 +20,22 @@ export default class County extends React.Component {
         });
     }
 
+    mouseOver = () => {
+        this.setState({ color: "#ffc966" });
+    }
+
+    mouseOut = () => {
+        const { clicked } = this.props;
+
+        if (clicked) {
+            this.setState({ color: "orange" });
+        } else {
+            this.setState({ color: "white" });
+        }
+    }
+
     render() {
-        let { StateSvg, widthInPx, top, left, clicked } = this.props;
+        const { StateSvg, widthInPx, top, left } = this.props;
         return (
             <div
                 style={{
@@ -23,8 +44,10 @@ export default class County extends React.Component {
                     top: top,
                     left: left,
                 }}
+                onMouseOver={this.mouseOver}
+                onMouseOut={this.mouseOut}
             >
-                <StateSvg onClick={this.handleOnClick} color={clicked ? "orange" : "white"} />
+                <StateSvg onClick={this.handleOnClick} color={this.state.color}  />
             </div >
         );
     }
