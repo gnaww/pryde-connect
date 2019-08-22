@@ -186,7 +186,7 @@ export const Counties = [
         countyName: "Delaware",
         countyImg: Delaware,
         width: 102,
-        top: 309,
+        top: 308.5,
         left: 448,
     },
     {
@@ -305,7 +305,7 @@ export const Counties = [
         countyName: "Herkimer",
         countyImg: Herkimer,
         width: 54,
-        top: 113,
+        top: 113.5,
         left: 466,
     },
     {
@@ -368,7 +368,7 @@ export const Counties = [
         countyName: "Otsego",
         countyImg: Otsego,
         width: 82,
-        top: 259,
+        top: 258.5,
         left: 447.5,
     },
     {
@@ -424,7 +424,7 @@ export const Counties = [
         countyName: "Seneca",
         countyImg: Seneca,
         width: 42,
-        top: 246,
+        top: 246.5,
         left: 285,
     },
     {
