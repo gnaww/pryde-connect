@@ -5,7 +5,6 @@ export default class Rensselaer extends React.Component {
     render() {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101 118">
-
                 <title>Rensselaer</title>
                 <g id="Layer_2" data-name="Layer 2">
                     <g id="Layer_2-2" data-name="Layer 2">

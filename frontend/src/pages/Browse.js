@@ -14,7 +14,7 @@ class Browse extends Component {
         this.state = {
             query: '',
             searchProjects: true,
-            sortBy: "",
+            sortBy: '',
             searchResults: []
         };
     }
@@ -59,10 +59,6 @@ class Browse extends Component {
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         parsedURL.category = category === "projects" ? "projects" : "partners";
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-    }
-
-    toggleFilterVisibility = filter => {
-        this.setState(prevState => ({ [filter]: !prevState[filter] }));
     }
 
     setSort = event => {
@@ -339,7 +335,6 @@ class Browse extends Component {
                                         <FilterCategory
                                             key={idx}
                                             {...filterCategory}
-                                            toggleVisibility={this.toggleFilterVisibility}
                                             handleClick={this.handleFilterSelect}
                                         />
                                     )

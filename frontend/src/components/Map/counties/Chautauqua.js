@@ -5,7 +5,6 @@ export default class Chautauqua extends React.Component {
     render() {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 139 133">
-
                 <title>Chautauqua</title>
                 <g id="Layer_2" data-name="Layer 2">
                     <g id="Layer_2-2" data-name="Layer 2">

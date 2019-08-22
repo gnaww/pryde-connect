@@ -3,6 +3,7 @@ import React from 'react';
 export default class County extends React.Component {
     handleOnClick = () => {
         let { clicked, altText, handleCountyClicked } = this.props;
+
         handleCountyClicked({
             target: {
                 name: "location",

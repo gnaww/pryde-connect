@@ -1,5 +1,6 @@
 .county {
-    stroke:#000;
-    stroke-linejoin:round;
-    stroke-width:2px;
+    stroke: #000;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+    cursor: pointer;
 }
