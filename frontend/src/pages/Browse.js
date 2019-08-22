@@ -6,7 +6,7 @@ import CustomDropdown from '../components/CustomDropdown';
 import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
-import Map from './Map/Map';
+import Map from '../components/Map/Map';
 
 class Browse extends Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class Browse extends Component {
         this.state = {
             query: '',
             searchProjects: true,
-            sortBy: "",
+            sortBy: '',
             searchResults: []
         };
     }
@@ -48,7 +48,6 @@ class Browse extends Component {
         } else {
             filter = [event.target.value];
         }
-
         parsedURL[event.target.name] = filter;
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
     }
@@ -60,10 +59,6 @@ class Browse extends Component {
         let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
         parsedURL.category = category === "projects" ? "projects" : "partners";
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-    }
-
-    toggleFilterVisibility = filter => {
-        this.setState(prevState => ({ [filter]: !prevState[filter] }));
     }
 
     setSort = event => {
@@ -340,7 +335,6 @@ class Browse extends Component {
                                         <FilterCategory
                                             key={idx}
                                             {...filterCategory}
-                                            toggleVisibility={this.toggleFilterVisibility}
                                             handleClick={this.handleFilterSelect}
                                         />
                                     )
@@ -370,7 +364,7 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchProjects && <Map />}
+                            {!this.state.searchProjects && <Map values={parsedURL.location} handleChange={this.handleFilterSelect} />}
                             {
                                 !parsedURL.q && noFiltersSelected ?
                                     <>
