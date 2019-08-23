@@ -43,6 +43,7 @@ export default class CountyButton extends React.Component {
                     width: widthInPx,
                     top: top,
                     left: left,
+                    background: 'none'
                 }}
                 onMouseOver={this.mouseOver}
                 onMouseOut={this.mouseOut}
