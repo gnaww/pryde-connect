@@ -205,11 +205,45 @@ class EmailPreferences extends Component {
         });
     }
 
+    selectAllUserPreferences = () => {
+        const checker = elt => {
+            elt.checked = true;
+            return elt;
+        }
+
+        let ageRanges = this.state.userAgeRanges.map(checker);
+        let deliveryModes = this.state.userDeliveryModes.map(checker);
+        let researchInterests = this.state.userResearchInterests.map(checker);
+
+        this.setState({
+            userAgeRanges: ageRanges,
+            userDeliveryModes: deliveryModes,
+            userResearchInterests: researchInterests,
+        });
+    }
+
     clearUserPreferences = () => {
         this.setState({
             userAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
             userDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
             userResearchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
+        });
+    }
+
+    selectAllProjectPreferences = () => {
+        const checker = elt => {
+            elt.checked = true;
+            return elt;
+        }
+
+        let ageRanges = this.state.projectAgeRanges.map(checker);
+        let deliveryModes = this.state.projectDeliveryModes.map(checker);
+        let researchTopics = this.state.projectResearchTopics.map(checker);
+
+        this.setState({
+            projectAgeRanges: ageRanges,
+            projectDeliveryModes: deliveryModes,
+            projectResearchTopics: researchTopics,
         });
     }
 
@@ -266,7 +300,19 @@ class EmailPreferences extends Component {
                     <Tab disableRipple label="User Email Preferences" />
                     <Tab disableRipple label="Project Email Preferences" />
                 </Tabs>
-                <div className={styles.center}>
+                <div className={styles.buttonWrapper}>
+                    <button
+                        className={styles.update}
+                        onClick={() => {
+                            if (this.state.tabValue === 0) {
+                                this.selectAllUserPreferences();
+                            } else {
+                                this.selectAllProjectPreferences();
+                            }
+                        }}
+                    >
+                        SELECT ALL { this.state.tabValue === 0 ? "USER" : "PROJECT" } PREFERENCES
+                    </button>
                     <button
                         className={styles.unsubscribe}
                         onClick={() => {
