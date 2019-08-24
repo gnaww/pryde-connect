@@ -1,18 +1,134 @@
 import React, { Component } from 'react';
 import styles from '../styles/Login.module.css';
 import api from '../services/api';
-import { PractitionerInformation } from './CreateProfile/FormContent';
 import { AnswerTypes, getCheckboxQuestion, getCheckedValuesArray, getResearchTopicsQuestion } from '../components/QAComponents';
 import { convertArray, convertResearchTopics, formatPreferencesArray } from '../services/util';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Animal from '../images/research_icons/animal.png';
+import Civic from '../images/research_icons/civic.png';
+import Diversity from '../images/research_icons/diversity.png';
+import Education from '../images/research_icons/education.png';
+import Environment from '../images/research_icons/environment.png';
+import Family from '../images/research_icons/family.png';
+import Health from '../images/research_icons/health.png';
+import Media from '../images/research_icons/media.png';
+import Motivation from '../images/research_icons/motivation.png';
+import Nutrition from '../images/research_icons/nutrition.png';
+import Peer from '../images/research_icons/peer.png';
+import Policy from '../images/research_icons/policy.png';
+import Positive from '../images/research_icons/positive.png';
+import Program from '../images/research_icons/program.png';
+import Risk from '../images/research_icons/risk.png';
+import Self from '../images/research_icons/self.png';
+import Stem from '../images/research_icons/stem.png';
+import Youth from '../images/research_icons/youth.png';
+import Other from '../images/research_icons/other.png';
+
+const PreferencesInformation = {
+    AgeGroups: [
+        "Infants (0-1 year)",
+        "Toddlers (1-2 years)",
+        "Toddlers (2-3 years)",
+        "Preschoolers (3-5 years)",
+        "Early childhood (6-8 years)",
+        "Middle childhood (9-11 years)",
+        "Young teens (12-14 years)",
+        "Teenagers (15-17 years)",
+        "Young adults (18-24 years)"
+    ],
+    ProgramDeliveryModes: [
+        "Afterschool programs",
+        "Camps",
+        "Clubs",
+        "Other"
+    ],
+    ResearchTopics: [
+        {
+            image: Animal,
+            label: "Animal Science & Agriculture"
+        },
+        {
+            image: Civic,
+            label: "Civic Engagement"
+        },
+        {
+            image: Diversity,
+            label: "Diversity Equity & Inclusion"
+        },
+        {
+            image: Education,
+            label: "Education & Learning"
+        },
+        {
+            image: Environment,
+            label: "Environment & Sustainability"
+        },
+        {
+            image: Family,
+            label: "Families"
+        },
+        {
+            image: Health,
+            label: "Health & Wellness"
+        },
+        {
+            image: Peer,
+            label: "Peer Relationships"
+        },
+        {
+            image: Positive,
+            label: "Positive Youth Development"
+        },
+        {
+            image: Policy,
+            label: "Policy Analysis"
+        },
+        {
+            image: Program,
+            label: "Program Evaluation"
+        },
+        {
+            image: Media,
+            label: "Media & Technology"
+        },
+        {
+            image: Motivation,
+            label: "Motivation"
+        },
+        {
+            image: Nutrition,
+            label: "Nutrition"
+        },
+        {
+            image: Risk,
+            label: "Risk Behavior"
+        },
+        {
+            image: Self,
+            label: "Self & Identity"
+        },
+        {
+            image: Stem,
+            label: "Science Technology Engineering & Math (STEM)"
+        },
+        {
+            image: Youth,
+            label: "Youth/Adult Relationships"
+        },
+        {
+            image: Other,
+            label: "Other"
+        }
+    ]
+};
 
 const userPreferenceQuestions = [
     {
         questionText: "Select user age ranges",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.AgeGroups,
+            options: PreferencesInformation.AgeGroups,
             key: "userAgeRanges"
         }
     },
@@ -22,7 +138,7 @@ const userPreferenceQuestions = [
         answer: {
             type: AnswerTypes.Checkbox,
             options:
-                PractitionerInformation.ProgramDeliveryModes,
+                PreferencesInformation.ProgramDeliveryModes,
             key: "userDeliveryModes"
         }
     },
@@ -31,7 +147,7 @@ const userPreferenceQuestions = [
             "Select user research interests",
         answer: {
             type: AnswerTypes.ResearchTopics,
-            options: PractitionerInformation.ResearchTopics,
+            options: PreferencesInformation.ResearchTopics,
             key: "userResearchInterests"
         }
     }
@@ -42,7 +158,7 @@ const projectPreferenceQuestions = [
         questionText: "Select project age ranges",
         answer: {
             type: AnswerTypes.Checkbox,
-            options: PractitionerInformation.AgeGroups,
+            options: PreferencesInformation.AgeGroups,
             key: "projectAgeRanges"
         }
     },
@@ -52,7 +168,7 @@ const projectPreferenceQuestions = [
         answer: {
             type: AnswerTypes.Checkbox,
             options:
-                PractitionerInformation.ProgramDeliveryModes,
+                PreferencesInformation.ProgramDeliveryModes,
             key: "projectDeliveryModes"
         }
     },
@@ -61,7 +177,7 @@ const projectPreferenceQuestions = [
             "Select project research topics",
         answer: {
             type: AnswerTypes.ResearchTopics,
-            options: PractitionerInformation.ResearchTopics,
+            options: PreferencesInformation.ResearchTopics,
             key: "projectResearchTopics"
         }
     }
@@ -71,12 +187,12 @@ class EmailPreferences extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            userDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            userResearchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
-            projectAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            projectDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            projectResearchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
+            userAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+            userDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+            userResearchInterests: getCheckedValuesArray(PreferencesInformation.ResearchTopics),
+            projectAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+            projectDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+            projectResearchTopics: getCheckedValuesArray(PreferencesInformation.ResearchTopics),
             tabValue: 0,
             successMessage: '',
             errorMessage: ''
@@ -144,12 +260,12 @@ class EmailPreferences extends Component {
                 if (response) {
                     this.setState({
                         successMessage: "Successfully unsubscribed from all emails.",
-                        userAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-                        userDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-                        userResearchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
-                        projectAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-                        projectDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-                        projectResearchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
+                        userAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+                        userDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+                        userResearchInterests: getCheckedValuesArray(PreferencesInformation.ResearchTopics),
+                        projectAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+                        projectDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+                        projectResearchTopics: getCheckedValuesArray(PreferencesInformation.ResearchTopics)
                     });
                 }
             })
@@ -188,12 +304,12 @@ class EmailPreferences extends Component {
             }
         });
 
-        initialUserAgeRanges = convertArray(initialUserAgeRanges, PractitionerInformation.AgeGroups);
-        initialUserDeliveryModes = convertArray(initialUserDeliveryModes, PractitionerInformation.ProgramDeliveryModes);
-        initialUserResearchInterests = convertResearchTopics(initialUserResearchInterests, PractitionerInformation.ResearchTopics);
-        initialProjectAgeRanges = convertArray(initialProjectAgeRanges, PractitionerInformation.AgeGroups);
-        initialProjectDeliveryModes = convertArray(initialProjectDeliveryModes, PractitionerInformation.ProgramDeliveryModes);
-        initialProjectResearchTopics = convertResearchTopics(initialProjectResearchTopics, PractitionerInformation.ResearchTopics);
+        initialUserAgeRanges = convertArray(initialUserAgeRanges, PreferencesInformation.AgeGroups);
+        initialUserDeliveryModes = convertArray(initialUserDeliveryModes, PreferencesInformation.ProgramDeliveryModes);
+        initialUserResearchInterests = convertResearchTopics(initialUserResearchInterests, PreferencesInformation.ResearchTopics);
+        initialProjectAgeRanges = convertArray(initialProjectAgeRanges, PreferencesInformation.AgeGroups);
+        initialProjectDeliveryModes = convertArray(initialProjectDeliveryModes, PreferencesInformation.ProgramDeliveryModes);
+        initialProjectResearchTopics = convertResearchTopics(initialProjectResearchTopics, PreferencesInformation.ResearchTopics);
 
         this.setState({
             userAgeRanges: initialUserAgeRanges,
@@ -209,7 +325,7 @@ class EmailPreferences extends Component {
         const checker = elt => {
             elt.checked = true;
             return elt;
-        }
+        };
 
         let ageRanges = this.state.userAgeRanges.map(checker);
         let deliveryModes = this.state.userDeliveryModes.map(checker);
@@ -224,9 +340,9 @@ class EmailPreferences extends Component {
 
     clearUserPreferences = () => {
         this.setState({
-            userAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            userDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            userResearchInterests: getCheckedValuesArray(PractitionerInformation.ResearchTopics),
+            userAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+            userDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+            userResearchInterests: getCheckedValuesArray(PreferencesInformation.ResearchTopics),
         });
     }
 
@@ -234,7 +350,7 @@ class EmailPreferences extends Component {
         const checker = elt => {
             elt.checked = true;
             return elt;
-        }
+        };
 
         let ageRanges = this.state.projectAgeRanges.map(checker);
         let deliveryModes = this.state.projectDeliveryModes.map(checker);
@@ -249,9 +365,9 @@ class EmailPreferences extends Component {
 
     clearProjectPreferences = () => {
         this.setState({
-            projectAgeRanges: getCheckedValuesArray(PractitionerInformation.AgeGroups),
-            projectDeliveryModes: getCheckedValuesArray(PractitionerInformation.ProgramDeliveryModes),
-            projectResearchTopics: getCheckedValuesArray(PractitionerInformation.ResearchTopics)
+            projectAgeRanges: getCheckedValuesArray(PreferencesInformation.AgeGroups),
+            projectDeliveryModes: getCheckedValuesArray(PreferencesInformation.ProgramDeliveryModes),
+            projectResearchTopics: getCheckedValuesArray(PreferencesInformation.ResearchTopics)
         });
     }
 

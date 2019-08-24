@@ -364,7 +364,7 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchProjects && <Map values={parsedURL.location} handleChange={this.handleFilterSelect} />}
+                            {/* {!this.state.searchProjects && <Map values={parsedURL.location} handleChange={this.handleFilterSelect} />} */}
                             {
                                 !parsedURL.q && noFiltersSelected ?
                                     <>
