@@ -173,8 +173,55 @@ def send_emails():
                     api_puser.last_name,
                     api_project.datePosted
             FROM api_useremailpreference
+            JOIN api_deliverymodeproject
+            ON api_useremailpreference.preferenceValue = 'Other' AND api_deliverymodeproject.deliveryMode
+            NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
+            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference.type = '1'
+            JOIN api_project
+            ON api_project.id = api_deliverymodeproject.project_id
+            JOIN api_puser
+            ON api_puser.id = api_project.owner_id
+            WHERE
+            api_project.owner_id != api_useremailpreference.user_id AND
+            api_project.datePosted >= %s
+            UNION
+            SELECT 	api_useremailpreference.id,
+                    user_id,
+                    project_id,
+                    api_project.name,
+                    api_project.owner_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_project.datePosted
+            FROM api_useremailpreference
             JOIN api_topicsproject
             ON api_topicsproject.researchTopic = api_useremailpreference.preferenceValue AND
+            api_useremailpreference.preferenceName = 'researchTopic' AND
+            api_useremailpreference.type = '1'
+            JOIN api_project
+            ON api_project.id = api_topicsproject.project_id
+            JOIN api_puser
+            ON api_puser.id = api_project.owner_id
+            WHERE
+            api_project.owner_id != api_useremailpreference.user_id AND
+            api_project.datePosted >= %s
+            UNION
+            SELECT 	api_useremailpreference.id,
+                    user_id,
+                    project_id,
+                    api_project.name,
+                    api_project.owner_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_project.datePosted
+            FROM api_useremailpreference
+            JOIN api_topicsproject
+            ON api_useremailpreference.preferenceValue = 'Other' AND api_topicsproject.researchTopic
+            NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
+            'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
+            'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
+            'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
             api_useremailpreference.preferenceName = 'researchTopic' AND
             api_useremailpreference.type = '1'
             JOIN api_project
@@ -188,7 +235,7 @@ def send_emails():
         GROUP BY user_id, project_id
         ORDER BY user_id, name;
         """,
-        [one_month_ago, one_month_ago, one_month_ago]
+        [one_month_ago, one_month_ago, one_month_ago, one_month_ago, one_month_ago]
     )
 
     users_matching_preferences = UserEmailPreference.objects.raw(
@@ -240,6 +287,29 @@ def send_emails():
             api_puser.id != api_useremailpreference.user_id AND
             api_puser.date_joined >= %s
             UNION
+            SELECT 	api_useremailpreference.id,
+                    api_useremailpreference.user_id,
+                    api_puser.id AS matched_user_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_puser.role,
+                    api_puser.location,
+                    api_puser.date_joined
+            FROM api_useremailpreference
+            JOIN api_researchinterestuser
+            ON api_useremailpreference.preferenceValue = 'Other' AND api_researchinterestuser.researchInterest
+            NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
+            'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
+            'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
+            'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
+            api_useremailpreference.preferenceName = 'researchInterest' AND
+            api_useremailpreference.type = '2'
+            JOIN api_puser
+            ON api_puser.id = api_researchinterestuser.user_id
+            WHERE
+            api_puser.id != api_useremailpreference.user_id AND
+            api_puser.date_joined >= %s
+            UNION
             SELECT	api_useremailpreference.id,
                     api_useremailpreference.user_id,
                     api_puser.id AS matched_user_id,
@@ -258,11 +328,31 @@ def send_emails():
             WHERE
             api_puser.id != api_useremailpreference.user_id AND
             api_puser.date_joined >= %s
+            UNION
+            SELECT 	api_useremailpreference.id,
+                    api_useremailpreference.user_id,
+                    api_puser.id AS matched_user_id,
+                    api_puser.first_name,
+                    api_puser.last_name,
+                    api_puser.role,
+                    api_puser.location,
+                    api_puser.date_joined
+            FROM api_useremailpreference
+            JOIN api_deliverymodeuser
+            ON api_useremailpreference.preferenceValue = 'Other' AND api_deliverymodeuser.deliveryMode
+            NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
+            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference.type = '2'
+            JOIN api_puser
+            ON api_puser.id = api_deliverymodeuser.user_id
+            WHERE
+            api_puser.id != api_useremailpreference.user_id AND
+            api_puser.date_joined >= %s
         ) as temp
         GROUP BY user_id, matched_user_id
         ORDER BY user_id, first_name, last_name;
         """,
-        [one_month_ago, one_month_ago, one_month_ago]
+        [one_month_ago, one_month_ago, one_month_ago, one_month_ago, one_month_ago]
     )
 
     user_emails = build_emails(projects_matching_preferences, users_matching_preferences)
@@ -271,23 +361,43 @@ def send_emails():
     user_ids = list(user_emails.keys())
     users = PUser.public_objects.filter(pk__in=user_ids)
 
-    for user in users:
-        plaintext = get_template("newsletter.txt")
-        htmly = get_template("newsletter.html")
-        month = current_date.strftime('%B')
-        subject = "PRYDE Connect %s Newsletter" % month
-        from_email = "prydeconnect@cornell.edu"
-        to = user.email
+    # for user in users:
+        # plaintext = get_template("newsletter.txt")
+        # htmly = get_template("newsletter.html")
+        # month = current_date.strftime('%B')
+        # subject = "PRYDE Connect %s Newsletter" % month
+        # from_email = "prydeconnect@cornell.edu"
+        # to = user.email
 
-        data = {
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "content": user_emails[user.id]
-        }
+        # data = {
+        #     "first_name": user.first_name,
+        #     "last_name": user.last_name,
+        #     "content": user_emails[user.id]
+        # }
 
-        text_content = plaintext.render(data)
-        html_content = htmly.render(data)
+        # text_content = plaintext.render(data)
+        # html_content = htmly.render(data)
 
-        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-        msg.attach_alternative(html_content, "text/html")
-        msg.send(fail_silently=False)
+        # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        # msg.attach_alternative(html_content, "text/html")
+        # msg.send(fail_silently=False)
+
+    plaintext = get_template("newsletter.txt")
+    htmly = get_template("newsletter.html")
+    month = current_date.strftime('%B')
+    subject = "PRYDE Connect %s Newsletter" % month
+    from_email = "prydeconnect@cornell.edu"
+    to = "william.oliver.wang@gmail.com"
+
+    data = {
+        "first_name": "William",
+        "last_name": "Wang",
+        "content": user_emails[4]
+    }
+
+    text_content = plaintext.render(data)
+    html_content = htmly.render(data)
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send(fail_silently=False)
