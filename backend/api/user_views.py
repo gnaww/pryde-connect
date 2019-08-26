@@ -11,6 +11,8 @@ from .permissions import CanEditDeleteUser
 from rest_framework.parsers import MultiPartParser, FormParser
 import os
 
+import magic
+
 
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
@@ -28,9 +30,11 @@ class LoggedInUserView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         try:
+
             user = PUser.public_objects.get(pk=request.user.pk)
             serializer = LoggedInUserSerializer(user, context={ 'request': request })
             return Response(data=serializer.data, status=status.HTTP_200_OK)
+
         except Exception as e:
             print(e)
             return Response({'message': 'Something went wrong while retrieving your profile.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -44,7 +48,14 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             # 3 MB file size upload limit
+            # print(magic.from_buffer(request.data['file'].read(), mime=True))
+            filetype = magic.from_buffer(request.data['file'].read(), mime=True)
+            if 'image' not in filetype:
+                return Response({'message': 'File is not a valid image'}, status=status.HTTP_400_BAD_REQUEST)
+
+
             if request.data['file'].size <= 3145728:
+                print(request.user.pk)
                 user = PUser.public_objects.get(pk=request.user.pk)
                 self.check_object_permissions(request, user)
 

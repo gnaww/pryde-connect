@@ -10,6 +10,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 # custom permissions
 from .permissions import CanDeleteProject, CanEditProject
+from .validators import validate_file_size, validate_file_type
 import os
 
 
@@ -37,7 +38,8 @@ class CreateProject(generics.CreateAPIView):
     queryset = Project.objects.filter(isApproved=True)
 
     def post(self, request, *args, **kwargs):
-        user = PUser.public_objects.get(pk=request.user.pk)
+        # user = PUser.public_objects.get(pk=request.user.pk)
+        user = PUser.objects.get(pk=request.user.pk)
         try:
             new_project = Project.objects.create(
                 name=request.data['name'],
@@ -149,6 +151,7 @@ class UploadFile(generics.CreateAPIView):
                 data['project'] = project.pk
                 data['file_name'] = str(request.data['file'])
                 data['file'] = request.data['file']
+
                 file_serializer = FileSerializer(data=data)
 
                 if file_serializer.is_valid():
