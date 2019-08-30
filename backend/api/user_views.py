@@ -12,16 +12,19 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import os
 
 
+# Retrieve all users from database
 class UserList(generics.ListAPIView):
     serializer_class = UserShortSerializer
     queryset = PUser.public_objects.all()
 
 
+# Retrieve specific user for profile display
 class UserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = PUser.public_objects.all()
 
 
+# Retrieve logged in user information
 class LoggedInUserView(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
@@ -36,6 +39,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
             return Response({'message': 'Something went wrong while retrieving your profile.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Upload a new or change profile picture for logged in user
 class UploadOrChangeProfilePicture(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -48,12 +52,13 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
                 user = PUser.public_objects.get(pk=request.user.pk)
                 self.check_object_permissions(request, user)
 
+                # if user already has a profile picture, replace it
                 if user.profile_picture:
                     os.remove(user.profile_picture.path)
                     user.profile_picture = request.data['file']
                     user.save()
                     return Response(data=UserShortSerializer(user).data, status=status.HTTP_201_CREATED)
-
+                # if profile picture does not exist yet, add it to user
                 else:
                     user.profile_picture = request.data['file']
                     user.save()
@@ -66,6 +71,7 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
             return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Update the email address for logged in user
 class UpdateEmail(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -76,6 +82,7 @@ class UpdateEmail(generics.UpdateAPIView):
             self.check_object_permissions(request, user)
 
             user_email = EmailAddress.objects.get(user=request.user.pk)
+            # changes email used for logging into the website, also sends a email confirmation email to the user
             user_email.change(request, request.data['email'], True)
 
             user.email = request.data['email']
@@ -88,6 +95,7 @@ class UpdateEmail(generics.UpdateAPIView):
             return Response({'message': 'Something went wrong while updating your email address.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Update user data
 class UpdateUser(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -95,6 +103,7 @@ class UpdateUser(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         try:
             user = PUser.public_objects.get(pk=request.user.pk)
+            # check if logged in user can edit profile
             self.check_object_permissions(request, user)
 
             user.locatedAtCornell = request.data['locatedAtCornell']
@@ -129,12 +138,14 @@ class UpdateUser(generics.UpdateAPIView):
             return Response({'message': 'Something went wrong while updating your profile.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Delete a user
 class DeleteUser(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
     queryset = PUser.public_objects.all()
 
 
+# Get the email subscription preferences of the logged in user
 class GetEmailPreferences(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -147,6 +158,7 @@ class GetEmailPreferences(generics.RetrieveAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
+# Subscribe a new user to the monthly newsletter or update an existing users email preferences
 class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
@@ -173,6 +185,7 @@ class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
             return Response({'message': 'Something went wrong while saving your email preferences.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Unsubscribe a user from the monthly newsletter
 class DeleteEmailPreferences(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]

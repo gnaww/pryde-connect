@@ -5,6 +5,7 @@ from rest_framework import status
 import os
 import requests
 
+# Used for overriding built in user model
 class CustomAccountAdapter(DefaultAccountAdapter):
 
     def save_user(self, request, user, form, commit=False):

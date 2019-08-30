@@ -72,7 +72,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    # send monthly news letters at 9 AM on the first of every month
+    # send monthly newsletters at 9 AM on the first of every month
     ('0 9 1 * *', 'api.cron_wrapper.send_emails_wrapper')
 ]
 
@@ -132,12 +132,13 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.custom_register.serializers.CustomRegisterSerializer',
 }
 
+# add a permission class to user registration endpoint that checks if the user is not a robot
 REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
 
 
 # allauth stuff
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
-AUTH_USER_MODEL = 'api.PUser' # set AUTH_USER_MODEL to our user model
+AUTH_USER_MODEL = 'api.PUser'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True

@@ -1,3 +1,4 @@
+# used to get access to Django in script
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pryde_backend.settings")
 import django
@@ -41,6 +42,7 @@ def monthdelta(date, delta):
 def build_emails(projects_matching_preferences, users_matching_preferences):
     user_emails = {}
     if (len(projects_matching_preferences) != 0):
+        # initialize to first user's email preference results
         user_id_to_be_emailed = projects_matching_preferences[0].user_id
         email = {
             "users": [],
@@ -57,7 +59,9 @@ def build_emails(projects_matching_preferences, users_matching_preferences):
                     "date_posted":  project.datePosted.strftime("%m/%d/%Y")
                 })
             else:
+                # must be a new user's preference results if the user_id has changed
                 user_emails[user_id_to_be_emailed] = email
+                # populate new user's email dictionary with current preference result
                 email = {
                     "users": [],
                     "projects": [{
@@ -73,7 +77,9 @@ def build_emails(projects_matching_preferences, users_matching_preferences):
         user_emails[user_id_to_be_emailed] = email
 
     if (len(users_matching_preferences) != 0):
+        # initialize to first user's email preference results
         user_id_to_be_emailed = users_matching_preferences[0].user_id
+        # if this user has no preferences for projects, then use an empty email dictionary
         email = user_emails.get(user_id_to_be_emailed, {
             "users": [],
             "projects":  []
@@ -89,8 +95,11 @@ def build_emails(projects_matching_preferences, users_matching_preferences):
                     "date_joined": user.date_joined.strftime("%m/%d/%Y")
                 })
             else:
+                # must be a new user's preference results if the user_id has changed
                 user_emails[user_id_to_be_emailed] = email
+                # populate new user's email object with current preference result
                 user_id_to_be_emailed = user.user_id
+                # if this user has no preferences for projects, then use an empty email object
                 email = user_emails.get(user_id_to_be_emailed, {
                     "users": [],
                     "projects":  []
@@ -111,6 +120,7 @@ def send_emails():
     current_date = datetime.now()
     one_month_ago = monthdelta(current_date, -1)
 
+    # retrieve projects created in the past month matching each users' project email preferences
     projects_matching_preferences = UserEmailPreference.objects.raw(
         """
         SELECT  MAX(id) as id,
@@ -238,6 +248,7 @@ def send_emails():
         [one_month_ago, one_month_ago, one_month_ago, one_month_ago, one_month_ago]
     )
 
+    # retrieve users joined in the past month matching each users' user email preferences
     users_matching_preferences = UserEmailPreference.objects.raw(
         """
         SELECT	MAX(id) as id,
@@ -355,49 +366,31 @@ def send_emails():
         [one_month_ago, one_month_ago, one_month_ago, one_month_ago, one_month_ago]
     )
 
+    # get dictionary containing the newsletter contents of all subscribed users
     user_emails = build_emails(projects_matching_preferences, users_matching_preferences)
 
-    # Get the email addresses of each user
+    # get the email addresses of each subscribed user
     user_ids = list(user_emails.keys())
     users = PUser.public_objects.filter(pk__in=user_ids)
 
-    # for user in users:
-        # plaintext = get_template("newsletter.txt")
-        # htmly = get_template("newsletter.html")
-        # month = current_date.strftime('%B')
-        # subject = "PRYDE Connect %s Newsletter" % month
-        # from_email = "prydeconnect@cornell.edu"
-        # to = user.email
+    # send email to each subscribed user
+    for user in users:
+        plaintext = get_template("newsletter.txt")
+        htmly = get_template("newsletter.html")
+        month = current_date.strftime('%B')
+        subject = "PRYDE Connect %s Newsletter" % month
+        from_email = "prydeconnect@cornell.edu"
+        to = user.email
 
-        # data = {
-        #     "first_name": user.first_name,
-        #     "last_name": user.last_name,
-        #     "content": user_emails[user.id]
-        # }
+        data = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "content": user_emails[user.id]
+        }
 
-        # text_content = plaintext.render(data)
-        # html_content = htmly.render(data)
+        text_content = plaintext.render(data)
+        html_content = htmly.render(data)
 
-        # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-        # msg.attach_alternative(html_content, "text/html")
-        # msg.send(fail_silently=False)
-
-    plaintext = get_template("newsletter.txt")
-    htmly = get_template("newsletter.html")
-    month = current_date.strftime('%B')
-    subject = "PRYDE Connect %s Newsletter" % month
-    from_email = "prydeconnect@cornell.edu"
-    to = "william.oliver.wang@gmail.com"
-
-    data = {
-        "first_name": "William",
-        "last_name": "Wang",
-        "content": user_emails[4]
-    }
-
-    text_content = plaintext.render(data)
-    html_content = htmly.render(data)
-
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send(fail_silently=False)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send(fail_silently=False)

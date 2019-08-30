@@ -13,11 +13,13 @@ from .permissions import CanDeleteProject, CanEditProject
 import os
 
 
+# Retrieve all projects in database
 class ProjectList(generics.ListAPIView):
     serializer_class = ProjectShortSerializer
     queryset = Project.objects.filter(isApproved=True)
 
 
+# Retrieve project with id kwargs['pk']
 class ProjectView(generics.RetrieveAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.filter(isApproved=True)
@@ -31,12 +33,14 @@ class ProjectView(generics.RetrieveAPIView):
             return Response({ 'message': 'Project not found.' }, status=status.HTTP_404_NOT_FOUND)
 
 
+# Create a project
 class CreateProject(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     authentication_classes = [TokenAuthentication, ]
     queryset = Project.objects.filter(isApproved=True)
 
     def post(self, request, *args, **kwargs):
+        # logged in user
         user = PUser.public_objects.get(pk=request.user.pk)
         try:
             new_project = Project.objects.create(
@@ -52,6 +56,7 @@ class CreateProject(generics.CreateAPIView):
                 alternateLocation=request.data['alternateLocation']
             )
 
+            # create 1-N relationships for age ranges/delivery modes/research interests
             for age in request.data['ageRanges']:
                 try:
                     AgeRangeProject.objects.create(project=new_project, ageRange=age)
@@ -88,6 +93,7 @@ class CreateProject(generics.CreateAPIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Update project data
 class UpdateProject(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated, ]
@@ -95,6 +101,7 @@ class UpdateProject(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         try:
             project = Project.objects.get(pk=kwargs['pk'])
+            # check if logged in user has permission to edit project
             self.check_object_permissions(request, project)
 
             project.name = request.data['name']
@@ -125,12 +132,14 @@ class UpdateProject(generics.UpdateAPIView):
             return Response({'message': 'Something went wrong while updating the project information.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Delete a project
 class DeleteProject(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanDeleteProject & IsAuthenticated, ]
     queryset = Project.objects.filter(isApproved=True)
 
 
+# Upload an additional file for a project
 class UploadFile(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated]
@@ -140,8 +149,10 @@ class UploadFile(generics.CreateAPIView):
         try:
             if Project.objects.filter(pk=kwargs['pk']).exists():
                 project = Project.objects.get(pk=kwargs['pk'])
+                # check if logged in user has permission to edit project
                 self.check_object_permissions(request, project)
 
+                # maximum of 5 additional files per project
                 if File.objects.filter(project=project.pk).count() >= 5:
                     return Response({'message': 'Not allowed to upload more than 5 additional files.'})
 
@@ -167,6 +178,7 @@ class UploadFile(generics.CreateAPIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
+# Delete additional file from project
 class DeleteFile(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication, ]
     permission_classes = [CanEditProject & IsAuthenticated]
@@ -175,6 +187,7 @@ class DeleteFile(generics.DestroyAPIView):
         try:
             if Project.objects.filter(pk=kwargs['pk']).exists():
                 project = Project.objects.get(pk=kwargs['pk'])
+                # check if logged in user has permission to edit project
                 self.check_object_permissions(request, project)
 
                 if File.objects.filter(pk=kwargs['filepk']).exists():

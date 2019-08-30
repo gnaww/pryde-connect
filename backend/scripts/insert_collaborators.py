@@ -3,8 +3,8 @@ import json
 import random
 
 
+# log in as user and get authentication token
 def login_user():
-
     url = 'http://localhost:8000/api/v1/rest-auth/login/'
     headers = {
         'Content-Type': 'application/json',
@@ -19,6 +19,7 @@ def login_user():
     return response.json()['key']
 
 
+# get projects associated with user
 def get_projects_from_user():
     key = login_user()
     url = 'http://localhost:8000/api/v1/user/'
@@ -36,6 +37,7 @@ def get_projects_from_user():
     return project_ids, key
 
 
+# get IDs of first 5 users in database
 def get_user_ids():
     url = 'http://localhost:8000/api/v1/users/'
     users = requests.request("GET", url).json()
@@ -58,9 +60,7 @@ def insert_collaborators():
     }
 
     for project in project_ids:
-
         for user in user_ids:
-
             url = 'http://localhost:8000/api/v1/project/' + str(project) + '/collaborator/add/'
             body = {
                 'user': user,

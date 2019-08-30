@@ -46,6 +46,7 @@ class PublicUserManager(BaseUserManager):
         return super().get_queryset().filter(emailaddress__verified=True, is_staff=False)
 
 
+# Model representing users
 class PUser(AbstractUser):
     ROLE = [
         ("1", 'Practitioner'),
@@ -82,6 +83,7 @@ class PUser(AbstractUser):
         return "%s %s (%s)" % (self.first_name, self.last_name, self.email)
 
 
+# Model representing the research interests of users
 class ResearchInterestUser(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     researchInterest = models.CharField(max_length=100)
@@ -94,6 +96,7 @@ class ResearchInterestUser(Model):
         return "%s: %s" % (self.researchInterest, self.user)
 
 
+# Model representing the delivery modes of users
 class DeliveryModeUser(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
@@ -106,6 +109,7 @@ class DeliveryModeUser(Model):
         return "%s: %s" % (self.deliveryMode, self.user)
 
 
+# Model representing the age ranges of users
 class AgeRangeUser(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
@@ -118,6 +122,7 @@ class AgeRangeUser(Model):
         return "%s: %s" % (self.ageRange, self.user)
 
 
+# Model representing projects
 class Project(Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
@@ -142,6 +147,7 @@ class Project(Model):
         return "%s by %s" % (self.name, self.owner)
 
 
+# Model representing the research topics of projects
 class TopicsProject(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     researchTopic = models.CharField(max_length=100)
@@ -154,6 +160,7 @@ class TopicsProject(Model):
         return "%s: %s" % (self.researchTopic, self.project)
 
 
+# Model representing the delivery modes of projects
 class DeliveryModeProject(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
@@ -166,6 +173,7 @@ class DeliveryModeProject(Model):
         return "%s: %s" % (self.deliveryMode, self.project)
 
 
+# Model representing age ranges of projects
 class AgeRangeProject(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
@@ -178,6 +186,7 @@ class AgeRangeProject(Model):
         return "%s: %s" % (self.ageRange, self.project)
 
 
+# Model representing collaborators on projects
 class Collaborator(Model):
     collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -187,6 +196,7 @@ class Collaborator(Model):
     showProjectOnProfile = models.BooleanField(default=True)
 
 
+# Model representing user email subscription preferences
 class UserEmailPreference(Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     type = EnumField(choices=[("1", "project"), ("2", "user")])
@@ -197,6 +207,7 @@ class UserEmailPreference(Model):
         verbose_name_plural = 'User Email Preferences'
 
 
+# Model representing additional files attached to projects
 class File(Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])

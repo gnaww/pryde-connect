@@ -48,11 +48,12 @@ class MiniUserSerializer(serializers.ModelSerializer):
         model = PUser
         fields = ['pk', 'first_name', 'last_name', 'affiliation', 'location', 'email', 'phone', 'website', 'type', 'role']
 
+    # convert enum field to human readable display
     def get_role(self, obj):
         return obj.get_role_display()
 
 
-# Used for the project cards in the browse page
+# Used for the project cards in the browse and profile page
 class ProjectShortSerializer(serializers.ModelSerializer):
     owner = MiniUserSerializer(many=False, read_only=True)
     status = serializers.SerializerMethodField()
@@ -65,31 +66,31 @@ class ProjectShortSerializer(serializers.ModelSerializer):
         model = Project
         fields = ['pk', 'type', 'name', 'owner', 'status', 'summary', 'ageRanges', 'researchTopics', 'deliveryModes', 'datePosted', 'datePosted', 'visible']
 
+    # convert enum field to human readable display
     def get_status(self, obj):
         return obj.get_status_display()
 
+    # retrieve age ranges attached to project
     def get_ageRanges(self, obj):
         ages = AgeRangeProject.objects.filter(project=obj)
         return [age.ageRange for age in ages]
 
+    # retrieve research topics attached to project
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)
         return [topic.researchTopic for topic in topics]
 
+    # retrieve delivery modes attached to project
     def get_deliveryModes(self, obj):
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
         return [mode.deliveryMode for mode in deliveryModes]
 
+    # set visibility flag for project (hidden in public links, shown for logged in user)
     def get_visible(self, obj):
         if 'visible' in self.context:
             return self.context['visible']
         else:
             return True
-
-
-class StringArrayField(ListField):
-    def to_internal_value(self, data):
-        return super().to_internal_value(data)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -104,6 +105,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         exclude = ['groups', 'is_active', 'is_staff', 'is_superuser', 'last_login', 'password', 'user_permissions', 'username', 'type', 'over18']
 
+    # retrieve projects attached to user
     def get_projects(self, obj):
         projects = []
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
@@ -118,26 +120,32 @@ class UserSerializer(serializers.ModelSerializer):
 
         return projects
 
+    # convert enum field to human readable display
     def get_role(self, obj):
         return obj.get_role_display()
 
+    # retrieve research interests attached to user
     def get_researchInterests(self, obj):
         interests = ResearchInterestUser.objects.filter(user=obj)
         return [interest.researchInterest for interest in interests]
 
+    # retrieve age ranges attached to user
     def get_ageRanges(self, obj):
         ages = AgeRangeUser.objects.filter(user=obj)
         return [age.ageRange for age in ages]
 
+    # retrieve delivery modes attached to user
     def get_deliveryModes(self, obj):
         modes = DeliveryModeUser.objects.filter(user=obj)
         return [mode.deliveryMode for mode in modes]
 
+    # get roles stored as a list instead of string representation of list
     def get_roles(self, obj):
         return obj.roles
 
 
 class LoggedInUserSerializer(UserSerializer):
+    # retrieve projects attached to logged in user
     def get_projects(self, obj):
         projects = []
         collabs = Collaborator.objects.filter(collaborator=obj.pk)
@@ -166,9 +174,11 @@ class UserShortSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['pk', 'type', 'profile_picture', 'first_name', 'last_name', 'role', 'affiliation', 'locatedAtCornell', 'locatedAtCCE', 'researchInterests', 'location', 'email', 'numProjects', 'date_joined']
 
+    # convert enum field to human readable display
     def get_role(self, obj):
         return obj.get_role_display()
 
+    # get number of projects attached to user
     def num_projects(self, obj):
         total = 0
         collabs = Collaborator.objects.filter(collaborator=obj.pk, showProjectOnProfile=True)
@@ -178,6 +188,7 @@ class UserShortSerializer(serializers.ModelSerializer):
 
         return total
 
+    # get research interests attached to user
     def get_researchInterests(self, obj):
         interests = ResearchInterestUser.objects.filter(user=obj)
         return [interest.researchInterest for interest in interests]
@@ -196,6 +207,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         exclude = ['isApproved', 'type']
 
+    # get collaborators attached to project
     def get_collaborators(self, obj):
         collaborator_queryset = Collaborator.objects.filter(project=obj, showProjectOnProfile=True)
         collaborators = []
@@ -203,21 +215,26 @@ class ProjectSerializer(serializers.ModelSerializer):
             collaborators.append(UserShortSerializer(PUser.public_objects.get(pk=collaborator.collaborator.pk)).data)
         return collaborators
 
+    # convert enum field to human readable display
     def get_status(self, obj):
         return obj.get_status_display()
 
+    # get age ranges attached to project
     def get_ageRanges(self, obj):
         ages = AgeRangeProject.objects.filter(project=obj)
         return [age.ageRange for age in ages]
 
+    # get research topics attached to project
     def get_researchTopics(self, obj):
         topics = TopicsProject.objects.filter(project=obj)
         return [topic.researchTopic for topic in topics]
 
+    # get delivery moes attached to project
     def get_deliveryModes(self, obj):
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
         return [mode.deliveryMode for mode in deliveryModes]
 
+    # get additional files attached to project
     def get_files(self, obj):
         if File.objects.filter(project=obj.pk).exists():
             serializer = FileShortSerializer(File.objects.filter(project=obj.pk), many=True, context=self.context.get('request'))
