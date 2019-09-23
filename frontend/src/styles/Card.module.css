@@ -165,7 +165,17 @@
 }
 
 .line img {
-    align-self: flex-start
+    align-self: flex-start;
+}
+
+.projectCard .line img {
+    width: 19px;
+    height: auto;
+}
+
+.userCard .line img {
+    width: 16px;
+    height: auto;
 }
 
 .statList {
