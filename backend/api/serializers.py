@@ -229,7 +229,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         topics = TopicsProject.objects.filter(project=obj)
         return [topic.researchTopic for topic in topics]
 
-    # get delivery moes attached to project
+    # get delivery modes attached to project
     def get_deliveryModes(self, obj):
         deliveryModes = DeliveryModeProject.objects.filter(project=obj)
         return [mode.deliveryMode for mode in deliveryModes]
