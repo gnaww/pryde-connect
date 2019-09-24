@@ -50,7 +50,10 @@ class MiniUserSerializer(serializers.ModelSerializer):
 
     # convert enum field to human readable display
     def get_role(self, obj):
-        return obj.get_role_display()
+        if obj.role == 1:
+            return "Practitioner"
+        else:
+            return "Researcher"
 
 
 # Used for the project cards in the browse and profile page
@@ -68,7 +71,12 @@ class ProjectShortSerializer(serializers.ModelSerializer):
 
     # convert enum field to human readable display
     def get_status(self, obj):
-        return obj.get_status_display()
+        if obj.status == 1:
+            return "Completed"
+        elif obj.status == 2:
+            return "In Progress"
+        else:
+            return "Not Started"
 
     # retrieve age ranges attached to project
     def get_ageRanges(self, obj):
@@ -97,7 +105,6 @@ class UserSerializer(serializers.ModelSerializer):
     projects = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
     researchInterests = serializers.SerializerMethodField()
-    roles = serializers.SerializerMethodField()
     ageRanges = serializers.SerializerMethodField()
     deliveryModes = serializers.SerializerMethodField()
 
@@ -122,7 +129,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     # convert enum field to human readable display
     def get_role(self, obj):
-        return obj.get_role_display()
+        if obj.role == 1:
+            return "Practitioner"
+        else:
+            return "Researcher"
 
     # retrieve research interests attached to user
     def get_researchInterests(self, obj):
@@ -138,10 +148,6 @@ class UserSerializer(serializers.ModelSerializer):
     def get_deliveryModes(self, obj):
         modes = DeliveryModeUser.objects.filter(user=obj)
         return [mode.deliveryMode for mode in modes]
-
-    # get roles stored as a list instead of string representation of list
-    def get_roles(self, obj):
-        return obj.roles
 
 
 class LoggedInUserSerializer(UserSerializer):
@@ -176,7 +182,10 @@ class UserShortSerializer(serializers.ModelSerializer):
 
     # convert enum field to human readable display
     def get_role(self, obj):
-        return obj.get_role_display()
+        if obj.role == 1:
+            return "Practitioner"
+        else:
+            return "Researcher"
 
     # get number of projects attached to user
     def num_projects(self, obj):
@@ -217,7 +226,12 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     # convert enum field to human readable display
     def get_status(self, obj):
-        return obj.get_status_display()
+        if obj.status == 1:
+            return "Completed"
+        elif obj.status == 2:
+            return "In Progress"
+        else:
+            return "Not Started"
 
     # get age ranges attached to project
     def get_ageRanges(self, obj):
