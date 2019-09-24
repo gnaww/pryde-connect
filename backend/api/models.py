@@ -1,5 +1,5 @@
 from django.db import models
-from django_mysql.models import EnumField, ListCharField, JSONField, Model
+from django.contrib.postgres.fields import ArrayField, JSONField
 from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
@@ -54,7 +54,7 @@ class PUser(AbstractUser):
     ]
     locatedAtCornell = models.BooleanField(default=False)
     locatedAtCCE = models.BooleanField(default=False)
-    role = EnumField(choices=ROLE, default=None, null=True)
+    role = models.IntegerField(choices=ROLE, default=None, null=True)
     displayRole = models.CharField(max_length=50, default=None, null=True)
     affiliation = models.CharField(max_length=200)
     location = models.CharField(max_length=200, null=True, default=None)
@@ -62,12 +62,7 @@ class PUser(AbstractUser):
     phone = PhoneNumberField(default=None, null=True, unique=False, blank=True)
     website = models.URLField(default=None, null=True, blank=True)
     researchDescription = models.TextField(null=True, blank=True)
-    roles = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=list,
-        null=True,
-        max_length=(7 * 101) # 7 * 100 character nominals, plus commas
-    )
+    roles = ArrayField(models.CharField(max_length=100), default=list, null=True)
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
@@ -84,7 +79,7 @@ class PUser(AbstractUser):
 
 
 # Model representing the research interests of users
-class ResearchInterestUser(Model):
+class ResearchInterestUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     researchInterest = models.CharField(max_length=100)
 
@@ -97,7 +92,7 @@ class ResearchInterestUser(Model):
 
 
 # Model representing the delivery modes of users
-class DeliveryModeUser(Model):
+class DeliveryModeUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
 
@@ -110,7 +105,7 @@ class DeliveryModeUser(Model):
 
 
 # Model representing the age ranges of users
-class AgeRangeUser(Model):
+class AgeRangeUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
 
@@ -123,7 +118,7 @@ class AgeRangeUser(Model):
 
 
 # Model representing projects
-class Project(Model):
+class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
     STATUS = [
@@ -131,7 +126,7 @@ class Project(Model):
         ("2", 'In Progress'),
         ("3", 'Not Started'),
     ]
-    status = EnumField(choices=STATUS)
+    status = models.IntegerField(choices=STATUS)
     summary = models.TextField()
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
@@ -148,7 +143,7 @@ class Project(Model):
 
 
 # Model representing the research topics of projects
-class TopicsProject(Model):
+class TopicsProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     researchTopic = models.CharField(max_length=100)
 
@@ -161,7 +156,7 @@ class TopicsProject(Model):
 
 
 # Model representing the delivery modes of projects
-class DeliveryModeProject(Model):
+class DeliveryModeProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
 
@@ -174,7 +169,7 @@ class DeliveryModeProject(Model):
 
 
 # Model representing age ranges of projects
-class AgeRangeProject(Model):
+class AgeRangeProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
 
@@ -187,7 +182,7 @@ class AgeRangeProject(Model):
 
 
 # Model representing collaborators on projects
-class Collaborator(Model):
+class Collaborator(models.Model):
     collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     editPermission = models.BooleanField()
@@ -197,9 +192,9 @@ class Collaborator(Model):
 
 
 # Model representing user email subscription preferences
-class UserEmailPreference(Model):
+class UserEmailPreference(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-    type = EnumField(choices=[("1", "project"), ("2", "user")])
+    type = models.IntegerField(choices=[("1", "project"), ("2", "user")])
     preferenceName = models.CharField(max_length=100)
     preferenceValue = models.CharField(max_length=100)
 
@@ -208,7 +203,7 @@ class UserEmailPreference(Model):
 
 
 # Model representing additional files attached to projects
-class File(Model):
+class File(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])
     file_name = models.CharField(max_length=100)
