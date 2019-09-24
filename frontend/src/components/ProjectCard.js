@@ -25,7 +25,6 @@ const ProjectCard = props => {
         link = `/project/${props.id}`;
     }
 
-    const status = props.status.replace("-", " ");
     const researchTopics = props.researchTopics.reduce(listFormatter, "");
     const ageRanges = props.ageRanges.reduce(listFormatter, "");
     const deliveryModes = props.deliveryModes.reduce(listFormatter, "");
@@ -64,14 +63,14 @@ const ProjectCard = props => {
                 <section className={styles.stats}>
                     <section className={styles.line}>
                         <h4><img src={statusIcon} alt="status icon" />
-                        {status.toUpperCase()}</h4>
+                        {props.status.toUpperCase()}</h4>
                     </section>
                     <section className={styles.line}>
                         <img src={ageIcon} alt="Age icon" />
                         <span className={styles.statList}>
                             {
-                                ageRanges.length > 65 ?
-                                    `${ageRanges.replace(/^(.{65}[^\s]*).*/, "$1")}...`
+                                ageRanges.length > 50 ?
+                                    `${ageRanges.replace(/^(.{50}[^\s]*).*/, "$1")}...`
                                 :
                                     ageRanges
                             }
