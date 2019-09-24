@@ -5,11 +5,10 @@ django-allauth==0.38.0
 django-phonenumber-field
 phonenumbers
 django-cors-headers
-django-mysql
-mysqlclient==1.4.0
 python-dotenv
 requests
 Pillow
 django-cleanup
 django-crontab
 coreapi
+psycopg2
