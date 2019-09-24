@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     # for dealing with CORS (Cross Origin Resource Sharing... decoupled backend and frontend) related stuff
     'corsheaders',
 
-    'django_mysql',
     'django_cleanup.apps.CleanupConfig',
     'django_crontab',
 ]
@@ -195,26 +194,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pryde_backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME'),
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
-        'OPTIONS': {
-            # Tell MySQLdb to connect with 'utf8mb4' character set
-            'charset': 'utf8mb4',
-        },
-        # Tell Django to build the test database with the 'utf8mb4' character set
-        'TEST': {
-            'CHARSET': 'utf8mb4',
-            'COLLATION': 'utf8mb4_unicode_ci',
-        }
+        'PORT': os.getenv('DATABASE_PORT')
     }
 }
 
