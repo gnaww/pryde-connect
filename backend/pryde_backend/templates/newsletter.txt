@@ -17,4 +17,4 @@ In the past month, {{ content.projects|length }} projects matching your preferen
 In the past month no projects matching your preferences have been posted.
 {% endif %}
 
-If you no longer want to receive emails from us, you can unsubscribe at http://localhost:3000/preferences (must be logged in).
+If you no longer want to receive emails from us, you can unsubscribe at http://localhost:3000/preferences (must be logged in to unsubscribe).
