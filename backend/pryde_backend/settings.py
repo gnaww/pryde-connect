@@ -26,17 +26,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# TODO: set to false in production
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -75,7 +73,6 @@ CRONJOBS = [
     ('0 9 1 * *', 'api.cron_wrapper.send_emails_wrapper')
 ]
 
-
 # Additional Settings
 
 # to require the user's old password when they try to change
@@ -109,10 +106,8 @@ CORS_ALLOW_CREDENTIALS = True
 # make all endpoints atomic
 ATOMIC_REQUESTS = True
 
-
 # set site_id to 1 for allauth/rest-auth
 SITE_ID = 1
-
 
 # settings for rest framework
 REST_FRAMEWORK = {
@@ -125,17 +120,17 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 # settings to override rest-auth and allow for additional registration fields
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.custom_register.serializers.CustomRegisterSerializer',
 }
 
 # add a permission class to user registration endpoint that checks if the user is not a robot
+# uses Google's ReCAPTCHA
 REST_AUTH_REGISTER_PERMISSION_CLASSES = ('api.permissions.isRealUser', 'rest_framework.permissions.AllowAny')
 
 
-# allauth stuff
+# django-allauth settings
 ACCOUNT_ADAPTER = 'api.custom_adapter.adapter.CustomAccountAdapter'
 AUTH_USER_MODEL = 'api.PUser'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
@@ -151,13 +146,10 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Barron SendGrid Account
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -207,10 +199,8 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -220,7 +210,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -231,8 +220,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
 STATIC_URL = '/static/'
