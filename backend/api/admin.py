@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import PUser, Project, Collaborator, ResearchInterestUser, TopicsProject, DeliveryModeProject, File, AgeRangeUser, DeliveryModeUser, AgeRangeProject, UserEmailPreference
 
 
-# Register your models here.
 class PUserAdmin(admin.ModelAdmin):
     def name(self, obj):
         return "%s %s" % (obj.first_name, obj.last_name)

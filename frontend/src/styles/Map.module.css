@@ -4,3 +4,12 @@
     stroke-width: 2px;
     cursor: pointer;
 }
+
+.mapContainer {
+    width: 820px;
+    height: 580px;
+    position: relative;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}

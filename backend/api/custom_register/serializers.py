@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
 
+# Used for overriding built in user model
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)

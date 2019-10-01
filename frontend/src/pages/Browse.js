@@ -6,7 +6,6 @@ import CustomDropdown from '../components/CustomDropdown';
 import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
 import api from '../services/api';
-import Map from '../components/Map/Map';
 
 class Browse extends Component {
     constructor(props) {
@@ -364,7 +363,6 @@ class Browse extends Component {
                                     </button>
                                 </div>
                             </form>
-                            {!this.state.searchProjects && <Map values={parsedURL.location} handleChange={this.handleFilterSelect} />}
                             {
                                 !parsedURL.q && noFiltersSelected ?
                                     <>

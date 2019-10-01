@@ -1,5 +1,5 @@
 from django.db import models
-from django_mysql.models import EnumField, ListCharField, JSONField, Model
+from django.contrib.postgres.fields import ArrayField, JSONField
 from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
@@ -46,6 +46,7 @@ class PublicUserManager(BaseUserManager):
         return super().get_queryset().filter(emailaddress__verified=True, is_staff=False)
 
 
+# Model representing users
 class PUser(AbstractUser):
     ROLE = [
         ("1", 'Practitioner'),
@@ -53,7 +54,7 @@ class PUser(AbstractUser):
     ]
     locatedAtCornell = models.BooleanField(default=False)
     locatedAtCCE = models.BooleanField(default=False)
-    role = EnumField(choices=ROLE, default=None, null=True)
+    role = models.IntegerField(choices=ROLE, default=None, null=True)
     displayRole = models.CharField(max_length=50, default=None, null=True)
     affiliation = models.CharField(max_length=200)
     location = models.CharField(max_length=200, null=True, default=None)
@@ -61,12 +62,7 @@ class PUser(AbstractUser):
     phone = PhoneNumberField(default=None, null=True, unique=False, blank=True)
     website = models.URLField(default=None, null=True, blank=True)
     researchDescription = models.TextField(null=True, blank=True)
-    roles = ListCharField(
-        base_field=models.CharField(max_length=100),
-        default=list,
-        null=True,
-        max_length=(7 * 101) # 7 * 100 character nominals, plus commas
-    )
+    roles = ArrayField(models.CharField(max_length=100), default=list, null=True)
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
@@ -82,7 +78,8 @@ class PUser(AbstractUser):
         return "%s %s (%s)" % (self.first_name, self.last_name, self.email)
 
 
-class ResearchInterestUser(Model):
+# Model representing the research interests of users
+class ResearchInterestUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     researchInterest = models.CharField(max_length=100)
 
@@ -94,7 +91,8 @@ class ResearchInterestUser(Model):
         return "%s: %s" % (self.researchInterest, self.user)
 
 
-class DeliveryModeUser(Model):
+# Model representing the delivery modes of users
+class DeliveryModeUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
 
@@ -106,7 +104,8 @@ class DeliveryModeUser(Model):
         return "%s: %s" % (self.deliveryMode, self.user)
 
 
-class AgeRangeUser(Model):
+# Model representing the age ranges of users
+class AgeRangeUser(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
 
@@ -118,7 +117,8 @@ class AgeRangeUser(Model):
         return "%s: %s" % (self.ageRange, self.user)
 
 
-class Project(Model):
+# Model representing projects
+class Project(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(PUser, related_name='projects', on_delete=models.CASCADE)
     STATUS = [
@@ -126,7 +126,7 @@ class Project(Model):
         ("2", 'In Progress'),
         ("3", 'Not Started'),
     ]
-    status = EnumField(choices=STATUS)
+    status = models.IntegerField(choices=STATUS)
     summary = models.TextField()
     timeline = models.CharField(max_length=100)
     commitmentLength = models.CharField(max_length=100)
@@ -142,7 +142,8 @@ class Project(Model):
         return "%s by %s" % (self.name, self.owner)
 
 
-class TopicsProject(Model):
+# Model representing the research topics of projects
+class TopicsProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     researchTopic = models.CharField(max_length=100)
 
@@ -154,7 +155,8 @@ class TopicsProject(Model):
         return "%s: %s" % (self.researchTopic, self.project)
 
 
-class DeliveryModeProject(Model):
+# Model representing the delivery modes of projects
+class DeliveryModeProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     deliveryMode = models.CharField(max_length=100)
 
@@ -166,7 +168,8 @@ class DeliveryModeProject(Model):
         return "%s: %s" % (self.deliveryMode, self.project)
 
 
-class AgeRangeProject(Model):
+# Model representing age ranges of projects
+class AgeRangeProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     ageRange = models.CharField(max_length=100)
 
@@ -178,7 +181,8 @@ class AgeRangeProject(Model):
         return "%s: %s" % (self.ageRange, self.project)
 
 
-class Collaborator(Model):
+# Model representing collaborators on projects
+class Collaborator(models.Model):
     collaborator = models.ForeignKey(PUser, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     editPermission = models.BooleanField()
@@ -187,9 +191,10 @@ class Collaborator(Model):
     showProjectOnProfile = models.BooleanField(default=True)
 
 
-class UserEmailPreference(Model):
+# Model representing user email subscription preferences
+class UserEmailPreference(models.Model):
     user = models.ForeignKey(PUser, on_delete=models.CASCADE)
-    type = EnumField(choices=[("1", "project"), ("2", "user")])
+    type = models.IntegerField(choices=[("1", "project"), ("2", "user")])
     preferenceName = models.CharField(max_length=100)
     preferenceValue = models.CharField(max_length=100)
 
@@ -197,7 +202,8 @@ class UserEmailPreference(Model):
         verbose_name_plural = 'User Email Preferences'
 
 
-class File(Model):
+# Model representing additional files attached to projects
+class File(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     file = models.FileField(upload_to='project_files/', validators=[validate_file_size, ])
     file_name = models.CharField(max_length=100)

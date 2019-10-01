@@ -2,6 +2,7 @@ import requests
 import json
 import random
 
+
 researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Diversity Equity & Inclusion', 'Education & Learning',
            'Environment & Sustainability', 'Families',
@@ -12,7 +13,6 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Self & Identity', 'Science Technology Engineering & Math (STEM)',
            'Youth/Adult Relationships', 'alsdkjfsdlkjfds', 'asldkfjasldkf', 'asldfkjsdlkf', 'asdlkfjsdlkj', 'alsdkfjds',
                   'asldkjfsldjf', 'aslkdfjsdlk', 'asdlfjkds', 'asldkfjds']
-
 
 deliveryModes = ['Afterschool', 'Camps', 'Clubs']
 
@@ -25,8 +25,10 @@ ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
 roles = ['Lead youth programs', 'Design youth programs', 'Evaluate youth programs', 'Write grants', 'Train volunteers']
 
 firstName = ['John', 'Andy', 'Samantha', 'Lauren']
+
 lastName = ['Smith', 'Jones', 'Johnson']
 
+# insert 10 mostly randomly generated users
 def insert_users():
     url = 'http://localhost:8000/api/v1/rest-auth/registration/'
     headers = {

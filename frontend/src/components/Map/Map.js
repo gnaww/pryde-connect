@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import County from './CountyButton';
 import { Counties } from './Counties';
+import styles from '../../styles/Map.module.css';
 
 
 class Map extends Component {
     render() {
-        const style = {
-            width: '100%',
-            height: '580px',
-            marginBottom: '15px',
-            position: 'relative'
-        };
-
         let counties = this.props.values;
 
         if (counties === undefined) {
@@ -21,7 +15,7 @@ class Map extends Component {
         }
 
         return (
-            <div style={style}>
+            <div className={styles.mapContainer}>
                 {
                     Counties.map((c, index) => (
                         <County

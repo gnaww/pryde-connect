@@ -2,6 +2,8 @@ from rest_framework import permissions
 from .models import PUser, Project, Collaborator
 import requests, os
 
+
+# Check if user has permissions to add, remove, or update permissions of the collaborators on a project
 class CanEditCollaborators(permissions.BasePermission):
     message = "You do not have permission to edit collaborators on this project."
 
@@ -16,6 +18,7 @@ class CanEditCollaborators(permissions.BasePermission):
         return hasPermission or (obj.owner == request.user)
 
 
+# Chck if user has permissions to delete the project
 class CanDeleteProject(permissions.BasePermission):
     message = "You do not have permission to delete this project."
 
@@ -30,6 +33,7 @@ class CanDeleteProject(permissions.BasePermission):
         return (obj.owner == request.user) or hasPermission
 
 
+# Check if user has permissions to edit the project
 class CanEditProject(permissions.BasePermission):
     message = "You do not have permission to make edits on this project."
 
@@ -44,6 +48,7 @@ class CanEditProject(permissions.BasePermission):
         return (obj.owner == request.user) or hasPermission
 
 
+# Check if user is the collaborator changing project visibility
 class IsCollaborator(permissions.BasePermission):
     message = "You do not have permission to toggle project visibility for this collaborator."
 
@@ -51,6 +56,7 @@ class IsCollaborator(permissions.BasePermission):
         return Collaborator.objects.filter(project=obj, collaborator=request.user).exists()
 
 
+# Check if user has permission to edit or delete the account
 class CanEditDeleteUser(permissions.BasePermission):
     message = "You do not have permission to edit or delete this user."
 
@@ -58,6 +64,7 @@ class CanEditDeleteUser(permissions.BasePermission):
         return obj == request.user
 
 
+# Check if user passes RECAPTCHA verification
 class isRealUser(permissions.BasePermission):
     message = "RECAPTCHA has detected you are a robot."
 

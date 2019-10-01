@@ -191,7 +191,7 @@ export const getResearchTopicsQuestion = (qa, handlerFunction, state, hasError) 
                                     <img src={option.image} alt="Research topic icon" />
                                 </div>
                                 {
-                                    option.label !== "Other" ?
+                                    option.label !== "Other"  || qa.answer.key === "userResearchInterests" || qa.answer.key === "projectResearchTopics" ?
                                         <p>{ option.label }</p>
                                     :
                                         <>

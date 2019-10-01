@@ -34,8 +34,10 @@ urlpatterns = [
     # include the urls defined in the app's (api) url file
     path('api/v1/', include('api.urls')),
 
+    # hacky workaround to have custom email templates for email verification/confirmation
     url(r'^rest-auth/registration/account-email-verification-sent/', null_view, name='account_email_verification_sent'),
     url(r'^rest-auth/registration/account-confirm-email/', null_view, name='account_confirm_email'),
+
     url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
     url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
     path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),

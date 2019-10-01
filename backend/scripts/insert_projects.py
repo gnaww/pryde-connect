@@ -2,8 +2,8 @@ import requests
 import json
 import random
 
-projectNames = ['Children', 'Technology', 'Animals', 'Science', 'Reading', 'Engagement']
 
+projectNames = ['Children', 'Technology', 'Animals', 'Science', 'Reading', 'Engagement']
 
 researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Diversity Equity & Inclusion', 'Education & Learning',
@@ -15,7 +15,6 @@ researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
            'Self & Identity', 'Science Technology Engineering & Math (STEM)',
            'Youth/Adult Relationships', 'alsdkfjsdlf', 'asdlfkjsdlf', 'alsdkfjlkdsj', 'alskdfjsdfl']
 
-
 deliveryModes = ['Afterschool programs', 'Camps', 'Clubs', 'aslkdfjsd', 'asdlkfsdf']
 
 ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
@@ -25,8 +24,8 @@ ageRanges = ['Infants (0-1 year)', 'Toddlers (1-2 years)',
              'Young adults (18-24 years)']
 
 
+# get authentication tokens from the users populated by insert_users.py
 def login_users():
-
     emails = ['barronfran@gmail.com', 'dubois.barron@gmail.com', 'william.oliver.wang@gmail.com',
               'test4@gmail.com', 'test5@gmail.com', 'test6@gmail.com', 'test7@gmail.com',
               'test8@gmail.com', 'test9@gmail.com', 'test10@gmail.com']
@@ -50,6 +49,7 @@ def login_users():
     return keys
 
 
+# create randomly generated project for each user
 def make_projects(n):
     print(n)
     projects = []
@@ -74,11 +74,11 @@ def make_projects(n):
             },
             "alternateLocation": ""
         })
+
     return projects
 
 
 def insert_projects():
-
     auth_keys = login_users()
     print(auth_keys)
     url = 'http://localhost:8000/api/v1/project/create/'
