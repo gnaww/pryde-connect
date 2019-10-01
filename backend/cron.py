@@ -130,7 +130,7 @@ def send_emails():
                 MAX(owner_id) AS owner_id,
                 MAX(first_name) AS first_name,
                 MAX(last_name) AS last_name,
-                MAX(datePosted) AS datePosted
+                MAX("datePosted") AS "datePosted"
         FROM (
             SELECT 	api_useremailpreference.id,
                     user_id,
@@ -139,11 +139,11 @@ def send_emails():
                     api_project.owner_id,
                     api_puser.first_name,
                     api_puser.last_name,
-                    api_project.datePosted
+                    api_project."datePosted"
             FROM api_useremailpreference
             JOIN api_agerangeproject
-            ON api_agerangeproject.ageRange = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'ageRange' AND
+            ON api_agerangeproject."ageRange" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'ageRange' AND
             api_useremailpreference.type = '1'
             JOIN api_project
             ON api_project.id = api_agerangeproject.project_id
@@ -151,7 +151,7 @@ def send_emails():
             ON api_puser.id = api_project.owner_id
             WHERE
             api_project.owner_id != api_useremailpreference.user_id AND
-            api_project.datePosted >= %s
+            api_project."datePosted" >= %s
             UNION
             SELECT 	api_useremailpreference.id,
                     user_id,
@@ -160,11 +160,11 @@ def send_emails():
                     api_project.owner_id,
                     api_puser.first_name,
                     api_puser.last_name,
-                    api_project.datePosted
+                    api_project."datePosted"
             FROM api_useremailpreference
             JOIN api_deliverymodeproject
-            ON api_deliverymodeproject.deliveryMode = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            ON api_deliverymodeproject."deliveryMode" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '1'
             JOIN api_project
             ON api_project.id = api_deliverymodeproject.project_id
@@ -172,7 +172,7 @@ def send_emails():
             ON api_puser.id = api_project.owner_id
             WHERE
             api_project.owner_id != api_useremailpreference.user_id AND
-            api_project.datePosted >= %s
+            api_project."datePosted" >= %s
             UNION
             SELECT 	api_useremailpreference.id,
                     user_id,
@@ -181,12 +181,12 @@ def send_emails():
                     api_project.owner_id,
                     api_puser.first_name,
                     api_puser.last_name,
-                    api_project.datePosted
+                    api_project."datePosted"
             FROM api_useremailpreference
             JOIN api_deliverymodeproject
-            ON api_useremailpreference.preferenceValue = 'Other' AND api_deliverymodeproject.deliveryMode
+            ON api_useremailpreference."preferenceValue" = 'Other' AND api_deliverymodeproject."deliveryMode"
             NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
-            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '1'
             JOIN api_project
             ON api_project.id = api_deliverymodeproject.project_id
@@ -194,7 +194,7 @@ def send_emails():
             ON api_puser.id = api_project.owner_id
             WHERE
             api_project.owner_id != api_useremailpreference.user_id AND
-            api_project.datePosted >= %s
+            api_project."datePosted" >= %s
             UNION
             SELECT 	api_useremailpreference.id,
                     user_id,
@@ -203,11 +203,11 @@ def send_emails():
                     api_project.owner_id,
                     api_puser.first_name,
                     api_puser.last_name,
-                    api_project.datePosted
+                    api_project."datePosted"
             FROM api_useremailpreference
             JOIN api_topicsproject
-            ON api_topicsproject.researchTopic = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'researchTopic' AND
+            ON api_topicsproject."researchTopic" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'researchTopic' AND
             api_useremailpreference.type = '1'
             JOIN api_project
             ON api_project.id = api_topicsproject.project_id
@@ -215,7 +215,7 @@ def send_emails():
             ON api_puser.id = api_project.owner_id
             WHERE
             api_project.owner_id != api_useremailpreference.user_id AND
-            api_project.datePosted >= %s
+            api_project."datePosted" >= %s
             UNION
             SELECT 	api_useremailpreference.id,
                     user_id,
@@ -224,15 +224,15 @@ def send_emails():
                     api_project.owner_id,
                     api_puser.first_name,
                     api_puser.last_name,
-                    api_project.datePosted
+                    api_project."datePosted"
             FROM api_useremailpreference
             JOIN api_topicsproject
-            ON api_useremailpreference.preferenceValue = 'Other' AND api_topicsproject.researchTopic
+            ON api_useremailpreference."preferenceValue" = 'Other' AND api_topicsproject."researchTopic"
             NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
             'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
             'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
             'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
-            api_useremailpreference.preferenceName = 'researchTopic' AND
+            api_useremailpreference."preferenceName" = 'researchTopic' AND
             api_useremailpreference.type = '1'
             JOIN api_project
             ON api_project.id = api_topicsproject.project_id
@@ -240,7 +240,7 @@ def send_emails():
             ON api_puser.id = api_project.owner_id
             WHERE
             api_project.owner_id != api_useremailpreference.user_id AND
-            api_project.datePosted >= %s
+            api_project."datePosted" >= %s
         ) as temp
         GROUP BY user_id, project_id
         ORDER BY user_id, name;
@@ -270,8 +270,8 @@ def send_emails():
                     api_puser.date_joined
             FROM api_useremailpreference
             JOIN api_agerangeuser
-            ON api_agerangeuser.ageRange = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'ageRange' AND
+            ON api_agerangeuser."ageRange" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'ageRange' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
             ON api_puser.id = api_agerangeuser.user_id
@@ -289,8 +289,8 @@ def send_emails():
                     api_puser.date_joined
             FROM api_useremailpreference
             JOIN api_researchinterestuser
-            ON api_researchinterestuser.researchInterest = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'researchInterest' AND
+            ON api_researchinterestuser."researchInterest" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'researchInterest' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
             ON api_puser.id = api_researchinterestuser.user_id
@@ -308,12 +308,12 @@ def send_emails():
                     api_puser.date_joined
             FROM api_useremailpreference
             JOIN api_researchinterestuser
-            ON api_useremailpreference.preferenceValue = 'Other' AND api_researchinterestuser.researchInterest
+            ON api_useremailpreference."preferenceValue" = 'Other' AND api_researchinterestuser."researchInterest"
             NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
             'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
             'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
             'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
-            api_useremailpreference.preferenceName = 'researchInterest' AND
+            api_useremailpreference."preferenceName" = 'researchInterest' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
             ON api_puser.id = api_researchinterestuser.user_id
@@ -331,8 +331,8 @@ def send_emails():
                     api_puser.date_joined
             FROM api_useremailpreference
             JOIN api_deliverymodeuser
-            ON api_deliverymodeuser.deliveryMode = api_useremailpreference.preferenceValue AND
-            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            ON api_deliverymodeuser."deliveryMode" = api_useremailpreference."preferenceValue" AND
+            api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
             ON api_puser.id = api_deliverymodeuser.user_id
@@ -350,9 +350,9 @@ def send_emails():
                     api_puser.date_joined
             FROM api_useremailpreference
             JOIN api_deliverymodeuser
-            ON api_useremailpreference.preferenceValue = 'Other' AND api_deliverymodeuser.deliveryMode
+            ON api_useremailpreference."preferenceValue" = 'Other' AND api_deliverymodeuser."deliveryMode"
             NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
-            api_useremailpreference.preferenceName = 'deliveryMode' AND
+            api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
             ON api_puser.id = api_deliverymodeuser.user_id
@@ -379,7 +379,7 @@ def send_emails():
         htmly = get_template("newsletter.html")
         month = current_date.strftime('%B')
         subject = "PRYDE Connect %s Newsletter" % month
-        from_email = "prydeconnect@cornell.edu"
+        from_email = "noreply-prydeconnect@cornell.edu"
         to = user.email
 
         data = {
