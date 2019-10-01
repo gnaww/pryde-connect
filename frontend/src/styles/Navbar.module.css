@@ -3,7 +3,6 @@
     height: 110px;
     display: flex;
     align-items: center;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .logo {
@@ -21,27 +20,27 @@
 }
 
 .logo img {
-    height: 80px;
+    height: 67px;
+    display: flex;
+    align-items: center;
 }
 
 .logo p {
     padding-left: 15px;
+    font-size: 25px;
+    font-family: Work Sans;
 }
 
 #pryde {
-    font-family: Work Sans;
     font-weight: bold;
-    font-size: 30px;
-    line-height: 35px;
     letter-spacing: 0.25em;
     color: #FF7F00;
 }
 
 #name {
-    font-family: Work Sans;
-    font-size: 30px;
-    line-height: 35px;
+    font-size: 25px;
     color: black;
+    padding-left: 4px;
 }
 
 .linksContainer {
@@ -51,10 +50,31 @@
 
 .link {
     font-family: Lato;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 24px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.2em;
     color: black;
     text-decoration: none;
-    padding: 0 16px;
+    padding: 3px 0;
+    margin: 0 16px;
+    transition: 0.25s;
+}
+
+.link:hover{
+    color: #FF7F00
+}
+
+.activeLink {
+    composes: link;
+    border-bottom: 1px solid black;
+}
+
+button.link {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+button:focus.link {
+    outline: none;
 }

@@ -1,16 +1,59 @@
-.joinOurCommunity {
+.loginWrapper {
+    position: relative;
+    flex: 1;
+    padding: 30px 15px;
+    height: 100%;
+}
+
+.emailPreferenceWrapper {
+    composes: loginWrapper;
+    padding: 30px 100px;
+}
+
+.loginGraphic {
+    position: absolute;
+    height: 500px;
+    top: 50%;
+    margin-top: -250px;
+    overflow: hidden;
+    z-index: -100;
+}
+
+#loginBlue {
+    left: 0;
+}
+
+#loginBlue img {
+    height: 35vw;
+    max-height: 100%;
+    position: relative;
+    left: -250px;
+}
+
+#loginGreen {
+    right: 0;
+}
+
+#loginGreen img {
+    height:35vw;
+    max-height: 100%;
+    position: relative;
+    right: -250px;
+}
+
+.title {
     font-family: Work Sans;
     font-weight: bold;
     font-size: 40px;
     line-height: 47px;
     margin-top: 77px;
-    margin-block-end: 5px;
+    margin-block-start: 0px;
     text-align: center;
     letter-spacing: 0.1em;
     color: black;
 }
 
-.loginToCreate {
+.subtitle {
     font-family: Work Sans;
     font-weight: normal;
     font-size: 25px;
@@ -22,7 +65,7 @@
 }
 
 .textInput {
-    width: 24%;
+    width: 440px;
     height: 64px;
     background: #E9E9E9;
     border: none;
@@ -35,8 +78,12 @@
     letter-spacing: 0.1em;
 }
 
+.textInput:focus {
+    outline: none;
+}
+
 .loginButton {
-    width: 11%;
+    width: 200px;
     height: 56px;
     background: #49AEE9;
     border: none;
@@ -49,6 +96,18 @@
     align-self: center;
     letter-spacing: 0.19em;
     color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.loginButton:hover{
+    background: none;
+    color: #49AEE9;
+    box-shadow: inset #49AEE9 0px 0px 0px 2px;
+}
+
+.loginButton:focus {
+    outline: none;
 }
 
 .loginForm {
@@ -61,14 +120,19 @@
 
 .link {
     font-family: Lato;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 18px;
     margin-bottom: 12px;
     align-self: center;
     align-content: center;
     letter-spacing: 0.1em;
     text-decoration-line: underline;
+    transition: 0.2s;
     color: #808080;
+}
+
+.link:hover{
+    opacity: 0.5;
 }
 
 .links {
@@ -78,4 +142,73 @@
     justify-content: center;
     align-content: space-around;
     margin-bottom: 75px;
+}
+
+.errorMessage {
+    font-family: Lato;
+    color: red;
+    text-align: center;
+    font-size: 22px;
+}
+
+.successMessage {
+    composes: errorMessage;
+    color: #1fbf37;
+}
+
+.tabMenu {
+    margin-bottom: 15px;
+}
+
+.tabMenu button span {
+    font-size: 26px;
+    font-family: Lato;
+    letter-spacing: 0.1em;
+}
+
+.questionsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.question {
+    flex: 1;
+}
+
+.buttonWrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.unsubscribe {
+    background: white;
+    border: none;
+    border-radius: 5px;
+    border: 2px solid #F62B2B;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    padding: 12px;
+    cursor: pointer;
+    color: #F62B2B;
+}
+
+.unsubscribe:focus, .update:focus {
+    outline: none;
+}
+
+.update {
+    composes: unsubscribe;
+    color: white;
+    background: #49AEE9;
+    border: 2px solid #49AEE9;
+}
+
+.description {
+    composes: subtitle;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }

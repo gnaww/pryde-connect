@@ -1,0 +1,257 @@
+.container {
+    flex: 1;
+}
+
+.profileHeaderPractitioner {
+    width: 100%;
+    padding: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background: linear-gradient(180deg, #49AEE9 0%, #218AE0 100%);
+}
+
+.profileHeaderResearcher {
+    composes: profileHeaderPractitioner;
+    background: linear-gradient(180deg, #99D85D 0%, #78C130 100%);
+}
+
+.manageProfile {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    background: white;
+    border: none;
+    margin-left: 30px;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #99D85D;
+}
+
+.manageProfileBlue {
+    composes: manageProfile;
+    color: #49AEE9;
+}
+
+.manageProfile:focus, .manageProfileBlue:focus {
+    outline: none;
+}
+
+.manageProfile path {
+    stroke: #99D85D;
+}
+
+.manageProfileBlue path {
+    stroke: #49AEE9;
+}
+
+.manageProfile svg {
+    margin-right: 10px;
+}
+
+.buttonIcon {
+    margin-right: 10px;
+    width: 25px;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.editButton {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #99D85D;
+    text-decoration: none;
+}
+
+.editButtonBlue {
+    composes: editButton;
+    color: #49AEE9;
+}
+
+.preferences {
+    composes: editButton;
+    color: black;
+}
+
+.deleteProfile {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #F62B2B;
+}
+
+.profilePicture {
+    width: 220px;
+    height: 220px;
+    position: relative;
+}
+
+.profilePicture img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profilePictureEdit {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.profileHeader button:focus {
+    outline: none;
+}
+
+.personalInformation h1, .personalInformation h2 {
+    font-family: Work Sans;
+    letter-spacing: 0.1em;
+    color: white;
+}
+
+.personalInformation h1 {
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0 0 3px 0;
+    display: flex;
+    align-items: center;
+}
+
+.personalInformation h2 {
+    font-weight: normal;
+    font-size: 30px;
+    margin: 0;
+}
+
+.CCEBadge {
+    width: 93px;
+    margin-left: 15px;
+}
+
+.CornellBadge {
+    composes: CCEBadge;
+    width: 131px;
+}
+
+.contactInformation {
+    color: white;
+}
+
+.contactInformation ul {
+    list-style: none;
+    font-family: Lato;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+}
+
+.contactInformation li {
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+}
+
+.contactIcon {
+    width: 20px;
+    margin-right: 15px;
+}
+
+.contactInformation a {
+    text-decoration: none;
+    color: white;
+}
+
+.profileContent {
+    display: flex;
+    width: 90%;
+    margin: 30px auto;
+}
+
+.profileContent h1 {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 30px;
+    letter-spacing: 0.2em;
+    margin: 0;
+}
+
+.profileSummary {
+    width: 380px;
+    height: 100%;
+    flex: 2;
+    margin: 30px 10px 30px 30px;
+}
+
+.profileSummary div {
+    background: #49AEE9;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
+    padding: 10px 30px 30px 30px;
+    margin-top: 30px;
+    color: white;
+}
+
+.profileSummary h2 {
+    font-family: Lato;
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.profileSummary ul {
+    list-style-position: inside;
+    list-style-type: none;
+    padding: 0 0 0 5px;
+    margin: 0;
+}
+
+.profileContent ul li:before {
+    content: "-";
+    margin-right: 5px;
+}
+
+.profileSummary hr {
+    margin: 30px 0;
+}
+
+.profileSummary p {
+    margin: 0;
+}
+
+.projects {
+    flex: 5;
+    margin: 30px 10px 30px 30px;
+}
+
+.projectsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.projectsHeader div span {
+    margin: 0 10px;
+}
+
+.profileNotFound {
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+    padding: 50px;
+}

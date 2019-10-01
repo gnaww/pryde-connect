@@ -1,52 +1,20 @@
 import React, { Component } from 'react';
 import queryString from 'query-string';
-import { withRouter } from 'react-router-dom';
 import searchIcon from '../images/magnifying-glass.svg';
-import map from '../images/ny-map.svg';
-import SearchResult from '../components/SearchResult';
 import FilterCategory from '../components/FilterCategory';
 import CustomDropdown from '../components/CustomDropdown';
+import { sortProjectsOptions, sortUsersOptions, SortableList } from '../components/SortableList';
 import styles from '../styles/Browse.module.css';
+import api from '../services/api';
 
 class Browse extends Component {
     constructor(props) {
         super(props);
         this.state = {
             query: '',
-            searchOpportunities: true,
-            showAffiliation: true,
-            showTopic: true,
-            showStatus: true,
-            showLocation: true,
-            sortBy: "name-asc",
-            searchResults: [
-                {
-                    type: "project",
-                    name: "Project Name",
-                    owner: "John Smith",
-                    status: 'complete',
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris. THERE SHOULD BE A CHARACTER LIMIT ON THIS"
-                },
-                {
-                    type: "project",
-                    name: "totally a real project",
-                    owner: "Foo Bar",
-                    status: 'in progress',
-                    summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget neque in mauris tristique condimentum a quis mauris."
-                },
-                {
-                    type: "partner",
-                    name: "Mary Jane",
-                    role: "Practitioner",
-                    affiliation: "Cornell"
-                },
-                {
-                    type: "partner",
-                    name: "Mary Jane",
-                    role: "Researcher",
-                    affiliation: "Cornell"
-                }
-            ]
+            searchProjects: true,
+            sortBy: '',
+            searchResults: []
         };
     }
 
@@ -79,55 +47,84 @@ class Browse extends Component {
         } else {
             filter = [event.target.value];
         }
-
         parsedURL[event.target.name] = filter;
         history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
-        window.location.reload();
     }
 
     setCategory = category => {
-        this.setState({ searchOpportunities: category === "opportunities" });
-    }
-    
-    toggleFilterVisibility = filter => {
-        this.setState(prevState => ({ [filter]: !prevState[filter] }));
+        this.setState({ searchProjects: category === "projects" });
+
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        parsedURL.category = category === "projects" ? "projects" : "partners";
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
     }
 
     setSort = event => {
         this.setState({ sortBy: event.target.value });
     }
 
-    componentDidMount() {
-        const { location } = this.props;
+    submitQuery = event => {
+        event.preventDefault();
+
+        const { location, history } = this.props;
+        let parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
+        parsedURL.q = this.state.query;
+
+        history.push(`/browse?${queryString.stringify(parsedURL, { arrayFormat: "comma" })}`);
+    }
+
+    retrieveResults = ({ location }) => {
         const parsedURL = queryString.parse(location.search, { arrayFormat: "comma" });
-        this.setState({ query: parsedURL.q });
+        this.setState({ query: parsedURL.q ? parsedURL.q : '' });
+
+        if (parsedURL.category) {
+            this.setState({ searchProjects: parsedURL.category === "projects" });
+        }
+
+        const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
+
+        if (!parsedURL.q && noFiltersSelected) {
+            if (parsedURL.category === "partners") {
+                api.getUsers()
+                    .then(users => this.setState({ searchResults: users }))
+                    .catch(err => {
+                        alert("There was an error getting your search results. Please refresh the page or try again later.");
+                        console.log(err);
+                    });
+            } else {
+                api.getProjects()
+                    .then(projects => this.setState({ searchResults: projects }))
+                    .catch(err => {
+                        alert("There was an error getting your search results. Please refresh the page or try again later.");
+                        console.log(err);
+                    });
+            }
+        } else {
+            api.search(parsedURL)
+                .then(results => this.setState({ searchResults: results }))
+                .catch(err => {
+                    alert("There was an error getting your search results. Please refresh the page or try again later.")
+                    console.log(err);
+                });
+        }
+    }
+
+    componentDidUpdate(prevProps, _prevState) {
+        if (prevProps.location.search !== this.props.location.search) {
+            this.retrieveResults(this.props);
+        }
+    }
+
+    componentDidMount() {
+        document.title = "PRYDE Connect | Browse";
+        this.retrieveResults(this.props);
     }
 
     render() {
         const parsedURL = queryString.parse(this.props.location.search, { arrayFormat: "comma" });
-        const filterCategories = [
-            {
-                categoryName: "Affiliation",
-                filterOptions: [
-                    "PRYDE Researcher",
-                    "4-H Practitioner",
-                    "Student",
-                    "Cornell",
-                    "CCE"
-                ],
-                isVisible: this.state.showAffiliation,
-                defaultValues: parsedURL.affiliation
-            },
-            {
-                categoryName: "Topic",
-                filterOptions: [
-                    "Purpose in Life",
-                    "Health",
-                    "skf"
-                ],
-                isVisible: this.state.showTopic,
-                defaultValues: parsedURL.topic
-            },
+        const noFiltersSelected = Object.keys(parsedURL).filter(param => param !== "category" && param !== "q").length === 0
+        const filterProjectsCategories = [
             {
                 categoryName: "Status",
                 filterOptions: [
@@ -135,118 +132,287 @@ class Browse extends Component {
                     "In Progress",
                     "Completed"
                 ],
-                isVisible: this.state.showStatus,
                 defaultValues: parsedURL.status
+            },
+            {
+                categoryName: "Research Topic",
+                filterOptions: [
+                    "Animal Science & Agriculture",
+                    "Civic Engagement",
+                    "Diversity Equity & Inclusion",
+                    "Education & Learning",
+                    "Environment & Sustainability",
+                    "Families",
+                    "Health & Wellness",
+                    "Peer Relationships",
+                    "Positive Youth Development",
+                    "Policy Analysis",
+                    "Program Evaluation",
+                    "Media & Technology",
+                    "Motivation",
+                    "Nutrition",
+                    "Risk Behavior",
+                    "Self & Identity",
+                    "Science Technology Engineering & Math (STEM)",
+                    "Youth/Adult Relationships",
+                    "Other"
+                ],
+                defaultValues: parsedURL.researchtopic
+            },
+            {
+                categoryName: "Age Ranges",
+                filterOptions: [
+                    "Infants (0-1 year)",
+                    "Toddlers (1-2 years)",
+                    "Toddlers (2-3 years)",
+                    "Preschoolers (3-5 years)",
+                    "Early childhood (6-8 years)",
+                    "Middle childhood (9-11 years)",
+                    "Young teens (12-14 years)",
+                    "Teenagers (15-17 years)",
+                    "Young adults (18-24 years)"
+                ],
+                defaultValues: parsedURL.ageranges
+            },
+            {
+                categoryName: "Delivery Modes",
+                filterOptions: [
+                    "Afterschool",
+                    "Camps",
+                    "Clubs",
+                    "Other"
+                ],
+                defaultValues: parsedURL.deliverymodes
+            }
+        ];
+        const filterUsersCategories = [
+            {
+                categoryName: "Research Interest",
+                filterOptions: [
+                    "Animal Science & Agriculture",
+                    "Civic Engagement",
+                    "Diversity Equity & Inclusion",
+                    "Education & Learning",
+                    "Environment & Sustainability",
+                    "Families",
+                    "Health & Wellness",
+                    "Peer Relationships",
+                    "Positive Youth Development",
+                    "Policy Analysis",
+                    "Program Evaluation",
+                    "Media & Technology",
+                    "Motivation",
+                    "Nutrition",
+                    "Risk Behavior",
+                    "Self & Identity",
+                    "Science Technology Engineering & Math (STEM)",
+                    "Youth/Adult Relationships",
+                    "Other"
+                ],
+                defaultValues: parsedURL.researchinterest
             },
             {
                 categoryName: "Location",
                 filterOptions: [
-                    "Ithaca",
-                    "Tompkins County",
-                    "Broome County",
-                    "Niagara County",
-                    "Cayuga County"
+                    "Albany",
+                    "Allegany",
+                    "Bronx",
+                    "Broome",
+                    "Cattaraugus",
+                    "Cayuga",
+                    "Chautauqua",
+                    "Chemung",
+                    "Chenango",
+                    "Clinton",
+                    "Columbia",
+                    "Cortland",
+                    "Delaware",
+                    "Dutchess",
+                    "Erie",
+                    "Essex",
+                    "Franklin",
+                    "Fulton",
+                    "Genesee",
+                    "Greene",
+                    "Hamilton",
+                    "Herkimer",
+                    "Jefferson",
+                    "Kings (Brooklyn)",
+                    "Lewis",
+                    "Livingston",
+                    "Madison",
+                    "Monroe",
+                    "Montgomery",
+                    "Nassau",
+                    "New York (Manhattan)",
+                    "Niagara",
+                    "Oneida",
+                    "Onondaga",
+                    "Ontario",
+                    "Orange",
+                    "Orleans",
+                    "Oswego",
+                    "Otsego",
+                    "Putnam",
+                    "Queens",
+                    "Rensselaer",
+                    "Richmond (Staten Island)",
+                    "Rockland",
+                    "Saint Lawrence",
+                    "Saratoga",
+                    "Schenectady",
+                    "Schoharie",
+                    "Schuyler",
+                    "Seneca",
+                    "Steuben",
+                    "Suffolk",
+                    "Sullivan",
+                    "Tioga",
+                    "Tompkins",
+                    "Ulster",
+                    "Warren",
+                    "Washington",
+                    "Wayne",
+                    "Westchester",
+                    "Wyoming",
+                    "Yates",
+                    "Other"
                 ],
-                isVisible: this.state.showLocation,
                 defaultValues: parsedURL.location
+            },
+            {
+                categoryName: "Age Ranges",
+                filterOptions: [
+                    "Infants (0-1 year)",
+                    "Toddlers (1-2 years)",
+                    "Toddlers (2-3 years)",
+                    "Preschoolers (3-5 years)",
+                    "Early childhood (6-8 years)",
+                    "Middle childhood (9-11 years)",
+                    "Young teens (12-14 years)",
+                    "Teenagers (15-17 years)",
+                    "Young adults (18-24 years)"
+                ],
+                defaultValues: parsedURL.ageranges
             }
-        ]
+        ];
+        const filterCategories = this.state.searchProjects ? filterProjectsCategories : filterUsersCategories;
+
+        const sortOptions = this.state.searchProjects ? sortProjectsOptions : sortUsersOptions;
 
         return (
-            <div className={styles.browseWrapper}>
-                <h1 id={styles.pageHeader}>Browse opportunities and partners</h1>
-                <div className={styles.searchWrapper}>
-                    <aside className={styles.filtersContainer}>
-                        <h2>FILTER</h2>
-                        <section>
-                            <h3>CATEGORY</h3>
-                            <ul>
-                                <li>
-                                    <button 
-                                        className={this.state.searchOpportunities ? styles.activeCategory : ''}
-                                        onClick={() => this.setCategory("opportunities")}
-                                    >
-                                        Research Opportunities
-                                    </button>
-                                </li>
-                                <li>
-                                    <button 
-                                        className={!this.state.searchOpportunities ? styles.activeCategory : ''}
-                                        onClick={() => this.setCategory("partners")}
-                                    >
-                                        Research Partners
-                                    </button>
-                                </li>
-                            </ul>
-                        </section>
-                        {
-                            filterCategories.map((filterCategory, idx) => 
-                                <FilterCategory 
-                                    key={idx}
-                                    {...filterCategory}
-                                    toggleVisibility={this.toggleFilterVisibility}
-                                    handleClick={this.handleFilterSelect} 
-                                />
-                            )
-                        }
-                    </aside>
-                    <section className={styles.searchResultsContainer}>
-                        <form className={styles.searchForm}>
-                            <div>
-                                <input 
-                                    type="text"
-                                    name="q"
-                                    value={this.state.query}
-                                    onChange={this.handleQueryChange}
-                                    placeholder={this.state.searchOpportunities ?
-                                        "Search for research opportunities" :
-                                        "Search for research partners"}
-                                />
-                                <button type="submit" value="Submit">
-                                    <img src={searchIcon} alt="Search icon" />
-                                </button>
-                            </div>
-                        </form>
-                        {!this.state.searchOpportunities && <img className={styles.map} src={map} alt="New York map" />}
-                        {
-                            parsedURL.q ?
-                            <>
-                                <header>
-                                    <div>
-                                        <h3>Results for "{parsedURL.q}"</h3>
-                                        <h4>{this.state.searchResults.length} results</h4>
-                                    </div>
-                                    <CustomDropdown
-                                        handleChange={this.setSort}
-                                        name="sort"
-                                        label="SORT BY"
-                                        options={[
-                                            {
-                                                value: "name-asc",
-                                                text: "Name ↑"
-                                            },
-                                            {
-                                                value: "name-desc",
-                                                text: "Name ↓"
-                                            }
-                                        ]}
-                                    />
-                                </header>
-                                <section className={styles.searchResults}>
-                                    {
-                                        this.state.searchResults.map((searchResult, idx) => 
-                                            <SearchResult key={idx} {...searchResult} />
-                                        )
-                                    }
+            <div className={styles.container}>
+                <div className={styles.browseWrapper}>
+                    <h1 id={styles.pageHeader}>Browse projects and partners</h1>
+                    <div className={styles.searchWrapper}>
+                        <aside className={styles.filtersContainer}>
+                            <h2>FILTER</h2>
+                            <div className={styles.box}>
+                                <section>
+                                    <h3>BROWSE</h3>
+                                    <ul>
+                                        <li>
+                                            <button
+                                                className={this.state.searchProjects ? styles.activeCategory : ''}
+                                                onClick={() => this.setCategory("projects")}
+                                            >
+                                                Research Projects
+                                        </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                className={!this.state.searchProjects ? styles.activeCategory : ''}
+                                                onClick={() => this.setCategory("partners")}
+                                            >
+                                                Research Partners
+                                        </button>
+                                        </li>
+                                    </ul>
                                 </section>
-                            </> :
-                            <h2>Type something into the search bar above!</h2>
-                        }
-                    </section>
+                                {
+                                    filterCategories.map((filterCategory, idx) =>
+                                        <FilterCategory
+                                            key={idx}
+                                            {...filterCategory}
+                                            handleClick={this.handleFilterSelect}
+                                        />
+                                    )
+                                }
+                            </div>
+                        </aside>
+                        <section className={styles.searchResultsContainer}>
+                            <form className={styles.searchForm} onSubmit={this.submitQuery}>
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="q"
+                                        value={this.state.query}
+                                        onChange={this.handleQueryChange}
+                                        placeholder={this.state.searchProjects ?
+                                            "Search for research projects" :
+                                            "Search for research partners"}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name="category"
+                                        value={this.state.searchProjects ? "projects" : "partners"}
+                                        hidden
+                                    />
+                                    <button type="submit" value="Submit">
+                                        <img src={searchIcon} alt="Search icon" />
+                                    </button>
+                                </div>
+                            </form>
+                            {
+                                !parsedURL.q && noFiltersSelected ?
+                                    <>
+                                        <header>
+                                            <div>
+                                                <h2>Browsing all {this.state.searchProjects ? "projects" : "partners"}{` (${this.state.searchResults.length} results)`}</h2>
+                                            </div>
+                                            <CustomDropdown
+                                                handleChange={this.setSort}
+                                                name="sort"
+                                                label="SORT BY"
+                                                options={sortOptions}
+                                                defaultValue={this.state.sortBy}
+                                            />
+                                        </header>
+                                        <section className={styles.searchResults}>
+                                            {
+                                                <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
+                                            }
+                                        </section>
+                                    </>
+                                    :
+                                    <>
+                                        <header>
+                                            <div>
+                                                <h2>{`${this.state.searchResults.length} results`}</h2>
+                                            </div>
+                                            <CustomDropdown
+                                                handleChange={this.setSort}
+                                                name="sort"
+                                                label="SORT BY"
+                                                options={sortOptions}
+                                                defaultValue={this.state.sortBy}
+                                            />
+                                        </header>
+                                        <section className={styles.searchResults}>
+                                            {
+                                                <SortableList list={this.state.searchResults} sortBy={this.state.sortBy} />
+                                            }
+                                        </section>
+                                    </>
+
+
+                            }
+                        </section>
+                    </div>
                 </div>
             </div>
         );
     }
 }
 
-export default withRouter(Browse);
+export default Browse;

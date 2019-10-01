@@ -1,0 +1,67 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+.content {
+    position: fixed;
+    background: white;
+    width: 50%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(calc(-50% - .5px));
+    padding: 40px;
+}
+
+.content h1 {
+    margin: 0 0 30px 0;
+    font-family: Work Sans;
+    letter-spacing: 0.1em;
+}
+
+.content div {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+section.content img {
+    width: 220px;
+    height: 220px;
+    margin: 15px auto;
+}
+
+.content button {
+    font-family: Lato;
+    font-size: 20px;
+    letter-spacing: 0.19em;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    width: 140px;
+    height: 40px;
+    cursor: pointer;
+    margin: 0 30px;
+}
+
+.cancelButton {
+    background: #FF7F00;
+}
+
+.saveButton {
+    background: #49AEE9;
+}
+
+.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
