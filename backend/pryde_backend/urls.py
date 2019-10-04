@@ -32,7 +32,7 @@ urlpatterns = [
 
     url(r'^', include('django.contrib.auth.urls')),
     # include the urls defined in the app's (api) url file
-    path('api/v1/', include('api.urls')),
+    path('v1/', include('api.urls')),
 
     # hacky workaround to have custom email templates for email verification/confirmation
     url(r'^rest-auth/registration/account-email-verification-sent/', null_view, name='account_email_verification_sent'),
