@@ -70,7 +70,7 @@ INSTALLED_APPS = [
 
 CRONJOBS = [
     # send monthly newsletters at 9 AM on the first of every month
-    ('0 9 1 * *', 'api.cron_wrapper.send_emails_wrapper')
+    ('0 9 1 * *', 'api.cron_wrapper.send_emails_driver')
 ]
 
 # Additional Settings
