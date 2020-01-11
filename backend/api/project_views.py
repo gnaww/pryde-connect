@@ -49,7 +49,7 @@ class CreateProject(generics.CreateAPIView):
                 status=request.data['status'],
                 summary=request.data['summary'],
                 timeline=request.data['timeline'],
-                commitmentLength=request.data['timeline'],
+                commitmentLength=request.data['commitmentLength'],
                 incentives=request.data['incentives'],
                 additionalInformation=request.data['additionalInformation'],
                 alternateContact=request.data['alternateContact'],
