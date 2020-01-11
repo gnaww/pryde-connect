@@ -106,6 +106,8 @@ class UpdateUser(generics.UpdateAPIView):
             # check if logged in user can edit profile
             self.check_object_permissions(request, user)
 
+            user.first_name = request.data['first_name']
+            user.last_name = request.data['last_name']
             user.locatedAtCornell = request.data['locatedAtCornell']
             user.locatedAtCCE = request.data['locatedAtCCE']
             user.role = request.data['role']
