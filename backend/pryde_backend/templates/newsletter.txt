@@ -3,7 +3,7 @@ Hello {{ first_name }} {{ last_name }}! Welcome to your PRYDE Connect monthly ne
 {% if content.users %}
 In the past month, {{ content.users|length }} users matching your preferences have joined PRYDE Connect:
 
-{% for user in content.users %}{{ user.name }}, a {{ user.role }} located at {{ user.location }} - joined {{ user.date_joined }} (http://localhost:3000/user/{{ user.id }})
+{% for user in content.users %}{{ user.name }}, a {{ user.role }} located at {{ user.location }} - joined {{ user.date_joined }} (https://dev.pc.bctr.cornell.edu/user/{{ user.id }})
 {% endfor %}
 {% else %}
 In the past month no users matching your preferences have joined PRYDE Connect.
@@ -11,10 +11,10 @@ In the past month no users matching your preferences have joined PRYDE Connect.
 {% if content.projects %}
 In the past month, {{ content.projects|length }} projects matching your preferences have been posted:
 
-{% for project in content.projects %}{{ project.name }} by {{ project.owner_name }} - posted on {{ project.date_posted }} (http://localhost:3000/project/{{ project.id }})
+{% for project in content.projects %}{{ project.name }} by {{ project.owner_name }} - posted on {{ project.date_posted }} (https://dev.pc.bctr.cornell.edu/project/{{ project.id }})
 {% endfor %}
 {% else %}
 In the past month no projects matching your preferences have been posted.
 {% endif %}
 
-If you no longer want to receive emails from us, you can unsubscribe at http://localhost:3000/preferences (must be logged in to unsubscribe).
+If you no longer want to receive emails from us, you can unsubscribe at https://dev.pc.bctr.cornell.edu/preferences (must be logged in to unsubscribe).

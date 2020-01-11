@@ -2,6 +2,6 @@ Welcome to PRYDE Connect!
 
 You're receiving this e-mail because you recently signed up for an account at PRYDE Connect.
 
-To confirm this email is correct, go to http://localhost:3000/confirm/{{ key }}
+To confirm this email is correct, go to https://dev.pc.bctr.cornell.edu/confirm/{{ key }}
 
 Thank you from the PRYDE Connect team!

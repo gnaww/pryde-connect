@@ -23,7 +23,7 @@
         <ul>
             {% for user in content.users %}
             <li>
-                <a href="http://localhost:3000/user/{{ user.id }}">{{ user.name }}</a>, a {{ user.role }} located at {{ user.location }} - joined {{ user.date_joined }}
+                <a href="https://dev.pc.bctr.cornell.edu/user/{{ user.id }}">{{ user.name }}</a>, a {{ user.role }} located at {{ user.location }} - joined {{ user.date_joined }}
             </li>
             {% endfor %}
         </ul>
@@ -36,7 +36,7 @@
         <ul>
             {% for project in content.projects %}
             <li>
-                <a href="http://localhost:3000/project/{{ project.id }}">{{ project.name }}</a> by <a href="http://localhost:3000/user/{{ project.owner_id }}">{{ project.owner_name }}</a> - posted on {{ project.date_posted }}
+                <a href="https://dev.pc.bctr.cornell.edu/project/{{ project.id }}">{{ project.name }}</a> by <a href="https://dev.pc.bctr.cornell.edu/user/{{ project.owner_id }}">{{ project.owner_name }}</a> - posted on {{ project.date_posted }}
             </li>
             {% endfor %}
         </ul>
@@ -44,6 +44,6 @@
         <p>In the past month no projects matching your preferences have been posted.</p>
     {% endif %}
 
-    <p><i>If you no longer want to receive emails from us, you can unsubscribe <a href="http://localhost:3000/preferences">here</a> (must be logged in to unsubscribe).</i></p>
+    <p><i>If you no longer want to receive emails from us, you can unsubscribe <a href="https://dev.pc.bctr.cornell.edu/preferences">here</a> (must be logged in to unsubscribe).</i></p>
     </body>
 </html>

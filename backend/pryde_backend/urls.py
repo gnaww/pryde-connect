@@ -38,9 +38,9 @@ urlpatterns = [
     url(r'^rest-auth/registration/account-email-verification-sent/', null_view, name='account_email_verification_sent'),
     url(r'^rest-auth/registration/account-confirm-email/', null_view, name='account_confirm_email'),
 
-    url(r'^api/v1/rest-auth/', include('rest_auth.urls')),
-    url(r'^api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^v1/rest-auth/', include('rest_auth.urls')),
+    url(r'^v1/rest-auth/registration/', include('rest_auth.registration.urls')),
     path('docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
 ]
 
-urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns += static('/media/',document_root=settings.MEDIA_ROOT)
