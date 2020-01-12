@@ -62,6 +62,10 @@ class Login extends Component {
                     this.props.location.search === "?confirm=true" &&
                     <p className={styles.successMessage}>Email address verified!</p>
                 }
+                {
+                    this.props.location.search === "?reset=true" &&
+                    <p className={styles.successMessage}>Password successfully reset! You may now log in.</p>
+                }
                 <form className={styles.loginForm} onSubmit={this.handleLogin}>
                     <input className={styles.textInput} placeholder="Email address" type="text" value={this.state.email} onChange={this.handleEmailChange} />
                     <input className={styles.textInput} placeholder="Password" type="password" value={this.state.password} onChange={this.handlePasswordChange} />

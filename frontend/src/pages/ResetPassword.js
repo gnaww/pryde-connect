@@ -40,7 +40,7 @@ class ResetPassword extends Component {
             }
             api.resetPassword(data)
                 .then(response => {
-                    this.props.history.push("/login")
+                    this.props.history.push("/login?reset=true")
                 })
                 .catch(error => {
                     console.log(error);
