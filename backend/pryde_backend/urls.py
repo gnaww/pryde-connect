@@ -35,6 +35,7 @@ urlpatterns = [
     path('v1/', include('api.urls')),
 
     # hacky workaround to have custom email templates for email verification/confirmation
+    # pulled from https://github.com/Tivix/django-rest-auth/issues/292
     url(r'^rest-auth/registration/account-email-verification-sent/', null_view, name='account_email_verification_sent'),
     url(r'^rest-auth/registration/account-confirm-email/', null_view, name='account_confirm_email'),
 
