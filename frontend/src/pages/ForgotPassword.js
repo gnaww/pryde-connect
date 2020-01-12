@@ -65,7 +65,7 @@ class ForgotPassword extends Component {
                                 Success!
                             </h1>
                             <h2 className={styles.subtitle}>
-                                You will receive an email at <b>{this.state.email}</b> with further instructions to reset your password.
+                                If <b>{this.state.email}</b> matches an existing account, you will receive an email with further instructions on how to reset your password.
                             </h2>
                         </>
                 }
