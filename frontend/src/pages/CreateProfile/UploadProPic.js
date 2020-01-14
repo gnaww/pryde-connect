@@ -8,14 +8,19 @@ class UploadProPic extends Component {
         super(props);
         this.state = {
             filePreview: null,
-            profilePicture: null
+            profilePicture: null,
         };
         this.recaptchaRef = React.createRef();
     }
 
     componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
-            this.props.onSubmitData(this.state, false);
+            if (this.state.profilePicture.size > 3145728) {
+                alert("Uploaded file size is too big! Must be less than 3MB.");
+                this.props.onSubmitData(this.state, true)
+            } else {
+                this.props.onSubmitData(this.state, false);
+            }
         }
 
         if (prevProps.errorSubmitting !== this.props.errorSubmitting && this.props.errorSubmitting) {

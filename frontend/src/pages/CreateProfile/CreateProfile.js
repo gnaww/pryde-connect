@@ -32,7 +32,7 @@ let pages = [
         content: OptionalQuestions
     },
     {
-        subtitle: "Finally, upload a profile picture. (optional)",
+        subtitle: "Finally, upload a profile picture. Maximum file size is 3MB. (optional)",
         content: UploadProPic
     },
     {
@@ -199,12 +199,7 @@ class CreateProfile extends Component {
 
             try {
                 let response = await api.register(user);
-                if (data[4].profilePicture) {
-                    let profilePictureResponse = await api.uploadProfilePicture(data[4].profilePicture, response.data.key);
-                    return { success: profilePictureResponse, message: "" };
-                } else {
-                    return { success: response.status === 201, message: "" };
-                }
+                return { success: response.status === 201, message: "" };
             } catch(err) {
                 console.log(err);
                 console.log(err.response.data);
