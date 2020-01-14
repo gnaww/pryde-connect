@@ -18,7 +18,7 @@ let pages = [
     },
     {
         title: "Thank you!",
-        subtitle: "Your project has been submitted for approval.",
+        subtitle: "Your project has been posted on PRYDE Connect!",
         content: FinishSubmit
     }
 ];
