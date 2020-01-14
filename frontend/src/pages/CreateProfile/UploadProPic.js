@@ -8,7 +8,7 @@ class UploadProPic extends Component {
         super(props);
         this.state = {
             filePreview: null,
-            profilePicture: null,
+            profilePicture: null
         };
         this.recaptchaRef = React.createRef();
     }
