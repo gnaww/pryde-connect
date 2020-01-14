@@ -17,7 +17,7 @@ class UploadProPic extends Component {
         if (this.props.clickedNext) {
             if (this.state.profilePicture.size > 3145728) {
                 alert("Uploaded file size is too big! Must be less than 3MB.");
-                this.props.onSubmitData(this.state, true)
+                this.props.onSubmitData(this.state, true);
             } else {
                 this.props.onSubmitData(this.state, false);
             }
