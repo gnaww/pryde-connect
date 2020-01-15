@@ -15,12 +15,13 @@ class UploadProPic extends Component {
 
     componentDidUpdate(prevProps, _prevState) {
         if (this.props.clickedNext) {
-            if (this.state.profilePicture.size > 3145728) {
-                alert("Uploaded file size is too big! Must be less than 3MB.");
-                this.props.onSubmitData(this.state, true);
-            } else {
-                this.props.onSubmitData(this.state, false);
-            }
+            // if (this.state.profilePicture.size > 3145728) {
+            //     alert("Uploaded file size is too big! Must be less than 3MB.");
+            //     this.props.onSubmitData(this.state, true);
+            // } else {
+            //     this.props.onSubmitData(this.state, false);
+            // }
+            this.props.onSubmitData(this.state, false);
         }
 
         if (prevProps.errorSubmitting !== this.props.errorSubmitting && this.props.errorSubmitting) {
@@ -37,24 +38,24 @@ class UploadProPic extends Component {
             this.setState(this.props.savedData);
         }
 
-        const input = document.getElementById("propic");
-        input.addEventListener('change', this.onSelectFile, false);
+        // const input = document.getElementById("propic");
+        // input.addEventListener('change', this.onSelectFile, false);
     }
 
-    componentWillUnmount() {
-        const input = document.getElementById("propic");
-        input.removeEventListener('change', this.onSelectFile, false);
-    }
+    // componentWillUnmount() {
+    //     const input = document.getElementById("propic");
+    //     input.removeEventListener('change', this.onSelectFile, false);
+    // }
 
-    onSelectFile = () => {
-        const input = document.getElementById("propic");
-        this.setState({ profilePicture: input.files[0] })
-    }
+    // onSelectFile = () => {
+    //     const input = document.getElementById("propic");
+    //     this.setState({ profilePicture: input.files[0] })
+    // }
 
-    setProfilePicture = event => {
-        let proPic = URL.createObjectURL(event.target.files[0]);
-        this.setState({ filePreview: proPic })
-    }
+    // setProfilePicture = event => {
+    //     let proPic = URL.createObjectURL(event.target.files[0]);
+    //     this.setState({ filePreview: proPic })
+    // }
 
     onRECAPTCHAChange = token => {
         this.props.setRECAPTCHAToken(token);
@@ -63,11 +64,11 @@ class UploadProPic extends Component {
     render() {
         return (
             <div>
-                <label className={styles.imageUpload} htmlFor="propic">SELECT A FILE TO UPLOAD</label>
+                {/* <label className={styles.imageUpload} htmlFor="propic">SELECT A FILE TO UPLOAD</label>
                 <input className={styles.propic} onChange={this.setProfilePicture} type="file" id="propic" accept="image/*" />
                 {
                     this.state.filePreview !== null && <img className={styles.uploadedImage} alt={"ERROR"} src={this.state.filePreview} />
-                }
+                } */}
                 {
                     !this.props.editing &&
                     <ReCAPTCHA
