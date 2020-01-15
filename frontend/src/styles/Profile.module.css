@@ -93,9 +93,11 @@
 }
 
 .profilePicture {
+    min-width: 220px;
     width: 220px;
     height: 220px;
     position: relative;
+    margin: 0 20px;
 }
 
 .profilePicture img {
@@ -116,6 +118,10 @@
 
 .profileHeader button:focus {
     outline: none;
+}
+
+.personalInformation {
+    margin-right: 20px;
 }
 
 .personalInformation h1, .personalInformation h2 {
@@ -150,6 +156,7 @@
 
 .contactInformation {
     color: white;
+    margin-right: 20px;
 }
 
 .contactInformation ul {
@@ -159,6 +166,7 @@
     font-size: 20px;
     line-height: 24px;
     letter-spacing: 0.1em;
+    padding: 0;
 }
 
 .contactInformation li {
