@@ -46,7 +46,7 @@ class ResearcherQuestions extends Component {
             obj.errors[1] = !typeSelected;
             obj.errors[2] = !topicsSelected;
             obj.errors[3] = !ageRangesSelected;
-            return state.locatedAtCornell === null || !locationValid || !topicsSelected || !typeSelected;
+            return state.locatedAtCornell === null || !locationValid || !topicsSelected || !typeSelected || !ageRangesSelected;
         }
 
         if (this.props.clickedNext) {

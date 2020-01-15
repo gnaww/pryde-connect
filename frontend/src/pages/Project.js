@@ -21,6 +21,7 @@ class Project extends Component {
             id: "",
             name: "",
             owner: {
+                pk: "",
                 first_name: "",
                 last_name: "",
                 affiliation: "",
@@ -178,9 +179,9 @@ class Project extends Component {
                                     <div>
                                         <h1>{name}</h1>
                                         <h2>
-                                            {
-                                                `${owner.first_name} ${owner.last_name} - ${owner.affiliation}`
-                                            }
+                                            <Link to={`/user/${owner.pk}`}>
+                                                { `${owner.first_name} ${owner.last_name} - ${owner.affiliation}` }
+                                            </Link>
                                         </h2>
                                         <h2>{location}</h2>
                                     </div>

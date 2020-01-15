@@ -42,7 +42,7 @@ const ReviewFinish = props => {
         return (
             <div className={styles.finishPage}>
                 <h1 className={styles.createProfile}>Confirm your email address</h1>
-                <h2 className={styles.subtitle}>A confirmation email has been sent to <b>{props.email}</b>. Click on the confirmation link in the email to activate your account.</h2>
+                <h2 className={styles.subtitle}>A confirmation email has been sent to <b>{props.email}</b>. Click on the confirmation link in the email to activate your account. If you cannot find the email in your inbox, check your spam folder.</h2>
             </div>
         );
     } else {

@@ -18,7 +18,7 @@ let pages = [
     },
     {
         title: "Thank you!",
-        subtitle: "Your project has been submitted for approval.",
+        subtitle: "Your project will now appear on your profile and can be found by others browsing the project listings.",
         content: FinishSubmit
     }
 ];
@@ -241,7 +241,7 @@ class CreateProject extends Component {
                 <div className={styles.root} >
                     <h1 className={styles.createProfile}>{title}</h1>
                     <h2 className={styles.subtitle}>{subtitle}</h2>
-                    <p className={styles.disclaimer}>Keep in mind that the contact information you provide will be publicly viewable so that potential partners can contact you.</p>
+                    { this.state.page === 0 && <p className={styles.disclaimer}>Keep in mind that the contact information you provide will be publicly viewable so that potential partners can contact you.</p> }
                     <PageContent clickedNext={this.state.clickedNext} onSubmitData={this.submitData} savedData={this.state.pageData} editing={editing} location={this.props.location} />
                     <div className={styles.buttons}>
                         {
