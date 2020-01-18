@@ -32,7 +32,7 @@ class Homepage extends Component {
                     <div>
                         <h1>Welcome to PRYDE Connect!</h1>
                         <p>Where connections are built.</p>
-                        <Link to="/signup">SIGN UP NOW</Link>
+                        { !localStorage.getItem("pryde_key") && <Link to="/signup">SIGN UP NOW</Link> }
                     </div>
                     <button
                         onClick={
@@ -102,15 +102,18 @@ class Homepage extends Component {
                                     View projects and profiles right now without an account
                                 </p>
                             </div>
-                            <div className={styles.actionCard}>
-                                <Link className={styles.actionLink} to="/signup">
-                                    <img className={styles.addPerson} src={addPerson} alt="Sign up" />
-                                    <p>SIGN UP</p>
-                                </Link>
-                                <p className={styles.actionDescription}>
-                                    Sign up now to post about an initiative or create your own profile
-                                </p>
-                            </div>
+                            {
+                                !localStorage.getItem("pryde_key") &&
+                                <div className={styles.actionCard}>
+                                    <Link className={styles.actionLink} to="/signup">
+                                        <img className={styles.addPerson} src={addPerson} alt="Sign up" />
+                                        <p>SIGN UP</p>
+                                    </Link>
+                                    <p className={styles.actionDescription}>
+                                        Sign up now to post about an initiative or create your own profile
+                                    </p>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className={styles.logoWrapper}>
