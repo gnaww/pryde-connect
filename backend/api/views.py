@@ -10,6 +10,35 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+researchTopicsOptions = [
+    "Animal Science",
+    "Agriculture",
+    "Career Readiness",
+    "Civic Engagement",
+    "Diversity Equity & Inclusion",
+    "Education & Learning",
+    "Energy",
+    "Environment & Sustainability",
+    "Families",
+    "Gardening & Horticulture",
+    "Health & Wellness",
+    "Intergenerational Engagement",
+    "Life Skills",
+    "Media & Technology",
+    "Motivation",
+    "Nutrition",
+    "Outdoor Education",
+    "Parenting",
+    "Peer Relationships",
+    "Positive Youth Development",
+    "Policy Analysis",
+    "Program Evaluation",
+    "Risk Behavior",
+    "Self & Identity",
+    "Science Technology Engineering & Math (STEM)",
+    "Volunteer Engagement",
+    "Youth/Adult Relationships"
+]
 
 # Endpoint for searching/filter users and projects in the database
 # Filtering ANDs separate categories together and ORs values within the same filter category
@@ -68,16 +97,8 @@ class Filter(generics.ListAPIView):
                 for topic in research_topics:
                     # filter for any projects that have a research topic not in the given options
                     if topic == 'Other':
-                        researchTopics = ['Animal Science & Agriculture', 'Civic Engagement',
-                                          'Diversity Equity & Inclusion', 'Education & Learning',
-                                          'Environment & Sustainability', 'Families',
-                                          'Health & Wellness', 'Peer Relationships',
-                                          'Positive Youth Development', 'Policy Analysis',
-                                          'Program Evaluation', 'Media & Technology',
-                                          'Motivation', 'Nutrition', 'Risk Behavior',
-                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
-                                          'Youth/Adult Relationships']
-                        topic_relationships = TopicsProject.objects.exclude(researchTopic__in=researchTopics)
+                        topic_relationships = TopicsProject.objects.exclude(researchTopic__in=researchTopicsOptions)
+
                         for topic_relationship in topic_relationships:
                             filtered_researchtopic_set = filtered_researchtopic_set | \
                                                          Project.objects.filter(pk=topic_relationship.project.pk)
@@ -101,7 +122,9 @@ class Filter(generics.ListAPIView):
                 for mode in delivery_modes:
                     # filter for projects with a delivery mode not in given options
                     if mode == 'Other':
-                        deliveryModes = ['Afterschool', 'Camps', 'Clubs']
+                        deliveryModes = ['Afterschool programs', 'Camps', 'Clubs', 'In-school Programming',
+                                         'Summer Youth Employment Opportunities', 'Special Interest/Short Term',
+                                         'Fair/Events']
                         delivery_relationships = DeliveryModeProject.objects.exclude(deliveryMode__in=deliveryModes)
                         for delivery_relationship in delivery_relationships:
                             filtered_deliverymodes_set = filtered_deliverymodes_set | \
@@ -171,17 +194,7 @@ class Filter(generics.ListAPIView):
                 for interest in research_interests:
                     # filter for users with research interests not in given options
                     if interest == 'Other':
-                        researchInterests = ['Animal Science & Agriculture', 'Civic Engagement',
-                                          'Diversity Equity & Inclusion', 'Education & Learning',
-                                          'Environment & Sustainability', 'Families',
-                                          'Health & Wellness', 'Peer Relationships',
-                                          'Positive Youth Development', 'Policy Analysis',
-                                          'Program Evaluation', 'Media & Technology',
-                                          'Motivation', 'Nutrition', 'Risk Behavior',
-                                          'Self & Identity', 'Science Technology Engineering & Math (STEM)',
-                                          'Youth/Adult Relationships']
-
-                        interest_relationships = ResearchInterestUser.objects.exclude(researchInterest__in=researchInterests)
+                        interest_relationships = ResearchInterestUser.objects.exclude(researchInterest__in=researchTopicsOptions)
 
                         for relationship in interest_relationships:
                             filtered_researchinterest_set = filtered_researchinterest_set |\
