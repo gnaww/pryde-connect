@@ -45,7 +45,7 @@ const PreferencesInformation = {
         "Young teens (12-14 years)",
         "Teenagers (15-17 years)",
         "Young adults (18-24 years)",
-        "Adults (25-65 years)",
+        "Adults (25-64 years)",
         "Seniors (65+ years)"
     ],
     ProgramDeliveryModes: [
