@@ -10,6 +10,48 @@ from rest_framework.response import Response
 from .permissions import CanEditDeleteUser
 from rest_framework.parsers import MultiPartParser, FormParser
 import os
+import logging
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/logs/errors.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.*': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.csrf': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        }
+    }
+})
+
+logger = logging.getLogger(__name__)
 
 
 # Retrieve all users from database
@@ -35,6 +77,7 @@ class LoggedInUserView(generics.RetrieveAPIView):
             serializer = LoggedInUserSerializer(user, context={ 'request': request })
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
+            logger.exception("Error while retrieving logged in user's profile")
             print(e)
             return Response({'message': 'Something went wrong while retrieving your profile.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -67,6 +110,7 @@ class UploadOrChangeProfilePicture(generics.CreateAPIView):
                 return Response({'message': 'Profile picture file size must be less than 3 MB.'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
+            logger.exception("Error while uploading profile picture")
             print(e)
             return Response({'message': 'Something went wrong while uploading your profile picture.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -91,6 +135,7 @@ class UpdateEmail(generics.UpdateAPIView):
             return Response({'message': 'Successfully updated email address.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.exception("Error while updating user's email address")
             print(e)
             return Response({'message': 'Something went wrong while updating your email address.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -136,6 +181,7 @@ class UpdateUser(generics.UpdateAPIView):
             return Response(data=UserShortSerializer(user).data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.exception("Error while updating user's profile")
             print(e)
             return Response({'message': 'Something went wrong while updating your profile.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,11 +199,15 @@ class GetEmailPreferences(generics.RetrieveAPIView):
     permission_classes = [CanEditDeleteUser & IsAuthenticated, ]
 
     def get(self, request, *args, **kwargs):
-        user = PUser.public_objects.get(pk=request.user.pk)
-        preferences = UserEmailPreference.objects.filter(user=user)
-        serializer = EmailPreferenceSerializer(preferences, many=True)
+        try:
+            user = PUser.public_objects.get(pk=request.user.pk)
+            preferences = UserEmailPreference.objects.filter(user=user)
+            serializer = EmailPreferenceSerializer(preferences, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({ 'message': 'Something went wrong while retrieving your email preferences.' }, status=status.HTTP_404_NOT_FOUND)
 
 
 # Subscribe a new user to the monthly newsletter or update an existing users email preferences
@@ -183,6 +233,7 @@ class CreateOrUpdateEmailPreferences(generics.CreateAPIView):
             return Response({'message': 'Email preferences successfully saved.'}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            logger.exception("Error while creating/updating user's email preferences")
             print(e)
             return Response({'message': 'Something went wrong while saving your email preferences.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -201,5 +252,6 @@ class DeleteEmailPreferences(generics.DestroyAPIView):
                 return Response({'message': 'You are already unsubscribed from all emails.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
+            logger.exception("Error while deleting user's email preferences")
             print(e)
             return Response({'message': 'Something went wrong while unsubscribing you from all emails.'}, status=status.HTTP_400_BAD_REQUEST)

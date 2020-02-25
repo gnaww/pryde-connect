@@ -8,6 +8,48 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 # custom permissions
 from .permissions import CanEditCollaborators, IsCollaborator
+import logging
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/logs/errors.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.*': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.csrf': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        }
+    }
+})
+
+logger = logging.getLogger(__name__)
 
 
 # Retrieve collaborators associated with project with id kwargs['pk']
@@ -66,6 +108,7 @@ class AddCollaborator(generics.CreateAPIView):
             return Response({'message': 'Collaborator successfully added.'}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            logger.exception("Error while adding collaborator")
             print(e)
             return Response({'message': 'Something went wrong while adding a collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,6 +145,7 @@ class UpdateCollaboratorPermissions(generics.UpdateAPIView):
                 return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
+            logger.exception("Error while updating collaborator permissions")
             print(e)
             return Response({'message': 'Something went wrong while updating collaborator permissions.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -134,6 +178,7 @@ class DeleteCollaborator(generics.DestroyAPIView):
                 return Response({'message': 'This user is not a collaborator.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
+            logger.exception("Error while deleting collaborator")
             print(e)
             return Response({'message': 'Something went wrong while deleting the collaborator.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -162,6 +207,7 @@ class ToggleProjectVisibility(generics.UpdateAPIView):
             return Response({'message': 'Your preferences have been saved.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.exception("Error while updating user email preferences")
             print(e)
             return Response({'message': 'Something went wrong while updating your preferences.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -224,6 +270,7 @@ class LoggedInUserPermissions(generics.RetrieveAPIView):
                         status=status.HTTP_200_OK
                     )
         except Exception as e:
+            logger.exception("Error while retrieving logged in user's project permissions")
             print(e)
             return Response({'message': 'Something went wrong while getting logged in user\'s permissions.'}, status=status.HTTP_400_BAD_REQUEST)
 

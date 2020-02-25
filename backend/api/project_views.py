@@ -11,6 +11,48 @@ from rest_framework.parsers import MultiPartParser, FormParser
 # custom permissions
 from .permissions import CanDeleteProject, CanEditProject
 import os
+import logging
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/logs/errors.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.*': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.csrf': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        }
+    }
+})
+
+logger = logging.getLogger(__name__)
 
 
 # Retrieve all projects in database
@@ -61,6 +103,7 @@ class CreateProject(generics.CreateAPIView):
                 try:
                     AgeRangeProject.objects.create(project=new_project, ageRange=age)
                 except Exception as e:
+                    logger.exception("Error while creating project age ranges")
                     print(e)
                     return Response({
                         'status': 'Something went wrong while creating the project.'
@@ -70,6 +113,7 @@ class CreateProject(generics.CreateAPIView):
                 try:
                     DeliveryModeProject.objects.create(project=new_project, deliveryMode=mode)
                 except Exception as e:
+                    logger.exception("Error while creating project delivery modes")
                     print(e)
                     return Response({
                         'status': 'Something went wrong while creating the project.'
@@ -79,6 +123,7 @@ class CreateProject(generics.CreateAPIView):
                 try:
                     TopicsProject.objects.create(project=new_project, researchTopic=topic)
                 except Exception as e:
+                    logger.exception("Error while creating project research topics")
                     print(e)
                     return Response({
                         'status': 'Something went wrong while creating the project.'
@@ -87,6 +132,7 @@ class CreateProject(generics.CreateAPIView):
             return Response({'data': ProjectSerializer(new_project).data}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            logger.exception("Error while creating project")
             print(e)
             return Response({
                 'status': 'Something went wrong while creating the project.'
@@ -128,6 +174,7 @@ class UpdateProject(generics.UpdateAPIView):
             return Response(data=ProjectShortSerializer(project).data, status=status.HTTP_200_OK)
 
         except Exception as e:
+            logger.exception("Error while updating project")
             print(e)
             return Response({'message': 'Something went wrong while updating the project information.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -173,6 +220,7 @@ class UploadFile(generics.CreateAPIView):
                 return Response({'message': 'Project not found.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
+            logger.exception("Error while adding file to project")
             print(e)
             return Response({'message': 'Something went wrong while uploading the file.'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -203,5 +251,6 @@ class DeleteFile(generics.DestroyAPIView):
                 return Response({ 'message': 'Project not found.' }, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
+            logger.exception("Error while deleting file from project")
             print(e)
             return Response({ 'message': 'Something went wrong while deleting the file.' }, status=status.HTTP_400_BAD_REQUEST)
