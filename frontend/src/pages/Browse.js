@@ -179,16 +179,22 @@ class Browse extends Component {
                     "Middle childhood (9-11 years)",
                     "Young teens (12-14 years)",
                     "Teenagers (15-17 years)",
-                    "Young adults (18-24 years)"
+                    "Young adults (18-24 years)",
+                    "Adults (25-65 years)",
+                    "Seniors (65+ years)"
                 ],
                 defaultValues: parsedURL.ageranges
             },
             {
                 categoryName: "Delivery Modes",
                 filterOptions: [
-                    "Afterschool",
+                    "Afterschool programs",
                     "Camps",
                     "Clubs",
+                    "In-school Programming",
+                    "Summer Youth Employment Opportunities",
+                    "Special Interest/Short Term",
+                    "Fair/Events",
                     "Other"
                 ],
                 defaultValues: parsedURL.deliverymodes
@@ -309,7 +315,9 @@ class Browse extends Component {
                     "Middle childhood (9-11 years)",
                     "Young teens (12-14 years)",
                     "Teenagers (15-17 years)",
-                    "Young adults (18-24 years)"
+                    "Young adults (18-24 years)",
+                    "Adults (25-65 years)",
+                    "Seniors (65+ years)"
                 ],
                 defaultValues: parsedURL.ageranges
             }

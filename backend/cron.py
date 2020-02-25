@@ -185,7 +185,8 @@ def send_emails():
             FROM api_useremailpreference
             JOIN api_deliverymodeproject
             ON api_useremailpreference."preferenceValue" = 'Other' AND api_deliverymodeproject."deliveryMode"
-            NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
+            NOT IN ('Afterschool programs', 'Camps', 'Clubs', 'In-school Programming',
+            'Summer Youth Employment Opportunities', 'Special Interest/Short Term', 'Fairs/Events') AND
             api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '1'
             JOIN api_project
@@ -355,7 +356,8 @@ def send_emails():
             FROM api_useremailpreference
             JOIN api_deliverymodeuser
             ON api_useremailpreference."preferenceValue" = 'Other' AND api_deliverymodeuser."deliveryMode"
-            NOT IN ('Afterschool programs', 'Camps', 'Clubs') AND
+            NOT IN ('Afterschool programs', 'Camps', 'Clubs', 'In-school Programming',
+            'Summer Youth Employment Opportunities', 'Special Interest/Short Term', 'Fairs/Events') AND
             api_useremailpreference."preferenceName" = 'deliveryMode' AND
             api_useremailpreference.type = '2'
             JOIN api_puser

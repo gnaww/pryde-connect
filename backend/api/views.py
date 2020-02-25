@@ -122,7 +122,9 @@ class Filter(generics.ListAPIView):
                 for mode in delivery_modes:
                     # filter for projects with a delivery mode not in given options
                     if mode == 'Other':
-                        deliveryModes = ['Afterschool', 'Camps', 'Clubs']
+                        deliveryModes = ['Afterschool programs', 'Camps', 'Clubs', 'In-school Programming',
+                                         'Summer Youth Employment Opportunities', 'Special Interest/Short Term',
+                                         'Fair/Events']
                         delivery_relationships = DeliveryModeProject.objects.exclude(deliveryMode__in=deliveryModes)
                         for delivery_relationship in delivery_relationships:
                             filtered_deliverymodes_set = filtered_deliverymodes_set | \
