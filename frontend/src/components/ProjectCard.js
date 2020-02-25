@@ -35,12 +35,26 @@ const ProjectCard = props => {
         <Link className={styles.linkWrapper} to={link}>
             <div className={props.visible ? `${styles.card} ${styles.projectCard}` : `${styles.card} ${styles.projectCard} ${styles.invisible}`}>
                 <section className={styles.projectDetails}>
-                    <h3>{props.name}</h3>
+                    <h3>
+                        {
+                            props.name.length > 25 ?
+                                `${props.name.replace(/^(.{25}[^\s]*).*/, "$1")}...`
+                            :
+                                props.name
+                        }
+                    </h3>
                     <div>
                         <h4>{`${props.owner.first_name} ${props.owner.last_name}`}</h4>
                         <h4><img src={locationIconBlack} alt="Location icon" />{ props.owner.location }</h4>
                     </div>
-                    <h4>{ props.owner.affiliation }</h4>
+                    <h4>
+                        {
+                            props.owner.affiliation.length > 40 ?
+                                `${props.owner.affiliation.replace(/^(.{40}[^\s]*).*/, "$1")}...`
+                            :
+                                props.owner.affiliation
+                        }
+                    </h4>
                     {
                         // truncate summary at a word if longer than 100 characters
                         props.summary.length > 100 ?
