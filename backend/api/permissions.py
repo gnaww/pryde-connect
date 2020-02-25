@@ -3,45 +3,6 @@ from .models import PUser, Project, Collaborator
 import requests, os
 import logging
 
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
-            'format': '%(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
-        },
-        'file': {
-            'format': '%(asctime)s %(name)-12s %(funcName)s %(lineno)d %(levelname)-8s %(message)s'
-        }
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'console'
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'file',
-            'filename': '/logs/errors.log'
-        }
-    },
-    'loggers': {
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file']
-        },
-        'django.security.*': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file']
-        },
-        'django.security.csrf': {
-            'level': 'DEBUG',
-            'handlers': ['console', 'file']
-        }
-    }
-})
-
 logger = logging.getLogger(__name__)
 
 
