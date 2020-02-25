@@ -1,6 +1,9 @@
 from rest_framework import permissions
 from .models import PUser, Project, Collaborator
 import requests, os
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # Check if user has permissions to add, remove, or update permissions of the collaborators on a project
@@ -11,6 +14,7 @@ class CanEditCollaborators(permissions.BasePermission):
         try:
             hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).editCollaboratorsPermission
 
+        # user isn't found as a collaborator, has no permissions
         except Exception as e:
             hasPermission = False
 
@@ -26,6 +30,7 @@ class CanDeleteProject(permissions.BasePermission):
         try:
            hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).deletePermission
 
+        # user isn't found as a collaborator, has no permissions
         except Exception as e:
             hasPermission = False
 
@@ -41,6 +46,7 @@ class CanEditProject(permissions.BasePermission):
         try:
             hasPermission = Collaborator.objects.get(project=obj, collaborator=request.user).editPermission
 
+        # user isn't found as a collaborator, has no permissions
         except Exception as e:
             hasPermission = False
 
@@ -75,4 +81,8 @@ class isRealUser(permissions.BasePermission):
         }
         r = requests.post(url="https://www.google.com/recaptcha/api/siteverify", data=data)
         responseJSON = r.json()
+
+        if not responseJSON['success']:
+            logger.error("Error verifying RECAPTCHA: {} {} {}".format(responseJSON['challenge_ts'], responseJSON['hostname'], responseJSON['error-codes']))
+
         return responseJSON['success']

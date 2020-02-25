@@ -6,6 +6,9 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 # Endpoint for searching/filter users and projects in the database
