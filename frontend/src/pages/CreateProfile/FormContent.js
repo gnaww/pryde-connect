@@ -1,14 +1,22 @@
 import { AnswerTypes } from '../../components/QAComponents';
 import Animal from '../../images/research_icons/animal.png';
+import Agriculture from '../../images/research_icons/agriculture.png';
+import Career from '../../images/research_icons/career.png';
 import Civic from '../../images/research_icons/civic.png';
 import Diversity from '../../images/research_icons/diversity.png';
 import Education from '../../images/research_icons/education.png';
+import Energy from '../../images/research_icons/energy.png';
 import Environment from '../../images/research_icons/environment.png';
 import Family from '../../images/research_icons/family.png';
+import Gardening from '../../images/research_icons/gardening.png';
 import Health from '../../images/research_icons/health.png';
+import IntergenerationalEngagement from '../../images/research_icons/intergenerational_engagement.png';
+import LifeSkills from '../../images/research_icons/life_skills.png';
 import Media from '../../images/research_icons/media.png';
 import Motivation from '../../images/research_icons/motivation.png';
 import Nutrition from '../../images/research_icons/nutrition.png';
+import OutdoorEducation from '../../images/research_icons/outdoor_education.png';
+import Parenting from '../../images/research_icons/parenting.png';
 import Peer from '../../images/research_icons/peer.png';
 import Policy from '../../images/research_icons/policy.png';
 import Positive from '../../images/research_icons/positive.png';
@@ -16,6 +24,7 @@ import Program from '../../images/research_icons/program.png';
 import Risk from '../../images/research_icons/risk.png';
 import Self from '../../images/research_icons/self.png';
 import Stem from '../../images/research_icons/stem.png';
+import VolunteerEngagement from '../../images/research_icons/volunteer_engagement.png';
 import Youth from '../../images/research_icons/youth.png';
 import Other from '../../images/research_icons/other.png';
 
@@ -53,7 +62,15 @@ export const PractitionerInformation = {
     ResearchTopics: [
         {
             image: Animal,
-            label: "Animal Science & Agriculture"
+            label: "Animal Science"
+        },
+        {
+            image: Agriculture,
+            label: "Agriculture"
+        },
+        {
+            image: Career,
+            label: "Career Readiness"
         },
         {
             image: Civic,
@@ -68,6 +85,10 @@ export const PractitionerInformation = {
             label: "Education & Learning"
         },
         {
+            image: Energy,
+            label: "Energy"
+        },
+        {
             image: Environment,
             label: "Environment & Sustainability"
         },
@@ -76,8 +97,40 @@ export const PractitionerInformation = {
             label: "Families"
         },
         {
+            image: Gardening,
+            label: "Gardening & Horticulture"
+        },
+        {
             image: Health,
             label: "Health & Wellness"
+        },
+        {
+            image: IntergenerationalEngagement,
+            label: "Intergenerational Engagement"
+        },
+        {
+            image: LifeSkills,
+            label: "Life Skills"
+        },
+        {
+            image: Media,
+            label: "Media & Technology"
+        },
+        {
+            image: Motivation,
+            label: "Motivation"
+        },
+        {
+            image: Nutrition,
+            label: "Nutrition"
+        },
+        {
+            image: OutdoorEducation,
+            label: "Outdoor Education"
+        },
+        {
+            image: Parenting,
+            label: "Parenting"
         },
         {
             image: Peer,
@@ -96,18 +149,6 @@ export const PractitionerInformation = {
             label: "Program Evaluation"
         },
         {
-            image: Media,
-            label: "Media & Technology"
-        },
-        {
-            image: Motivation,
-            label: "Motivation"
-        },
-        {
-            image: Nutrition,
-            label: "Nutrition"
-        },
-        {
             image: Risk,
             label: "Risk Behavior"
         },
@@ -118,6 +159,10 @@ export const PractitionerInformation = {
         {
             image: Stem,
             label: "Science Technology Engineering & Math (STEM)"
+        },
+        {
+            image: VolunteerEngagement,
+            label: "Volunteer Engagement"
         },
         {
             image: Youth,

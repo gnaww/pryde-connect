@@ -228,10 +228,12 @@ def send_emails():
             FROM api_useremailpreference
             JOIN api_topicsproject
             ON api_useremailpreference."preferenceValue" = 'Other' AND api_topicsproject."researchTopic"
-            NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
-            'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
-            'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
-            'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
+            NOT IN ('Animal Science', 'Agriculture', 'Career Readiness', 'Civic Engagement', 'Diversity Equity & Inclusion',
+            'Education & Learning', 'Energy', 'Environment & Sustainability', 'Families', 'Gardening & Horticulture',
+            'Health & Wellness', 'Intergenerational Engagement', 'Life Skills', 'Media & Technology', 'Motivation',
+            'Nutrition', 'Outdoor Education', 'Parenting', 'Peer Relationships', 'Positive Youth Development',
+            'Policy Analysis', 'Program Evaluation', 'Risk Behavior', 'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+            'Volunteer Engagement', 'Youth/Adult Relationships') AND
             api_useremailpreference."preferenceName" = 'researchTopic' AND
             api_useremailpreference.type = '1'
             JOIN api_project
@@ -309,10 +311,12 @@ def send_emails():
             FROM api_useremailpreference
             JOIN api_researchinterestuser
             ON api_useremailpreference."preferenceValue" = 'Other' AND api_researchinterestuser."researchInterest"
-            NOT IN ('Animal Science & Agriculture', 'Civic Engagement', 'Diversity Equity & Inclusion', 'Education & Learning',
-            'Environment & Sustainability', 'Families', 'Health & Wellness', 'Peer Relationships', 'Positive Youth Development',
-            'Policy Analysis', 'Program Evaluation', 'Media & Technology', 'Motivation', 'Nutrition', 'Risk Behavior', 'Self & Identity',
-            'Science Technology Engineering & Math (STEM)', 'Youth/Adult Relationships') AND
+            NOT IN ('Animal Science', 'Agriculture', 'Career Readiness', 'Civic Engagement', 'Diversity Equity & Inclusion',
+            'Education & Learning', 'Energy', 'Environment & Sustainability', 'Families', 'Gardening & Horticulture',
+            'Health & Wellness', 'Intergenerational Engagement', 'Life Skills', 'Media & Technology', 'Motivation',
+            'Nutrition', 'Outdoor Education', 'Parenting', 'Peer Relationships', 'Positive Youth Development',
+            'Policy Analysis', 'Program Evaluation', 'Risk Behavior', 'Self & Identity', 'Science Technology Engineering & Math (STEM)',
+            'Volunteer Engagement', 'Youth/Adult Relationships') AND
             api_useremailpreference."preferenceName" = 'researchInterest' AND
             api_useremailpreference.type = '2'
             JOIN api_puser
