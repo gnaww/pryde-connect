@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # TODO: set to false in production
 DEBUG = True
 
-ALLOWED_HOSTS = ['dev.pc.bctr.cornell.edu']
+ALLOWED_HOSTS = ['prydeconnect.bctr.cornell.edu']
 
 # Application definition
 INSTALLED_APPS = [
