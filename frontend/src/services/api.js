@@ -2,7 +2,7 @@ import axios from 'axios'
 axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
 axios.defaults.xsrfCookieName = "csrftoken";
 
-const BASE_URL = "https://dev.pc.bctr.cornell.edu/api";
+const BASE_URL = "https://prydeconnect.bctr.cornell.edu/api";
 const API_BASE_URL = "/v1";
 
 export default {
