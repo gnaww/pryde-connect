@@ -76,7 +76,7 @@ class isRealUser(permissions.BasePermission):
 
     def has_permission(self, request, view):
         data = {
-            'secret': os.getenv("RECAPTCHA_SECRET_DEV_KEY"), # TODO: use production key
+            'secret': os.getenv("RECAPTCHA_SECRET_DEV_KEY"),
             'response': request.data['RECAPTCHAToken']
         }
         r = requests.post(url="https://www.google.com/recaptcha/api/siteverify", data=data)

@@ -29,8 +29,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# TODO: set to false in production
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['prydeconnect.bctr.cornell.edu']
 
@@ -68,10 +67,10 @@ INSTALLED_APPS = [
     'django_crontab',
 ]
 
-CRONJOBS = [
-    # send monthly newsletters at 9 AM on the first of every month
-    ('0 9 1 * *', 'api.cron_wrapper.send_emails_driver')
-]
+# CRONJOBS = [
+#     # send monthly newsletters at 9 AM on the first of every month
+#     ('0 9 1 * *', 'api.cron_wrapper.send_emails_driver')
+# ]
 
 # Additional Settings
 
@@ -81,15 +80,10 @@ OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 # CORS Settings
-# TODO: this should be set to false in production... allows any server to hit our backend which is not okay... only our
-# TODO: frontend server should be allowed to send requests to our backend
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8080',
-    'http://10.145.14.218:8000',
-    'http://localhost:8081',
-    'http://localhost:3000',
-)
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'https://prydeconnect.bctr.cornell.edu'
+]
 
 # whenever we create additional headers for our requests
 # they need to go here!!!!
@@ -102,6 +96,14 @@ CORS_ALLOW_HEADERS = default_headers + (
      'X-CSRFTOKEN'
 )
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # make all endpoints atomic
 ATOMIC_REQUESTS = True
@@ -166,6 +168,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+X_FRAME_OPTIONS = 'DENY'
 
 LOGGING = {
     'version': 1,
