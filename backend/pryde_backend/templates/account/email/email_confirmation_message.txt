@@ -1,5 +1,5 @@
 You're receiving this e-mail because you recently changed the email for your account at PRYDE Connect.
 
-To confirm this new email is correct, go to http://localhost:3000/confirm/{{ key }}
+To confirm this new email is correct, go to https://prydeconnect.bctr.cornell.edu/confirm/{{ key }}
 
 Thank you from the PRYDE Connect team!
