@@ -400,3 +400,5 @@ def send_emails():
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
         msg.send(fail_silently=False)
+
+send_emails()
