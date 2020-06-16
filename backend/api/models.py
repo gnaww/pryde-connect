@@ -49,8 +49,8 @@ class PublicUserManager(BaseUserManager):
 # Model representing users
 class PUser(AbstractUser):
     ROLE = [
-        ("1", 'Practitioner'),
-        ("2", 'Researcher')
+        (1, 'Practitioner'),
+        (2, 'Researcher')
     ]
     locatedAtCornell = models.BooleanField(default=False)
     locatedAtCCE = models.BooleanField(default=False)
@@ -62,7 +62,7 @@ class PUser(AbstractUser):
     phone = PhoneNumberField(default=None, null=True, unique=False, blank=True)
     website = models.URLField(default=None, null=True, blank=True)
     researchDescription = models.TextField(null=True, blank=True)
-    roles = ArrayField(models.CharField(max_length=100), default=list, null=True)
+    roles = ArrayField(models.CharField(max_length=100), default=list, null=True, blank=True)
     researchNeeds = models.TextField(null=True, blank=True)
     evaluationNeeds = models.TextField(null=True, blank=True)
     profile_picture = models.ImageField(default='', upload_to="profile_pictures/", null=True, blank=True)
