@@ -278,14 +278,14 @@ class Profile extends Component {
                                             <a href={`mailto:${user.email}`}>{user.email}</a>
                                         </li>
                                         {
-                                            user.phone !== "" &&
+                                            user.phone &&
                                             <li>
                                                 <img className={styles.contactIcon} src={phoneIcon} alt="Phone icon" />
                                                 <a href={`tel:${user.phone}`}>({user.phone.slice(2, 5)})-{user.phone.slice(5, 8)}-{user.phone.slice(8, 12)}</a>
                                             </li>
                                         }
                                         {
-                                            user.website !== "" &&
+                                            user.website &&
                                             <li>
                                                 <img className={styles.contactIcon} src={linkIcon} alt="Link icon" />
                                                 <a href={user.website} target="_blank" rel="noopener noreferrer">{user.website.replace(/(^\w+:|^)\/\//, '')}</a>

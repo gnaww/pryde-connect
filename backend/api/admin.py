@@ -10,12 +10,14 @@ class PUserAdmin(admin.ModelAdmin):
     search_fields = ['email', 'first_name', 'last_name', 'phone', 'role', 'displayRole', 'affiliation', 'date_joined', 'location']
     list_display = ['name', 'email', 'phone', 'role', 'displayRole', 'location', 'affiliation', 'date_joined']
     list_filter = ['role']
+    exclude = ['password', 'last_login', 'username', 'type', 'over18', 'date_joined']
 
 
 class ProjectAdmin(admin.ModelAdmin):
     search_fields = ['name', 'owner__first_name', 'owner__last_name', 'owner__email', 'status', 'datePosted', 'isApproved']
     list_display = ['name', 'owner', 'status', 'datePosted', 'isApproved']
     list_filter = ['status', 'isApproved']
+    exclude = ['type']
 
 
 class CollaboratorAdmin(admin.ModelAdmin):
