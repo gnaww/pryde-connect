@@ -193,14 +193,14 @@ class Project extends Component {
                                                 <img className={styles.contactIcon} src={mailIcon} alt="Email icon" />
                                             </li>
                                             {
-                                                owner.phone !== "" &&
+                                                owner.phone &&
                                                 <li>
                                                     <a href={`tel:${owner.phone}`}>({owner.phone.slice(2, 5)})-{owner.phone.slice(5, 8)}-{owner.phone.slice(8, 12)}</a>
                                                     <img className={styles.contactIcon} src={phoneIcon} alt="Phone icon" />
                                                 </li>
                                             }
                                             {
-                                                owner.website !== "" &&
+                                                owner.website &&
                                                 <li>
                                                     <a href={owner.website} target="_blank" rel="noopener noreferrer">{owner.website.replace(/(^\w+:|^)\/\//, '')}</a>
                                                     <img className={styles.contactIcon} src={linkIcon} alt="Website icon" />
@@ -223,11 +223,11 @@ class Project extends Component {
                                             </span>
                                             <a href={`mailto:${alternateContact.email}`}><img src={mailIcon} alt="Email icon" />{alternateContact.email}</a>
                                             {
-                                                alternateContact.phone !== "" &&
+                                                alternateContact.phone &&
                                                 <a href={`tel:${alternateContact.phone}`}><img src={phoneIcon} alt="Phone icon" />({alternateContact.phone.slice(2, 5)})-{alternateContact.phone.slice(5, 8)}-{alternateContact.phone.slice(8, 12)}</a>
                                             }
                                             {
-                                                alternateContact.website !== "" &&
+                                                alternateContact.website &&
                                                 <a href={alternateContact.website} target="_blank" rel="noopener noreferrer"><img src={linkIcon} alt="Website icon" />{alternateContact.website.replace(/(^\w+:|^)\/\//, '')}</a>
                                             }
                                         </p>
